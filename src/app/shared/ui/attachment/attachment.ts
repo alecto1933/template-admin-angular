@@ -39,12 +39,6 @@ export class UiAttachmentGroup {}
       } @else {
         <ui-icon [name]="icon()" class="size-5" />
       }
-
-      @if (state() === 'done') {
-        <span class="ui-attachment-badge" aria-hidden="true">
-          <ui-icon name="check" class="size-2.5" />
-        </span>
-      }
     </span>
 
     <span class="ui-attachment-content">
@@ -82,6 +76,7 @@ export class UiAttachmentGroup {}
     '[attr.data-size]': 'size()',
     '[attr.data-state]': 'state()',
     '[attr.data-interactive]': 'interactive() ? "true" : null',
+    '[attr.data-invalid]': 'invalid() ? "true" : null',
     '[attr.role]': 'interactive() ? "button" : null',
     '[attr.tabindex]': 'interactive() ? 0 : null',
     '[attr.aria-label]': 'interactive() ? "Buka " + name() : null',
@@ -98,6 +93,7 @@ export class UiAttachment {
   readonly size = input<AttachmentSize>('md');
   readonly state = input<AttachmentState>('idle');
   readonly progress = input(0);
+  readonly invalid = input(false, { transform: booleanAttribute });
   readonly interactive = input(false, { transform: booleanAttribute });
 
   readonly activated = output<void>();

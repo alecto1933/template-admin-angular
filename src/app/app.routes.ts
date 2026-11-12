@@ -8,6 +8,12 @@ export const routes: Routes = [
   },
   { path: 'login', redirectTo: 'auth/login' },
   {
+    path: 'auth/register',
+    title: 'Registrasi Vendor · iVendor Superapps',
+    loadComponent: () => import('./pages/auth/register.page').then((m) => m.RegisterPage),
+  },
+  { path: 'register', redirectTo: 'auth/register' },
+  {
     path: '',
     loadComponent: () => import('./layout/app-shell').then((m) => m.AppShell),
     children: [

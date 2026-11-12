@@ -12,6 +12,7 @@ import {
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { UiIcon } from '../icon/icon';
+import { IconName } from '../icon/icons';
 
 export interface SelectOption {
   value: string;
@@ -60,6 +61,10 @@ interface SelectGroup {
       (click)="toggle()"
       (keydown)="onKeydown($event)"
     >
+      @if (leadingIcon()) {
+        <ui-icon [name]="leadingIcon()!" class="size-4 shrink-0 text-muted-foreground" />
+      }
+
       @if (multiple() && selectedOptions().length) {
         <span class="flex min-w-0 flex-wrap gap-1">
           @for (option of selectedOptions(); track option.value) {
@@ -118,17 +123,20 @@ interface SelectGroup {
               [attr.aria-selected]="isSelected(entry.option.value)"
               [attr.aria-disabled]="entry.option.disabled ? 'true' : null"
               [attr.data-active]="activeIndex() === entry.index"
+              [class.ui-select-option-selected]="!multiple() && isSelected(entry.option.value)"
               (mouseenter)="activeIndex.set(entry.index)"
               (click)="select(entry.option)"
             >
-              <span
-                class="ui-select-check"
-                [attr.data-checked]="isSelected(entry.option.value) ? '' : null"
-              >
-                @if (isSelected(entry.option.value)) {
-                  <ui-icon name="check" class="size-3" />
-                }
-              </span>
+              @if (multiple()) {
+                <span
+                  class="ui-select-check"
+                  [attr.data-checked]="isSelected(entry.option.value) ? '' : null"
+                >
+                  @if (isSelected(entry.option.value)) {
+                    <ui-icon name="check" class="size-3" />
+                  }
+                </span>
+              }
               <span class="min-w-0 flex-1">
                 <span class="block truncate text-[13px] font-medium">{{ entry.option.label }}</span>
                 @if (entry.option.description) {
@@ -155,6 +163,7 @@ export class UiSelect implements ControlValueAccessor {
   readonly value = model<string | string[]>('');
   readonly placeholder = input('Pilih opsi…');
   readonly inputId = input('');
+  readonly leadingIcon = input<IconName | null>(null);
   readonly multiple = input(false, { transform: booleanAttribute });
   readonly disabled = input(false, { transform: booleanAttribute });
   readonly invalid = input(false, { transform: booleanAttribute });

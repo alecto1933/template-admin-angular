@@ -334,7 +334,7 @@ export class LoginPage {
   }
 
   protected register(): void {
-    this.toast.info(this.t().registerTitle, this.t().registerMessage);
+    this.router.navigate(['/auth/register']);
   }
 
   protected submit(): void {

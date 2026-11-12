@@ -1,0 +1,1232 @@
+<div class="fixed inset-0 flex flex-col overflow-hidden overscroll-none bg-background">
+  <header class="z-40 shrink-0 border-b border-border bg-card/95 backdrop-blur">
+    <div class="mx-auto flex h-16 w-full items-center justify-end gap-3 px-4 sm:px-6 lg:px-8">
+      <div class="flex shrink-0 items-center gap-2">
+        <button
+          type="button"
+          class="grid size-9 place-items-center rounded-lg border border-border bg-card transition-colors outline-none hover:bg-accent focus-visible:border-primary"
+          [cdkMenuTriggerFor]="languageMenu"
+          [attr.aria-label]="t().languageAria"
+        >
+          <img
+            [src]="'/images/flags/' + lang() + '.svg'"
+            alt=""
+            class="h-4 w-6 rounded-[2px] object-cover ring-1 ring-black/5"
+          />
+        </button>
+
+        <ng-template #languageMenu>
+          <div cdkMenu class="ui-menu-panel w-44">
+            <button cdkMenuItem type="button" class="ui-menu-item" (click)="setLang('id')">
+              <img
+                src="/images/flags/id.svg"
+                alt=""
+                class="h-3.5 w-5 rounded-[2px] object-cover ring-1 ring-black/5"
+              />
+              Indonesia
+              @if (lang() === 'id') {
+                <ui-icon name="check" class="ml-auto size-4 text-primary" />
+              }
+            </button>
+            <button cdkMenuItem type="button" class="ui-menu-item" (click)="setLang('en')">
+              <img
+                src="/images/flags/en.svg"
+                alt=""
+                class="h-3.5 w-5 rounded-[2px] object-cover ring-1 ring-black/5"
+              />
+              English
+              @if (lang() === 'en') {
+                <ui-icon name="check" class="ml-auto size-4 text-primary" />
+              }
+            </button>
+          </div>
+        </ng-template>
+
+        <button
+          type="button"
+          class="grid size-9 place-items-center rounded-lg border border-border bg-card text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
+          (click)="theme.toggle()"
+          [attr.aria-label]="theme.isDark() ? t().themeLight : t().themeDark"
+        >
+          <ui-icon [name]="theme.isDark() ? 'sun' : 'moon'" class="size-[18px]" />
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main
+    #scrollContainer
+    class="ui-content-grid scroll-fade-y scroll-fade-16 min-h-0 flex-1 overflow-y-auto overscroll-contain"
+  >
+    <div class="mx-auto flex min-h-full w-full flex-col px-4 py-8 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 gap-3 sm:grid-cols-3">
+        <label
+          class="cursor-pointer rounded-xl border p-4 transition-colors"
+          [class]="
+            entityType() === 'national'
+              ? 'border-primary bg-primary text-primary-foreground'
+              : 'border-border bg-card hover:border-primary/40'
+          "
+        >
+          <span class="flex items-center justify-between gap-2">
+            <span class="text-sm font-semibold">{{ t().entityNational }}</span>
+            <input
+              type="radio"
+              name="entity-type"
+              class="size-4 shrink-0"
+              value="national"
+              [checked]="entityType() === 'national'"
+              [class]="entityType() === 'national' ? 'accent-primary-foreground' : 'accent-primary'"
+              (change)="requestEntityType('national')"
+            />
+          </span>
+        </label>
+
+        <label
+          class="cursor-pointer rounded-xl border p-4 transition-colors"
+          [class]="
+            entityType() === 'international'
+              ? 'border-primary bg-primary text-primary-foreground'
+              : 'border-border bg-card hover:border-primary/40'
+          "
+        >
+          <span class="flex items-center justify-between gap-2">
+            <span class="text-sm font-semibold">{{ t().entityInternational }}</span>
+            <input
+              type="radio"
+              name="entity-type"
+              class="size-4 shrink-0"
+              [checked]="entityType() === 'international'"
+              value="international"
+              [class]="
+                entityType() === 'international' ? 'accent-primary-foreground' : 'accent-primary'
+              "
+              [checked]="entityType() === 'international'"
+              (change)="requestEntityType('international')"
+            />
+          </span>
+        </label>
+
+        <label
+          class="cursor-pointer rounded-xl border p-4 transition-colors"
+          [class]="
+            entityType() === 'government'
+              ? 'border-primary bg-primary text-primary-foreground'
+              : 'border-border bg-card hover:border-primary/40'
+          "
+        >
+          <span class="flex items-center justify-between gap-2">
+            <span class="text-sm font-semibold">{{ t().entityGovernment }}</span>
+            <input
+              type="radio"
+              name="entity-type"
+              class="size-4 shrink-0"
+              [checked]="entityType() === 'government'"
+              value="government"
+              [class]="
+                entityType() === 'government' ? 'accent-primary-foreground' : 'accent-primary'
+              "
+              [checked]="entityType() === 'government'"
+              (change)="requestEntityType('government')"
+            />
+          </span>
+        </label>
+      </div>
+
+      <div class="mt-6 grid flex-1 auto-rows-fr grid-cols-1 gap-3 lg:grid-cols-3">
+        <form
+          [formGroup]="vendorForm"
+          class="flex flex-col gap-3 rounded-xl border border-border bg-card p-4"
+          novalidate
+        >
+          <h2 class="text-center text-sm font-semibold">{{ t().profileTitle }}</h2>
+
+          <div class="space-y-1.5">
+            <label uiLabel for="v-name">
+              {{ t().fieldVendorName }}
+              <span class="text-destructive">*</span>
+            </label>
+            <div class="relative">
+              <ui-icon
+                name="user"
+                class="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground"
+              />
+              <input
+                uiInput
+                id="v-name"
+                type="text"
+                formControlName="name"
+                [placeholder]="t().phVendorName"
+                autocomplete="organization"
+                class="pl-9"
+                [attr.aria-invalid]="fieldInvalid('name') ? 'true' : null"
+              />
+            </div>
+            <p class="ui-help text-[11px]">{{ t().helpVendorName }}</p>
+            @if (fieldInvalid('name')) {
+              <p class="ui-error">
+                <ui-icon name="circle-help" class="size-3" />
+                {{ t().errRequired }}
+              </p>
+            }
+          </div>
+
+          <div class="space-y-1.5">
+            <label uiLabel>
+              {{ t().fieldType }}
+              <span class="text-destructive">*</span>
+            </label>
+            <div id="v-type" class="grid grid-cols-2 gap-2">
+              @if (entityType() === 'government') {
+                <div
+                  class="col-span-2 cursor-not-allowed rounded-xl border border-primary bg-primary-soft/30 p-3 opacity-60"
+                >
+                  <span class="flex items-center justify-between gap-2">
+                    <span class="text-xs font-semibold">{{ t().typeGovernment }}</span>
+                    <input type="radio" class="size-4 shrink-0 accent-primary" checked disabled />
+                  </span>
+                </div>
+              } @else {
+                <label
+                  class="cursor-pointer rounded-xl border p-3 transition-colors"
+                  [class]="
+                    vendorForm.controls.type.value === 'CORPORATE'
+                      ? 'border-primary bg-primary-soft/30'
+                      : fieldInvalid('type')
+                        ? 'border-destructive bg-card'
+                        : 'border-border bg-card hover:border-primary/40'
+                  "
+                >
+                  <span class="flex items-center justify-between gap-2">
+                    <span class="text-xs font-semibold">{{ t().typeCorporate }}</span>
+                    <input
+                      type="radio"
+                      formControlName="type"
+                      value="CORPORATE"
+                      class="size-4 shrink-0 accent-primary"
+                    />
+                  </span>
+                </label>
+
+                <label
+                  class="cursor-pointer rounded-xl border p-3 transition-colors"
+                  [class]="
+                    vendorForm.controls.type.value === 'INDIVIDUAL'
+                      ? 'border-primary bg-primary-soft/30'
+                      : fieldInvalid('type')
+                        ? 'border-destructive bg-card'
+                        : 'border-border bg-card hover:border-primary/40'
+                  "
+                >
+                  <span class="flex items-center justify-between gap-2">
+                    <span class="text-xs font-semibold">{{ t().typeIndividual }}</span>
+                    <input
+                      type="radio"
+                      formControlName="type"
+                      value="INDIVIDUAL"
+                      class="size-4 shrink-0 accent-primary"
+                    />
+                  </span>
+                </label>
+              }
+            </div>
+            @if (fieldInvalid('type')) {
+              <p class="ui-error">
+                <ui-icon name="circle-help" class="size-3" />
+                {{ t().errRequired }}
+              </p>
+            }
+          </div>
+
+          <div class="space-y-1.5">
+            <label uiLabel for="v-category">
+              {{ t().fieldCategory }}
+              <span class="text-destructive">*</span>
+            </label>
+            <ui-select
+              inputId="v-category"
+              formControlName="category"
+              [options]="categoryOptions"
+              [placeholder]="t().categoryPlaceholder"
+              [invalid]="fieldInvalid('category')"
+              leadingIcon="blocks"
+            />
+            @if (fieldInvalid('category')) {
+              <p class="ui-error">
+                <ui-icon name="circle-help" class="size-3" />
+                {{ t().errRequired }}
+              </p>
+            }
+          </div>
+
+          <div class="space-y-1.5">
+            <label uiLabel for="v-address">
+              {{ t().fieldAddress }}
+              <span class="text-destructive">*</span>
+            </label>
+            <div class="relative">
+              <textarea
+                uiTextarea
+                id="v-address"
+                formControlName="address"
+                [placeholder]="t().phAddress"
+                rows="3"
+                maxlength="250"
+                class="pb-7"
+                [attr.aria-invalid]="fieldInvalid('address') ? 'true' : null"
+              ></textarea>
+              <span
+                class="pointer-events-none absolute right-3 bottom-2 font-mono text-[10px] text-muted-foreground"
+              >
+                {{ vendorForm.controls.address.value.length }}/250
+              </span>
+            </div>
+            @if (fieldInvalid('address')) {
+              <p class="ui-error">
+                <ui-icon name="circle-help" class="size-3" />
+                @if (vendorForm.controls.address.hasError('maxlength')) {
+                  {{ t().errAddressMax }}
+                } @else {
+                  {{ t().errRequired }}
+                }
+              </p>
+            }
+          </div>
+
+          <div class="space-y-1.5">
+            <label uiLabel for="v-email">
+              {{ t().fieldEmail }}
+              <span class="text-destructive">*</span>
+            </label>
+            <div class="relative">
+              <ui-icon
+                name="mail"
+                class="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground"
+              />
+              <input
+                uiInput
+                id="v-email"
+                type="email"
+                formControlName="email"
+                [placeholder]="t().phEmail"
+                autocomplete="email"
+                class="pl-9"
+                [attr.aria-invalid]="fieldInvalid('email') ? 'true' : null"
+              />
+            </div>
+            @if (fieldInvalid('email')) {
+              <p class="ui-error">
+                <ui-icon name="circle-help" class="size-3" />
+                @if (vendorForm.controls.email.hasError('email')) {
+                  {{ t().errEmail }}
+                } @else {
+                  {{ t().errRequired }}
+                }
+              </p>
+            }
+          </div>
+
+          <div uiAlert data-variant="danger" class="text-[11px] leading-relaxed">
+            <ui-icon name="triangle-alert" class="mt-0.5 size-4 shrink-0" />
+            <div class="space-y-1">
+              <p class="font-semibold">{{ t().notesTitle }}</p>
+              <ul class="list-disc space-y-1 pl-4">
+                <li>{{ t().note1 }}</li>
+                <li>{{ t().note2 }}</li>
+                <li>{{ t().note3 }}</li>
+                <li>{{ t().note4 }}</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="space-y-1.5">
+            <label uiLabel for="v-password">
+              {{ t().fieldPassword }}
+              <span class="text-destructive">*</span>
+            </label>
+            <div class="relative">
+              <ui-icon
+                name="lock"
+                class="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground"
+              />
+              <input
+                uiInput
+                id="v-password"
+                type="password"
+                formControlName="password"
+                [placeholder]="t().phPassword"
+                autocomplete="new-password"
+                class="pl-9"
+                [attr.aria-invalid]="fieldInvalid('password') ? 'true' : null"
+              />
+            </div>
+            <p class="ui-help text-[11px]">{{ t().passwordHint }}</p>
+            @if (fieldInvalid('password')) {
+              <p class="ui-error">
+                <ui-icon name="circle-help" class="size-3" />
+                @if (vendorForm.controls.password.hasError('minlength')) {
+                  {{ t().errPasswordMin }}
+                } @else {
+                  {{ t().errRequired }}
+                }
+              </p>
+            }
+          </div>
+
+          <div class="space-y-1.5">
+            <label uiLabel for="v-confirm">
+              {{ t().fieldConfirmPassword }}
+              <span class="text-destructive">*</span>
+            </label>
+            <div class="relative">
+              <ui-icon
+                name="lock"
+                class="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground"
+              />
+              <input
+                uiInput
+                id="v-confirm"
+                type="password"
+                formControlName="confirmPassword"
+                [placeholder]="t().phConfirmPassword"
+                autocomplete="new-password"
+                class="pl-9"
+                [attr.aria-invalid]="fieldInvalid('confirmPassword') ? 'true' : null"
+              />
+            </div>
+            @if (passwordMismatch()) {
+              <p class="ui-error">
+                <ui-icon name="circle-help" class="size-3" />
+                {{ t().errPasswordMatch }}
+              </p>
+            } @else if (fieldInvalid('confirmPassword')) {
+              <p class="ui-error">
+                <ui-icon name="circle-help" class="size-3" />
+                {{ t().errRequired }}
+              </p>
+            }
+          </div>
+          <div uiSeparator></div>
+          <h2 class="pt-1 text-sm font-semibold">{{ t().picTitle }}</h2>
+
+          <div class="space-y-1.5">
+            <label uiLabel for="v-pic-name">
+              {{ t().fieldPicName }}
+              <span class="text-destructive">*</span>
+            </label>
+            <div class="relative">
+              <ui-icon
+                name="user"
+                class="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground"
+              />
+              <input
+                uiInput
+                id="v-pic-name"
+                type="text"
+                formControlName="picName"
+                [placeholder]="t().phPicName"
+                autocomplete="name"
+                class="pl-9"
+                [attr.aria-invalid]="fieldInvalid('picName') ? 'true' : null"
+              />
+            </div>
+            @if (fieldInvalid('picName')) {
+              <p class="ui-error">
+                <ui-icon name="circle-help" class="size-3" />
+                {{ t().errRequired }}
+              </p>
+            }
+          </div>
+
+          <div class="space-y-1.5">
+            <label uiLabel for="v-pic-email">
+              {{ t().fieldPicEmail }}
+              <span class="text-destructive">*</span>
+            </label>
+            <div class="relative">
+              <ui-icon
+                name="mail"
+                class="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground"
+              />
+              <input
+                uiInput
+                id="v-pic-email"
+                type="email"
+                formControlName="picEmail"
+                [placeholder]="t().phPicEmail"
+                autocomplete="email"
+                class="pl-9"
+                [attr.aria-invalid]="fieldInvalid('picEmail') ? 'true' : null"
+              />
+            </div>
+            @if (fieldInvalid('picEmail')) {
+              <p class="ui-error">
+                <ui-icon name="circle-help" class="size-3" />
+                @if (vendorForm.controls.picEmail.hasError('email')) {
+                  {{ t().errEmail }}
+                } @else {
+                  {{ t().errRequired }}
+                }
+              </p>
+            }
+          </div>
+
+          <div class="space-y-1.5">
+            <label uiLabel for="v-phone">
+              {{ t().fieldPhone }}
+              <span class="text-destructive">*</span>
+            </label>
+            <div class="flex items-center gap-2">
+              <button
+                type="button"
+                class="flex h-10 shrink-0 cursor-pointer items-center gap-1.5 rounded-xl border border-input bg-card px-2.5 text-sm transition-colors hover:border-primary/60 hover:bg-accent"
+                (click)="openCountry()"
+                aria-label="Pilih kode negara"
+              >
+                <img
+                  [src]="'/images/flags/' + selectedCountry().iso + '.svg'"
+                  alt=""
+                  class="h-3.5 w-5 rounded-[2px] object-cover ring-1 ring-black/5"
+                />
+                <span class="font-mono text-xs">{{ selectedCountry().dial }}</span>
+                <ui-icon name="chevron-down" class="size-3.5 text-muted-foreground" />
+              </button>
+              <input
+                uiInput
+                id="v-phone"
+                type="tel"
+                inputmode="numeric"
+                formControlName="phone"
+                [placeholder]="t().phonePlaceholder"
+                class="min-w-0"
+                [attr.aria-invalid]="fieldInvalid('phone') ? 'true' : null"
+              />
+            </div>
+            @if (fieldInvalid('phone')) {
+              <p class="ui-error">
+                <ui-icon name="circle-help" class="size-3" />
+                {{ t().errRequired }}
+              </p>
+            }
+          </div>
+        </form>
+
+        <div
+          [formGroup]="vendorForm"
+          class="flex flex-col gap-3 rounded-xl border border-border bg-card p-4"
+        >
+          <h2 class="text-center text-sm font-semibold">{{ t().bankTitle }}</h2>
+
+          <div class="space-y-1.5">
+            <label uiLabel for="b-bank">
+              {{ t().fieldBankName }}
+              <span class="text-destructive">*</span>
+            </label>
+            <ui-autocomplete
+              inputId="b-bank"
+              formControlName="bankName"
+              [options]="bankResults()"
+              [loading]="bankLoading()"
+              [placeholder]="t().bankPlaceholder"
+              [emptyText]="bankQuery() ? t().bankEmptyText : t().bankHintText"
+              (searchChange)="searchBanks($event)"
+              [filterLocally]="false"
+              [invalid]="fieldInvalid('bankName')"
+              [clearable]="true"
+              leadingIcon="wallet"
+            />
+            @if (selectedBank(); as bank) {
+              <p class="ui-help text-[11px]">
+                {{ t().bankInfoCountry }}: {{ bank.country }} · {{ t().bankInfoBranch }}:
+                {{ bank.branch }}
+              </p>
+            }
+            @if (fieldInvalid('bankName')) {
+              <p class="ui-error">
+                <ui-icon name="circle-help" class="size-3" />
+                {{ t().errRequired }}
+              </p>
+            }
+          </div>
+
+          <div class="space-y-1.5">
+            <label uiLabel for="b-account-name">
+              {{ t().fieldAccountName }}
+              <span class="text-destructive">*</span>
+            </label>
+            <div class="relative">
+              <ui-icon
+                name="user"
+                class="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground"
+              />
+              <input
+                uiInput
+                id="b-account-name"
+                type="text"
+                formControlName="bankAccountName"
+                [placeholder]="t().phAccountName"
+                class="pl-9"
+                [attr.aria-invalid]="fieldInvalid('bankAccountName') ? 'true' : null"
+              />
+            </div>
+            <p class="ui-help text-[11px]">{{ t().helpAccountName }}</p>
+            @if (fieldInvalid('bankAccountName')) {
+              <p class="ui-error">
+                <ui-icon name="circle-help" class="size-3" />
+                {{ t().errRequired }}
+              </p>
+            }
+          </div>
+
+          <div class="space-y-1.5">
+            <label uiLabel for="b-account-number">
+              {{ t().fieldAccountNumber }}
+              <span class="text-destructive">*</span>
+            </label>
+            <div class="relative">
+              <ui-icon
+                name="wallet"
+                class="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground"
+              />
+              <input
+                uiInput
+                id="b-account-number"
+                type="text"
+                inputmode="numeric"
+                formControlName="bankAccountNumber"
+                [placeholder]="t().phAccountNumber"
+                class="pl-9"
+                [attr.aria-invalid]="fieldInvalid('bankAccountNumber') ? 'true' : null"
+              />
+            </div>
+            @if (fieldInvalid('bankAccountNumber')) {
+              <p class="ui-error">
+                <ui-icon name="circle-help" class="size-3" />
+                {{ t().errRequired }}
+              </p>
+            }
+          </div>
+
+          <div class="space-y-1.5">
+            <label uiLabel for="b-currency">
+              {{ t().fieldCurrency }}
+              <span class="text-destructive">*</span>
+            </label>
+            <ui-select
+              inputId="b-currency"
+              formControlName="currency"
+              [options]="currencyOptions"
+              [placeholder]="t().currencyPlaceholder"
+              [invalid]="fieldInvalid('currency')"
+              leadingIcon="dollar-sign"
+            />
+            @if (fieldInvalid('currency')) {
+              <p class="ui-error">
+                <ui-icon name="circle-help" class="size-3" />
+                {{ t().errRequired }}
+              </p>
+            }
+          </div>
+
+          <div class="space-y-1.5">
+            <label uiLabel for="b-recipient">
+              {{ t().fieldRecipientType }}
+              <span class="text-destructive">*</span>
+            </label>
+            <ui-select
+              inputId="b-recipient"
+              formControlName="recipientType"
+              [options]="recipientOptions"
+              [placeholder]="t().recipientPlaceholder"
+              [invalid]="fieldInvalid('recipientType')"
+              leadingIcon="users"
+            />
+            @if (fieldInvalid('recipientType')) {
+              <p class="ui-error">
+                <ui-icon name="circle-help" class="size-3" />
+                {{ t().errRequired }}
+              </p>
+            }
+          </div>
+
+          <div id="b-file-section" class="space-y-1.5">
+            <label uiLabel for="b-file">
+              {{ t().fieldBankStatement }}
+              <span class="text-destructive">*</span>
+            </label>
+            <input
+              #bankFileInput
+              id="b-file"
+              type="file"
+              class="hidden"
+              accept="image/jpeg,image/png,application/pdf"
+              (change)="onBankFileSelected($event)"
+            />
+            @if (bankFile(); as file) {
+              <ui-attachment
+                size="sm"
+                [name]="file.name"
+                [description]="file.meta"
+                [icon]="file.icon"
+                [state]="bankFileUploading() ? 'uploading' : 'done'"
+                [progress]="bankFileProgress()"
+                [interactive]="!bankFileUploading()"
+                [invalid]="fieldInvalid('bankStatement') || !!bankFileError()"
+                (activated)="openBankPreview()"
+              >
+                <button
+                  uiButton
+                  variant="outline"
+                  size="icon-sm"
+                  type="button"
+                  (click)="openBankPreview()"
+                  [attr.aria-label]="t().previewFile"
+                >
+                  <ui-icon name="eye" class="size-4" />
+                </button>
+                <button
+                  uiButton
+                  variant="outline"
+                  size="icon-sm"
+                  type="button"
+                  (click)="removeBankFile()"
+                  [attr.aria-label]="t().removeFile"
+                >
+                  <ui-icon name="x" class="size-4" />
+                </button>
+              </ui-attachment>
+            } @else {
+              <button
+                type="button"
+                class="flex w-full cursor-pointer flex-col items-center gap-1.5 rounded-xl border border-dashed border-input bg-card px-4 py-5 text-center text-xs text-muted-foreground transition-colors hover:border-primary/60 hover:bg-accent"
+                [class.border-destructive]="fieldInvalid('bankStatement') || !!bankFileError()"
+                [class.ring-1]="fieldInvalid('bankStatement') || !!bankFileError()"
+                [class.ring-destructive]="fieldInvalid('bankStatement') || !!bankFileError()"
+                [class.hover:border-destructive]="
+                  fieldInvalid('bankStatement') || !!bankFileError()
+                "
+                (click)="openBankFilePicker()"
+              >
+                <ui-icon name="file-text" class="size-5" />
+                {{ t().uploadHint }}
+              </button>
+            }
+            <p class="ui-help text-[11px]">{{ t().uploadFormat }}</p>
+            @if (bankFileError()) {
+              <p class="ui-error">
+                <ui-icon name="circle-help" class="size-3" />
+                {{ bankFileError() }}
+              </p>
+            } @else if (fieldInvalid('bankStatement')) {
+              <p class="ui-error">
+                <ui-icon name="circle-help" class="size-3" />
+                {{ t().errRequired }}
+              </p>
+            }
+          </div>
+        </div>
+
+        <div
+          [formGroup]="vendorForm"
+          class="flex flex-col gap-3 rounded-xl border border-border bg-card p-4"
+        >
+          <h2 class="text-center text-sm font-semibold">{{ t().taxTitle }}</h2>
+
+          <input
+            #taxFileInput
+            type="file"
+            class="hidden"
+            accept="image/jpeg,image/png,application/pdf"
+            (change)="onTaxFileSelected($event)"
+          />
+
+          <div class="space-y-1.5">
+            <label uiLabel for="t-tax-id">
+              {{ taxDocLabel() }}
+              <span class="text-destructive">*</span>
+            </label>
+            <div class="relative">
+              <ui-icon
+                name="credit-card"
+                class="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground"
+              />
+              <input
+                uiInput
+                id="t-tax-id"
+                type="text"
+                formControlName="taxId"
+                [placeholder]="t().phTaxId"
+                class="pl-9"
+                [attr.aria-invalid]="fieldInvalid('taxId') ? 'true' : null"
+              />
+            </div>
+            @if (fieldInvalid('taxId')) {
+              <p class="ui-error">
+                <ui-icon name="circle-help" class="size-3" />
+                {{ t().errRequired }}
+              </p>
+            }
+          </div>
+
+          <div class="space-y-1.5">
+            <label uiLabel for="t-tax-name">
+              {{ taxNameLabel() }}
+              <span class="text-destructive">*</span>
+            </label>
+            <div class="relative">
+              <ui-icon
+                name="user"
+                class="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground"
+              />
+              <input
+                uiInput
+                id="t-tax-name"
+                type="text"
+                formControlName="taxName"
+                [placeholder]="t().phTaxName"
+                class="pl-9"
+                [attr.aria-invalid]="fieldInvalid('taxName') ? 'true' : null"
+              />
+            </div>
+            @if (fieldInvalid('taxName')) {
+              <p class="ui-error">
+                <ui-icon name="circle-help" class="size-3" />
+                {{ t().errRequired }}
+              </p>
+            }
+            @if (vendorType() !== 'INDIVIDUAL') {
+              <p class="ui-help text-[11px]">{{ t().helpVendorName }}</p>
+            }
+          </div>
+
+          <ui-switch
+            size="sm"
+            [checked]="useVendorName()"
+            (checkedChange)="toggleUseVendorName($event)"
+            [label]="t().useVendorNamePrefix + ' ' + taxNameLabel()"
+          />
+
+          <div class="space-y-1.5">
+            <label uiLabel for="t-tax-address">
+              {{ taxAddressLabel() }}
+              <span class="text-destructive">*</span>
+            </label>
+            <div class="relative">
+              <textarea
+                uiTextarea
+                id="t-tax-address"
+                formControlName="taxAddress"
+                [placeholder]="taxAddressPlaceholder()"
+                rows="3"
+                maxlength="250"
+                class="pb-7"
+                [attr.aria-invalid]="fieldInvalid('taxAddress') ? 'true' : null"
+              ></textarea>
+              <span
+                class="pointer-events-none absolute right-3 bottom-2 font-mono text-[10px] text-muted-foreground"
+              >
+                {{ vendorForm.controls.taxAddress.value.length }}/250
+              </span>
+            </div>
+            @if (fieldInvalid('taxAddress')) {
+              <p class="ui-error">
+                <ui-icon name="circle-help" class="size-3" />
+                @if (vendorForm.controls.taxAddress.hasError('maxlength')) {
+                  {{ t().errAddressMax }}
+                } @else {
+                  {{ t().errRequired }}
+                }
+              </p>
+            }
+          </div>
+
+          <div id="t-ktp-section" class="space-y-1.5">
+            <label uiLabel>
+              {{ taxAttachLabel() }}
+              <span class="text-destructive">*</span>
+            </label>
+            @if (taxFiles().ktp; as file) {
+              <ui-attachment
+                size="sm"
+                [name]="file.name"
+                [description]="file.meta"
+                [icon]="file.icon"
+                [state]="taxUploading().ktp ? 'uploading' : 'done'"
+                [progress]="taxProgress().ktp"
+                [interactive]="!taxUploading().ktp"
+                [invalid]="fieldInvalid('ktpAttachment') || !!taxFileError().ktp"
+                (activated)="openTaxPreview('ktp')"
+              >
+                <button
+                  uiButton
+                  variant="outline"
+                  size="icon-sm"
+                  type="button"
+                  (click)="openTaxPreview('ktp')"
+                  [attr.aria-label]="t().previewFile"
+                >
+                  <ui-icon name="eye" class="size-4" />
+                </button>
+                <button
+                  uiButton
+                  variant="outline"
+                  size="icon-sm"
+                  type="button"
+                  (click)="removeTaxFile('ktp')"
+                  [attr.aria-label]="t().removeFile"
+                >
+                  <ui-icon name="x" class="size-4" />
+                </button>
+              </ui-attachment>
+            } @else {
+              <button
+                type="button"
+                class="flex w-full cursor-pointer flex-col items-center gap-1.5 rounded-xl border border-dashed border-input bg-card px-4 py-5 text-center text-xs text-muted-foreground transition-colors hover:border-primary/60 hover:bg-accent"
+                [class.border-destructive]="fieldInvalid('ktpAttachment') || !!taxFileError().ktp"
+                [class.ring-1]="fieldInvalid('ktpAttachment') || !!taxFileError().ktp"
+                [class.ring-destructive]="fieldInvalid('ktpAttachment') || !!taxFileError().ktp"
+                [class.hover:border-destructive]="
+                  fieldInvalid('ktpAttachment') || !!taxFileError().ktp
+                "
+                (click)="pickTaxFile('ktp')"
+              >
+                <ui-icon name="file-text" class="size-5" />
+                {{ t().uploadHint }}
+              </button>
+            }
+            <p class="ui-help text-[11px]">{{ t().uploadFormat }}</p>
+            @if (taxFileError().ktp) {
+              <p class="ui-error">
+                <ui-icon name="circle-help" class="size-3" />
+                {{ taxFileError().ktp }}
+              </p>
+            } @else if (fieldInvalid('ktpAttachment')) {
+              <p class="ui-error">
+                <ui-icon name="circle-help" class="size-3" />
+                {{ t().errRequired }}
+              </p>
+            }
+          </div>
+
+          <div class="space-y-1.5">
+            <label uiLabel for="t-sppkp">{{ t().fieldSppkp }}</label>
+            <div class="relative">
+              <ui-icon
+                name="file-text"
+                class="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground"
+              />
+              <input
+                uiInput
+                id="t-sppkp"
+                type="text"
+                formControlName="sppkp"
+                [placeholder]="t().phSppkp"
+                class="pl-9"
+              />
+            </div>
+          </div>
+
+          <div id="t-sppkp-section" class="space-y-1.5">
+            <label uiLabel>{{ t().taxAttachSppkp }}</label>
+            @if (taxFiles().sppkp; as file) {
+              <ui-attachment
+                size="sm"
+                [name]="file.name"
+                [description]="file.meta"
+                [icon]="file.icon"
+                [state]="taxUploading().sppkp ? 'uploading' : 'done'"
+                [progress]="taxProgress().sppkp"
+                [interactive]="!taxUploading().sppkp"
+                [invalid]="!!taxFileError().sppkp"
+                (activated)="openTaxPreview('sppkp')"
+              >
+                <button
+                  uiButton
+                  variant="outline"
+                  size="icon-sm"
+                  type="button"
+                  (click)="openTaxPreview('sppkp')"
+                  [attr.aria-label]="t().previewFile"
+                >
+                  <ui-icon name="eye" class="size-4" />
+                </button>
+                <button
+                  uiButton
+                  variant="outline"
+                  size="icon-sm"
+                  type="button"
+                  (click)="removeTaxFile('sppkp')"
+                  [attr.aria-label]="t().removeFile"
+                >
+                  <ui-icon name="x" class="size-4" />
+                </button>
+              </ui-attachment>
+            } @else {
+              <button
+                type="button"
+                class="flex w-full cursor-pointer flex-col items-center gap-1.5 rounded-xl border border-dashed border-input bg-card px-4 py-5 text-center text-xs text-muted-foreground transition-colors hover:border-primary/60 hover:bg-accent"
+                (click)="pickTaxFile('sppkp')"
+              >
+                <ui-icon name="file-text" class="size-5" />
+                {{ t().uploadHint }}
+              </button>
+            }
+            <p class="ui-help text-[11px]">{{ t().uploadFormat }}</p>
+            @if (taxFileError().sppkp) {
+              <p class="ui-error">
+                <ui-icon name="circle-help" class="size-3" />
+                {{ taxFileError().sppkp }}
+              </p>
+            }
+          </div>
+
+          <ui-switch
+            size="sm"
+            [checked]="hasSkb()"
+            (checkedChange)="toggleSkb($event)"
+            [label]="t().taxSkbToggle"
+          />
+
+          @if (hasSkb()) {
+            <div id="t-skb-section" class="space-y-1.5">
+              <label uiLabel>
+                {{ t().taxAttachSkb }}
+                <span class="text-destructive">*</span>
+              </label>
+              @if (taxFiles().skb; as file) {
+                <ui-attachment
+                  size="sm"
+                  [name]="file.name"
+                  [description]="file.meta"
+                  [icon]="file.icon"
+                  [state]="taxUploading().skb ? 'uploading' : 'done'"
+                  [progress]="taxProgress().skb"
+                  [interactive]="!taxUploading().skb"
+                  [invalid]="fieldInvalid('skbAttachment') || !!taxFileError().skb"
+                  (activated)="openTaxPreview('skb')"
+                >
+                  <button
+                    uiButton
+                    variant="outline"
+                    size="icon-sm"
+                    type="button"
+                    (click)="openTaxPreview('skb')"
+                    [attr.aria-label]="t().previewFile"
+                  >
+                    <ui-icon name="eye" class="size-4" />
+                  </button>
+                  <button
+                    uiButton
+                    variant="outline"
+                    size="icon-sm"
+                    type="button"
+                    (click)="removeTaxFile('skb')"
+                    [attr.aria-label]="t().removeFile"
+                  >
+                    <ui-icon name="x" class="size-4" />
+                  </button>
+                </ui-attachment>
+              } @else {
+                <button
+                  type="button"
+                  class="flex w-full cursor-pointer flex-col items-center gap-1.5 rounded-xl border border-dashed border-input bg-card px-4 py-5 text-center text-xs text-muted-foreground transition-colors hover:border-primary/60 hover:bg-accent"
+                  [class.border-destructive]="fieldInvalid('skbAttachment') || !!taxFileError().skb"
+                  [class.ring-1]="fieldInvalid('skbAttachment') || !!taxFileError().skb"
+                  [class.ring-destructive]="fieldInvalid('skbAttachment') || !!taxFileError().skb"
+                  [class.hover:border-destructive]="
+                    fieldInvalid('skbAttachment') || !!taxFileError().skb
+                  "
+                  (click)="pickTaxFile('skb')"
+                >
+                  <ui-icon name="file-text" class="size-5" />
+                  {{ t().uploadHint }}
+                </button>
+              }
+              <p class="ui-help text-[11px]">{{ t().uploadFormat }}</p>
+              @if (taxFileError().skb) {
+                <p class="ui-error">
+                  <ui-icon name="circle-help" class="size-3" />
+                  {{ taxFileError().skb }}
+                </p>
+              } @else if (fieldInvalid('skbAttachment')) {
+                <p class="ui-error">
+                  <ui-icon name="circle-help" class="size-3" />
+                  {{ t().errRequired }}
+                </p>
+              }
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="z-40 shrink-0 border-t border-border bg-card/95 backdrop-blur">
+    <div class="mx-auto flex h-16 w-full items-center justify-between gap-3 px-4 sm:px-6 lg:px-8">
+      <button uiButton variant="outline" type="button" (click)="openCancelConfirm()">
+        {{ t().cancel }}
+        <ui-icon name="x" class="size-4" />
+      </button>
+      <button uiButton type="button" (click)="next()">
+        {{ t().next }}
+        <ui-icon name="arrow-right" class="size-4" />
+      </button>
+    </div>
+  </footer>
+</div>
+
+<ui-dialog #countryDialog [title]="t().countryTitle">
+  <div class="space-y-3 py-2">
+    <div class="relative">
+      <ui-icon
+        name="search"
+        class="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground"
+      />
+      <input
+        uiInput
+        type="search"
+        class="pl-9"
+        [value]="countryQuery()"
+        [placeholder]="t().countrySearch"
+        (input)="countryQuery.set($any($event.target).value)"
+      />
+    </div>
+
+    <div class="max-h-80 space-y-0.5 overflow-y-auto">
+      @for (country of filteredCountries(); track country.iso) {
+        <button
+          type="button"
+          class="flex w-full cursor-pointer items-center gap-3 rounded-lg px-2 py-2 text-left text-sm transition-colors hover:bg-accent"
+          [class.bg-muted]="selectedCountry().iso === country.iso"
+          (click)="chooseCountry(country)"
+        >
+          <img
+            [src]="'/images/flags/' + country.iso + '.svg'"
+            alt=""
+            class="h-4 w-6 shrink-0 rounded-[2px] object-cover ring-1 ring-black/5"
+          />
+          <span class="min-w-0 flex-1 truncate">{{ countryName(country) }}</span>
+          <span class="shrink-0 font-mono text-xs text-muted-foreground">{{ country.dial }}</span>
+        </button>
+      } @empty {
+        <p class="px-2 py-6 text-center text-sm text-muted-foreground">{{ t().countryEmpty }}</p>
+      }
+    </div>
+  </div>
+</ui-dialog>
+
+<ui-dialog
+  #bankPreviewDialog
+  [title]="bankFile()?.name ?? ''"
+  [panelClass]="
+    previewFull()
+      ? 'max-w-[95vw] w-[95vw] rounded-xl [&_.ui-dialog-body]:max-h-[calc(95vh-7rem)]'
+      : 'max-w-5xl'
+  "
+  (closed)="previewFull.set(false)"
+>
+  <button
+    dialogHeaderActions
+    uiButton
+    variant="ghost"
+    size="icon-sm"
+    type="button"
+    (click)="previewFull.set(!previewFull())"
+    [attr.aria-label]="previewFull() ? t().exitFullScreen : t().fullScreen"
+  >
+    <ui-icon [name]="previewFull() ? 'arrow-down-right' : 'arrow-up-right'" class="size-4" />
+  </button>
+
+  @if (bankFile(); as file) {
+    @if (file.image) {
+      <img
+        [src]="file.image"
+        [alt]="file.name"
+        class="w-full rounded-xl object-contain"
+        [class.max-h-[60vh]]="!previewFull()"
+        [class.max-h-[calc(95vh-7rem)]]="previewFull()"
+      />
+    } @else if (file.pdfUrl) {
+      <iframe
+        [src]="pdfPreviewUrl()"
+        [title]="file.name"
+        class="w-full rounded-xl border border-border"
+        [class.h-[70vh]]="!previewFull()"
+        [class.h-[calc(95vh-7rem)]]="previewFull()"
+      ></iframe>
+    } @else {
+      <div class="flex flex-col items-center gap-2 py-10 text-sm text-muted-foreground">
+        <ui-icon name="file-text" class="size-12" />
+        <p class="text-foreground">{{ file.name }}</p>
+        <p class="text-xs">{{ file.meta }}</p>
+      </div>
+    }
+  }
+</ui-dialog>
+
+<ui-dialog
+  #taxPreviewDialog
+  [title]="taxPreview()?.name ?? ''"
+  [panelClass]="
+    taxPreviewFull()
+      ? 'max-w-[95vw] w-[95vw] rounded-xl [&_.ui-dialog-body]:max-h-[calc(95vh-7rem)]'
+      : 'max-w-5xl'
+  "
+  (closed)="taxPreviewFull.set(false)"
+>
+  <button
+    dialogHeaderActions
+    uiButton
+    variant="ghost"
+    size="icon-sm"
+    type="button"
+    (click)="taxPreviewFull.set(!taxPreviewFull())"
+    [attr.aria-label]="taxPreviewFull() ? t().exitFullScreen : t().fullScreen"
+  >
+    <ui-icon [name]="taxPreviewFull() ? 'arrow-down-right' : 'arrow-up-right'" class="size-4" />
+  </button>
+
+  @if (taxPreview(); as file) {
+    @if (file.image) {
+      <img
+        [src]="file.image"
+        [alt]="file.name"
+        class="w-full rounded-xl object-contain"
+        [class.max-h-[60vh]]="!taxPreviewFull()"
+        [class.max-h-[calc(95vh-7rem)]]="taxPreviewFull()"
+      />
+    } @else if (file.pdfUrl) {
+      <iframe
+        [src]="taxPdfPreviewUrl()"
+        [title]="file.name"
+        class="w-full rounded-xl border border-border"
+        [class.h-[70vh]]="!taxPreviewFull()"
+        [class.h-[calc(95vh-7rem)]]="taxPreviewFull()"
+      ></iframe>
+    } @else {
+      <div class="flex flex-col items-center gap-2 py-10 text-sm text-muted-foreground">
+        <ui-icon name="file-text" class="size-12" />
+        <p class="text-foreground">{{ file.name }}</p>
+        <p class="text-xs">{{ file.meta }}</p>
+      </div>
+    }
+  }
+</ui-dialog>
+
+<ui-dialog
+  #confirmDialog
+  role="alertdialog"
+  [title]="confirmTitle()"
+  [description]="confirmMessage()"
+  [showClose]="false"
+  [closeOnBackdrop]="false"
+  [closeOnEscape]="false"
+  (closed)="onConfirmClosed()"
+>
+  <div dialogFooter class="flex justify-end gap-2">
+    <button uiButton variant="outline" type="button" (click)="cancelConfirmation()">
+      {{ t().no }}
+    </button>
+    <button uiButton type="button" (click)="confirmAction()">{{ confirmLabel() }}</button>
+  </div>
+</ui-dialog>

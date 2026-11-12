@@ -172,8 +172,11 @@
         <p class="mt-8 text-center text-xs text-muted-foreground xl:mt-4">
           {{ t().vendorPrompt }}
           <button
+            uiButton
+            variant="link"
+            size="sm"
             type="button"
-            class="font-semibold text-primary underline-offset-4 hover:underline"
+            class="h-auto text-xs font-medium text-primary"
             (click)="register()"
           >
             {{ t().register }}

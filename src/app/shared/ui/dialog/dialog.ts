@@ -29,6 +29,7 @@ import { UiIcon } from '../icon/icon';
     <dialog
       #dialog
       class="ui-dialog"
+      [class]="panelClass()"
       [attr.role]="role()"
       [attr.aria-labelledby]="titleId"
       [attr.aria-describedby]="description() ? descriptionId : null"
@@ -51,16 +52,19 @@ import { UiIcon } from '../icon/icon';
               </p>
             }
           </div>
-          @if (showClose()) {
-            <button
-              type="button"
-              class="grid size-8 shrink-0 place-items-center rounded-lg text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
-              (click)="close()"
-              aria-label="Tutup dialog"
-            >
-              <ui-icon name="x" class="size-4" />
-            </button>
-          }
+          <div class="flex shrink-0 items-center gap-1">
+            <ng-content select="[dialogHeaderActions]" />
+            @if (showClose()) {
+              <button
+                type="button"
+                class="grid size-8 shrink-0 place-items-center rounded-lg text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
+                (click)="close()"
+                aria-label="Tutup dialog"
+              >
+                <ui-icon name="x" class="size-4" />
+              </button>
+            }
+          </div>
         </header>
 
         <div class="ui-dialog-body">
@@ -92,6 +96,8 @@ export class UiDialog {
   readonly showClose = input(true, { transform: booleanAttribute });
   readonly closeOnBackdrop = input(true, { transform: booleanAttribute });
   readonly closeOnEscape = input(true, { transform: booleanAttribute });
+  /** Extra classes for the dialog panel, e.g. "max-w-4xl". */
+  readonly panelClass = input('');
 
   readonly closed = output<void>();
 
