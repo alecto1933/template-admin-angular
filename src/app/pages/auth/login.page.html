@@ -1,19 +1,11 @@
-<div id="main" class="grid min-h-dvh bg-background lg:grid-cols-2">
-  <div class="flex min-h-dvh flex-col">
-    <header class="flex items-center justify-between gap-3 px-5 py-5 sm:px-8">
-      <a
-        routerLink="/dashboard"
-        class="flex items-center gap-2.5 rounded-xl"
-        aria-label="iVendor Superapps — ke dashboard"
-      >
-        <span
-          class="grid size-9 place-items-center rounded-xl bg-primary text-primary-foreground shadow-md shadow-primary/25"
-        >
-          <ui-icon name="sparkles" class="size-5" />
-        </span>
-        <span class="font-display text-[17px] font-bold tracking-tight"> iVendor Superapps </span>
-      </a>
-
+<div
+  id="main"
+  class="grid min-h-dvh bg-background xl:h-dvh xl:grid-cols-[7fr_3fr] xl:overflow-hidden"
+>
+  <div class="relative flex min-h-dvh min-w-0 flex-col xl:min-h-0 xl:order-2 xl:overflow-y-auto">
+    <header
+      class="absolute inset-x-0 top-0 z-10 flex items-center justify-end px-5 py-5 sm:px-8 xl:px-4 xl:py-4"
+    >
       <button
         type="button"
         class="grid size-10 place-items-center rounded-xl text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
@@ -24,46 +16,65 @@
       </button>
     </header>
 
-    <div class="flex flex-1 items-center justify-center px-5 py-8 sm:px-8">
-      <div class="w-full max-w-sm">
-        <div class="space-y-2">
-          <h1 class="font-display text-[28px] leading-tight font-bold tracking-tight">
-            Selamat datang kembali
+    <div class="flex flex-1 px-5 py-8 sm:px-8 xl:px-4 xl:py-6">
+      <div class="m-auto w-full max-w-sm">
+        <div class="space-y-3 text-center">
+          <img
+            src="/images/logo-otsuka.webp"
+            alt="Otsuka"
+            width="512"
+            height="256"
+            class="mx-auto h-30 w-auto"
+          />
+          <h1 class="font-display text-[22px] leading-tight font-bold tracking-tight">
+            VENDOR MANAGEMENT SYSTEM
           </h1>
           <p class="text-sm leading-relaxed text-muted-foreground">
-            Masuk untuk melanjutkan mengelola toko Anda.
+            Please sign in to your account
           </p>
         </div>
 
-        <form [formGroup]="form" (ngSubmit)="submit()" class="mt-8 space-y-4" novalidate>
+        <form [formGroup]="form" (ngSubmit)="submit()" class="mt-8 space-y-4 xl:mt-6" novalidate>
           <div class="space-y-1.5">
-            <label uiLabel for="login-email">Email</label>
+            <div class="flex flex-wrap items-center justify-between gap-2">
+              <label uiLabel for="login-username">Username</label>
+              <button
+                uiButton
+                variant="link"
+                size="sm"
+                type="button"
+                class="h-auto text-xs font-medium text-primary"
+                (click)="forgotUsername()"
+              >
+                Lupa username?
+              </button>
+            </div>
             <div class="relative">
               <ui-icon
-                name="mail"
+                name="user"
                 class="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground"
               />
               <input
                 uiInput
-                id="login-email"
-                type="email"
-                formControlName="email"
-                autocomplete="email"
-                placeholder="nama@perusahaan.com"
+                id="login-username"
+                type="text"
+                formControlName="username"
+                autocomplete="username"
+                placeholder="username"
                 class="pl-9"
-                [attr.aria-invalid]="invalid('email') ? 'true' : null"
+                [attr.aria-invalid]="invalid('username') ? 'true' : null"
               />
             </div>
-            @if (invalid('email')) {
+            @if (invalid('username')) {
               <p class="ui-error">
                 <ui-icon name="circle-help" class="size-3" />
-                Masukkan alamat email yang valid.
+                Username wajib diisi.
               </p>
             }
           </div>
 
           <div class="space-y-1.5">
-            <div class="flex items-center justify-between gap-2">
+            <div class="flex flex-wrap items-center justify-between gap-2">
               <label uiLabel for="login-password">Kata sandi</label>
               <button
                 uiButton
@@ -110,23 +121,6 @@
             }
           </div>
 
-          <div class="flex items-center justify-between gap-3 pt-1">
-            <label class="flex cursor-pointer items-center gap-2.5 text-sm text-muted-foreground">
-              <input uiCheckbox type="checkbox" formControlName="remember" />
-              Ingat saya
-            </label>
-            <button
-              uiButton
-              variant="link"
-              size="sm"
-              type="button"
-              class="h-auto text-xs font-medium"
-              (click)="useDemoAccount()"
-            >
-              Gunakan akun demo
-            </button>
-          </div>
-
           <button uiButton type="submit" size="lg" class="mt-2 w-full" [loading]="loading()">
             {{ loading() ? 'Memproses...' : 'Masuk' }}
             @if (!loading()) {
@@ -135,95 +129,28 @@
           </button>
         </form>
 
-        <div uiAlert data-variant="info" class="mt-6">
-          <ui-icon name="info" class="mt-0.5 size-4 shrink-0" />
-          <p class="leading-relaxed">
-            Template demo: gunakan
-            <span class="font-semibold">raka&#64;alecto.id</span> dan
-            <span class="font-semibold">alecto123</span>.
-          </p>
-        </div>
-
-        <p class="mt-8 text-center text-xs text-muted-foreground">
-          Belum punya akun?
+        <p class="mt-8 text-center text-xs text-muted-foreground xl:mt-4">
+          Do you want to be our vendor?
           <button
             type="button"
             class="font-semibold text-primary hover:underline"
-            (click)="forgotPassword()"
+            (click)="register()"
           >
-            Hubungi admin
+            Register Here
           </button>
         </p>
       </div>
     </div>
-
-    <footer class="px-5 py-5 text-center text-[11px] text-muted-foreground sm:px-8">
-      © 2026 iVendor Superapps
-    </footer>
   </div>
 
-  <aside class="relative hidden overflow-hidden bg-neutral-950 p-10 text-white lg:flex lg:flex-col">
-    <div class="absolute -top-32 -right-24 size-80 rounded-full bg-white/10 blur-2xl"></div>
-    <div class="absolute -bottom-32 -left-24 size-80 rounded-full bg-black/10 blur-2xl"></div>
-
-    <div class="relative z-10 flex items-center gap-2.5 font-display text-lg font-bold">
-      <span class="grid size-9 place-items-center rounded-xl bg-white/15">
-        <ui-icon name="sparkles" class="size-5" />
-      </span>
-      iVendor Superapps
-    </div>
-
-    <div class="relative z-10 my-auto max-w-md space-y-8 py-10">
-      <div class="space-y-4">
-        <span
-          class="inline-flex items-center gap-1.5 rounded-full bg-white/15 px-3 py-1 text-xs font-semibold"
-        >
-          <ui-icon name="zap" class="size-3.5" />
-          Template admin modern
-        </span>
-        <h2 class="font-display text-4xl leading-[1.15] font-bold tracking-tight">
-          Kelola toko Anda dengan tampilan yang menyenangkan.
-        </h2>
-        <p class="text-sm leading-relaxed text-white/80">
-          Dashboard, pesanan, form, dan komponen siap pakai — semuanya dibuat sendiri dengan Angular
-          dan Tailwind CSS.
-        </p>
-      </div>
-
-      <figure class="rounded-2xl border border-white/15 bg-white/10 p-5 backdrop-blur-sm">
-        <ui-icon name="quote" class="size-5 opacity-70" />
-        <blockquote class="mt-3 text-sm leading-relaxed">
-          “Setup-nya cepat, komponennya rapi, dan tim kami bisa langsung fokus ke fitur produk.”
-        </blockquote>
-        <figcaption class="mt-4 flex items-center gap-2.5 text-xs">
-          <span class="grid size-8 place-items-center rounded-full bg-white/20 font-bold">
-            DL
-          </span>
-          <span>
-            <span class="block font-semibold">Dewi Lestari</span>
-            <span class="block opacity-70">Product Lead, iVendor Superapps</span>
-          </span>
-        </figcaption>
-      </figure>
-
-      <div class="grid grid-cols-3 gap-3 text-center">
-        <div class="rounded-xl border border-white/15 bg-white/5 px-3 py-3">
-          <p class="font-display text-lg font-bold">22</p>
-          <p class="text-[10px] opacity-75">Versi Angular</p>
-        </div>
-        <div class="rounded-xl border border-white/15 bg-white/5 px-3 py-3">
-          <p class="font-display text-lg font-bold">4</p>
-          <p class="text-[10px] opacity-75">Tailwind CSS</p>
-        </div>
-        <div class="rounded-xl border border-white/15 bg-white/5 px-3 py-3">
-          <p class="font-display text-lg font-bold">100%</p>
-          <p class="text-[10px] opacity-75">Kode milik Anda</p>
-        </div>
-      </div>
-    </div>
-
-    <p class="relative z-10 text-[11px] text-white/70">
-      © 2026 iVendor Superapps. Semua hak dilindungi.
-    </p>
+  <aside
+    class="relative hidden overflow-hidden bg-[#d9ebfa] xl:order-1 xl:flex xl:items-center xl:justify-center"
+  >
+    <img
+      src="/images/login-panel.webp"
+      alt="Ilustrasi login iVendor Superapps"
+      class="size-full object-contain"
+      loading="eager"
+    />
   </aside>
 </div>

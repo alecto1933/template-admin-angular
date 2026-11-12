@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { ThemeService } from '../../core/theme/theme.service';
 import { UiButton } from '../../shared/ui/button/button';
 import { UiIcon } from '../../shared/ui/icon/icon';
@@ -9,7 +9,7 @@ import { ToastService } from '../../shared/ui/toast/toast.service';
 @Component({
   selector: 'app-login',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [ReactiveFormsModule, RouterLink, UiButton, UiIcon],
+  imports: [ReactiveFormsModule, UiButton, UiIcon],
   templateUrl: './login.page.html',
 })
 export class LoginPage {
@@ -21,12 +21,11 @@ export class LoginPage {
   protected readonly showPassword = signal(false);
 
   protected readonly form = inject(FormBuilder).nonNullable.group({
-    email: ['raka@alecto.id', [Validators.required, Validators.email]],
+    username: ['raka@alecto.id', [Validators.required]],
     password: ['alecto123', [Validators.required, Validators.minLength(6)]],
-    remember: [true],
   });
 
-  protected invalid(control: 'email' | 'password'): boolean {
+  protected invalid(control: 'username' | 'password'): boolean {
     const field = this.form.controls[control];
     return field.invalid && (field.touched || field.dirty);
   }
@@ -35,17 +34,16 @@ export class LoginPage {
     this.showPassword.update((visible) => !visible);
   }
 
+  protected forgotUsername(): void {
+    this.toast.info('Lupa username', 'Hubungi admin untuk memulihkan username Anda.');
+  }
+
   protected forgotPassword(): void {
     this.toast.info('Lupa kata sandi', 'Hubungkan tautan ini ke alur reset password Anda.');
   }
 
-  protected useDemoAccount(): void {
-    this.form.setValue({
-      email: 'raka@alecto.id',
-      password: 'alecto123',
-      remember: true,
-    });
-    this.toast.info('Akun demo siap', 'Tekan “Masuk” untuk melanjutkan.');
+  protected register(): void {
+    this.toast.info('Registrasi vendor', 'Hubungi admin untuk mendaftar sebagai vendor.');
   }
 
   protected submit(): void {
