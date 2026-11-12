@@ -333,7 +333,7 @@ export const ACTIVITIES: ActivityItem[] = [
   },
   {
     title: 'Stok produk menipis',
-    description: 'Kaos Alecto tersisa 4 unit',
+    description: 'Kaos iVendor Superapps tersisa 4 unit',
     time: '1 jam lalu',
     icon: 'package',
     toneClasses: 'bg-warning-soft text-warning',

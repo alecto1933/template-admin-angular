@@ -21,7 +21,7 @@ import { ToastService } from '../shared/ui/toast/toast.service';
         <a
           routerLink="/dashboard"
           class="flex min-w-0 items-center gap-2.5 rounded-xl outline-none"
-          aria-label="Alecto Admin — ke dashboard"
+          aria-label="iVendor Superapps — ke dashboard"
           (click)="closeMobile.emit()"
         >
           <span
@@ -32,7 +32,7 @@ import { ToastService } from '../shared/ui/toast/toast.service';
           <span
             class="sidebar-label font-display text-[17px] font-bold tracking-tight text-foreground"
           >
-            Alecto<span class="text-primary">.</span>
+            iVendor Superapps
           </span>
         </a>
 

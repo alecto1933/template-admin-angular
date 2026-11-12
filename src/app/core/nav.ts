@@ -130,7 +130,7 @@ export const NOTIFICATIONS: AppNotification[] = [
   },
   {
     title: 'Stok hampir habis',
-    description: 'Produk “Kaos Alecto” tersisa 4 unit.',
+    description: 'Produk “Kaos iVendor Superapps” tersisa 4 unit.',
     time: '1 jam lalu',
     icon: 'package',
     tone: 'warning',

@@ -38,11 +38,6 @@ import { ToastService } from '../shared/ui/toast/toast.service';
 
         <div class="flex min-w-0 flex-col">
           <span
-            class="hidden text-[10px] font-semibold tracking-[0.14em] text-muted-foreground uppercase sm:block"
-          >
-            Alecto
-          </span>
-          <span
             class="truncate font-display text-[13px] font-semibold tracking-tight text-foreground sm:text-sm"
           >
             {{ pageTitle() }}

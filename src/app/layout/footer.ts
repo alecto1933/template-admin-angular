@@ -8,11 +8,8 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
       <div
         class="mx-auto flex w-full max-w-[1400px] flex-col gap-3 text-xs text-muted-foreground sm:flex-row sm:items-center sm:justify-between"
       >
-        <p>© {{ year }} Alecto Labs. Dibuat dengan Angular &amp; Tailwind CSS.</p>
+        <p>© {{ year }} iVendor Superapps.</p>
         <div class="flex flex-wrap items-center gap-x-5 gap-y-2">
-          <a class="transition-colors hover:text-foreground" href="#">Dokumentasi</a>
-          <a class="transition-colors hover:text-foreground" href="#">Dukungan</a>
-          <a class="transition-colors hover:text-foreground" href="#">Privasi</a>
           <span
             class="rounded-full border border-border px-2 py-0.5 font-mono text-[10px] font-medium"
           >

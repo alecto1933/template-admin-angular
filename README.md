@@ -1,4 +1,4 @@
-# Alecto Admin
+# iVendor Superapps
 
 Template admin modern bergaya **shadcn**, tetapi seluruh komponennya ditulis
 sendiri di dalam repo — tidak ada library UI pihak ketiga yang di-install.

@@ -32,7 +32,7 @@ export class FormsPage {
     phone: ['+62 812 3456 7890'],
     role: ['admin'],
     timezone: ['Asia/Jakarta (WIB)'],
-    bio: ['Membangun pengalaman belanja yang sederhana dan menyenangkan untuk pelanggan Alecto.'],
+    bio: ['Membangun pengalaman belanja yang sederhana dan menyenangkan untuk pelanggan iVendor Superapps.'],
   });
 
   protected invalid(control: 'firstName' | 'lastName' | 'email'): boolean {
@@ -67,7 +67,7 @@ export class FormsPage {
       phone: '+62 812 3456 7890',
       role: 'admin',
       timezone: 'Asia/Jakarta (WIB)',
-      bio: 'Membangun pengalaman belanja yang sederhana dan menyenangkan untuk pelanggan Alecto.',
+      bio: 'Membangun pengalaman belanja yang sederhana dan menyenangkan untuk pelanggan iVendor Superapps.',
     });
     this.bioLength.set(this.form.controls.bio.value.length);
     this.toast.info('Form direset', 'Semua perubahan yang belum disimpan dibuang.');

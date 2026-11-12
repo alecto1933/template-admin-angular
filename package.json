@@ -38,7 +38,7 @@
     "typescript": "~6.0.2",
     "vitest": "^5.0.0"
   },
-  "description": "Alecto Admin — template admin Angular 22 + Tailwind CSS 4 dengan komponen shadcn-style buatan sendiri.",
+  "description": "iVendor Superapps — template admin Angular 22 + Tailwind CSS 4 dengan komponen shadcn-style buatan sendiri.",
   "engines": {
     "node": "^22.22.3 || ^24.15.0 || >=26.0.0"
   }
