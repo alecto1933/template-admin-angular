@@ -15,6 +15,7 @@ import { AutocompleteOption, UiAutocomplete } from '../../shared/ui/autocomplete
 import { UiButton } from '../../shared/ui/button/button';
 import { UiIcon } from '../../shared/ui/icon/icon';
 import { UiDialog } from '../../shared/ui/dialog/dialog';
+import { UiTooltip } from '../../shared/ui/tooltip/tooltip';
 import { ToastService } from '../../shared/ui/toast/toast.service';
 
 type Language = 'id' | 'en';
@@ -172,6 +173,7 @@ const TEXTS = {
     UiButton,
     UiIcon,
     UiDialog,
+    UiTooltip,
   ],
   templateUrl: './login.page.html',
 })

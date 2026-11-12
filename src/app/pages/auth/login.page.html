@@ -425,14 +425,17 @@
     <div
       class="pointer-events-auto flex max-w-full items-center gap-1.5 rounded-full border border-[var(--destructive-solid)] bg-[var(--destructive-solid)] py-1.5 pr-1.5 pl-4 text-xs text-white transition-colors hover:bg-[color-mix(in_oklab,var(--destructive-solid)_88%,black)] shadow-lg backdrop-blur"
     >
-      <a
-        class="min-w-0 truncate hover:underline"
-        href="https://lapor.aio.co.id:12000/"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        {{ t().reportText }}
-      </a>
+      <span class="group relative flex min-w-0 items-center">
+        <a
+          class="min-w-0 truncate hover:underline"
+          href="https://lapor.aio.co.id:12000/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {{ t().reportText }}
+        </a>
+        <ui-tooltip position="top" class="max-w-lg">{{ t().reportText }}</ui-tooltip>
+      </span>
       <button
         type="button"
         class="grid size-7 shrink-0 place-items-center rounded-full text-white transition-colors hover:bg-white/15"
@@ -446,14 +449,17 @@
     <div
       class="pointer-events-auto flex max-w-full items-center gap-1 rounded-full border border-[var(--destructive-solid)] bg-[var(--destructive-solid)] py-1.5 pr-1.5 pl-4 text-xs text-white transition-colors hover:bg-[color-mix(in_oklab,var(--destructive-solid)_88%,black)] shadow-lg backdrop-blur"
     >
-      <a
-        class="font-semibold hover:underline"
-        href="https://lapor.aio.co.id:12000/"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        {{ t().reportClick }}
-      </a>
+      <span class="group relative inline-flex">
+        <a
+          class="font-semibold hover:underline"
+          href="https://lapor.aio.co.id:12000/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {{ t().reportClick }}
+        </a>
+        <ui-tooltip position="top" class="max-w-lg">{{ t().reportText }}</ui-tooltip>
+      </span>
       <button
         type="button"
         class="grid size-7 shrink-0 place-items-center rounded-full text-white transition-colors hover:bg-white/15"
