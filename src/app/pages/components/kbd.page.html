@@ -1,0 +1,81 @@
+<ui-page-header
+  title="Kbd"
+  description="Tampilan tombol keyboard untuk shortcut, dengan grup, tombol, dan input group."
+>
+  <button uiButton variant="outline" routerLink="/components">
+    <ui-icon name="arrow-left" class="size-4" />
+    Katalog komponen
+  </button>
+</ui-page-header>
+
+<div class="mt-6 grid grid-cols-1 items-start gap-4">
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Group</h2>
+      <p uiCardDescription>Gabungkan beberapa tombol dengan pemisah +.</p>
+    </div>
+    <div uiCardContent class="flex flex-wrap items-center gap-6">
+      <div uiKbdGroup>
+        <kbd uiKbd>Ctrl</kbd>
+        <span class="text-xs text-muted-foreground">+</span>
+        <kbd uiKbd>K</kbd>
+      </div>
+      <div uiKbdGroup>
+        <kbd uiKbd>⌘</kbd>
+        <span class="text-xs text-muted-foreground">+</span>
+        <kbd uiKbd>Shift</kbd>
+        <span class="text-xs text-muted-foreground">+</span>
+        <kbd uiKbd>P</kbd>
+      </div>
+      <div uiKbdGroup>
+        <kbd uiKbd>G</kbd>
+        <span class="text-xs text-muted-foreground">then</span>
+        <kbd uiKbd>D</kbd>
+      </div>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Button</h2>
+      <p uiCardDescription>Shortcut di dalam tombol membantu pengguna berpengalaman.</p>
+    </div>
+    <div uiCardContent class="flex flex-wrap gap-2">
+      <button uiButton variant="outline">
+        Cari…
+        <kbd uiKbd class="ml-1">⌘K</kbd>
+      </button>
+      <button uiButton>
+        Simpan
+        <kbd uiKbd class="ml-1 border-white/30 bg-white/15 text-white">⌘S</kbd>
+      </button>
+      <button uiButton variant="soft">
+        Command palette
+        <kbd uiKbd class="ml-1">⌘⇧P</kbd>
+      </button>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Input group</h2>
+      <p uiCardDescription>Kbd sebagai addon di dalam input group.</p>
+    </div>
+    <div uiCardContent class="max-w-lg">
+      <div class="ui-input-group">
+        <span class="ui-input-group-addon">
+          <ui-icon name="search" class="size-4" />
+        </span>
+        <input
+          uiInput
+          type="search"
+          placeholder="Cari dokumentasi…"
+          aria-label="Cari dokumentasi"
+        />
+        <span class="ui-input-group-addon">
+          <kbd uiKbd>⌘K</kbd>
+        </span>
+      </div>
+    </div>
+  </div>
+</div>

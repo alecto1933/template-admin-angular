@@ -1,0 +1,113 @@
+<ui-page-header
+  title="Textarea"
+  description="Input teks multi-baris dengan field, disabled, invalid, tombol aksi, dan integrasi form."
+>
+  <button uiButton variant="outline" routerLink="/components">
+    <ui-icon name="arrow-left" class="size-4" />
+    Katalog komponen
+  </button>
+</ui-page-header>
+
+<div class="mt-6 grid grid-cols-1 items-start gap-4">
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Field</h2>
+      <p uiCardDescription>Label, textarea, dan teks bantuan.</p>
+    </div>
+    <div uiCardContent class="max-w-xl space-y-2">
+      <label uiLabel for="ta-field">Catatan pesanan</label>
+      <textarea
+        uiTextarea
+        id="ta-field"
+        rows="4"
+        placeholder="Tambahkan instruksi khusus untuk kurir…"
+      ></textarea>
+      <p class="ui-help">Instruksi akan diteruskan ke kurir.</p>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Disabled &amp; invalid</h2>
+      <p uiCardDescription>State nonaktif dan error.</p>
+    </div>
+    <div uiCardContent class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+      <div class="space-y-2">
+        <label uiLabel for="ta-disabled">Deskripsi toko</label>
+        <textarea uiTextarea id="ta-disabled" rows="3" disabled>
+Toko merchandise dan aksesori desain lokal.</textarea>
+        <p class="ui-help">Diatur oleh administrator workspace.</p>
+      </div>
+
+      <div class="space-y-2">
+        <label uiLabel for="ta-invalid">Pesan</label>
+        <textarea
+          uiTextarea
+          id="ta-invalid"
+          rows="3"
+          aria-invalid="true"
+          placeholder="Tulis pesan…"
+        ></textarea>
+        <p class="ui-error">
+          <ui-icon name="circle-help" class="size-3" />
+          Pesan minimal 10 karakter.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Button</h2>
+      <p uiCardDescription>Textarea dengan tombol aksi di dalam grup.</p>
+    </div>
+    <div uiCardContent class="max-w-xl">
+      <div class="ui-input-group items-end">
+        <textarea
+          uiTextarea
+          rows="2"
+          placeholder="Tulis balasan…"
+          aria-label="Balasan"
+          class="min-h-10 resize-none"
+        ></textarea>
+        <button uiButton class="m-1" size="sm">
+          <ui-icon name="send" class="size-3.5" />
+          Kirim
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Form</h2>
+      <p uiCardDescription>Validasi required dan panjang minimum.</p>
+    </div>
+    <div uiCardContent>
+      <form [formGroup]="form" (ngSubmit)="submit()" class="max-w-xl space-y-3" novalidate>
+        <div class="space-y-2">
+          <label uiLabel for="ta-form">Pesan</label>
+          <textarea
+            uiTextarea
+            id="ta-form"
+            rows="4"
+            formControlName="message"
+            [attr.aria-invalid]="
+              form.controls.message.invalid && (form.controls.message.touched || submitted())
+                ? 'true'
+                : null
+            "
+            placeholder="Tulis pesan minimal 10 karakter…"
+          ></textarea>
+          @if (form.controls.message.invalid && (form.controls.message.touched || submitted())) {
+            <p class="ui-error">
+              <ui-icon name="circle-help" class="size-3" />
+              Pesan wajib diisi, minimal 10 karakter.
+            </p>
+          }
+        </div>
+        <button uiButton type="submit">Kirim pesan</button>
+      </form>
+    </div>
+  </div>
+</div>

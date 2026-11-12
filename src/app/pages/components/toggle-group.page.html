@@ -1,0 +1,261 @@
+<ui-page-header
+  title="Toggle Group"
+  description="Kelompok toggle untuk pilihan tunggal atau ganda, dengan outline, ukuran, spacing, orientasi vertikal, disabled, custom, dan form."
+>
+  <button uiButton variant="outline" routerLink="/components">
+    <ui-icon name="arrow-left" class="size-4" />
+    Katalog komponen
+  </button>
+</ui-page-header>
+
+<div class="mt-6 grid grid-cols-1 items-start gap-4">
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Outline</h2>
+      <p uiCardDescription>Pilihan tunggal dengan border.</p>
+    </div>
+    <div uiCardContent>
+      <div uiToggleGroup>
+        @for (value of ['left', 'center', 'right']; track value) {
+          <button
+            uiToggle
+            data-variant="outline"
+            [attr.data-state]="align() === value ? 'on' : 'off'"
+            (click)="align.set(value)"
+          >
+            <ui-icon
+              [name]="
+                value === 'left' ? 'arrow-left' : value === 'center' ? 'activity' : 'arrow-right'
+              "
+              class="size-4"
+            />
+            {{ value }}
+          </button>
+        }
+      </div>
+      <p class="ui-help mt-2">Aktif: {{ align() }}</p>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Size</h2>
+      <p uiCardDescription>Ukuran tombol di dalam grup.</p>
+    </div>
+    <div uiCardContent class="flex flex-wrap items-center gap-3">
+      <div uiToggleGroup>
+        <button
+          uiToggle
+          data-size="sm"
+          [attr.data-state]="size() === 'sm' ? 'on' : 'off'"
+          (click)="size.set('sm')"
+        >
+          Sm
+        </button>
+        <button
+          uiToggle
+          data-size="sm"
+          [attr.data-state]="size() === 'md' ? 'on' : 'off'"
+          (click)="size.set('md')"
+        >
+          Md
+        </button>
+        <button
+          uiToggle
+          data-size="sm"
+          [attr.data-state]="size() === 'lg' ? 'on' : 'off'"
+          (click)="size.set('lg')"
+        >
+          Lg
+        </button>
+      </div>
+      <div uiToggleGroup>
+        <button
+          uiToggle
+          [attr.data-state]="size() === 'sm' ? 'on' : 'off'"
+          (click)="size.set('sm')"
+        >
+          Sm
+        </button>
+        <button
+          uiToggle
+          [attr.data-state]="size() === 'md' ? 'on' : 'off'"
+          (click)="size.set('md')"
+        >
+          Md
+        </button>
+        <button
+          uiToggle
+          [attr.data-state]="size() === 'lg' ? 'on' : 'off'"
+          (click)="size.set('lg')"
+        >
+          Lg
+        </button>
+      </div>
+      <div uiToggleGroup>
+        <button
+          uiToggle
+          data-size="lg"
+          [attr.data-state]="size() === 'sm' ? 'on' : 'off'"
+          (click)="size.set('sm')"
+        >
+          Sm
+        </button>
+        <button
+          uiToggle
+          data-size="lg"
+          [attr.data-state]="size() === 'md' ? 'on' : 'off'"
+          (click)="size.set('md')"
+        >
+          Md
+        </button>
+        <button
+          uiToggle
+          data-size="lg"
+          [attr.data-state]="size() === 'lg' ? 'on' : 'off'"
+          (click)="size.set('lg')"
+        >
+          Lg
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Spacing</h2>
+      <p uiCardDescription>Atur jarak antar tombol lewat data-spacing.</p>
+    </div>
+    <div uiCardContent class="flex flex-wrap items-center gap-3">
+      <div uiToggleGroup data-spacing="0">
+        <button uiToggle data-variant="outline">Satu</button>
+        <button uiToggle data-variant="outline">Dua</button>
+        <button uiToggle data-variant="outline">Tiga</button>
+      </div>
+      <div uiToggleGroup data-spacing="2">
+        <button uiToggle data-variant="outline">Satu</button>
+        <button uiToggle data-variant="outline">Dua</button>
+        <button uiToggle data-variant="outline">Tiga</button>
+      </div>
+      <div uiToggleGroup>
+        <button uiToggle data-variant="outline">Satu</button>
+        <button uiToggle data-variant="outline">Dua</button>
+        <button uiToggle data-variant="outline">Tiga</button>
+      </div>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Vertical</h2>
+      <p uiCardDescription>Orientasi vertikal untuk panel pengaturan.</p>
+    </div>
+    <div uiCardContent>
+      <div uiToggleGroup data-orientation="vertical" data-spacing="2">
+        @for (
+          item of [
+            { id: 'overview', label: 'Overview', icon: 'layout-dashboard' },
+            { id: 'orders', label: 'Pesanan', icon: 'shopping-cart' },
+            { id: 'settings', label: 'Pengaturan', icon: 'settings' },
+          ];
+          track item.id
+        ) {
+          <button
+            uiToggle
+            class="w-full justify-start"
+            [attr.data-state]="vertical() === item.id ? 'on' : 'off'"
+            (click)="vertical.set(item.id)"
+          >
+            <ui-icon [name]="$any(item.icon)" class="size-4" />
+            {{ item.label }}
+          </button>
+        }
+      </div>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Disabled</h2>
+      <p uiCardDescription>Kelompok toggle nonaktif.</p>
+    </div>
+    <div uiCardContent>
+      <div uiToggleGroup>
+        <button uiToggle data-variant="outline" disabled>Kiri</button>
+        <button uiToggle data-variant="outline" disabled>Tengah</button>
+        <button uiToggle data-variant="outline" disabled>Kanan</button>
+      </div>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Custom</h2>
+      <p uiCardDescription>Warna state dapat dikustomisasi.</p>
+    </div>
+    <div uiCardContent>
+      <div uiToggleGroup>
+        @for (value of ['grid', 'list', 'table']; track value) {
+          <button
+            uiToggle
+            [class]="
+              custom() === value
+                ? 'bg-primary text-primary-foreground'
+                : 'text-muted-foreground hover:bg-accent'
+            "
+            [attr.data-state]="custom() === value ? 'on' : 'off'"
+            (click)="custom.set(value)"
+          >
+            {{ value }}
+          </button>
+        }
+      </div>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Form</h2>
+      <p uiCardDescription>Toggle group di dalam form.</p>
+    </div>
+    <div uiCardContent>
+      <form (ngSubmit)="submit()" class="max-w-lg space-y-4">
+        <div class="space-y-2">
+          <p class="text-sm font-medium">Perataan teks</p>
+          <div uiToggleGroup>
+            @for (value of ['left', 'center', 'right']; track value) {
+              <button
+                type="button"
+                uiToggle
+                data-variant="outline"
+                [attr.data-state]="align() === value ? 'on' : 'off'"
+                (click)="align.set(value)"
+              >
+                {{ value }}
+              </button>
+            }
+          </div>
+        </div>
+
+        <div class="space-y-2">
+          <p class="text-sm font-medium">Format teks</p>
+          <div uiToggleGroup>
+            @for (value of ['bold', 'italic', 'underline']; track value) {
+              <button
+                type="button"
+                uiToggle
+                data-variant="outline"
+                [attr.data-state]="multi().includes(value) ? 'on' : 'off'"
+                (click)="toggleMulti(value)"
+              >
+                {{ value }}
+              </button>
+            }
+          </div>
+        </div>
+
+        <button uiButton type="submit">Simpan</button>
+      </form>
+    </div>
+  </div>
+</div>

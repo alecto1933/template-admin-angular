@@ -1,0 +1,73 @@
+<ui-page-header
+  title="Progress"
+  description="Indikator progres determinate dan indeterminate dengan tiga ukuran serta label aksesibel."
+>
+  <button uiButton variant="outline" routerLink="/components">
+    <ui-icon name="arrow-left" class="size-4" />
+    Katalog komponen
+  </button>
+</ui-page-header>
+
+<div class="mt-6 grid grid-cols-1 items-start gap-4">
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Indeterminate</h2>
+      <p uiCardDescription>Untuk proses yang durasinya belum diketahui.</p>
+    </div>
+    <div uiCardContent class="max-w-xl space-y-6">
+      <div class="space-y-2">
+        <div class="flex items-center justify-between text-xs">
+          <span class="font-medium">Small</span>
+          <span class="text-muted-foreground">Memuat…</span>
+        </div>
+        <ui-progress size="sm" [indeterminate]="true" />
+      </div>
+
+      <div class="space-y-2">
+        <div class="flex items-center justify-between text-xs">
+          <span class="font-medium">Default</span>
+          <span class="text-muted-foreground">Menghubungkan…</span>
+        </div>
+        <ui-progress [indeterminate]="true" />
+      </div>
+
+      <div class="space-y-2">
+        <div class="flex items-center justify-between text-xs">
+          <span class="font-medium">Large</span>
+          <span class="text-muted-foreground">Menyiapkan data…</span>
+        </div>
+        <ui-progress size="lg" [indeterminate]="true" />
+      </div>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Determinate</h2>
+      <p uiCardDescription>Gunakan nilai 0–100 untuk progres yang terukur.</p>
+    </div>
+    <div uiCardContent class="max-w-xl space-y-5">
+      <div class="space-y-1.5">
+        <div class="flex items-center justify-between text-xs">
+          <span class="font-medium">Mengunggah file</span>
+          <span class="font-mono text-muted-foreground">64%</span>
+        </div>
+        <ui-progress [value]="64" />
+      </div>
+      <div class="space-y-1.5">
+        <div class="flex items-center justify-between text-xs">
+          <span class="font-medium">Menyelesaikan pesanan</span>
+          <span class="font-mono text-muted-foreground">100%</span>
+        </div>
+        <ui-progress [value]="100" size="lg" />
+      </div>
+      <div class="space-y-1.5">
+        <div class="flex items-center justify-between text-xs">
+          <span class="font-medium">Penyimpanan</span>
+          <span class="font-mono text-muted-foreground">25%</span>
+        </div>
+        <ui-progress [value]="25" size="sm" />
+      </div>
+    </div>
+  </div>
+</div>

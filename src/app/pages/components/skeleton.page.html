@@ -1,0 +1,106 @@
+<ui-page-header
+  title="Skeleton"
+  description="Placeholder loading untuk avatar, card, teks, form, dan tabel."
+>
+  <button uiButton variant="outline" routerLink="/components">
+    <ui-icon name="arrow-left" class="size-4" />
+    Katalog komponen
+  </button>
+</ui-page-header>
+
+<div class="mt-6 grid grid-cols-1 items-start gap-4">
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Avatar</h2>
+      <p uiCardDescription>Kombinasi lingkaran dan baris teks.</p>
+    </div>
+    <div uiCardContent class="space-y-5">
+      <div class="flex items-center gap-3">
+        <span uiSkeleton class="size-10 rounded-full"></span>
+        <div class="flex-1 space-y-2">
+          <span uiSkeleton class="block h-3 w-32"></span>
+          <span uiSkeleton class="block h-3 w-48"></span>
+        </div>
+      </div>
+      <div class="flex items-center gap-3">
+        <span uiSkeleton class="size-8 rounded-full"></span>
+        <span uiSkeleton class="h-3 w-24"></span>
+      </div>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Card</h2>
+      <p uiCardDescription>Skeleton untuk kartu media dan konten.</p>
+    </div>
+    <div uiCardContent>
+      <div class="max-w-sm overflow-hidden rounded-xl border border-border">
+        <span uiSkeleton class="block h-36 w-full rounded-none"></span>
+        <div class="space-y-3 p-4">
+          <span uiSkeleton class="block h-3 w-20"></span>
+          <span uiSkeleton class="block h-4 w-3/4"></span>
+          <span uiSkeleton class="block h-3 w-full"></span>
+          <span uiSkeleton class="block h-3 w-2/3"></span>
+          <span uiSkeleton class="mt-2 block h-8 w-28 rounded-lg"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Text</h2>
+      <p uiCardDescription>Baris teks dengan lebar bervariasi.</p>
+    </div>
+    <div uiCardContent class="max-w-xl space-y-3">
+      <span uiSkeleton class="block h-6 w-1/2"></span>
+      <span uiSkeleton class="block h-3 w-full"></span>
+      <span uiSkeleton class="block h-3 w-11/12"></span>
+      <span uiSkeleton class="block h-3 w-4/5"></span>
+      <span uiSkeleton class="block h-3 w-2/3"></span>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Form</h2>
+      <p uiCardDescription>Skeleton label, input, dan tombol.</p>
+    </div>
+    <div uiCardContent class="max-w-md space-y-4">
+      <div class="space-y-2">
+        <span uiSkeleton class="block h-3 w-20"></span>
+        <span uiSkeleton class="block h-10 w-full rounded-xl"></span>
+      </div>
+      <div class="space-y-2">
+        <span uiSkeleton class="block h-3 w-24"></span>
+        <span uiSkeleton class="block h-10 w-full rounded-xl"></span>
+      </div>
+      <span uiSkeleton class="block h-10 w-28 rounded-xl"></span>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Table</h2>
+      <p uiCardDescription>Skeleton baris tabel.</p>
+    </div>
+    <div uiCardContent>
+      <div class="overflow-hidden rounded-xl border border-border">
+        <div class="flex gap-4 border-b border-border bg-muted/50 px-4 py-3">
+          <span uiSkeleton class="h-3 w-20"></span>
+          <span uiSkeleton class="h-3 w-32"></span>
+          <span uiSkeleton class="ml-auto h-3 w-16"></span>
+        </div>
+        @for (row of [1, 2, 3, 4, 5]; track row) {
+          <div class="flex items-center gap-4 border-b border-border px-4 py-4 last:border-b-0">
+            <span uiSkeleton class="size-8 rounded-full"></span>
+            <span uiSkeleton class="h-3 w-24"></span>
+            <span uiSkeleton class="h-3 w-40"></span>
+            <span uiSkeleton class="ml-auto h-3 w-20"></span>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+</div>

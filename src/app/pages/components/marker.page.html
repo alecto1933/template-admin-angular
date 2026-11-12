@@ -1,0 +1,144 @@
+<ui-page-header
+  title="Marker"
+  description="Penanda kecil untuk status, label, separator, shimmer, border, ikon, serta tautan dan tombol."
+>
+  <button uiButton variant="outline" routerLink="/components">
+    <ui-icon name="arrow-left" class="size-4" />
+    Katalog komponen
+  </button>
+</ui-page-header>
+
+<div class="mt-6 grid grid-cols-1 items-start gap-4">
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Variants</h2>
+      <p uiCardDescription>Enam varian warna marker.</p>
+    </div>
+    <div uiCardContent class="flex flex-wrap items-center gap-2">
+      <span uiMarker data-variant="default">Default</span>
+      <span uiMarker data-variant="primary">Primary</span>
+      <span uiMarker data-variant="success">Success</span>
+      <span uiMarker data-variant="warning">Warning</span>
+      <span uiMarker data-variant="danger">Danger</span>
+      <span uiMarker data-variant="outline">Outline</span>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Status</h2>
+      <p uiCardDescription>Dot status dengan teks yang jelas.</p>
+    </div>
+    <div uiCardContent class="flex flex-wrap items-center gap-2">
+      <span uiMarker data-variant="success">
+        <span uiMarkerDot></span>
+        Online
+      </span>
+      <span uiMarker data-variant="warning">
+        <span uiMarkerDot></span>
+        Away
+      </span>
+      <span uiMarker data-variant="default">
+        <span uiMarkerDot></span>
+        Offline
+      </span>
+      <span uiMarker data-variant="danger">
+        <span uiMarkerDot></span>
+        Gagal
+      </span>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Shimmer</h2>
+      <p uiCardDescription>Marker berdenyut untuk status yang sedang diproses.</p>
+    </div>
+    <div uiCardContent class="flex flex-wrap items-center gap-2">
+      <span uiMarker data-variant="primary" data-shimmer>
+        <span uiMarkerDot></span>
+        Menganalisis…
+      </span>
+      <span uiMarker data-variant="warning" data-shimmer>
+        <span uiMarkerDot></span>
+        Menyinkronkan
+      </span>
+      <span uiMarker data-variant="outline" data-shimmer>Memuat data</span>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Separator</h2>
+      <p uiCardDescription>Garis dengan label untuk memisahkan bagian.</p>
+    </div>
+    <div uiCardContent>
+      <div uiMarkerSeparator>atau</div>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Border</h2>
+      <p uiCardDescription>Marker bergaris untuk latar yang ramai.</p>
+    </div>
+    <div uiCardContent class="flex flex-wrap items-center gap-2">
+      <span uiMarker data-variant="outline">Border default</span>
+      <span uiMarker data-variant="outline" class="border-primary/30 text-primary">
+        Border primary
+      </span>
+      <span uiMarker data-variant="outline" class="border-success/30 text-success">
+        Border success
+      </span>
+      <span uiMarker data-variant="outline" class="border-destructive/30 text-destructive">
+        Border danger
+      </span>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>With icon</h2>
+      <p uiCardDescription>Ikon memperkuat makna marker.</p>
+    </div>
+    <div uiCardContent class="flex flex-wrap items-center gap-2">
+      <span uiMarker data-variant="success">
+        <ui-icon name="check" class="size-3" />
+        Terverifikasi
+      </span>
+      <span uiMarker data-variant="warning">
+        <ui-icon name="clock" class="size-3" />
+        Menunggu
+      </span>
+      <span uiMarker data-variant="primary">
+        <ui-icon name="star" class="size-3" />
+        Unggulan
+      </span>
+      <span uiMarker data-variant="danger">
+        <ui-icon name="triangle-alert" class="size-3" />
+        Perlu tindakan
+      </span>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Links and buttons</h2>
+      <p uiCardDescription>Marker dapat menjadi target klik.</p>
+    </div>
+    <div uiCardContent class="flex flex-wrap items-center gap-2">
+      <a uiMarker data-variant="primary" href="#" class="transition-opacity hover:opacity-80">
+        Buka dokumentasi
+        <ui-icon name="arrow-up-right" class="size-3" />
+      </a>
+      <button type="button" uiMarker data-variant="outline" class="cursor-pointer hover:bg-accent">
+        Filter aktif
+        <ui-icon name="x" class="size-3" />
+      </button>
+      <a uiMarker data-variant="success" href="#" class="transition-opacity hover:opacity-80">
+        <ui-icon name="external-link" class="size-3" />
+        Situs eksternal
+      </a>
+    </div>
+  </div>
+</div>

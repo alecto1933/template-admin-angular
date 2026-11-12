@@ -1,0 +1,262 @@
+<ui-page-header
+  title="Table"
+  description="Tabel dengan footer ringkasan, aksi baris, dan data table dengan pencarian serta pagination."
+>
+  <button uiButton variant="outline" routerLink="/components">
+    <ui-icon name="arrow-left" class="size-4" />
+    Katalog komponen
+  </button>
+</ui-page-header>
+
+<div class="mt-6 grid grid-cols-1 items-start gap-4">
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Footer</h2>
+      <p uiCardDescription>
+        <code class="font-mono text-[12px]">&lt;tfoot&gt;</code> untuk ringkasan di bawah tabel.
+      </p>
+    </div>
+    <div uiCardContent class="px-0 pb-0 sm:px-0">
+      <div class="ui-scroll-x">
+        <table uiTable>
+          <thead>
+            <tr>
+              <th>Item</th>
+              <th>Qty</th>
+              <th>Harga</th>
+              <th class="text-right">Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Kaos Alecto</td>
+              <td>2</td>
+              <td>{{ formatRupiah(189000) }}</td>
+              <td class="text-right">{{ formatRupiah(378000) }}</td>
+            </tr>
+            <tr>
+              <td>Topi Alecto</td>
+              <td>1</td>
+              <td>{{ formatRupiah(129000) }}</td>
+              <td class="text-right">{{ formatRupiah(129000) }}</td>
+            </tr>
+            <tr>
+              <td>Sticker pack</td>
+              <td>3</td>
+              <td>{{ formatRupiah(25000) }}</td>
+              <td class="text-right">{{ formatRupiah(75000) }}</td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr>
+              <td colspan="3" class="font-semibold">Subtotal</td>
+              <td class="text-right font-semibold">{{ formatRupiah(582000) }}</td>
+            </tr>
+            <tr>
+              <td colspan="3" class="text-muted-foreground">Ongkos kirim</td>
+              <td class="text-right">{{ formatRupiah(18000) }}</td>
+            </tr>
+            <tr>
+              <td colspan="3" class="font-semibold">Total</td>
+              <td class="text-right font-display font-bold">{{ formatRupiah(600000) }}</td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Actions</h2>
+      <p uiCardDescription>Aksi per baris dengan tombol dan menu.</p>
+    </div>
+    <div uiCardContent class="px-0 pb-0 sm:px-0">
+      <div class="ui-scroll-x">
+        <table uiTable>
+          <thead>
+            <tr>
+              <th>Pesanan</th>
+              <th>Pelanggan</th>
+              <th>Status</th>
+              <th class="text-right">Total</th>
+              <th class="pr-5 text-right sm:pr-6">Aksi</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (order of orders().slice(0, 4); track order.id) {
+              <tr>
+                <td class="font-mono text-[12px] font-semibold">{{ order.id }}</td>
+                <td>
+                  <div class="flex items-center gap-2.5">
+                    <span uiAvatar data-size="sm" [class]="order.avatarClass">{{
+                      order.initials
+                    }}</span>
+                    <span class="text-[13px]">{{ order.customer }}</span>
+                  </div>
+                </td>
+                <td>
+                  <span uiBadge [variant]="statusMeta[order.status].variant">
+                    {{ statusMeta[order.status].label }}
+                  </span>
+                </td>
+                <td class="text-right font-medium">{{ formatRupiah(order.total) }}</td>
+                <td class="pr-5 text-right sm:pr-6">
+                  <div class="flex justify-end gap-1">
+                    <button
+                      uiButton
+                      variant="ghost"
+                      size="icon-sm"
+                      aria-label="Lihat pesanan"
+                      (click)="action('Lihat ' + order.id)"
+                    >
+                      <ui-icon name="eye" class="size-4" />
+                    </button>
+                    <button
+                      uiButton
+                      variant="ghost"
+                      size="icon-sm"
+                      [cdkMenuTriggerFor]="tableMenu"
+                      (click)="menuOrder.set(order)"
+                      [attr.aria-label]="'Aksi untuk ' + order.id"
+                    >
+                      <ui-icon name="more-horizontal" class="size-4" />
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <div class="flex flex-wrap items-center justify-between gap-3">
+        <div>
+          <h2 uiCardTitle>Data table</h2>
+          <p uiCardDescription>Pencarian dan pagination sisi klien.</p>
+        </div>
+        <div class="relative w-full max-w-xs">
+          <ui-icon
+            name="search"
+            class="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground"
+          />
+          <input
+            uiInput
+            type="search"
+            class="pl-9"
+            placeholder="Cari ID atau nama…"
+            aria-label="Cari pesanan"
+            [value]="search()"
+            (input)="onSearch($event)"
+          />
+        </div>
+      </div>
+    </div>
+    <div uiCardContent class="px-0 pb-0 sm:px-0">
+      <div class="ui-scroll-x">
+        <table uiTable>
+          <thead>
+            <tr>
+              <th>Pesanan</th>
+              <th>Pelanggan</th>
+              <th>Status</th>
+              <th class="text-right">Total</th>
+              <th>Tanggal</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (order of paged(); track order.id) {
+              <tr>
+                <td class="font-mono text-[12px] font-semibold">{{ order.id }}</td>
+                <td>
+                  <div class="flex items-center gap-2.5">
+                    <span uiAvatar data-size="sm" [class]="order.avatarClass">{{
+                      order.initials
+                    }}</span>
+                    <div class="min-w-0">
+                      <p class="text-[13px] font-medium">{{ order.customer }}</p>
+                      <p class="truncate text-[11px] text-muted-foreground">{{ order.email }}</p>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <span uiBadge [variant]="statusMeta[order.status].variant">
+                    {{ statusMeta[order.status].label }}
+                  </span>
+                </td>
+                <td class="text-right font-medium">{{ formatRupiah(order.total) }}</td>
+                <td class="text-xs whitespace-nowrap text-muted-foreground">{{ order.date }}</td>
+              </tr>
+            }
+            @if (paged().length === 0) {
+              <tr>
+                <td colspan="5" class="py-12 text-center text-sm text-muted-foreground">
+                  Tidak ada pesanan yang cocok.
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div uiCardFooter class="justify-between">
+      <p class="text-xs text-muted-foreground">
+        {{ filtered().length }} pesanan · Total halaman
+        {{ formatRupiah(totalAmount()) }}
+      </p>
+      <div class="flex items-center gap-1">
+        <button
+          uiButton
+          variant="outline"
+          size="icon-sm"
+          [disabled]="page() === 1"
+          (click)="page.set(page() - 1)"
+          aria-label="Halaman sebelumnya"
+        >
+          <ui-icon name="chevron-left" class="size-4" />
+        </button>
+        <span class="px-2 text-xs"> {{ min(page(), totalPages()) }} / {{ totalPages() }} </span>
+        <button
+          uiButton
+          variant="outline"
+          size="icon-sm"
+          [disabled]="page() >= totalPages()"
+          (click)="page.set(page() + 1)"
+          aria-label="Halaman berikutnya"
+        >
+          <ui-icon name="chevron-right" class="size-4" />
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #tableMenu>
+  <div cdkMenu class="ui-menu-panel w-48">
+    @if (menuOrder(); as order) {
+      <p class="ui-menu-label">{{ order.id }}</p>
+      <button cdkMenuItem type="button" class="ui-menu-item" (click)="action('Lihat ' + order.id)">
+        <ui-icon name="eye" class="size-4 text-muted-foreground" />
+        Lihat
+      </button>
+      <button cdkMenuItem type="button" class="ui-menu-item" (click)="action('Salin ' + order.id)">
+        <ui-icon name="copy" class="size-4 text-muted-foreground" />
+        Salin ID
+      </button>
+      <div class="ui-menu-separator"></div>
+      <button
+        cdkMenuItem
+        type="button"
+        class="ui-menu-item is-destructive"
+        (click)="action('Hapus ' + order.id)"
+      >
+        <ui-icon name="trash-2" class="size-4" />
+        Hapus
+      </button>
+    }
+  </div>
+</ng-template>

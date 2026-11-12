@@ -1,0 +1,145 @@
+<ui-page-header
+  title="Menubar"
+  description="Bar menu aplikasi dengan navigasi keyboard dan dropdown menu, termasuk varian dengan ikon."
+>
+  <button uiButton variant="outline" routerLink="/components">
+    <ui-icon name="arrow-left" class="size-4" />
+    Katalog komponen
+  </button>
+</ui-page-header>
+
+<div class="mt-6 grid grid-cols-1 items-start gap-4">
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Basic</h2>
+      <p uiCardDescription>Gunakan panah kiri/kanan untuk berpindah menu, Enter untuk membuka.</p>
+    </div>
+    <div uiCardContent>
+      <div cdkMenuBar class="ui-menubar">
+        <button cdkMenuItem type="button" class="ui-menubar-item" [cdkMenuTriggerFor]="fileMenu">
+          File
+        </button>
+        <button cdkMenuItem type="button" class="ui-menubar-item" [cdkMenuTriggerFor]="editMenu">
+          Edit
+        </button>
+        <button cdkMenuItem type="button" class="ui-menubar-item" [cdkMenuTriggerFor]="viewMenu">
+          View
+        </button>
+      </div>
+    </div>
+
+    <ng-template #fileMenu>
+      <div cdkMenu class="ui-menu-panel w-52">
+        <button cdkMenuItem type="button" class="ui-menu-item" (click)="action('File baru')">
+          File baru
+          <span class="ui-shortcut">⌘N</span>
+        </button>
+        <button cdkMenuItem type="button" class="ui-menu-item" (click)="action('Buka')">
+          Buka…
+          <span class="ui-shortcut">⌘O</span>
+        </button>
+        <div class="ui-menu-separator"></div>
+        <button cdkMenuItem type="button" class="ui-menu-item" (click)="action('Simpan')">
+          Simpan
+          <span class="ui-shortcut">⌘S</span>
+        </button>
+      </div>
+    </ng-template>
+
+    <ng-template #editMenu>
+      <div cdkMenu class="ui-menu-panel w-52">
+        <button cdkMenuItem type="button" class="ui-menu-item" (click)="action('Undo')">
+          Undo
+          <span class="ui-shortcut">⌘Z</span>
+        </button>
+        <button cdkMenuItem type="button" class="ui-menu-item" (click)="action('Redo')">
+          Redo
+          <span class="ui-shortcut">⇧⌘Z</span>
+        </button>
+        <div class="ui-menu-separator"></div>
+        <button cdkMenuItem type="button" class="ui-menu-item" (click)="action('Cari')">
+          Cari…
+          <span class="ui-shortcut">⌘F</span>
+        </button>
+      </div>
+    </ng-template>
+
+    <ng-template #viewMenu>
+      <div cdkMenu class="ui-menu-panel w-52">
+        <button cdkMenuItem type="button" class="ui-menu-item" (click)="action('Zoom in')">
+          Zoom in
+        </button>
+        <button cdkMenuItem type="button" class="ui-menu-item" (click)="action('Zoom out')">
+          Zoom out
+        </button>
+      </div>
+    </ng-template>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Icons</h2>
+      <p uiCardDescription>Ikon membantu menandai kategori menu.</p>
+    </div>
+    <div uiCardContent>
+      <div cdkMenuBar class="ui-menubar">
+        <button cdkMenuItem type="button" class="ui-menubar-item" [cdkMenuTriggerFor]="projectMenu">
+          <ui-icon name="archive" class="size-4 text-muted-foreground" />
+          Project
+        </button>
+        <button cdkMenuItem type="button" class="ui-menubar-item" [cdkMenuTriggerFor]="teamMenu">
+          <ui-icon name="users" class="size-4 text-muted-foreground" />
+          Team
+        </button>
+        <button
+          cdkMenuItem
+          type="button"
+          class="ui-menubar-item"
+          [cdkMenuTriggerFor]="settingsMenu"
+        >
+          <ui-icon name="settings" class="size-4 text-muted-foreground" />
+          Settings
+        </button>
+      </div>
+    </div>
+
+    <ng-template #projectMenu>
+      <div cdkMenu class="ui-menu-panel w-52">
+        <button cdkMenuItem type="button" class="ui-menu-item" (click)="action('Dashboard')">
+          <ui-icon name="layout-dashboard" class="size-4 text-muted-foreground" />
+          Dashboard
+        </button>
+        <button cdkMenuItem type="button" class="ui-menu-item" (click)="action('Pesanan')">
+          <ui-icon name="shopping-cart" class="size-4 text-muted-foreground" />
+          Pesanan
+        </button>
+      </div>
+    </ng-template>
+
+    <ng-template #teamMenu>
+      <div cdkMenu class="ui-menu-panel w-52">
+        <button cdkMenuItem type="button" class="ui-menu-item" (click)="action('Anggota')">
+          <ui-icon name="users" class="size-4 text-muted-foreground" />
+          Anggota
+        </button>
+        <button cdkMenuItem type="button" class="ui-menu-item" (click)="action('Undang')">
+          <ui-icon name="user-plus" class="size-4 text-muted-foreground" />
+          Undang anggota
+        </button>
+      </div>
+    </ng-template>
+
+    <ng-template #settingsMenu>
+      <div cdkMenu class="ui-menu-panel w-52">
+        <button cdkMenuItem type="button" class="ui-menu-item" (click)="action('Umum')">
+          <ui-icon name="settings" class="size-4 text-muted-foreground" />
+          Umum
+        </button>
+        <button cdkMenuItem type="button" class="ui-menu-item" (click)="action('Keamanan')">
+          <ui-icon name="shield-check" class="size-4 text-muted-foreground" />
+          Keamanan
+        </button>
+      </div>
+    </ng-template>
+  </div>
+</div>

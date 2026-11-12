@@ -1,0 +1,282 @@
+<ui-page-header
+  title="Bubble"
+  description="Balon percakapan untuk chat, komentar, atau aktivitas. Mendukung varian warna, alignment, grup, reaksi, konten interaktif, dan popover."
+>
+  <button uiButton variant="outline" routerLink="/components">
+    <ui-icon name="arrow-left" class="size-4" />
+    Katalog komponen
+  </button>
+</ui-page-header>
+
+<div class="mt-6 grid grid-cols-1 items-start gap-4">
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Variants</h2>
+      <p uiCardDescription>Varian warna untuk pengirim, penerima, dan pesan sistem.</p>
+    </div>
+    <div uiCardContent class="flex flex-col gap-2">
+      <span uiBubble data-align="start" data-variant="default">
+        Pesan default untuk penerima.
+      </span>
+      <span uiBubble data-align="end" data-variant="primary"> Balasan utama dari pengirim. </span>
+      <span uiBubble data-align="start" data-variant="outline"> Pesan outline dengan border. </span>
+      <span uiBubble data-align="start" data-variant="success">
+        Berhasil menyimpan perubahan.
+      </span>
+      <span uiBubble data-align="start" data-variant="danger">
+        Gagal mengirim pesan. Coba lagi.
+      </span>
+      <span uiBubble data-align="start" data-variant="secondary">
+        Pesan sekunder untuk catatan.
+      </span>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Alignment</h2>
+      <p uiCardDescription>
+        Gunakan <code class="font-mono text-[12px]">data-align="start"</code> dan
+        <code class="font-mono text-[12px]">data-align="end"</code>.
+      </p>
+    </div>
+    <div uiCardContent>
+      <div class="flex flex-col gap-2">
+        <div class="flex items-end gap-2.5">
+          <span uiAvatar data-size="sm" class="bg-primary-soft text-primary">DL</span>
+          <span uiBubble data-align="start" data-variant="default">
+            Halo, apakah laporan mingguan sudah siap?
+            <span class="ui-bubble-time">10:20</span>
+          </span>
+        </div>
+
+        <span uiBubble data-align="end" data-variant="primary">
+          Sudah! Aku kirim ringkasannya sebentar lagi.
+          <span class="ui-bubble-time">10:20</span>
+        </span>
+
+        <div class="flex items-end gap-2.5">
+          <span uiAvatar data-size="sm" class="bg-primary-soft text-primary">DL</span>
+          <span uiBubble data-align="start" data-variant="default">
+            Siap, ditunggu ya.
+            <span class="ui-bubble-time">10:21</span>
+          </span>
+        </div>
+
+        <span uiBubble data-align="end" data-variant="primary">
+          <span class="inline-flex items-center gap-1.5">
+            <ui-icon name="circle-check" class="size-3.5" />
+            Terkirim
+          </span>
+          <span class="ui-bubble-time">10:22</span>
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Bubble group</h2>
+      <p uiCardDescription>Beberapa bubble berurutan dari pengirim yang sama.</p>
+    </div>
+    <div uiCardContent>
+      <div class="flex items-start gap-2.5">
+        <span uiAvatar data-size="sm" class="bg-success-soft text-success">BS</span>
+        <div class="flex flex-col gap-1">
+          <div uiBubbleGroup>
+            <span uiBubble data-align="start" data-variant="default">
+              Aku sudah cek inventory pagi ini.
+            </span>
+            <span uiBubble data-align="start" data-variant="default">
+              Ada 4 produk yang stoknya di bawah batas.
+            </span>
+            <span uiBubble data-align="start" data-variant="default">
+              Mau aku buatkan daftar restock?
+            </span>
+          </div>
+          <span class="ui-bubble-time pl-1">09:42</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Links and buttons</h2>
+      <p uiCardDescription>Bubble bisa memuat tautan dan tombol aksi.</p>
+    </div>
+    <div uiCardContent class="flex flex-col gap-2">
+      <span uiBubble data-align="start" data-variant="outline">
+        Invoice sudah tersedia:
+        <a href="#" class="font-semibold text-primary underline underline-offset-2">
+          invoice-2049.pdf
+        </a>
+        <span class="mt-2 flex flex-wrap gap-2">
+          <button uiButton size="sm" variant="soft">
+            <ui-icon name="download" class="size-3.5" />
+            Unduh
+          </button>
+          <button uiButton size="sm" variant="ghost">Lihat detail</button>
+        </span>
+      </span>
+
+      <span uiBubble data-align="end" data-variant="primary">
+        Sudah kuterima, terima kasih!
+        <span class="mt-2 flex flex-wrap gap-2">
+          <button uiButton size="sm" variant="secondary">
+            <ui-icon name="credit-card" class="size-3.5" />
+            Bayar sekarang
+          </button>
+        </span>
+      </span>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Reactions</h2>
+      <p uiCardDescription>Reaksi cepat ditampilkan di bawah bubble dengan hitungan.</p>
+    </div>
+    <div uiCardContent class="flex flex-col gap-1">
+      <span uiBubble data-align="start" data-variant="default">
+        Rilis versi 1.1 sudah tayang! 🎉
+        <span class="ui-bubble-time">08:15</span>
+      </span>
+      <div uiBubbleReactions>
+        <button type="button" class="ui-bubble-reaction" (click)="react('👍')">
+          👍 <span>2</span>
+        </button>
+        <button type="button" class="ui-bubble-reaction" (click)="react('🎉')">
+          🎉 <span>4</span>
+        </button>
+        <button type="button" class="ui-bubble-reaction" (click)="react('🚀')">
+          🚀 <span>1</span>
+        </button>
+        <button type="button" class="ui-bubble-reaction" aria-label="Tambah reaksi">
+          <ui-icon name="plus" class="size-3" />
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Show more / collapsible</h2>
+      <p uiCardDescription>Pesan panjang dipotong, lalu bisa diperluas.</p>
+    </div>
+    <div uiCardContent>
+      <span uiBubble data-align="start" data-variant="default">
+        <span [class.line-clamp-3]="!expanded()">
+          Halo tim, berikut ringkasan hasil rapat kemarin. Prioritas utama minggu ini adalah
+          menyelesaikan halaman pesanan, memperbaiki alur checkout, dan memastikan semua komponen
+          baru punya dokumentasi serta contoh penggunaan. Kita juga perlu mengecek performa halaman
+          dashboard setelah penambahan grafik dan tabel. Mohon konfirmasi bagian yang bisa kalian
+          ambil masing-masing sebelum akhir hari.
+        </span>
+        <button
+          uiButton
+          variant="link"
+          size="sm"
+          class="mt-1 justify-start text-[11px]"
+          (click)="expanded.set(!expanded())"
+        >
+          {{ expanded() ? 'Sembunyikan' : 'Tampilkan selengkapnya' }}
+        </button>
+      </span>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Tooltip</h2>
+      <p uiCardDescription>Tooltip muncul saat bubble di-hover.</p>
+    </div>
+    <div uiCardContent class="flex flex-col gap-2 pt-8">
+      <span class="group relative self-start">
+        <span uiBubble data-align="start" data-variant="outline">
+          Arahkan kursor ke pesan ini
+        </span>
+        <span
+          class="pointer-events-none absolute -top-8 left-3 rounded-md bg-foreground px-2 py-1 text-[10px] whitespace-nowrap text-background opacity-0 transition-opacity group-hover:opacity-100"
+        >
+          Dikirim 10:24 · sudah dibaca
+        </span>
+      </span>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Popover</h2>
+      <p uiCardDescription>Menu aksi untuk pesan: balas, salin, tandai, atau hapus.</p>
+    </div>
+    <div uiCardContent>
+      <div class="flex items-center gap-1.5">
+        <span uiBubble data-align="start" data-variant="default">
+          Ada yang bisa kubantu dengan laporan Q3?
+        </span>
+        <button
+          type="button"
+          class="grid size-7 shrink-0 place-items-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
+          [cdkMenuTriggerFor]="bubbleMenu"
+          aria-label="Aksi pesan"
+        >
+          <ui-icon name="more-horizontal" class="size-4" />
+        </button>
+      </div>
+
+      <ng-template #bubbleMenu>
+        <div cdkMenu class="ui-menu-panel w-48">
+          <button cdkMenuItem type="button" class="ui-menu-item" (click)="action('Balas')">
+            <ui-icon name="arrow-left" class="size-4 text-muted-foreground" />
+            Balas
+          </button>
+          <button cdkMenuItem type="button" class="ui-menu-item" (click)="action('Salin')">
+            <ui-icon name="copy" class="size-4 text-muted-foreground" />
+            Salin teks
+          </button>
+          <button cdkMenuItem type="button" class="ui-menu-item" (click)="action('Tandai')">
+            <ui-icon name="star" class="size-4 text-muted-foreground" />
+            Tandai penting
+          </button>
+          <div class="ui-menu-separator"></div>
+          <button
+            cdkMenuItem
+            type="button"
+            class="ui-menu-item is-destructive"
+            (click)="action('Hapus')"
+          >
+            <ui-icon name="trash-2" class="size-4" />
+            Hapus pesan
+          </button>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Penggunaan</h2>
+      <p uiCardDescription>
+        Bubble adalah styling attribute; alignment dan varian diatur lewat data attribute.
+      </p>
+    </div>
+    <div uiCardContent>
+      <pre
+        class="overflow-x-auto rounded-xl border border-border bg-muted/50 p-4 font-mono text-[12px] leading-relaxed text-foreground"
+      ><code>&lt;span uiBubble data-align="start" data-variant="default"&gt;
+  Pesan untuk penerima.
+&lt;/span&gt;
+
+&lt;span uiBubble data-align="end" data-variant="primary"&gt;
+  Balasan pengirim.
+  &lt;span class="ui-bubble-time"&gt;10:20&lt;/span&gt;
+&lt;/span&gt;
+
+&lt;div uiBubbleGroup&gt;
+  &lt;span uiBubble data-align="start"&gt;Satu&lt;/span&gt;
+  &lt;span uiBubble data-align="start"&gt;Dua&lt;/span&gt;
+&lt;/div&gt;</code></pre>
+    </div>
+  </div>
+</div>

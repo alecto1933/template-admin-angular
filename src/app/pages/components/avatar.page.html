@@ -1,0 +1,327 @@
+<ui-page-header
+  title="Avatar"
+  description="Representasi pengguna dengan inisial, gambar, ikon, badge status, grup, dan dropdown menu."
+>
+  <button uiButton variant="outline" routerLink="/components">
+    <ui-icon name="arrow-left" class="size-4" />
+    Katalog komponen
+  </button>
+</ui-page-header>
+
+<div class="mt-6 grid grid-cols-1 items-start gap-4">
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Basic</h2>
+      <p uiCardDescription>Inisial, gambar, atau ikon — pilih sesuai konteks.</p>
+    </div>
+    <div uiCardContent class="flex flex-wrap items-center gap-4">
+      <span uiAvatar class="bg-primary-soft text-primary">RP</span>
+      <span uiAvatar>
+        <img src="demo/avatar-1.svg" alt="Raka Pratama" class="size-full object-cover" />
+      </span>
+      <span uiAvatar>
+        <img src="demo/avatar-2.svg" alt="Dewi Lestari" class="size-full object-cover" />
+      </span>
+      <span uiAvatar class="bg-muted text-muted-foreground">
+        <ui-icon name="user" class="size-5" />
+      </span>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Badge</h2>
+      <p uiCardDescription>Titik status di sudut kanan bawah untuk menandai kehadiran.</p>
+    </div>
+    <div uiCardContent class="flex flex-wrap items-start gap-6">
+      <div class="flex flex-col items-center gap-2">
+        <span class="relative inline-flex">
+          <span uiAvatar class="bg-primary-soft text-primary">RP</span>
+          <span uiAvatarBadge class="bg-success" aria-hidden="true"></span>
+        </span>
+        <span class="text-[11px] text-muted-foreground">Online</span>
+      </div>
+
+      <div class="flex flex-col items-center gap-2">
+        <span class="relative inline-flex">
+          <span uiAvatar class="bg-primary-soft text-primary">DL</span>
+          <span uiAvatarBadge class="bg-warning" aria-hidden="true"></span>
+        </span>
+        <span class="text-[11px] text-muted-foreground">Away</span>
+      </div>
+
+      <div class="flex flex-col items-center gap-2">
+        <span class="relative inline-flex">
+          <span uiAvatar class="bg-primary-soft text-primary">BS</span>
+          <span uiAvatarBadge class="bg-muted-foreground" aria-hidden="true"></span>
+        </span>
+        <span class="text-[11px] text-muted-foreground">Offline</span>
+      </div>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Badge icon</h2>
+      <p uiCardDescription>Badge bisa memuat ikon, misalnya centang untuk akun terverifikasi.</p>
+    </div>
+    <div uiCardContent class="flex flex-wrap items-center gap-4">
+      <span class="relative inline-flex">
+        <span uiAvatar>
+          <img src="demo/avatar-1.svg" alt="Raka Pratama" class="size-full object-cover" />
+        </span>
+        <span uiAvatarBadge class="bg-success">
+          <ui-icon name="check" class="size-2.5" />
+        </span>
+      </span>
+
+      <span class="relative inline-flex">
+        <span uiAvatar class="bg-primary-soft text-primary">DL</span>
+        <span uiAvatarBadge class="bg-primary">
+          <ui-icon name="shield-check" class="size-2.5" />
+        </span>
+      </span>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Avatar group</h2>
+      <p uiCardDescription>Tumpuk beberapa avatar dengan ring agar tetap terpisah secara visual.</p>
+    </div>
+    <div uiCardContent>
+      <div uiAvatarGroup>
+        <span uiAvatar data-size="sm" class="bg-primary-soft text-primary" title="Raka Pratama">
+          RP
+        </span>
+        <span uiAvatar data-size="sm" class="bg-success-soft text-success" title="Dewi Lestari">
+          DL
+        </span>
+        <span uiAvatar data-size="sm" class="bg-warning-soft text-warning" title="Bagas Saputra">
+          BS
+        </span>
+        <span uiAvatar data-size="sm" class="bg-chart-2/15 text-chart-2" title="Siti Nurhaliza">
+          SN
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Avatar group count</h2>
+      <p uiCardDescription>Tampilkan jumlah anggota lain saat ruang terbatas.</p>
+    </div>
+    <div uiCardContent>
+      <div uiAvatarGroup>
+        <span uiAvatar data-size="sm" class="bg-primary-soft text-primary" title="Raka Pratama">
+          RP
+        </span>
+        <span uiAvatar data-size="sm" class="bg-success-soft text-success" title="Dewi Lestari">
+          DL
+        </span>
+        <span uiAvatar data-size="sm" class="bg-warning-soft text-warning" title="Bagas Saputra">
+          BS
+        </span>
+        <span
+          uiAvatar
+          data-size="sm"
+          class="bg-muted font-semibold text-muted-foreground"
+          title="6 anggota lainnya"
+        >
+          +6
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Avatar group icon</h2>
+      <p uiCardDescription>Gunakan ikon sebagai aksi, misalnya untuk menambah anggota.</p>
+    </div>
+    <div uiCardContent>
+      <div uiAvatarGroup>
+        <span uiAvatar data-size="sm" class="bg-primary-soft text-primary" title="Raka Pratama">
+          RP
+        </span>
+        <span uiAvatar data-size="sm" class="bg-success-soft text-success" title="Dewi Lestari">
+          DL
+        </span>
+        <span uiAvatar data-size="sm" class="bg-warning-soft text-warning" title="Bagas Saputra">
+          BS
+        </span>
+        <button
+          type="button"
+          class="relative grid size-8 place-items-center rounded-full bg-primary text-primary-foreground ring-2 ring-card transition-colors hover:bg-primary/90"
+          aria-label="Tambah anggota"
+        >
+          <ui-icon name="plus" class="size-3.5" />
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Sizes</h2>
+      <p uiCardDescription>
+        Lima ukuran: <code class="font-mono text-[12px]">xs</code>,
+        <code class="font-mono text-[12px]">sm</code>, default,
+        <code class="font-mono text-[12px]">lg</code>, dan
+        <code class="font-mono text-[12px]">xl</code>.
+      </p>
+    </div>
+    <div uiCardContent class="flex flex-wrap items-end gap-5">
+      <div class="flex flex-col items-center gap-2">
+        <span uiAvatar data-size="xs" class="bg-primary-soft text-primary">RP</span>
+        <span class="text-[10px] text-muted-foreground">xs</span>
+      </div>
+      <div class="flex flex-col items-center gap-2">
+        <span uiAvatar data-size="sm" class="bg-primary-soft text-primary">RP</span>
+        <span class="text-[10px] text-muted-foreground">sm</span>
+      </div>
+      <div class="flex flex-col items-center gap-2">
+        <span uiAvatar class="bg-primary-soft text-primary">RP</span>
+        <span class="text-[10px] text-muted-foreground">default</span>
+      </div>
+      <div class="flex flex-col items-center gap-2">
+        <span uiAvatar data-size="lg" class="bg-primary-soft text-primary">RP</span>
+        <span class="text-[10px] text-muted-foreground">lg</span>
+      </div>
+      <div class="flex flex-col items-center gap-2">
+        <span uiAvatar data-size="xl" class="bg-primary-soft text-primary">RP</span>
+        <span class="text-[10px] text-muted-foreground">xl</span>
+      </div>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Dropdown</h2>
+      <p uiCardDescription>Avatar bisa menjadi trigger menu akun.</p>
+    </div>
+    <div uiCardContent>
+      <button
+        type="button"
+        class="rounded-full outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-card"
+        [cdkMenuTriggerFor]="avatarMenu"
+        aria-label="Buka menu pengguna"
+      >
+        <span uiAvatar class="bg-primary-soft text-primary">RP</span>
+      </button>
+
+      <ng-template #avatarMenu>
+        <div cdkMenu class="ui-menu-panel w-64">
+          <div class="flex items-center gap-2.5 px-3 py-2">
+            <span uiAvatar data-size="sm" class="bg-primary-soft text-primary">RP</span>
+            <div class="min-w-0">
+              <p class="truncate text-sm font-semibold">Raka Pratama</p>
+              <p class="truncate text-xs text-muted-foreground">raka@alecto.id</p>
+            </div>
+          </div>
+          <div class="ui-menu-separator"></div>
+          <button cdkMenuItem type="button" class="ui-menu-item" (click)="action('Profil')">
+            <ui-icon name="user" class="size-4 text-muted-foreground" />
+            Profil saya
+          </button>
+          <button cdkMenuItem type="button" class="ui-menu-item" (click)="action('Pengaturan')">
+            <ui-icon name="settings" class="size-4 text-muted-foreground" />
+            Pengaturan
+          </button>
+          <div class="ui-menu-separator"></div>
+          <button
+            cdkMenuItem
+            type="button"
+            class="ui-menu-item is-destructive"
+            (click)="action('Keluar')"
+          >
+            <ui-icon name="log-out" class="size-4" />
+            Keluar
+          </button>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Penggunaan</h2>
+      <p uiCardDescription>
+        Avatar adalah styling attribute; grup dan badge memakai container terpisah.
+      </p>
+    </div>
+    <div uiCardContent>
+      <pre
+        class="overflow-x-auto rounded-xl border border-border bg-muted/50 p-4 font-mono text-[12px] leading-relaxed text-foreground"
+      ><code>&lt;span uiAvatar class="bg-primary-soft text-primary"&gt;
+  RP
+&lt;/span&gt;
+
+&lt;span uiAvatar&gt;
+  &lt;img src="avatar.jpg" alt="Nama" class="size-full object-cover" /&gt;
+&lt;/span&gt;
+
+&lt;div uiAvatarGroup&gt;
+  &lt;span uiAvatar data-size="sm"&gt;RP&lt;/span&gt;
+  &lt;span uiAvatar data-size="sm"&gt;DL&lt;/span&gt;
+  &lt;span uiAvatar data-size="sm"&gt;+6&lt;/span&gt;
+&lt;/div&gt;
+
+&lt;span class="relative inline-flex"&gt;
+  &lt;span uiAvatar&gt;RP&lt;/span&gt;
+  &lt;span uiAvatarBadge class="bg-success"&gt;&lt;/span&gt;
+&lt;/span&gt;</code></pre>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>API</h2>
+      <p uiCardDescription>Atribut CSS yang tersedia.</p>
+    </div>
+    <div uiCardContent class="px-0 pb-0 sm:px-0">
+      <div class="ui-scroll-x">
+        <table uiTable>
+          <thead>
+            <tr>
+              <th>Atribut</th>
+              <th>Nilai</th>
+              <th>Default</th>
+              <th>Deskripsi</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="font-mono text-[12px] whitespace-nowrap">uiAvatar</td>
+              <td class="whitespace-nowrap">atribut</td>
+              <td class="whitespace-nowrap">—</td>
+              <td class="text-muted-foreground">Container avatar; ukuran default 40px.</td>
+            </tr>
+            <tr>
+              <td class="font-mono text-[12px] whitespace-nowrap">data-size</td>
+              <td class="whitespace-nowrap">xs | sm | lg | xl</td>
+              <td class="whitespace-nowrap">md</td>
+              <td class="text-muted-foreground">Ukuran avatar.</td>
+            </tr>
+            <tr>
+              <td class="font-mono text-[12px] whitespace-nowrap">uiAvatarGroup</td>
+              <td class="whitespace-nowrap">atribut</td>
+              <td class="whitespace-nowrap">—</td>
+              <td class="text-muted-foreground">Tumpuk avatar dengan jarak negatif dan ring.</td>
+            </tr>
+            <tr>
+              <td class="font-mono text-[12px] whitespace-nowrap">uiAvatarBadge</td>
+              <td class="whitespace-nowrap">atribut</td>
+              <td class="whitespace-nowrap">—</td>
+              <td class="text-muted-foreground">
+                Badge absolut; letakkan di dalam wrapper
+                <code class="font-mono text-[12px]">relative inline-flex</code>.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

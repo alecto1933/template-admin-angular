@@ -1,0 +1,181 @@
+<ui-page-header
+  title="Navigation Menu"
+  description="Navigasi vertikal, controlled, nested, dan menu yang terbuka saat diklik."
+>
+  <button uiButton variant="outline" routerLink="/components">
+    <ui-icon name="arrow-left" class="size-4" />
+    Katalog komponen
+  </button>
+</ui-page-header>
+
+<div class="mt-6 grid grid-cols-1 items-start gap-4">
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Vertical</h2>
+      <p uiCardDescription>Navigasi vertikal dengan state aktif.</p>
+    </div>
+    <div uiCardContent class="max-w-xs">
+      <nav class="space-y-1" aria-label="Navigasi vertikal">
+        @for (
+          item of [
+            { id: 'dashboard', label: 'Dashboard', icon: 'layout-dashboard' },
+            { id: 'orders', label: 'Pesanan', icon: 'shopping-cart' },
+            { id: 'forms', label: 'Form', icon: 'file-text' },
+            { id: 'settings', label: 'Pengaturan', icon: 'settings' },
+          ];
+          track item.id
+        ) {
+          <button
+            type="button"
+            class="flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-left text-sm font-medium transition-colors"
+            [class]="
+              active() === item.id
+                ? 'bg-primary-soft text-primary'
+                : 'text-muted-foreground hover:bg-accent hover:text-accent-foreground'
+            "
+            (click)="active.set(item.id)"
+          >
+            <ui-icon [name]="$any(item.icon)" class="size-4" />
+            {{ item.label }}
+          </button>
+        }
+      </nav>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Controlled</h2>
+      <p uiCardDescription>State aktif dikendalikan dari luar navigasi.</p>
+    </div>
+    <div uiCardContent class="space-y-3">
+      <div class="flex flex-wrap gap-2">
+        <button uiButton size="sm" variant="outline" (click)="controlled.set('dashboard')">
+          Set Dashboard
+        </button>
+        <button uiButton size="sm" variant="outline" (click)="controlled.set('orders')">
+          Set Pesanan
+        </button>
+        <button uiButton size="sm" variant="outline" (click)="controlled.set('settings')">
+          Set Pengaturan
+        </button>
+      </div>
+
+      <nav
+        class="flex flex-wrap gap-1 rounded-xl border border-border bg-card p-1"
+        aria-label="Navigasi controlled"
+      >
+        @for (
+          item of [
+            { id: 'dashboard', label: 'Dashboard' },
+            { id: 'orders', label: 'Pesanan' },
+            { id: 'settings', label: 'Pengaturan' },
+          ];
+          track item.id
+        ) {
+          <button
+            type="button"
+            class="rounded-lg px-3 py-1.5 text-sm font-medium transition-colors"
+            [class]="
+              controlled() === item.id
+                ? 'bg-primary text-primary-foreground'
+                : 'text-muted-foreground hover:bg-accent hover:text-accent-foreground'
+            "
+            (click)="controlled.set(item.id)"
+          >
+            {{ item.label }}
+          </button>
+        }
+      </nav>
+      <p class="ui-help">
+        Aktif: <span class="font-semibold text-foreground">{{ controlled() }}</span>
+      </p>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Nested</h2>
+      <p uiCardDescription>Submenu bisa dibuka-tutup di dalam navigasi.</p>
+    </div>
+    <div uiCardContent class="max-w-xs">
+      <nav class="space-y-1" aria-label="Navigasi nested">
+        <button
+          type="button"
+          class="flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-left text-sm font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
+        >
+          <ui-icon name="layout-dashboard" class="size-4" />
+          Dashboard
+        </button>
+
+        <button
+          type="button"
+          class="flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-left text-sm font-medium text-foreground transition-colors hover:bg-accent"
+          [attr.aria-expanded]="nestedOpen()"
+          (click)="nestedOpen.set(!nestedOpen())"
+        >
+          <ui-icon name="blocks" class="size-4" />
+          Komponen
+          <ui-icon
+            name="chevron-down"
+            class="ml-auto size-3.5 transition-transform"
+            [class.rotate-180]="nestedOpen()"
+          />
+        </button>
+
+        @if (nestedOpen()) {
+          <div class="ml-6 space-y-1 border-l border-border pl-3">
+            <a
+              routerLink="/components/accordion"
+              class="block rounded-md px-2 py-1.5 text-sm text-muted-foreground hover:bg-accent hover:text-foreground"
+            >
+              Accordion
+            </a>
+            <a
+              routerLink="/components/alert"
+              class="block rounded-md px-2 py-1.5 text-sm text-muted-foreground hover:bg-accent hover:text-foreground"
+            >
+              Alert
+            </a>
+            <a
+              routerLink="/components/button"
+              class="block rounded-md px-2 py-1.5 text-sm text-muted-foreground hover:bg-accent hover:text-foreground"
+            >
+              Button
+            </a>
+          </div>
+        }
+      </nav>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Open on click</h2>
+      <p uiCardDescription>Dropdown navigasi yang terbuka saat diklik.</p>
+    </div>
+    <div uiCardContent>
+      <button uiButton variant="outline" [cdkMenuTriggerFor]="navMenu">
+        Produk
+        <ui-icon name="chevron-down" class="size-4" />
+      </button>
+
+      <ng-template #navMenu>
+        <div cdkMenu class="ui-menu-panel w-56">
+          <a cdkMenuItem routerLink="/components/card" class="ui-menu-item">
+            <ui-icon name="blocks" class="size-4 text-muted-foreground" />
+            Card
+          </a>
+          <a cdkMenuItem routerLink="/components/carousel" class="ui-menu-item">
+            <ui-icon name="image" class="size-4 text-muted-foreground" />
+            Carousel
+          </a>
+          <a cdkMenuItem routerLink="/components/command" class="ui-menu-item">
+            <ui-icon name="command" class="size-4 text-muted-foreground" />
+            Command
+          </a>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,109 @@
+<ui-page-header
+  title="Hover Card"
+  description="Kartu pratinjau yang muncul saat trigger di-hover atau difokuskan. Mendukung empat sisi penempatan."
+>
+  <button uiButton variant="outline" routerLink="/components">
+    <ui-icon name="arrow-left" class="size-4" />
+    Katalog komponen
+  </button>
+</ui-page-header>
+
+<div class="mt-6 grid grid-cols-1 items-start gap-4">
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Sides</h2>
+      <p uiCardDescription>
+        Pilih sisi <code class="font-mono text-[12px]">top</code>,
+        <code class="font-mono text-[12px]">right</code>,
+        <code class="font-mono text-[12px]">bottom</code>, atau
+        <code class="font-mono text-[12px]">left</code>.
+      </p>
+    </div>
+    <div uiCardContent class="grid grid-cols-1 gap-10 py-10 sm:grid-cols-2">
+      <div class="flex justify-center">
+        <span class="group relative inline-flex">
+          <button uiButton variant="outline">Hover: top</button>
+          <ui-hover-card side="top">
+            <p class="text-sm font-semibold">Hover card di atas</p>
+            <p class="mt-1 text-xs text-muted-foreground">
+              Muncul saat trigger di-hover atau fokus.
+            </p>
+          </ui-hover-card>
+        </span>
+      </div>
+
+      <div class="flex justify-center">
+        <span class="group relative inline-flex">
+          <button uiButton variant="outline">Hover: right</button>
+          <ui-hover-card side="right">
+            <p class="text-sm font-semibold">Hover card di kanan</p>
+            <p class="mt-1 text-xs text-muted-foreground">Berguna untuk daftar atau sidebar.</p>
+          </ui-hover-card>
+        </span>
+      </div>
+
+      <div class="flex justify-center">
+        <span class="group relative inline-flex">
+          <button uiButton variant="outline">Hover: bottom</button>
+          <ui-hover-card side="bottom">
+            <p class="text-sm font-semibold">Hover card di bawah</p>
+            <p class="mt-1 text-xs text-muted-foreground">
+              Penempatan default untuk konten pendek.
+            </p>
+          </ui-hover-card>
+        </span>
+      </div>
+
+      <div class="flex justify-center">
+        <span class="group relative inline-flex">
+          <button uiButton variant="outline">Hover: left</button>
+          <ui-hover-card side="left">
+            <p class="text-sm font-semibold">Hover card di kiri</p>
+            <p class="mt-1 text-xs text-muted-foreground">Alternatif saat ruang kanan terbatas.</p>
+          </ui-hover-card>
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Konten kaya</h2>
+      <p uiCardDescription>Hover card bisa memuat profil, statistik, hingga tautan.</p>
+    </div>
+    <div uiCardContent class="py-10">
+      <div class="flex justify-center">
+        <span class="group relative inline-flex">
+          <button uiButton variant="ghost" class="h-auto p-0">
+            <span uiAvatar class="bg-primary-soft text-primary">DL</span>
+            <span class="text-left">
+              <span class="block text-sm font-semibold">Dewi Lestari</span>
+              <span class="block text-xs text-muted-foreground">Product Lead</span>
+            </span>
+          </button>
+
+          <ui-hover-card side="bottom" class="!w-72">
+            <div class="flex items-start gap-3">
+              <span uiAvatar data-size="lg" class="bg-primary-soft text-primary">DL</span>
+              <div class="min-w-0">
+                <p class="font-display text-sm font-semibold">Dewi Lestari</p>
+                <p class="text-xs text-muted-foreground">Product Lead · Alecto Studio</p>
+              </div>
+            </div>
+            <p class="mt-3 text-xs leading-relaxed text-muted-foreground">
+              Membangun pengalaman produk yang sederhana dan menyenangkan sejak 2021.
+            </p>
+            <div class="mt-3 flex items-center gap-4 text-[11px]">
+              <span><span class="font-semibold text-foreground">42</span> proyek</span>
+              <span><span class="font-semibold text-foreground">1.2k</span> pengikut</span>
+            </div>
+            <button uiButton variant="soft" size="sm" class="mt-3 w-full">
+              Lihat profil
+              <ui-icon name="arrow-right" class="size-3.5" />
+            </button>
+          </ui-hover-card>
+        </span>
+      </div>
+    </div>
+  </div>
+</div>

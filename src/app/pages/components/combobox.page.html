@@ -1,0 +1,293 @@
+<ui-page-header
+  title="Combobox"
+  description="Varian combobox: multiple select, object, clear, disabled, auto highlight, grup, separator, ikon, invalid, popup, async, dan form."
+>
+  <button uiButton variant="outline" routerLink="/components">
+    <ui-icon name="arrow-left" class="size-4" />
+    Katalog komponen
+  </button>
+</ui-page-header>
+
+<div class="mt-6 grid grid-cols-1 items-start gap-4">
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Multiple select</h2>
+      <p uiCardDescription>Pilih beberapa opsi; tampil sebagai chip.</p>
+    </div>
+    <div uiCardContent class="max-w-md space-y-2">
+      <label uiLabel for="cb-multi">Framework</label>
+      <ui-multi-combobox
+        inputId="cb-multi"
+        [options]="frameworks"
+        [(value)]="multi"
+        placeholder="Pilih framework…"
+      />
+      <p class="ui-help">{{ multi().length }} opsi dipilih</p>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Objects (itemToString)</h2>
+      <p uiCardDescription>Option objek menampilkan label, menyimpan ID.</p>
+    </div>
+    <div uiCardContent class="max-w-md space-y-2">
+      <label uiLabel for="cb-object">Anggota</label>
+      <ui-autocomplete
+        inputId="cb-object"
+        [options]="people"
+        [clearable]="true"
+        placeholder="Cari anggota…"
+      />
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Clear, disabled &amp; auto highlight</h2>
+      <p uiCardDescription>Varian single-select.</p>
+    </div>
+    <div uiCardContent class="grid grid-cols-1 gap-4 lg:grid-cols-3">
+      <div class="space-y-2">
+        <label uiLabel for="cb-clear">Dengan clear</label>
+        <ui-autocomplete inputId="cb-clear" [options]="frameworks" [clearable]="true" />
+      </div>
+      <div class="space-y-2">
+        <label uiLabel for="cb-disabled">Disabled</label>
+        <ui-autocomplete
+          inputId="cb-disabled"
+          [options]="frameworks"
+          value="angular"
+          [disabled]="true"
+        />
+      </div>
+      <div class="space-y-2">
+        <label uiLabel for="cb-auto">Auto highlight</label>
+        <ui-autocomplete
+          inputId="cb-auto"
+          [options]="frameworks"
+          [autoHighlight]="true"
+          [clearable]="true"
+        />
+      </div>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Disabled &amp; auto highlight (multiple)</h2>
+      <p uiCardDescription>Varian multi-select dengan state.</p>
+    </div>
+    <div uiCardContent class="grid grid-cols-1 gap-4 lg:grid-cols-2">
+      <div class="space-y-2">
+        <label uiLabel>Disabled</label>
+        <ui-multi-combobox [options]="frameworks" [disabled]="true" [value]="['angular']" />
+      </div>
+      <div class="space-y-2">
+        <label uiLabel>Auto highlight</label>
+        <ui-multi-combobox
+          [options]="frameworks"
+          [autoHighlight]="true"
+          [(value)]="autoMulti"
+          placeholder="Fokus lalu Enter…"
+        />
+      </div>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Groups &amp; separators</h2>
+      <p uiCardDescription>Kelompokkan opsi dan tambahkan garis pemisah.</p>
+    </div>
+    <div uiCardContent class="grid grid-cols-1 gap-4 lg:grid-cols-2">
+      <div class="space-y-2">
+        <label uiLabel for="cb-groups">Groups</label>
+        <ui-autocomplete inputId="cb-groups" [options]="grouped" [clearable]="true" />
+      </div>
+      <div class="space-y-2">
+        <label uiLabel for="cb-separators">Groups + separators</label>
+        <ui-autocomplete
+          inputId="cb-separators"
+          [options]="grouped"
+          [separators]="true"
+          [clearable]="true"
+        />
+      </div>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Icon addon &amp; invalid</h2>
+      <p uiCardDescription>Ganti ikon kiri dan tampilkan state error.</p>
+    </div>
+    <div uiCardContent class="grid grid-cols-1 gap-4 lg:grid-cols-2">
+      <div class="space-y-2">
+        <label uiLabel for="cb-icon">Icon addon</label>
+        <ui-autocomplete
+          inputId="cb-icon"
+          [options]="frameworks"
+          leadingIcon="command"
+          placeholder="Tekan ⌘K…"
+        />
+      </div>
+      <div class="space-y-2">
+        <label uiLabel for="cb-invalid">Invalid</label>
+        <ui-autocomplete inputId="cb-invalid" [options]="frameworks" [invalid]="true" />
+        <p class="ui-error">
+          <ui-icon name="circle-help" class="size-3" />
+          Wajib dipilih.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Popup &amp; popup custom</h2>
+      <p uiCardDescription>Combobox di dalam panel popover dengan header dan footer kustom.</p>
+    </div>
+    <div uiCardContent class="flex flex-wrap items-start gap-4">
+      <div class="relative inline-block">
+        <button uiButton variant="outline" (click)="popupOpen.set(!popupOpen())">
+          Popup
+          <ui-icon name="chevron-down" class="size-4" />
+        </button>
+        @if (popupOpen()) {
+          <div
+            class="absolute top-full left-0 z-50 mt-2 w-80 rounded-xl border border-border bg-popover p-3 shadow-xl"
+          >
+            <ui-autocomplete
+              [options]="frameworks"
+              [clearable]="true"
+              placeholder="Cari framework…"
+            />
+            <div class="mt-3 flex justify-end">
+              <button uiButton size="sm" (click)="popupOpen.set(false)">Selesai</button>
+            </div>
+          </div>
+        }
+      </div>
+
+      <div class="relative inline-block">
+        <button uiButton variant="outline" (click)="customPopupOpen.set(!customPopupOpen())">
+          Popup custom
+          <ui-icon name="chevron-down" class="size-4" />
+        </button>
+        @if (customPopupOpen()) {
+          <div
+            class="absolute top-full left-0 z-50 mt-2 w-80 rounded-xl border border-border bg-popover shadow-xl"
+          >
+            <div class="flex items-center justify-between border-b border-border px-3 py-2">
+              <p class="text-sm font-semibold">Pilih anggota</p>
+              <button
+                type="button"
+                class="grid size-6 place-items-center rounded-md text-muted-foreground hover:bg-accent"
+                (click)="customPopupOpen.set(false)"
+                aria-label="Tutup popup"
+              >
+                <ui-icon name="x" class="size-3.5" />
+              </button>
+            </div>
+            <div class="p-3">
+              <ui-autocomplete [options]="people" placeholder="Cari anggota…" />
+            </div>
+            <div class="flex justify-end border-t border-border p-3">
+              <button uiButton size="sm" (click)="customPopupOpen.set(false)">Selesai</button>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Async search</h2>
+      <p uiCardDescription>Hasil diambil dari “server” setelah 600 ms.</p>
+    </div>
+    <div uiCardContent class="grid grid-cols-1 gap-4 lg:grid-cols-2">
+      <div class="space-y-2">
+        <label uiLabel for="cb-async">Single</label>
+        <ui-autocomplete
+          inputId="cb-async"
+          [options]="asyncOptions()"
+          [loading]="asyncLoading()"
+          [filterLocally]="false"
+          [clearable]="true"
+          emptyText="Ketik untuk mencari…"
+          (searchChange)="searchAsync($event)"
+        />
+      </div>
+      <div class="space-y-2">
+        <label uiLabel>Multiple</label>
+        <ui-multi-combobox
+          [options]="asyncMultiOptions()"
+          [loading]="asyncMultiLoading()"
+          [filterLocally]="false"
+          [(value)]="asyncMulti"
+          placeholder="Ketik untuk mencari…"
+          (searchChange)="searchAsyncMulti($event)"
+        />
+      </div>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Form</h2>
+      <p uiCardDescription>Single, multiple, dan combobox di dalam popover.</p>
+    </div>
+    <div uiCardContent>
+      <form [formGroup]="form" (ngSubmit)="submit()" class="max-w-lg space-y-4" novalidate>
+        <div class="space-y-2">
+          <label uiLabel for="cb-form-single">Framework</label>
+          <ui-autocomplete
+            inputId="cb-form-single"
+            formControlName="single"
+            [options]="frameworks"
+            [clearable]="true"
+            [invalid]="form.controls.single.invalid && form.controls.single.touched"
+          />
+          @if (form.controls.single.invalid && form.controls.single.touched) {
+            <p class="ui-error">
+              <ui-icon name="circle-help" class="size-3" />
+              Framework wajib dipilih.
+            </p>
+          }
+        </div>
+
+        <div class="space-y-2">
+          <label uiLabel>Framework (multiple)</label>
+          <ui-multi-combobox formControlName="multiple" [options]="frameworks" />
+        </div>
+
+        <div class="relative space-y-2">
+          <label uiLabel>Popover form</label>
+          <button
+            uiButton
+            type="button"
+            variant="outline"
+            (click)="formPopupOpen.set(!formPopupOpen())"
+          >
+            Pilih dari popover
+          </button>
+          @if (formPopupOpen()) {
+            <div
+              class="absolute top-full left-0 z-50 mt-2 w-80 rounded-xl border border-border bg-popover p-3 shadow-xl"
+            >
+              <ui-autocomplete
+                formControlName="popover"
+                [options]="people"
+                placeholder="Cari anggota…"
+              />
+            </div>
+          }
+        </div>
+
+        <button uiButton type="submit">Kirim</button>
+      </form>
+    </div>
+  </div>
+</div>

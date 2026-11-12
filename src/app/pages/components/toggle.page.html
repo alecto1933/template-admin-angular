@@ -1,0 +1,127 @@
+<ui-page-header
+  title="Toggle"
+  description="Tombol dua state untuk aksi on/off, dengan varian outline, teks, ukuran, disabled, dan warna kustom."
+>
+  <button uiButton variant="outline" routerLink="/components">
+    <ui-icon name="arrow-left" class="size-4" />
+    Katalog komponen
+  </button>
+</ui-page-header>
+
+<div class="mt-6 grid grid-cols-1 items-start gap-4">
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Outline</h2>
+      <p uiCardDescription>Toggle ikon dengan border.</p>
+    </div>
+    <div uiCardContent class="flex flex-wrap gap-2">
+      <button
+        uiToggle
+        data-variant="outline"
+        [attr.data-state]="pressed() ? 'on' : 'off'"
+        (click)="pressed.set(!pressed())"
+        aria-label="Tandai penting"
+        [attr.aria-pressed]="pressed()"
+      >
+        <ui-icon name="star" class="size-4" />
+      </button>
+      <button
+        uiToggle
+        data-variant="outline"
+        [attr.data-state]="bold() ? 'on' : 'off'"
+        (click)="bold.set(!bold())"
+        aria-label="Tebalkan"
+      >
+        <ui-icon name="file-text" class="size-4" />
+      </button>
+      <button
+        uiToggle
+        data-variant="outline"
+        [attr.data-state]="italic() ? 'on' : 'off'"
+        (click)="italic.set(!italic())"
+        aria-label="Miringkan"
+      >
+        <ui-icon name="pencil" class="size-4" />
+      </button>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>With text</h2>
+      <p uiCardDescription>Ikon dan label dalam satu toggle.</p>
+    </div>
+    <div uiCardContent class="flex flex-wrap gap-2">
+      <button uiToggle [attr.data-state]="bold() ? 'on' : 'off'" (click)="bold.set(!bold())">
+        <ui-icon name="file-text" class="size-4" />
+        Bold
+      </button>
+      <button uiToggle [attr.data-state]="italic() ? 'on' : 'off'" (click)="italic.set(!italic())">
+        <ui-icon name="pencil" class="size-4" />
+        Italic
+      </button>
+      <button
+        uiToggle
+        data-variant="outline"
+        [attr.data-state]="pressed() ? 'on' : 'off'"
+        (click)="pressed.set(!pressed())"
+      >
+        <ui-icon name="star" class="size-4" />
+        Favorit
+      </button>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Size</h2>
+      <p uiCardDescription>Ukuran sm, md, dan lg.</p>
+    </div>
+    <div uiCardContent class="flex flex-wrap items-center gap-2">
+      <button uiToggle data-size="sm" data-variant="outline">Small</button>
+      <button uiToggle data-variant="outline">Default</button>
+      <button uiToggle data-size="lg" data-variant="outline">Large</button>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Disabled</h2>
+      <p uiCardDescription>State nonaktif.</p>
+    </div>
+    <div uiCardContent class="flex flex-wrap gap-2">
+      <button uiToggle data-variant="outline" disabled>
+        <ui-icon name="star" class="size-4" />
+        Disabled
+      </button>
+      <button uiToggle data-state="on" data-variant="outline" disabled>On disabled</button>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Custom</h2>
+      <p uiCardDescription>Warna state dapat ditimpa lewat utility.</p>
+    </div>
+    <div uiCardContent class="flex flex-wrap gap-2">
+      <button
+        uiToggle
+        data-variant="outline"
+        [attr.data-state]="custom() ? 'on' : 'off'"
+        [class]="
+          custom()
+            ? 'border-success/40 bg-success-soft text-success'
+            : 'border-input bg-transparent text-muted-foreground'
+        "
+        (click)="custom.set(!custom())"
+      >
+        <ui-icon name="check" class="size-4" />
+        Aktif
+      </button>
+      <button uiToggle data-variant="outline" class="border-destructive/30 text-destructive">
+        <ui-icon name="trash-2" class="size-4" />
+        Hapus
+      </button>
+    </div>
+  </div>
+</div>

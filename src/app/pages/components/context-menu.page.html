@@ -1,0 +1,294 @@
+<ui-page-header
+  title="Context Menu"
+  description="Menu yang muncul saat area diklik kanan. Mendukung submenu, shortcut, ikon, checkbox, radio, aksi destruktif, dan state."
+>
+  <button uiButton variant="outline" routerLink="/components">
+    <ui-icon name="arrow-left" class="size-4" />
+    Katalog komponen
+  </button>
+</ui-page-header>
+
+<div class="mt-6 grid grid-cols-1 items-start gap-4">
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Basic</h2>
+      <p uiCardDescription>Klik kanan pada area untuk membuka menu.</p>
+    </div>
+    <div uiCardContent>
+      <div
+        [cdkContextMenuTriggerFor]="basicMenu"
+        class="grid h-36 place-items-center rounded-xl border border-dashed border-input bg-muted/30 text-center text-sm text-muted-foreground"
+      >
+        <div>
+          <ui-icon name="more-horizontal" class="mx-auto mb-2 size-5" />
+          Klik kanan di area ini
+        </div>
+      </div>
+
+      <ng-template #basicMenu>
+        <div cdkMenu class="ui-menu-panel w-52">
+          <button cdkMenuItem type="button" class="ui-menu-item" (click)="action('Buka')">
+            <ui-icon name="external-link" class="size-4 text-muted-foreground" />
+            Buka
+          </button>
+          <button cdkMenuItem type="button" class="ui-menu-item" (click)="action('Unduh')">
+            <ui-icon name="download" class="size-4 text-muted-foreground" />
+            Unduh
+          </button>
+          <button cdkMenuItem type="button" class="ui-menu-item" (click)="action('Ganti nama')">
+            <ui-icon name="pencil" class="size-4 text-muted-foreground" />
+            Ganti nama
+          </button>
+          <div class="ui-menu-separator"></div>
+          <button
+            cdkMenuItem
+            type="button"
+            class="ui-menu-item is-destructive"
+            (click)="action('Hapus')"
+          >
+            <ui-icon name="trash-2" class="size-4" />
+            Hapus
+          </button>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Submenu</h2>
+      <p uiCardDescription>Item menu dapat membuka submenu.</p>
+    </div>
+    <div uiCardContent>
+      <div
+        [cdkContextMenuTriggerFor]="submenuMenu"
+        class="grid h-36 place-items-center rounded-xl border border-dashed border-input bg-muted/30 text-sm text-muted-foreground"
+      >
+        Klik kanan untuk membuka menu bertingkat
+      </div>
+
+      <ng-template #submenuMenu>
+        <div cdkMenu class="ui-menu-panel w-56">
+          <button cdkMenuItem type="button" class="ui-menu-item" (click)="action('Salin')">
+            <ui-icon name="copy" class="size-4 text-muted-foreground" />
+            Salin
+          </button>
+          <button cdkMenuItem type="button" class="ui-menu-item" [cdkMenuTriggerFor]="shareSubmenu">
+            <ui-icon name="send" class="size-4 text-muted-foreground" />
+            Bagikan
+            <ui-icon name="chevron-right" class="ml-auto size-3.5" />
+          </button>
+          <button
+            cdkMenuItem
+            type="button"
+            class="ui-menu-item"
+            [cdkMenuTriggerFor]="exportSubmenu"
+          >
+            <ui-icon name="download" class="size-4 text-muted-foreground" />
+            Ekspor
+            <ui-icon name="chevron-right" class="ml-auto size-3.5" />
+          </button>
+        </div>
+      </ng-template>
+
+      <ng-template #shareSubmenu>
+        <div cdkMenu class="ui-menu-panel w-48">
+          <button cdkMenuItem type="button" class="ui-menu-item" (click)="action('Email')">
+            <ui-icon name="mail" class="size-4 text-muted-foreground" />
+            Email
+          </button>
+          <button cdkMenuItem type="button" class="ui-menu-item" (click)="action('Tautan')">
+            <ui-icon name="copy" class="size-4 text-muted-foreground" />
+            Salin tautan
+          </button>
+        </div>
+      </ng-template>
+
+      <ng-template #exportSubmenu>
+        <div cdkMenu class="ui-menu-panel w-48">
+          <button cdkMenuItem type="button" class="ui-menu-item" (click)="action('PDF')">
+            PDF
+          </button>
+          <button cdkMenuItem type="button" class="ui-menu-item" (click)="action('CSV')">
+            CSV
+          </button>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Shortcuts</h2>
+      <p uiCardDescription>Shortcut membantu pengguna berpengalaman.</p>
+    </div>
+    <div uiCardContent>
+      <div
+        [cdkContextMenuTriggerFor]="shortcutMenu"
+        class="grid h-36 place-items-center rounded-xl border border-dashed border-input bg-muted/30 text-sm text-muted-foreground"
+      >
+        Klik kanan untuk melihat shortcut
+      </div>
+
+      <ng-template #shortcutMenu>
+        <div cdkMenu class="ui-menu-panel w-60">
+          <button cdkMenuItem type="button" class="ui-menu-item" (click)="action('Salin')">
+            Salin
+            <span class="ui-shortcut">⌘C</span>
+          </button>
+          <button cdkMenuItem type="button" class="ui-menu-item" (click)="action('Tempel')">
+            Tempel
+            <span class="ui-shortcut">⌘V</span>
+          </button>
+          <button cdkMenuItem type="button" class="ui-menu-item" (click)="action('Ganti nama')">
+            Ganti nama
+            <span class="ui-shortcut">F2</span>
+          </button>
+          <div class="ui-menu-separator"></div>
+          <button
+            cdkMenuItem
+            type="button"
+            class="ui-menu-item is-destructive"
+            (click)="action('Hapus')"
+          >
+            Hapus
+            <span class="ui-shortcut">⌫</span>
+          </button>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Icons</h2>
+      <p uiCardDescription>Ikon membantu membedakan aksi dengan cepat.</p>
+    </div>
+    <div uiCardContent>
+      <div
+        [cdkContextMenuTriggerFor]="iconMenu"
+        class="grid h-36 place-items-center rounded-xl border border-dashed border-input bg-muted/30 text-sm text-muted-foreground"
+      >
+        Klik kanan untuk menu dengan ikon
+      </div>
+
+      <ng-template #iconMenu>
+        <div cdkMenu class="ui-menu-panel w-56">
+          <button cdkMenuItem type="button" class="ui-menu-item" (click)="action('Lihat')">
+            <ui-icon name="eye" class="size-4 text-muted-foreground" />
+            Lihat detail
+          </button>
+          <button cdkMenuItem type="button" class="ui-menu-item" (click)="action('Edit')">
+            <ui-icon name="pencil" class="size-4 text-muted-foreground" />
+            Edit
+          </button>
+          <button cdkMenuItem type="button" class="ui-menu-item" (click)="action('Duplikat')">
+            <ui-icon name="copy" class="size-4 text-muted-foreground" />
+            Duplikat
+          </button>
+          <button cdkMenuItem type="button" class="ui-menu-item" (click)="action('Arsip')">
+            <ui-icon name="archive" class="size-4 text-muted-foreground" />
+            Arsipkan
+          </button>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Checkbox &amp; radio group</h2>
+      <p uiCardDescription>State menu disimpan di komponen dan ditampilkan dengan ikon centang.</p>
+    </div>
+    <div uiCardContent>
+      <div
+        [cdkContextMenuTriggerFor]="stateMenu"
+        class="grid h-36 place-items-center rounded-xl border border-dashed border-input bg-muted/30 text-sm text-muted-foreground"
+      >
+        Klik kanan untuk mengubah state
+      </div>
+
+      <ng-template #stateMenu>
+        <div cdkMenu class="ui-menu-panel w-60">
+          <p class="ui-menu-label">Tampilan</p>
+          <button
+            cdkMenuItem
+            type="button"
+            class="ui-menu-item"
+            (click)="showLabels.set(!showLabels())"
+          >
+            @if (showLabels()) {
+              <ui-icon name="check" class="size-4 text-primary" />
+            } @else {
+              <span class="size-4"></span>
+            }
+            Tampilkan label
+          </button>
+          <div class="ui-menu-separator"></div>
+          <p class="ui-menu-label">Kepadatan</p>
+          <button
+            cdkMenuItem
+            type="button"
+            class="ui-menu-item"
+            (click)="density.set('comfortable')"
+          >
+            @if (density() === 'comfortable') {
+              <ui-icon name="check" class="size-4 text-primary" />
+            } @else {
+              <span class="size-4"></span>
+            }
+            Comfortable
+          </button>
+          <button cdkMenuItem type="button" class="ui-menu-item" (click)="density.set('compact')">
+            @if (density() === 'compact') {
+              <ui-icon name="check" class="size-4 text-primary" />
+            } @else {
+              <span class="size-4"></span>
+            }
+            Compact
+          </button>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Sides</h2>
+      <p uiCardDescription>Menu mengikuti posisi kursor; coba pada area kiri dan kanan.</p>
+    </div>
+    <div uiCardContent class="grid grid-cols-1 gap-3 sm:grid-cols-2">
+      <div
+        [cdkContextMenuTriggerFor]="sideMenu"
+        class="grid h-28 place-items-center rounded-xl border border-dashed border-input bg-muted/30 text-sm text-muted-foreground"
+      >
+        Area kiri
+      </div>
+      <div
+        [cdkContextMenuTriggerFor]="sideMenu"
+        class="grid h-28 place-items-center rounded-xl border border-dashed border-input bg-muted/30 text-sm text-muted-foreground"
+      >
+        Area kanan
+      </div>
+    </div>
+
+    <ng-template #sideMenu>
+      <div cdkMenu class="ui-menu-panel w-48">
+        <button cdkMenuItem type="button" class="ui-menu-item" (click)="action('Buka')">
+          Buka
+        </button>
+        <button cdkMenuItem type="button" class="ui-menu-item" (click)="action('Salin')">
+          Salin
+        </button>
+        <button
+          cdkMenuItem
+          type="button"
+          class="ui-menu-item is-destructive"
+          (click)="action('Hapus')"
+        >
+          Hapus
+        </button>
+      </div>
+    </ng-template>
+  </div>
+</div>

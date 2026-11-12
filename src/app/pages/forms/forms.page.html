@@ -1,0 +1,312 @@
+<ui-page-header
+  title="Form"
+  description="Pola form lengkap dengan validasi, state error, dan kontrol aksesibel."
+>
+  <button uiButton variant="ghost" (click)="resetForm()">
+    <ui-icon name="refresh-cw" class="size-4" />
+    Reset
+  </button>
+  <button uiButton variant="outline" (click)="saveDraft()">Simpan draf</button>
+  <button uiButton type="submit" form="profile-form">
+    <ui-icon name="check" class="size-4" />
+    Simpan perubahan
+  </button>
+</ui-page-header>
+
+<form
+  id="profile-form"
+  [formGroup]="form"
+  (ngSubmit)="save()"
+  class="mt-6 grid grid-cols-1 items-start gap-4 lg:grid-cols-3"
+  novalidate
+>
+  <div class="space-y-4 lg:col-span-2">
+    <div uiCard>
+      <div uiCardHeader>
+        <h2 uiCardTitle>Informasi profil</h2>
+        <p uiCardDescription>Data ini tampil di halaman publik dan invoice pelanggan.</p>
+      </div>
+
+      <div uiCardContent class="grid gap-4 sm:grid-cols-2">
+        <div class="space-y-1.5">
+          <label uiLabel for="firstName">Nama depan</label>
+          <input
+            uiInput
+            id="firstName"
+            type="text"
+            formControlName="firstName"
+            autocomplete="given-name"
+            [attr.aria-invalid]="invalid('firstName') ? 'true' : null"
+          />
+          @if (invalid('firstName')) {
+            <p class="ui-error">
+              <ui-icon name="circle-help" class="size-3" />
+              Nama depan minimal 2 karakter.
+            </p>
+          }
+        </div>
+
+        <div class="space-y-1.5">
+          <label uiLabel for="lastName">Nama belakang</label>
+          <input
+            uiInput
+            id="lastName"
+            type="text"
+            formControlName="lastName"
+            autocomplete="family-name"
+            [attr.aria-invalid]="invalid('lastName') ? 'true' : null"
+          />
+          @if (invalid('lastName')) {
+            <p class="ui-error">
+              <ui-icon name="circle-help" class="size-3" />
+              Nama belakang minimal 2 karakter.
+            </p>
+          }
+        </div>
+
+        <div class="space-y-1.5">
+          <div class="flex items-center justify-between gap-2">
+            <label uiLabel for="email">Email</label>
+            <span uiBadge variant="success">
+              <ui-icon name="badge-check" class="size-3" />
+              Terverifikasi
+            </span>
+          </div>
+          <input
+            uiInput
+            id="email"
+            type="email"
+            formControlName="email"
+            autocomplete="email"
+            [attr.aria-invalid]="invalid('email') ? 'true' : null"
+          />
+          @if (invalid('email')) {
+            <p class="ui-error">
+              <ui-icon name="circle-help" class="size-3" />
+              Masukkan alamat email yang valid.
+            </p>
+          } @else {
+            <p class="ui-help">Kami tidak membagikan email Anda.</p>
+          }
+        </div>
+
+        <div class="space-y-1.5">
+          <label uiLabel for="phone">Nomor telepon</label>
+          <input
+            uiInput
+            id="phone"
+            type="tel"
+            formControlName="phone"
+            autocomplete="tel"
+            placeholder="+62 812 3456 7890"
+          />
+          <p class="ui-help">Gunakan format internasional, mis. +62.</p>
+        </div>
+
+        <div class="space-y-1.5">
+          <label uiLabel for="role">Peran</label>
+          <select uiSelect id="role" formControlName="role">
+            <option value="admin">Admin</option>
+            <option value="manager">Manajer</option>
+            <option value="staff">Staf</option>
+            <option value="finance">Keuangan</option>
+          </select>
+        </div>
+
+        <div class="space-y-1.5">
+          <label uiLabel for="timezone">Zona waktu</label>
+          <select uiSelect id="timezone" formControlName="timezone">
+            <option value="Asia/Jakarta (WIB)">Asia/Jakarta (WIB)</option>
+            <option value="Asia/Makassar (WITA)">Asia/Makassar (WITA)</option>
+            <option value="Asia/Jayapura (WIT)">Asia/Jayapura (WIT)</option>
+          </select>
+        </div>
+
+        <div class="space-y-1.5 sm:col-span-2">
+          <div class="flex items-center justify-between gap-2">
+            <label uiLabel for="bio">Bio</label>
+            <span class="text-[11px] text-muted-foreground">{{ bioLength() }}/240</span>
+          </div>
+          <textarea
+            uiTextarea
+            id="bio"
+            formControlName="bio"
+            maxlength="240"
+            rows="4"
+            (input)="onBioInput($event)"
+          ></textarea>
+          <p class="ui-help">Ditampilkan di halaman profil publik dan komentar.</p>
+        </div>
+      </div>
+
+      <div uiCardFooter class="justify-end">
+        <button uiButton variant="ghost" type="button" (click)="resetForm()">Batal</button>
+        <button uiButton type="submit">
+          <ui-icon name="check" class="size-4" />
+          Simpan perubahan
+        </button>
+      </div>
+    </div>
+
+    <div uiCard>
+      <div uiCardHeader>
+        <h2 uiCardTitle>Preferensi notifikasi</h2>
+        <p uiCardDescription>Pilih pemberitahuan yang ingin Anda terima.</p>
+      </div>
+
+      <div uiCardContent class="divide-y divide-border">
+        <div class="flex items-start justify-between gap-6 py-4 first:pt-0">
+          <div class="min-w-0">
+            <p class="text-sm font-medium">Email transaksional</p>
+            <p class="ui-help mt-0.5">Konfirmasi pesanan, invoice, dan informasi pengiriman.</p>
+          </div>
+          <ui-switch ariaLabel="Aktifkan email transaksional" [(checked)]="emailNotifications" />
+        </div>
+
+        <div class="flex items-start justify-between gap-6 py-4">
+          <div class="min-w-0">
+            <p class="text-sm font-medium">Notifikasi push</p>
+            <p class="ui-help mt-0.5">Pemberitahuan real-time di browser dan aplikasi mobile.</p>
+          </div>
+          <ui-switch ariaLabel="Aktifkan notifikasi push" [(checked)]="pushNotifications" />
+        </div>
+
+        <div class="flex items-start justify-between gap-6 py-4">
+          <div class="min-w-0">
+            <p class="text-sm font-medium">Ringkasan mingguan</p>
+            <p class="ui-help mt-0.5">Laporan performa toko setiap Senin pagi.</p>
+          </div>
+          <ui-switch ariaLabel="Aktifkan ringkasan mingguan" [(checked)]="weeklyDigest" />
+        </div>
+
+        <div class="flex items-start justify-between gap-6 py-4 last:pb-0">
+          <div class="min-w-0">
+            <p class="text-sm font-medium">Update produk</p>
+            <p class="ui-help mt-0.5">Info fitur baru dan tips penggunaan Alecto.</p>
+          </div>
+          <ui-switch ariaLabel="Aktifkan update produk" [(checked)]="productUpdates" />
+        </div>
+      </div>
+
+      <div uiCardFooter class="justify-end">
+        <button uiButton variant="outline" type="button" (click)="saveNotifications()">
+          Simpan preferensi
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <aside class="space-y-4">
+    <div uiCard>
+      <div uiCardHeader>
+        <h2 uiCardTitle>Foto profil</h2>
+        <p uiCardDescription>Avatar tampil di seluruh aplikasi.</p>
+      </div>
+      <div uiCardContent class="flex flex-col items-center pb-6 text-center">
+        <span
+          class="relative grid size-24 place-items-center rounded-full bg-primary text-2xl font-bold text-primary-foreground shadow-lg shadow-primary/25"
+        >
+          RP
+          <span
+            class="absolute right-0.5 bottom-0.5 grid size-7 place-items-center rounded-full border-2 border-card bg-success text-white"
+          >
+            <ui-icon name="check" class="size-3.5" />
+          </span>
+        </span>
+
+        <p class="mt-4 text-sm font-semibold">Raka Pratama</p>
+        <p class="text-xs text-muted-foreground">Admin · Jakarta</p>
+
+        <div class="mt-4 flex items-center gap-2">
+          <button uiButton variant="outline" size="sm" type="button" (click)="changePhoto()">
+            Ganti foto
+          </button>
+          <button
+            uiButton
+            variant="ghost"
+            size="sm"
+            type="button"
+            class="text-destructive hover:text-destructive"
+            (click)="removePhoto()"
+          >
+            Hapus
+          </button>
+        </div>
+
+        <p class="ui-help mt-3">JPG atau PNG, maksimal 2 MB.</p>
+      </div>
+    </div>
+
+    <div uiCard>
+      <div uiCardHeader>
+        <h2 uiCardTitle>Status akun</h2>
+      </div>
+      <div uiCardContent class="space-y-3 text-sm">
+        <div class="flex items-center justify-between gap-3">
+          <span class="text-muted-foreground">Email</span>
+          <span uiBadge variant="success">Terverifikasi</span>
+        </div>
+        <div class="flex items-center justify-between gap-3">
+          <span class="text-muted-foreground">Paket</span>
+          <span uiBadge variant="primary">Pro</span>
+        </div>
+        <div class="flex items-center justify-between gap-3">
+          <span class="text-muted-foreground">Bergabung</span>
+          <span class="font-medium">12 Jan 2025</span>
+        </div>
+        <div class="flex items-center justify-between gap-3">
+          <span class="text-muted-foreground">Login terakhir</span>
+          <span class="font-medium">Hari ini, 09:24</span>
+        </div>
+      </div>
+    </div>
+
+    <div uiCard class="border-destructive/30">
+      <div uiCardHeader>
+        <h2 uiCardTitle>Zona berbahaya</h2>
+        <p uiCardDescription>Tindakan ini permanen dan tidak bisa dibatalkan.</p>
+      </div>
+      <div uiCardContent>
+        <div uiAlert data-variant="danger">
+          <ui-icon name="triangle-alert" class="mt-0.5 size-4 shrink-0" />
+          <p class="leading-relaxed">
+            Menghapus akun akan menghapus seluruh data toko, pesanan, dan anggota tim.
+          </p>
+        </div>
+      </div>
+      <div uiCardFooter>
+        <button uiButton variant="destructive" type="button" (click)="deleteDialog().open()">
+          <ui-icon name="trash-2" class="size-4" />
+          Hapus akun
+        </button>
+      </div>
+    </div>
+  </aside>
+</form>
+
+<ui-dialog
+  title="Hapus akun?"
+  description="Semua data toko akan dihapus permanen. Tindakan ini tidak dapat dibatalkan."
+>
+  <div class="space-y-4 pb-2">
+    <div uiAlert data-variant="warning">
+      <ui-icon name="triangle-alert" class="mt-0.5 size-4 shrink-0" />
+      <p class="leading-relaxed">
+        Kami menyarankan mengekspor laporan dan data pelanggan sebelum melanjutkan.
+      </p>
+    </div>
+    <div class="space-y-1.5">
+      <label uiLabel for="confirm-delete">
+        Ketik <span class="font-semibold text-foreground">HAPUS</span> untuk konfirmasi
+      </label>
+      <input uiInput id="confirm-delete" type="text" placeholder="HAPUS" />
+    </div>
+  </div>
+
+  <div dialogFooter>
+    <button uiButton variant="outline" type="button" (click)="deleteDialog().close()">Batal</button>
+    <button uiButton variant="destructive" type="button" (click)="deleteAccount()">
+      Ya, hapus akun
+    </button>
+  </div>
+</ui-dialog>

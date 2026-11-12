@@ -1,0 +1,199 @@
+<ui-page-header
+  title="Input Group"
+  description="Satukan input dengan ikon, teks, tombol, kbd, dropdown, spinner, textarea, badge, dan form dalam satu kontrol."
+>
+  <button uiButton variant="outline" routerLink="/components">
+    <ui-icon name="arrow-left" class="size-4" />
+    Katalog komponen
+  </button>
+</ui-page-header>
+
+<div class="mt-6 grid grid-cols-1 items-start gap-4">
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Icon &amp; text</h2>
+      <p uiCardDescription>Addon di kiri atau kanan input untuk memberi konteks.</p>
+    </div>
+    <div uiCardContent class="grid grid-cols-1 gap-3 lg:grid-cols-2">
+      <div class="ui-input-group">
+        <span class="ui-input-group-addon">
+          <ui-icon name="search" class="size-4" />
+        </span>
+        <input uiInput type="search" placeholder="Cari pesanan…" aria-label="Cari pesanan" />
+      </div>
+
+      <div class="ui-input-group">
+        <span class="ui-input-group-addon">Rp</span>
+        <input uiInput type="number" placeholder="0" aria-label="Harga" />
+        <span class="ui-input-group-addon">IDR</span>
+      </div>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Button &amp; kbd</h2>
+      <p uiCardDescription>Tombol aksi dan shortcut hint menyatu dengan input.</p>
+    </div>
+    <div uiCardContent class="grid grid-cols-1 gap-3 lg:grid-cols-2">
+      <div class="ui-input-group">
+        <input uiInput type="email" placeholder="nama@perusahaan.com" aria-label="Email" />
+        <button uiButton>Berlangganan</button>
+      </div>
+
+      <div class="ui-input-group">
+        <span class="ui-input-group-addon">
+          <ui-icon name="search" class="size-4" />
+        </span>
+        <input
+          uiInput
+          type="search"
+          placeholder="Cari dokumentasi…"
+          aria-label="Cari dokumentasi"
+        />
+        <span class="ui-input-group-addon">
+          <kbd class="rounded border border-border bg-muted px-1.5 py-0.5 font-mono text-[10px]">
+            ⌘K
+          </kbd>
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Dropdown &amp; spinner</h2>
+      <p uiCardDescription>Menu filter dan indikator loading di dalam grup.</p>
+    </div>
+    <div uiCardContent class="grid grid-cols-1 gap-3 lg:grid-cols-2">
+      <div class="ui-input-group">
+        <input uiInput type="text" placeholder="Cari transaksi…" aria-label="Cari transaksi" />
+        <button
+          uiButton
+          variant="ghost"
+          [cdkMenuTriggerFor]="filterMenu"
+          aria-label="Filter transaksi"
+        >
+          <ui-icon name="filter" class="size-4" />
+          Filter
+        </button>
+      </div>
+
+      <div class="ui-input-group">
+        <span class="ui-input-group-addon">
+          <ui-icon name="loader-circle" class="size-4 animate-spin" />
+        </span>
+        <input uiInput type="search" value="memuat data…" readonly aria-label="Memuat data" />
+      </div>
+    </div>
+
+    <ng-template #filterMenu>
+      <div cdkMenu class="ui-menu-panel w-52">
+        <p class="ui-menu-label">Status</p>
+        <button cdkMenuItem type="button" class="ui-menu-item" (click)="action('Semua')">
+          Semua transaksi
+        </button>
+        <button cdkMenuItem type="button" class="ui-menu-item" (click)="action('Lunas')">
+          Lunas
+        </button>
+        <button cdkMenuItem type="button" class="ui-menu-item" (click)="action('Menunggu')">
+          Menunggu
+        </button>
+      </div>
+    </ng-template>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Textarea, tooltip &amp; label</h2>
+      <p uiCardDescription>Grup juga bisa membungkus textarea dan elemen bantuan.</p>
+    </div>
+    <div uiCardContent class="space-y-4">
+      <div class="space-y-1.5">
+        <label uiLabel for="ig-message">Pesan</label>
+        <div class="ui-input-group items-end">
+          <textarea
+            uiTextarea
+            id="ig-message"
+            rows="2"
+            placeholder="Tulis pesan…"
+            class="min-h-10 resize-none"
+          ></textarea>
+          <button uiButton class="m-1" size="sm">
+            <ui-icon name="send" class="size-3.5" />
+            Kirim
+          </button>
+        </div>
+      </div>
+
+      <div class="space-y-1.5">
+        <label uiLabel for="ig-domain">Domain</label>
+        <div class="ui-input-group">
+          <input uiInput id="ig-domain" type="text" value="alecto.id" />
+          <span class="ui-input-group-addon" title="Domain terverifikasi">
+            <ui-icon name="shield-check" class="size-4 text-success" />
+          </span>
+        </div>
+        <p class="ui-help">Arahkan kursor ke ikon untuk melihat tooltip.</p>
+      </div>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Custom input</h2>
+      <p uiCardDescription>Addon bisa berisi badge atau konten kustom.</p>
+    </div>
+    <div uiCardContent class="space-y-3">
+      <div class="ui-input-group">
+        <input uiInput type="text" value="alecto.id" aria-label="Domain" />
+        <span class="ui-input-group-addon">
+          <span uiBadge variant="success">Terverifikasi</span>
+        </span>
+      </div>
+
+      <div class="ui-input-group">
+        <input uiInput type="text" value="prj-2050" aria-label="ID proyek" />
+        <span class="ui-input-group-addon font-mono">ID</span>
+      </div>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Form</h2>
+      <p uiCardDescription>Input group di dalam reactive form.</p>
+    </div>
+    <div uiCardContent>
+      <form [formGroup]="form" (ngSubmit)="submit()" class="max-w-lg space-y-3" novalidate>
+        <div class="space-y-1.5">
+          <label uiLabel for="ig-form-email">Email</label>
+          <div class="ui-input-group">
+            <span class="ui-input-group-addon">
+              <ui-icon name="mail" class="size-4" />
+            </span>
+            <input
+              uiInput
+              id="ig-form-email"
+              type="email"
+              formControlName="email"
+              placeholder="nama@perusahaan.com"
+              [attr.aria-invalid]="
+                form.controls.email.invalid && (form.controls.email.touched || submitted())
+                  ? 'true'
+                  : null
+              "
+            />
+            <button uiButton type="submit">Kirim</button>
+          </div>
+          @if (form.controls.email.invalid && (form.controls.email.touched || submitted())) {
+            <p class="ui-error">
+              <ui-icon name="circle-help" class="size-3" />
+              Masukkan email yang valid.
+            </p>
+          }
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

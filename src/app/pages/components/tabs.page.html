@@ -1,0 +1,254 @@
+<ui-page-header
+  title="Tabs"
+  description="Tab horizontal dan vertikal, varian line, ikon, input/button, lazy loading, dan tab berpaginasi."
+>
+  <button uiButton variant="outline" routerLink="/components">
+    <ui-icon name="arrow-left" class="size-4" />
+    Katalog komponen
+  </button>
+</ui-page-header>
+
+<div class="mt-6 grid grid-cols-1 items-start gap-4">
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Basic &amp; icons</h2>
+      <p uiCardDescription>Varian standar dengan dan tanpa ikon.</p>
+    </div>
+    <div uiCardContent class="space-y-8">
+      <ui-tabs ariaLabel="Tab basic">
+        <ng-template uiTab label="Overview">
+          <p class="text-sm text-muted-foreground">
+            Ringkasan performa toko dan aktivitas terbaru.
+          </p>
+        </ng-template>
+        <ng-template uiTab label="Aktivitas">
+          <p class="text-sm text-muted-foreground">Log perubahan dan aktivitas anggota tim.</p>
+        </ng-template>
+        <ng-template uiTab label="Pengaturan">
+          <p class="text-sm text-muted-foreground">Preferensi workspace dan notifikasi.</p>
+        </ng-template>
+      </ui-tabs>
+
+      <ui-tabs ariaLabel="Tab dengan ikon">
+        <ng-template uiTab label="Dashboard" icon="layout-dashboard">
+          <p class="text-sm text-muted-foreground">Panel ringkasan.</p>
+        </ng-template>
+        <ng-template uiTab label="Pesanan" icon="shopping-cart">
+          <p class="text-sm text-muted-foreground">Daftar transaksi.</p>
+        </ng-template>
+        <ng-template uiTab label="Pengaturan" icon="settings">
+          <p class="text-sm text-muted-foreground">Konfigurasi aplikasi.</p>
+        </ng-template>
+      </ui-tabs>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Line &amp; icons only</h2>
+      <p uiCardDescription>Tab garis bawah dan tab khusus ikon.</p>
+    </div>
+    <div uiCardContent class="space-y-8">
+      <div>
+        <div class="flex gap-4 border-b border-border" role="tablist" aria-label="Tab line">
+          @for (tab of ['Overview', 'Aktivitas', 'Keamanan']; track tab; let index = $index) {
+            <button
+              type="button"
+              role="tab"
+              class="cursor-pointer border-b-2 pb-2 text-sm font-medium transition-colors"
+              [class]="
+                line() === tab.toLowerCase()
+                  ? 'border-primary text-foreground'
+                  : 'border-transparent text-muted-foreground hover:text-foreground'
+              "
+              (click)="line.set(tab.toLowerCase())"
+            >
+              {{ tab }}
+            </button>
+          }
+        </div>
+        <p class="mt-4 text-sm text-muted-foreground">Panel aktif: {{ line() }}</p>
+      </div>
+
+      <div class="flex items-center gap-1">
+        @for (
+          item of [
+            { id: 'grid', icon: 'layout-dashboard', label: 'Grid' },
+            { id: 'list', icon: 'file-text', label: 'List' },
+            { id: 'table', icon: 'table-2', label: 'Table' },
+          ];
+          track item.id
+        ) {
+          <button
+            type="button"
+            class="grid size-9 cursor-pointer place-items-center rounded-lg transition-colors"
+            [class]="
+              iconsOnly() === item.id
+                ? 'bg-primary text-primary-foreground'
+                : 'text-muted-foreground hover:bg-accent hover:text-foreground'
+            "
+            [attr.aria-label]="item.label"
+            (click)="iconsOnly.set(item.id)"
+          >
+            <ui-icon [name]="$any(item.icon)" class="size-4" />
+          </button>
+        }
+      </div>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Vertical</h2>
+      <p uiCardDescription>Navigasi tab di sisi kiri konten.</p>
+    </div>
+    <div uiCardContent class="grid grid-cols-1 gap-4 sm:grid-cols-[180px_1fr]">
+      <div class="flex flex-col gap-1" role="tablist" aria-label="Tab vertikal">
+        @for (
+          tab of [
+            { id: 'overview', label: 'Overview', icon: 'layout-dashboard' },
+            { id: 'orders', label: 'Pesanan', icon: 'shopping-cart' },
+            { id: 'settings', label: 'Pengaturan', icon: 'settings' },
+          ];
+          track tab.id
+        ) {
+          <button
+            type="button"
+            class="flex cursor-pointer items-center gap-2.5 rounded-lg px-3 py-2 text-left text-sm font-medium transition-colors"
+            [class]="
+              vertical() === tab.id
+                ? 'bg-primary-soft text-primary'
+                : 'text-muted-foreground hover:bg-accent hover:text-foreground'
+            "
+            (click)="vertical.set(tab.id)"
+          >
+            <ui-icon [name]="$any(tab.icon)" class="size-4" />
+            {{ tab.label }}
+          </button>
+        }
+      </div>
+      <div class="rounded-xl border border-border p-4 text-sm text-muted-foreground">
+        Konten tab <span class="font-semibold text-foreground">{{ vertical() }}</span
+        >.
+      </div>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>With input and button</h2>
+      <p uiCardDescription>Tablist dengan pencarian dan aksi di kanan.</p>
+    </div>
+    <div uiCardContent>
+      <div class="flex flex-wrap items-center gap-2 border-b border-border pb-2">
+        <div class="flex flex-1 gap-1">
+          @for (tab of ['Overview', 'Aktivitas', 'Anggota']; track tab) {
+            <button
+              type="button"
+              class="cursor-pointer rounded-lg px-3 py-1.5 text-sm font-medium transition-colors"
+              [class]="
+                headerTab() === tab.toLowerCase()
+                  ? 'bg-accent text-foreground'
+                  : 'text-muted-foreground hover:text-foreground'
+              "
+              (click)="headerTab.set(tab.toLowerCase())"
+            >
+              {{ tab }}
+            </button>
+          }
+        </div>
+
+        <div class="relative">
+          <ui-icon
+            name="search"
+            class="pointer-events-none absolute top-1/2 left-3 size-3.5 -translate-y-1/2 text-muted-foreground"
+          />
+          <input
+            uiInput
+            type="search"
+            class="h-9 w-48 pl-9"
+            placeholder="Cari…"
+            aria-label="Cari tab"
+          />
+        </div>
+        <button uiButton size="sm">
+          <ui-icon name="plus" class="size-3.5" />
+          Tambah
+        </button>
+      </div>
+      <p class="mt-4 text-sm text-muted-foreground">
+        Panel {{ headerTab() }} dengan pencarian dan tombol aksi.
+      </p>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Lazy loading</h2>
+      <p uiCardDescription>Konten tab hanya dirender saat tab aktif.</p>
+    </div>
+    <div uiCardContent>
+      <ui-tabs ariaLabel="Tab lazy">
+        <ng-template uiTab label="Panel A">
+          <div class="rounded-xl border border-border p-4 text-sm">
+            Panel A dirender.
+            <button uiButton size="sm" class="ml-2" (click)="lazyCount.set(lazyCount() + 1)">
+              Klik {{ lazyCount() }}
+            </button>
+          </div>
+        </ng-template>
+        <ng-template uiTab label="Panel B">
+          <div class="rounded-xl border border-border p-4 text-sm">
+            Panel B baru dibuat saat tab ini dibuka.
+          </div>
+        </ng-template>
+      </ui-tabs>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Paginated tabs</h2>
+      <p uiCardDescription>Tab panjang dibagi menjadi beberapa halaman.</p>
+    </div>
+    <div uiCardContent>
+      <div class="flex flex-wrap items-center gap-2 border-b border-border pb-2">
+        @for (tab of visibleTabs(); track tab) {
+          <button
+            type="button"
+            class="cursor-pointer rounded-lg px-2.5 py-1.5 text-sm font-medium transition-colors"
+            [class]="
+              headerTab() === tab.toLowerCase()
+                ? 'bg-primary-soft text-primary'
+                : 'text-muted-foreground hover:bg-accent hover:text-foreground'
+            "
+            (click)="headerTab.set(tab.toLowerCase())"
+          >
+            {{ tab }}
+          </button>
+        }
+        <div class="ml-auto flex gap-1">
+          <button
+            uiButton
+            variant="ghost"
+            size="icon-sm"
+            (click)="previousTabPage()"
+            aria-label="Tab sebelumnya"
+          >
+            <ui-icon name="chevron-left" class="size-4" />
+          </button>
+          <button
+            uiButton
+            variant="ghost"
+            size="icon-sm"
+            (click)="nextTabPage()"
+            aria-label="Tab berikutnya"
+          >
+            <ui-icon name="chevron-right" class="size-4" />
+          </button>
+        </div>
+      </div>
+      <p class="mt-4 text-sm text-muted-foreground">Halaman tab {{ tabPage() + 1 }} dari 2.</p>
+    </div>
+  </div>
+</div>

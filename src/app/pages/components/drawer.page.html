@@ -1,0 +1,155 @@
+<ui-page-header
+  title="Drawer"
+  description="Panel samping yang muncul dari empat arah, mendukung konten scroll, footer aksi, dan drawer bertingkat."
+>
+  <button uiButton variant="outline" routerLink="/components">
+    <ui-icon name="arrow-left" class="size-4" />
+    Katalog komponen
+  </button>
+</ui-page-header>
+
+<div class="mt-6 grid grid-cols-1 items-start gap-4">
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Direction</h2>
+      <p uiCardDescription>Buka drawer dari kanan, kiri, atas, atau bawah.</p>
+    </div>
+    <div uiCardContent class="flex flex-wrap gap-2">
+      <button uiButton (click)="rightOpen.set(true)">
+        <ui-icon name="arrow-right" class="size-4" />
+        Kanan
+      </button>
+      <button uiButton variant="outline" (click)="leftOpen.set(true)">
+        <ui-icon name="arrow-left" class="size-4" />
+        Kiri
+      </button>
+      <button uiButton variant="outline" (click)="topOpen.set(true)">
+        <ui-icon name="chevron-up" class="size-4" />
+        Atas
+      </button>
+      <button uiButton variant="outline" (click)="bottomOpen.set(true)">
+        <ui-icon name="chevron-down" class="size-4" />
+        Bawah
+      </button>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Nested</h2>
+      <p uiCardDescription>Drawer pertama dapat membuka drawer kedua di atasnya.</p>
+    </div>
+    <div uiCardContent>
+      <button uiButton (click)="nestedOne.set(true)">Buka drawer bertingkat</button>
+    </div>
+  </div>
+</div>
+
+<ui-drawer
+  [(open)]="rightOpen"
+  direction="right"
+  title="Filter pesanan"
+  description="Terapkan filter untuk mempersempit daftar."
+>
+  <div class="space-y-4">
+    <div class="space-y-1.5">
+      <label uiLabel for="drawer-status">Status</label>
+      <select uiSelect id="drawer-status">
+        <option>Semua status</option>
+        <option>Lunas</option>
+        <option>Menunggu</option>
+      </select>
+    </div>
+    <div class="space-y-1.5">
+      <label uiLabel for="drawer-date">Tanggal</label>
+      <input uiInput id="drawer-date" type="date" />
+    </div>
+  </div>
+  <div drawerFooter>
+    <button uiButton variant="outline" (click)="rightOpen.set(false)">Batal</button>
+    <button uiButton (click)="rightOpen.set(false)">Terapkan</button>
+  </div>
+</ui-drawer>
+
+<ui-drawer
+  [(open)]="leftOpen"
+  direction="left"
+  title="Navigasi cepat"
+  description="Drawer dari kiri untuk menu kontekstual."
+>
+  <nav class="space-y-1">
+    <button type="button" class="ui-sidebar-link w-full">
+      <ui-icon name="layout-dashboard" class="size-[18px]" />
+      Dashboard
+    </button>
+    <button type="button" class="ui-sidebar-link w-full">
+      <ui-icon name="shopping-cart" class="size-[18px]" />
+      Pesanan
+    </button>
+    <button type="button" class="ui-sidebar-link w-full">
+      <ui-icon name="settings" class="size-[18px]" />
+      Pengaturan
+    </button>
+  </nav>
+</ui-drawer>
+
+<ui-drawer
+  [(open)]="topOpen"
+  direction="top"
+  title="Pemberitahuan"
+  description="Drawer dari atas cocok untuk pengumuman."
+>
+  <div uiAlert data-variant="info">
+    <ui-icon name="info" class="mt-0.5 size-4 shrink-0" />
+    <p class="leading-relaxed">Pemeliharaan server dijadwalkan Sabtu pukul 22.00 WIB.</p>
+  </div>
+</ui-drawer>
+
+<ui-drawer
+  [(open)]="bottomOpen"
+  direction="bottom"
+  title="Aksi cepat"
+  description="Drawer dari bawah untuk mobile action sheet."
+>
+  <div class="grid grid-cols-2 gap-3">
+    <button uiButton variant="outline">
+      <ui-icon name="download" class="size-4" />
+      Unduh
+    </button>
+    <button uiButton variant="outline">
+      <ui-icon name="send" class="size-4" />
+      Bagikan
+    </button>
+  </div>
+</ui-drawer>
+
+<ui-drawer
+  [(open)]="nestedOne"
+  direction="right"
+  title="Drawer pertama"
+  description="Buka drawer kedua dari sini."
+>
+  <p class="text-sm leading-relaxed text-muted-foreground">
+    Drawer ini tetap terbuka saat drawer kedua muncul di atasnya.
+  </p>
+  <div class="mt-4">
+    <button uiButton (click)="nestedTwo.set(true)">Buka drawer kedua</button>
+  </div>
+  <div drawerFooter>
+    <button uiButton variant="outline" (click)="nestedOne.set(false)">Tutup</button>
+  </div>
+</ui-drawer>
+
+<ui-drawer
+  [(open)]="nestedTwo"
+  direction="right"
+  title="Drawer kedua"
+  description="Ditumpuk di atas drawer pertama."
+>
+  <p class="text-sm leading-relaxed text-muted-foreground">
+    Gunakan pola ini untuk alur bertingkat, misalnya detail lalu konfirmasi.
+  </p>
+  <div drawerFooter>
+    <button uiButton (click)="nestedTwo.set(false)">Selesai</button>
+  </div>
+</ui-drawer>

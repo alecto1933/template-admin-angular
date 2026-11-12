@@ -1,0 +1,122 @@
+<ui-page-header
+  title="Select"
+  description="Select dengan grup, multiple, scroll, disabled, invalid, object values, placeholder, dan integrasi form."
+>
+  <button uiButton variant="outline" routerLink="/components">
+    <ui-icon name="arrow-left" class="size-4" />
+    Katalog komponen
+  </button>
+</ui-page-header>
+
+<div class="mt-6 grid grid-cols-1 items-start gap-4">
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Groups</h2>
+      <p uiCardDescription>Opsi dikelompokkan dengan header.</p>
+    </div>
+    <div uiCardContent class="max-w-md space-y-2">
+      <label uiLabel for="sel-groups">Negara</label>
+      <ui-select inputId="sel-groups" [options]="countries" [(value)]="single" />
+      <p class="ui-help">Nilai: {{ single() || '—' }}</p>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Multiple</h2>
+      <p uiCardDescription>Pilih lebih dari satu; tampil sebagai chip.</p>
+    </div>
+    <div uiCardContent class="max-w-md space-y-2">
+      <label uiLabel>Negara</label>
+      <ui-select [options]="countries" [multiple]="true" [(value)]="multi" [clearable]="true" />
+      <p class="ui-help">{{ multi().length }} dipilih</p>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Scrollable</h2>
+      <p uiCardDescription>Panel dibatasi tingginya saat opsi banyak.</p>
+    </div>
+    <div uiCardContent class="max-w-md space-y-2">
+      <label uiLabel for="sel-many">Opsi</label>
+      <ui-select inputId="sel-many" [options]="many" [maxHeight]="220" placeholder="Pilih opsi…" />
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Disabled &amp; invalid</h2>
+      <p uiCardDescription>State nonaktif dan error.</p>
+    </div>
+    <div uiCardContent class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+      <div class="space-y-2">
+        <label uiLabel>Disabled</label>
+        <ui-select [options]="countries" value="id" [disabled]="true" />
+      </div>
+      <div class="space-y-2">
+        <label uiLabel>Invalid</label>
+        <ui-select [options]="countries" [invalid]="true" placeholder="Pilih negara…" />
+        <p class="ui-error">
+          <ui-icon name="circle-help" class="size-3" />
+          Negara wajib dipilih.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Object values</h2>
+      <p uiCardDescription>Nilai tersimpan berupa ID, label tetap ditampilkan.</p>
+    </div>
+    <div uiCardContent class="max-w-md space-y-2">
+      <label uiLabel for="sel-project">Proyek</label>
+      <ui-select
+        inputId="sel-project"
+        [options]="projects"
+        [(value)]="projectValue"
+        [clearable]="true"
+      />
+      <p class="ui-help">
+        ID: <code class="font-mono">{{ projectValue() || '—' }}</code>
+      </p>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Placeholder</h2>
+      <p uiCardDescription>Placeholder tampil saat belum ada pilihan.</p>
+    </div>
+    <div uiCardContent class="max-w-md space-y-2">
+      <label uiLabel for="sel-placeholder">Kota</label>
+      <ui-select inputId="sel-placeholder" [options]="countries" placeholder="Pilih negara asal…" />
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Form</h2>
+      <p uiCardDescription>Single dan multiple di reactive form.</p>
+    </div>
+    <div uiCardContent>
+      <form [formGroup]="form" (ngSubmit)="submit()" class="max-w-lg space-y-4">
+        <div class="space-y-2">
+          <label uiLabel for="sel-form">Negara</label>
+          <ui-select
+            inputId="sel-form"
+            formControlName="country"
+            [options]="countries"
+            [clearable]="true"
+          />
+        </div>
+        <div class="space-y-2">
+          <label uiLabel>Framework</label>
+          <ui-select formControlName="frameworks" [options]="many.slice(0, 6)" [multiple]="true" />
+        </div>
+        <button uiButton type="submit">Simpan</button>
+      </form>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,139 @@
+<ui-page-header
+  title="Empty"
+  description="Tampilan saat data belum ada: outline, latar penuh, avatar, avatar group, dan input group untuk mengajak pengguna melakukan aksi."
+>
+  <button uiButton variant="outline" routerLink="/components">
+    <ui-icon name="arrow-left" class="size-4" />
+    Katalog komponen
+  </button>
+</ui-page-header>
+
+<div class="mt-6 grid grid-cols-1 items-start gap-4">
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Outline</h2>
+      <p uiCardDescription>Kotak dashed untuk area kosong di dalam konten.</p>
+    </div>
+    <div uiCardContent>
+      <div
+        class="flex flex-col items-center rounded-xl border border-dashed border-input px-6 py-12 text-center"
+      >
+        <span class="grid size-12 place-items-center rounded-2xl bg-muted text-muted-foreground">
+          <ui-icon name="archive" class="size-5" />
+        </span>
+        <p class="mt-4 font-display text-base font-semibold">Belum ada produk</p>
+        <p class="mt-1 max-w-sm text-sm text-muted-foreground">
+          Tambahkan produk pertama Anda untuk mulai berjualan.
+        </p>
+        <button uiButton class="mt-5">
+          <ui-icon name="plus" class="size-4" />
+          Tambah produk
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Background</h2>
+      <p uiCardDescription>Latar muted untuk membedakan dari konten sekitar.</p>
+    </div>
+    <div uiCardContent>
+      <div class="flex flex-col items-center rounded-xl bg-muted/50 px-6 py-12 text-center">
+        <span
+          class="grid size-12 place-items-center rounded-2xl bg-card text-muted-foreground shadow-sm"
+        >
+          <ui-icon name="package" class="size-5" />
+        </span>
+        <p class="mt-4 font-display text-base font-semibold">Gudang masih kosong</p>
+        <p class="mt-1 max-w-sm text-sm text-muted-foreground">
+          Semua produk sedang tidak tersedia. Hubungi supplier untuk restock.
+        </p>
+        <button uiButton variant="outline" class="mt-5">Hubungi supplier</button>
+      </div>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Avatar</h2>
+      <p uiCardDescription>Gunakan avatar saat empty state terkait pengguna.</p>
+    </div>
+    <div uiCardContent>
+      <div class="flex flex-col items-center px-6 py-10 text-center">
+        <span class="relative inline-flex">
+          <span uiAvatar data-size="xl" class="bg-primary-soft text-primary">RP</span>
+          <span uiAvatarBadge class="bg-warning">
+            <ui-icon name="clock" class="size-2.5" />
+          </span>
+        </span>
+        <p class="mt-4 font-display text-base font-semibold">Belum ada undangan</p>
+        <p class="mt-1 max-w-sm text-sm text-muted-foreground">
+          Undang anggota tim untuk mulai berkolaborasi di workspace ini.
+        </p>
+        <button uiButton variant="soft" class="mt-5">
+          <ui-icon name="user-plus" class="size-4" />
+          Undang anggota
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Avatar group</h2>
+      <p uiCardDescription>Tunjukkan siapa saja yang sudah bergabung dan siapa yang belum.</p>
+    </div>
+    <div uiCardContent>
+      <div class="flex flex-col items-center px-6 py-10 text-center">
+        <div uiAvatarGroup>
+          <span uiAvatar class="bg-primary-soft text-primary">RP</span>
+          <span uiAvatar class="bg-success-soft text-success">DL</span>
+          <span uiAvatar class="bg-warning-soft text-warning">BS</span>
+          <span uiAvatar class="bg-muted text-muted-foreground">+3</span>
+        </div>
+        <p class="mt-4 font-display text-base font-semibold">Tim Anda baru 6 orang</p>
+        <p class="mt-1 max-w-sm text-sm text-muted-foreground">
+          Tambahkan anggota lain agar pekerjaan bisa dibagi lebih cepat.
+        </p>
+        <div class="mt-5 flex flex-wrap justify-center gap-2">
+          <button uiButton size="sm">
+            <ui-icon name="plus" class="size-3.5" />
+            Undang
+          </button>
+          <button uiButton size="sm" variant="outline">Kelola tim</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Input group</h2>
+      <p uiCardDescription>
+        Empty state dengan aksi input, misalnya berlangganan atau mencari data.
+      </p>
+    </div>
+    <div uiCardContent>
+      <div class="flex flex-col items-center px-6 py-10 text-center">
+        <span class="grid size-12 place-items-center rounded-2xl bg-primary-soft text-primary">
+          <ui-icon name="mail" class="size-5" />
+        </span>
+        <p class="mt-4 font-display text-base font-semibold">Belum ada laporan</p>
+        <p class="mt-1 max-w-sm text-sm text-muted-foreground">
+          Masukkan email untuk menerima laporan mingguan pertama Anda.
+        </p>
+        <div uiButtonGroup class="mt-5">
+          <input
+            uiInput
+            type="email"
+            class="w-64"
+            placeholder="nama@perusahaan.com"
+            aria-label="Email"
+          />
+          <button uiButton>Berlangganan</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

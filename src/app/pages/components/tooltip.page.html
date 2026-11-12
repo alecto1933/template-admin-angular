@@ -1,0 +1,106 @@
+<ui-page-header
+  title="Tooltip"
+  description="Keterangan singkat saat hover atau fokus, dengan posisi, state disabled, dan konten template."
+>
+  <button uiButton variant="outline" routerLink="/components">
+    <ui-icon name="arrow-left" class="size-4" />
+    Katalog komponen
+  </button>
+</ui-page-header>
+
+<div class="mt-6 grid grid-cols-1 items-start gap-4">
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Simple</h2>
+      <p uiCardDescription>Bungkus trigger dan tooltip dalam grup hover.</p>
+    </div>
+    <div uiCardContent class="py-10">
+      <span class="group relative inline-flex">
+        <button uiButton variant="outline">Hover saya</button>
+        <ui-tooltip>Simpan perubahan</ui-tooltip>
+      </span>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Group</h2>
+      <p uiCardDescription>Beberapa trigger dalam satu baris.</p>
+    </div>
+    <div uiCardContent class="flex flex-wrap gap-3 py-10">
+      @for (
+        item of [
+          { label: 'Edit', icon: 'pencil', tip: 'Edit item' },
+          { label: 'Duplikat', icon: 'copy', tip: 'Duplikat item' },
+          { label: 'Hapus', icon: 'trash-2', tip: 'Hapus permanen' },
+        ];
+        track item.label
+      ) {
+        <span class="group relative inline-flex">
+          <button uiButton variant="outline" size="sm">
+            <ui-icon [name]="$any(item.icon)" class="size-4" />
+            {{ item.label }}
+          </button>
+          <ui-tooltip>{{ item.tip }}</ui-tooltip>
+        </span>
+      }
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Positions</h2>
+      <p uiCardDescription>Top, right, bottom, dan left.</p>
+    </div>
+    <div uiCardContent class="flex flex-wrap items-center justify-center gap-6 py-14">
+      @for (position of ['top', 'right', 'bottom', 'left']; track position) {
+        <span class="group relative inline-flex">
+          <button uiButton variant="outline" size="sm">{{ position }}</button>
+          <ui-tooltip [position]="$any(position)">Tooltip {{ position }}</ui-tooltip>
+        </span>
+      }
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Disabled</h2>
+      <p uiCardDescription>Tooltip bisa dinonaktifkan, atau dipasang pada tombol disabled.</p>
+    </div>
+    <div uiCardContent class="flex flex-wrap gap-6 py-10">
+      <span class="group relative inline-flex">
+        <button uiButton variant="outline">Tooltip disabled</button>
+        <ui-tooltip [disabled]="true">Tidak akan muncul</ui-tooltip>
+      </span>
+
+      <span class="group relative inline-flex" tabindex="0">
+        <button uiButton disabled>Tombol disabled</button>
+        <ui-tooltip>Fitur belum tersedia di paket Anda</ui-tooltip>
+      </span>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Template</h2>
+      <p uiCardDescription>Konten tooltip bisa lebih kaya dari satu baris.</p>
+    </div>
+    <div uiCardContent class="py-10">
+      <span class="group relative inline-flex">
+        <button uiButton variant="soft">
+          <ui-icon name="info" class="size-4" />
+          Detail paket
+        </button>
+        <ui-tooltip position="bottom" class="!max-w-72 !px-3 !py-2">
+          <span class="block font-semibold">Nimbus Pro</span>
+          <span class="mt-0.5 block font-normal opacity-80">
+            Anggota tak terbatas, analitik lanjutan, dan dukungan prioritas.
+          </span>
+          <span class="mt-1 block font-normal opacity-80">
+            Tekan <kbd class="rounded border border-white/30 px-1">⌘K</kbd> untuk mencari fitur.
+          </span>
+        </ui-tooltip>
+      </span>
+    </div>
+  </div>
+</div>

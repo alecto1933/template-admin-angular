@@ -1,0 +1,575 @@
+<ui-page-header
+  title="Autocomplete"
+  description="Combobox dengan pencarian, keyboard navigation, clear button, grup, object value, free-form text, async search, dan integrasi reactive form."
+>
+  <button uiButton variant="outline" routerLink="/components">
+    <ui-icon name="arrow-left" class="size-4" />
+    Katalog komponen
+  </button>
+</ui-page-header>
+
+<div class="mt-6 grid grid-cols-1 items-start gap-4">
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>With clear button</h2>
+      <p uiCardDescription>
+        Tombol hapus muncul saat ada teks atau pilihan. Ikon pencarian selalu ada di kiri input.
+      </p>
+    </div>
+    <div uiCardContent class="space-y-2">
+      <label uiLabel for="ac-clear">Framework</label>
+      <ui-autocomplete
+        inputId="ac-clear"
+        class="max-w-md"
+        [options]="frameworks"
+        [clearable]="true"
+        placeholder="Pilih framework…"
+      />
+      <p class="ui-help">Klik ikon X untuk mengosongkan nilai dan filter.</p>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Disabled</h2>
+      <p uiCardDescription>Input tidak bisa difokus, dibuka, atau diubah.</p>
+    </div>
+    <div uiCardContent class="space-y-2">
+      <label uiLabel for="ac-disabled">Framework</label>
+      <ui-autocomplete
+        inputId="ac-disabled"
+        class="max-w-md"
+        value="angular"
+        [options]="frameworks"
+        [disabled]="true"
+        placeholder="Pilih framework…"
+      />
+      <p class="ui-help">Nilai tetap terlihat meskipun input dinonaktifkan.</p>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Invalid</h2>
+      <p uiCardDescription>
+        State error memakai border dan ring merah, plus pesan yang terhubung ke input.
+      </p>
+    </div>
+    <div uiCardContent class="space-y-2">
+      <label uiLabel for="ac-invalid">Framework</label>
+      <ui-autocomplete
+        inputId="ac-invalid"
+        class="max-w-md"
+        [options]="frameworks"
+        [invalid]="true"
+        placeholder="Pilih framework…"
+      />
+      <p class="ui-error">
+        <ui-icon name="circle-help" class="size-3" />
+        Framework wajib dipilih.
+      </p>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Auto highlight</h2>
+      <p uiCardDescription>
+        Opsi pertama otomatis aktif saat dropdown dibuka, sehingga Enter langsung memilihnya.
+      </p>
+    </div>
+    <div uiCardContent class="space-y-2">
+      <label uiLabel for="ac-auto">Framework</label>
+      <ui-autocomplete
+        inputId="ac-auto"
+        class="max-w-md"
+        [options]="frameworks"
+        [autoHighlight]="true"
+        [clearable]="true"
+        placeholder="Fokus lalu tekan Enter…"
+      />
+      <p class="ui-help">Coba fokus ke input, lalu tekan Enter tanpa memilih apa pun.</p>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Auto highlight (search)</h2>
+      <p uiCardDescription>
+        Selain auto-highlight, teks yang cocok dengan pencarian disorot di dalam opsi.
+      </p>
+    </div>
+    <div uiCardContent class="space-y-2">
+      <label uiLabel for="ac-highlight">Framework</label>
+      <ui-autocomplete
+        inputId="ac-highlight"
+        class="max-w-md"
+        [options]="frameworks"
+        [autoHighlight]="true"
+        [highlightMatch]="true"
+        [clearable]="true"
+        placeholder="Ketik “an”…"
+      />
+      <p class="ui-help">Cocokkan teks untuk melihat highlight di daftar.</p>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>With groups</h2>
+      <p uiCardDescription>
+        Isi properti <code class="font-mono text-[12px]">group</code> pada option untuk
+        mengelompokkan hasil.
+      </p>
+    </div>
+    <div uiCardContent class="space-y-2">
+      <label uiLabel for="ac-groups">Cari apa saja</label>
+      <ui-autocomplete
+        inputId="ac-groups"
+        class="max-w-md"
+        [options]="groupedOptions"
+        [clearable]="true"
+        placeholder="Framework, kota, atau bahasa…"
+      />
+      <p class="ui-help">Header grup tidak ikut terpilih saat navigasi.</p>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>With group and separators</h2>
+      <p uiCardDescription>
+        Tambahkan <code class="font-mono text-[12px]">separators</code> untuk garis pemisah antar
+        opsi dalam grup.
+      </p>
+    </div>
+    <div uiCardContent class="space-y-2">
+      <label uiLabel for="ac-separators">Cari apa saja</label>
+      <ui-autocomplete
+        inputId="ac-separators"
+        class="max-w-md"
+        [options]="groupedOptions"
+        [clearable]="true"
+        [separators]="true"
+        placeholder="Framework, kota, atau bahasa…"
+      />
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Object (custom label)</h2>
+      <p uiCardDescription>
+        Option berisi objek dengan label dan deskripsi; input menampilkan label, sedangkan nilai
+        tersimpan tetap berupa ID.
+      </p>
+    </div>
+    <div uiCardContent class="space-y-2">
+      <label uiLabel for="ac-people">Anggota tim</label>
+      <ui-autocomplete
+        inputId="ac-people"
+        class="max-w-md"
+        [options]="people"
+        [(value)]="personValue"
+        [clearable]="true"
+        placeholder="Cari nama atau email…"
+      />
+      <p class="ui-help">
+        ID tersimpan:
+        <code class="font-mono text-[12px] text-foreground">{{ personValue() || '—' }}</code>
+      </p>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Object (id value)</h2>
+      <p uiCardDescription>
+        Nilai form menggunakan ID proyek, sementara pengguna melihat nama proyek.
+      </p>
+    </div>
+    <div uiCardContent class="space-y-2">
+      <label uiLabel for="ac-projects">Proyek</label>
+      <ui-autocomplete
+        inputId="ac-projects"
+        class="max-w-md"
+        [options]="projects"
+        [(value)]="projectValue"
+        [clearable]="true"
+        placeholder="Cari proyek…"
+      />
+      <p class="ui-help">
+        Nilai terpilih:
+        <code class="font-mono text-[12px] text-foreground">{{ projectValue() || '—' }}</code>
+      </p>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Free-form text</h2>
+      <p uiCardDescription>
+        Pengguna boleh memilih saran atau mengetik nilai yang tidak ada di daftar.
+      </p>
+    </div>
+    <div uiCardContent class="space-y-2">
+      <label uiLabel for="ac-free">Topik</label>
+      <ui-autocomplete
+        inputId="ac-free"
+        class="max-w-md"
+        [options]="frameworks"
+        [allowCustom]="true"
+        [(value)]="freeText"
+        [clearable]="true"
+        placeholder="Pilih atau ketik bebas…"
+      />
+      <p class="ui-help">
+        Nilai:
+        <code class="font-mono text-[12px] text-foreground">{{ freeText() || '—' }}</code>
+        — teks bebas disimpan apa adanya.
+      </p>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Async search</h2>
+      <p uiCardDescription>
+        Filter dilakukan di server: komponen hanya mengirim query dan menampilkan state loading.
+      </p>
+    </div>
+    <div uiCardContent class="space-y-2">
+      <label uiLabel for="ac-async">Cari framework</label>
+      <ui-autocomplete
+        inputId="ac-async"
+        class="max-w-md"
+        [options]="asyncOptions()"
+        [loading]="asyncLoading()"
+        [filterLocally]="false"
+        [clearable]="true"
+        emptyText="Ketik untuk mencari framework…"
+        placeholder="Cari framework…"
+        (searchChange)="onAsyncSearch($event)"
+      />
+      <p class="ui-help">Hasil muncul setelah 700 ms untuk mensimulasikan request jaringan.</p>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Form</h2>
+      <p uiCardDescription>
+        Komponen mendukung
+        <code class="font-mono text-[12px]">formControlName</code> lewat ControlValueAccessor.
+      </p>
+    </div>
+    <div uiCardContent>
+      <form [formGroup]="form" (ngSubmit)="submitForm()" class="max-w-md space-y-3" novalidate>
+        <div class="space-y-1.5">
+          <label uiLabel for="ac-form">Framework favorit</label>
+          <ui-autocomplete
+            inputId="ac-form"
+            formControlName="framework"
+            [options]="frameworks"
+            [clearable]="true"
+            placeholder="Pilih framework…"
+            [invalid]="
+              form.controls.framework.invalid &&
+              (form.controls.framework.touched || formSubmitted())
+            "
+          />
+          @if (
+            form.controls.framework.invalid && (form.controls.framework.touched || formSubmitted())
+          ) {
+            <p class="ui-error">
+              <ui-icon name="circle-help" class="size-3" />
+              Framework wajib dipilih.
+            </p>
+          }
+        </div>
+
+        <div class="flex flex-wrap gap-2">
+          <button uiButton type="submit">Kirim</button>
+          <button uiButton type="button" variant="outline" (click)="resetForm()">Reset</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Form (free-form text)</h2>
+      <p uiCardDescription>Kombinasikan validasi form dengan nilai bebas yang diketik pengguna.</p>
+    </div>
+    <div uiCardContent>
+      <form
+        [formGroup]="freeForm"
+        (ngSubmit)="submitFreeForm()"
+        class="max-w-md space-y-3"
+        novalidate
+      >
+        <div class="space-y-1.5">
+          <label uiLabel for="ac-free-form">Topik</label>
+          <ui-autocomplete
+            inputId="ac-free-form"
+            formControlName="topic"
+            [options]="frameworks"
+            [allowCustom]="true"
+            [clearable]="true"
+            placeholder="Pilih atau ketik topik…"
+            [invalid]="
+              freeForm.controls.topic.invalid &&
+              (freeForm.controls.topic.touched || freeFormSubmitted())
+            "
+          />
+          @if (
+            freeForm.controls.topic.invalid &&
+            (freeForm.controls.topic.touched || freeFormSubmitted())
+          ) {
+            <p class="ui-error">
+              <ui-icon name="circle-help" class="size-3" />
+              Topik wajib diisi.
+            </p>
+          }
+        </div>
+
+        <div class="flex flex-wrap gap-2">
+          <button uiButton type="submit">Kirim</button>
+          <button uiButton type="button" variant="outline" (click)="resetFreeForm()">Reset</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Penggunaan</h2>
+      <p uiCardDescription>
+        Dua mode: standalone dengan two-way binding, atau reactive form lewat ControlValueAccessor.
+      </p>
+    </div>
+    <div uiCardContent>
+      <pre
+        class="overflow-x-auto rounded-xl border border-border bg-muted/50 p-4 font-mono text-[12px] leading-relaxed text-foreground"
+      ><code>&lt;!-- Standalone --&gt;
+&lt;ui-autocomplete
+  [options]="frameworks"
+  [(value)]="selected"
+  [clearable]="true"
+  [autoHighlight]="true"
+  placeholder="Cari framework…"
+/&gt;
+
+&lt;!-- Reactive form --&gt;
+&lt;ui-autocomplete
+  formControlName="framework"
+  [options]="frameworks"
+  [invalid]="control.invalid &amp;&amp; control.touched"
+/&gt;
+
+&lt;!-- Async --&gt;
+&lt;ui-autocomplete
+  [options]="results()"
+  [loading]="loading()"
+  [filterLocally]="false"
+  (searchChange)="search($event)"
+/&gt;</code></pre>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Aksesibilitas</h2>
+      <p uiCardDescription>Pola combobox mengikuti ARIA Authoring Practices.</p>
+    </div>
+    <div uiCardContent>
+      <ul class="space-y-3 text-sm text-muted-foreground">
+        <li class="flex gap-2.5">
+          <ui-icon name="circle-check" class="mt-0.5 size-4 shrink-0 text-success" />
+          <span>
+            Input memakai
+            <code class="font-mono text-[12px] text-foreground">role="combobox"</code>,
+            <code class="font-mono text-[12px] text-foreground">aria-expanded</code>,
+            <code class="font-mono text-[12px] text-foreground">aria-controls</code>, dan
+            <code class="font-mono text-[12px] text-foreground">aria-activedescendant</code>.
+          </span>
+        </li>
+        <li class="flex gap-2.5">
+          <ui-icon name="circle-check" class="mt-0.5 size-4 shrink-0 text-success" />
+          <span>
+            Navigasi Arrow Up/Down, Home/End, Enter, Escape, dan Tab sudah ditangani; opsi nonaktif
+            dilewati.
+          </span>
+        </li>
+        <li class="flex gap-2.5">
+          <ui-icon name="circle-check" class="mt-0.5 size-4 shrink-0 text-success" />
+          <span>
+            Tombol clear punya
+            <code class="font-mono text-[12px] text-foreground">aria-label</code>; input memakai
+            <code class="font-mono text-[12px] text-foreground">aria-busy</code>
+            saat async search berjalan.
+          </span>
+        </li>
+        <li class="flex gap-2.5">
+          <ui-icon name="circle-check" class="mt-0.5 size-4 shrink-0 text-success" />
+          <span>
+            Header grup memakai teks, bukan elemen option, sehingga tidak ikut terbaca sebagai
+            pilihan.
+          </span>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>API</h2>
+      <p uiCardDescription>
+        Semua input opsional kecuali
+        <code class="font-mono text-[12px]">options</code>.
+      </p>
+    </div>
+    <div uiCardContent class="px-0 pb-0 sm:px-0">
+      <div class="ui-scroll-x">
+        <table uiTable>
+          <thead>
+            <tr>
+              <th>Properti</th>
+              <th>Jenis</th>
+              <th>Tipe</th>
+              <th>Default</th>
+              <th>Deskripsi</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="font-mono text-[12px] whitespace-nowrap">options</td>
+              <td class="whitespace-nowrap">input</td>
+              <td class="whitespace-nowrap">AutocompleteOption[]</td>
+              <td class="font-mono text-[12px]">[]</td>
+              <td class="text-muted-foreground">
+                Daftar pilihan; mendukung value, label, description, disabled, group.
+              </td>
+            </tr>
+            <tr>
+              <td class="font-mono text-[12px] whitespace-nowrap">value</td>
+              <td class="whitespace-nowrap">input (two-way)</td>
+              <td class="whitespace-nowrap">string</td>
+              <td class="font-mono text-[12px]">''</td>
+              <td class="text-muted-foreground">
+                Nilai terpilih; terhubung ke ControlValueAccessor.
+              </td>
+            </tr>
+            <tr>
+              <td class="font-mono text-[12px] whitespace-nowrap">placeholder</td>
+              <td class="whitespace-nowrap">input</td>
+              <td class="whitespace-nowrap">string</td>
+              <td class="font-mono text-[12px]">'Cari…'</td>
+              <td class="text-muted-foreground">Placeholder input.</td>
+            </tr>
+            <tr>
+              <td class="font-mono text-[12px] whitespace-nowrap">inputId</td>
+              <td class="whitespace-nowrap">input</td>
+              <td class="whitespace-nowrap">string</td>
+              <td class="font-mono text-[12px]">auto</td>
+              <td class="text-muted-foreground">ID input untuk dihubungkan dengan label.</td>
+            </tr>
+            <tr>
+              <td class="font-mono text-[12px] whitespace-nowrap">ariaLabel</td>
+              <td class="whitespace-nowrap">input</td>
+              <td class="whitespace-nowrap">string | null</td>
+              <td class="whitespace-nowrap">null</td>
+              <td class="text-muted-foreground">
+                Label aksesibel bila tidak ada teks label visual.
+              </td>
+            </tr>
+            <tr>
+              <td class="font-mono text-[12px] whitespace-nowrap">emptyText</td>
+              <td class="whitespace-nowrap">input</td>
+              <td class="whitespace-nowrap">string</td>
+              <td class="font-mono text-[12px]">'Tidak ada hasil'</td>
+              <td class="text-muted-foreground">Pesan saat daftar kosong.</td>
+            </tr>
+            <tr>
+              <td class="font-mono text-[12px] whitespace-nowrap">disabled</td>
+              <td class="whitespace-nowrap">input</td>
+              <td class="whitespace-nowrap">boolean</td>
+              <td class="font-mono text-[12px]">false</td>
+              <td class="text-muted-foreground">Menonaktifkan input.</td>
+            </tr>
+            <tr>
+              <td class="font-mono text-[12px] whitespace-nowrap">invalid</td>
+              <td class="whitespace-nowrap">input</td>
+              <td class="whitespace-nowrap">boolean</td>
+              <td class="font-mono text-[12px]">false</td>
+              <td class="text-muted-foreground">Menampilkan state error.</td>
+            </tr>
+            <tr>
+              <td class="font-mono text-[12px] whitespace-nowrap">clearable</td>
+              <td class="whitespace-nowrap">input</td>
+              <td class="whitespace-nowrap">boolean</td>
+              <td class="font-mono text-[12px]">false</td>
+              <td class="text-muted-foreground">Menampilkan tombol clear.</td>
+            </tr>
+            <tr>
+              <td class="font-mono text-[12px] whitespace-nowrap">autoHighlight</td>
+              <td class="whitespace-nowrap">input</td>
+              <td class="whitespace-nowrap">boolean</td>
+              <td class="font-mono text-[12px]">false</td>
+              <td class="text-muted-foreground">Mengaktifkan opsi pertama secara otomatis.</td>
+            </tr>
+            <tr>
+              <td class="font-mono text-[12px] whitespace-nowrap">highlightMatch</td>
+              <td class="whitespace-nowrap">input</td>
+              <td class="whitespace-nowrap">boolean</td>
+              <td class="font-mono text-[12px]">false</td>
+              <td class="text-muted-foreground">Menyorot teks yang cocok dengan query.</td>
+            </tr>
+            <tr>
+              <td class="font-mono text-[12px] whitespace-nowrap">separators</td>
+              <td class="whitespace-nowrap">input</td>
+              <td class="whitespace-nowrap">boolean</td>
+              <td class="font-mono text-[12px]">false</td>
+              <td class="text-muted-foreground">Garis pemisah antar opsi dalam grup.</td>
+            </tr>
+            <tr>
+              <td class="font-mono text-[12px] whitespace-nowrap">allowCustom</td>
+              <td class="whitespace-nowrap">input</td>
+              <td class="whitespace-nowrap">boolean</td>
+              <td class="font-mono text-[12px]">false</td>
+              <td class="text-muted-foreground">Mengizinkan teks bebas di luar daftar.</td>
+            </tr>
+            <tr>
+              <td class="font-mono text-[12px] whitespace-nowrap">filterLocally</td>
+              <td class="whitespace-nowrap">input</td>
+              <td class="whitespace-nowrap">boolean</td>
+              <td class="font-mono text-[12px]">true</td>
+              <td class="text-muted-foreground">Matikan untuk async search di server.</td>
+            </tr>
+            <tr>
+              <td class="font-mono text-[12px] whitespace-nowrap">loading</td>
+              <td class="whitespace-nowrap">input</td>
+              <td class="whitespace-nowrap">boolean</td>
+              <td class="font-mono text-[12px]">false</td>
+              <td class="text-muted-foreground">Menampilkan spinner dan aria-busy.</td>
+            </tr>
+            <tr>
+              <td class="font-mono text-[12px] whitespace-nowrap">searchChange</td>
+              <td class="whitespace-nowrap">output</td>
+              <td class="whitespace-nowrap">string</td>
+              <td class="whitespace-nowrap">—</td>
+              <td class="text-muted-foreground">Dipancarkan saat teks pencarian berubah.</td>
+            </tr>
+            <tr>
+              <td class="font-mono text-[12px] whitespace-nowrap">optionSelected</td>
+              <td class="whitespace-nowrap">output</td>
+              <td class="whitespace-nowrap">AutocompleteOption</td>
+              <td class="whitespace-nowrap">—</td>
+              <td class="text-muted-foreground">Dipancarkan saat opsi dipilih.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

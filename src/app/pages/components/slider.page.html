@@ -1,0 +1,158 @@
+<ui-page-header
+  title="Slider"
+  description="Slider satu atau beberapa thumb, vertikal, disabled, ticks, label, batas jarak, draggable range, dan form."
+>
+  <button uiButton variant="outline" routerLink="/components">
+    <ui-icon name="arrow-left" class="size-4" />
+    Katalog komponen
+  </button>
+</ui-page-header>
+
+<div class="mt-6 grid grid-cols-1 items-start gap-4">
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Range</h2>
+      <p uiCardDescription>Slider satu thumb dengan nilai 0–100.</p>
+    </div>
+    <div uiCardContent class="max-w-xl space-y-2">
+      <ui-slider [(value)]="single" ariaLabel="Volume" />
+      <p class="ui-help">Nilai: {{ single()[0] }}</p>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Multiple thumbs</h2>
+      <p uiCardDescription>Dua thumb untuk memilih rentang.</p>
+    </div>
+    <div uiCardContent class="max-w-xl space-y-2">
+      <ui-slider [(value)]="range" ariaLabel="Rentang harga" />
+      <p class="ui-help">Rentang: {{ range()[0] }} – {{ range()[1] }}</p>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Vertical</h2>
+      <p uiCardDescription>Orientasi vertikal untuk panel samping.</p>
+    </div>
+    <div uiCardContent class="flex items-start gap-8">
+      <ui-slider [vertical]="true" [(value)]="vertical" ariaLabel="Volume vertikal" />
+      <div class="pt-16">
+        <p class="text-sm font-medium">Volume</p>
+        <p class="text-xs text-muted-foreground">{{ vertical()[0] }}%</p>
+      </div>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Disabled</h2>
+      <p uiCardDescription>Slider tidak bisa diubah.</p>
+    </div>
+    <div uiCardContent class="max-w-xl">
+      <ui-slider [value]="[65]" [disabled]="true" ariaLabel="Slider nonaktif" />
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Ticks</h2>
+      <p uiCardDescription>Tanda nilai pada track, dengan atau tanpa label.</p>
+    </div>
+    <div uiCardContent class="max-w-xl space-y-6">
+      <div class="space-y-2">
+        <p class="text-xs font-semibold text-muted-foreground uppercase">Ticks</p>
+        <ui-slider [(value)]="ticks" [showTicks]="true" ariaLabel="Slider dengan tick" />
+      </div>
+      <div class="space-y-2 pb-6">
+        <p class="text-xs font-semibold text-muted-foreground uppercase">Ticks with label</p>
+        <ui-slider
+          [(value)]="labeled"
+          [showTicks]="true"
+          [tickLabels]="true"
+          [tickCount]="5"
+          ariaLabel="Slider dengan label"
+        />
+      </div>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Prevent thumb overlap</h2>
+      <p uiCardDescription>
+        Atur <code class="font-mono text-[12px]">minDistance</code> agar thumb tidak bertumpuk.
+      </p>
+    </div>
+    <div uiCardContent class="max-w-xl space-y-2">
+      <ui-slider [(value)]="prevent" [minDistance]="10" ariaLabel="Rentang dengan jarak minimum" />
+      <p class="ui-help">{{ prevent()[0] }} – {{ prevent()[1] }} (jarak minimal 10)</p>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Draggable range</h2>
+      <p uiCardDescription>
+        Geser area terisi untuk memindahkan kedua thumb sekaligus; thumb juga masih bisa digeser
+        sendiri.
+      </p>
+    </div>
+    <div uiCardContent class="max-w-xl space-y-2">
+      <ui-slider [draggableRange]="true" [(value)]="draggable" ariaLabel="Draggable range" />
+      <p class="ui-help">Nilai saat ini: {{ draggable().join(' – ') }}</p>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Draggable range only</h2>
+      <p uiCardDescription>Hanya area terisi yang bisa digeser; thumb tidak menerima pointer.</p>
+    </div>
+    <div uiCardContent class="max-w-xl space-y-2">
+      <ui-slider
+        [draggableRangeOnly]="true"
+        [(value)]="draggableOnly"
+        ariaLabel="Draggable range only"
+      />
+      <p class="ui-help">Nilai saat ini: {{ draggableOnly().join(' – ') }}</p>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Form</h2>
+      <p uiCardDescription>Slider terhubung ke reactive form.</p>
+    </div>
+    <div uiCardContent>
+      <form [formGroup]="form" (ngSubmit)="submit()" class="max-w-xl space-y-6">
+        <div class="space-y-2">
+          <div class="flex items-center justify-between text-xs">
+            <label class="font-medium" for="slider-form-volume">Volume</label>
+            <span class="font-mono text-muted-foreground"
+              >{{ form.controls.volume.value[0] }}%</span
+            >
+          </div>
+          <ui-slider
+            inputId="slider-form-volume"
+            formControlName="volume"
+            ariaLabel="Volume form"
+          />
+        </div>
+
+        <div class="space-y-2">
+          <div class="flex items-center justify-between text-xs">
+            <label class="font-medium">Rentang harga</label>
+            <span class="font-mono text-muted-foreground">
+              {{ form.controls.price.value[0] }}–{{ form.controls.price.value[1] }}
+            </span>
+          </div>
+          <ui-slider formControlName="price" ariaLabel="Harga form" />
+        </div>
+
+        <button uiButton type="submit">Simpan</button>
+      </form>
+    </div>
+  </div>
+</div>

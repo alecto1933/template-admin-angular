@@ -1,0 +1,271 @@
+<ui-page-header
+  title="Alert Dialog"
+  description="Dialog konfirmasi untuk aksi penting atau destruktif. Tidak bisa ditutup lewat backdrop — pengguna harus memilih Batal atau Konfirmasi."
+>
+  <button uiButton variant="outline" routerLink="/components">
+    <ui-icon name="arrow-left" class="size-4" />
+    Katalog komponen
+  </button>
+</ui-page-header>
+
+<div class="mt-6 grid grid-cols-1 items-start gap-4">
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Konfirmasi dasar</h2>
+      <p uiCardDescription>
+        Minta persetujuan sebelum melanjutkan aksi. Tombol Batal menerima fokus pertama.
+      </p>
+    </div>
+    <div uiCardContent>
+      <button uiButton (click)="basicDialog.open()">
+        <ui-icon name="check" class="size-4" />
+        Buka konfirmasi
+      </button>
+    </div>
+
+    <ui-alert-dialog
+      #basicDialog
+      title="Simpan perubahan?"
+      description="Perubahan akan langsung diterapkan ke semua anggota tim."
+      confirmLabel="Ya, simpan"
+      cancelLabel="Batal"
+      (confirmed)="confirmed('Perubahan disimpan', 'Pengaturan baru sudah diterapkan.')"
+      (cancelled)="cancelled('Simpan perubahan')"
+    >
+      <p class="pb-2 leading-relaxed">
+        Anda masih bisa mengubahnya kembali nanti lewat halaman Pengaturan.
+      </p>
+    </ui-alert-dialog>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Aksi destruktif</h2>
+      <p uiCardDescription>
+        Gunakan varian tombol
+        <code class="font-mono text-[12px]">destructive</code> dan jelaskan konsekuensinya di dalam
+        dialog.
+      </p>
+    </div>
+    <div uiCardContent>
+      <button uiButton variant="destructive" (click)="deleteDialog.open()">
+        <ui-icon name="trash-2" class="size-4" />
+        Hapus proyek
+      </button>
+    </div>
+
+    <ui-alert-dialog
+      #deleteDialog
+      title="Hapus proyek ini?"
+      description="Seluruh data proyek, file, dan riwayat aktivitas akan dihapus permanen."
+      confirmLabel="Hapus proyek"
+      confirmVariant="destructive"
+      (confirmed)="confirmed('Proyek dihapus', 'Alecto Studio telah dihapus (demo).')"
+      (cancelled)="cancelled('Hapus proyek')"
+    >
+      <div uiAlert data-variant="danger">
+        <ui-icon name="triangle-alert" class="mt-0.5 size-4 shrink-0" />
+        <p class="leading-relaxed">
+          Tindakan ini tidak dapat dibatalkan. Ekspor data terlebih dahulu jika masih diperlukan.
+        </p>
+      </div>
+    </ui-alert-dialog>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Konten tambahan</h2>
+      <p uiCardDescription>
+        Panel bisa memuat peringatan, daftar, atau checkbox sebelum pengguna menyetujui.
+      </p>
+    </div>
+    <div uiCardContent>
+      <button uiButton variant="outline" (click)="publishDialog.open()">
+        <ui-icon name="send" class="size-4" />
+        Publikasikan halaman
+      </button>
+    </div>
+
+    <ui-alert-dialog
+      #publishDialog
+      title="Publikasikan halaman ini?"
+      description="Halaman akan langsung terlihat oleh pengunjung situs."
+      confirmLabel="Publikasikan"
+      (confirmed)="confirmed('Halaman dipublikasikan', 'Versi terbaru sudah tayang.')"
+      (cancelled)="cancelled('Publikasi halaman')"
+    >
+      <div class="space-y-3 pb-2">
+        <div uiAlert data-variant="info">
+          <ui-icon name="info" class="mt-0.5 size-4 shrink-0" />
+          <p class="leading-relaxed">
+            Waktu publikasi akan dicatat di riwayat aktivitas workspace.
+          </p>
+        </div>
+        <label class="flex cursor-pointer items-start gap-2.5 text-sm text-foreground">
+          <input uiCheckbox type="checkbox" class="mt-0.5" checked />
+          <span> Saya sudah meninjau konten dan gambar sebelum dipublikasikan. </span>
+        </label>
+      </div>
+    </ui-alert-dialog>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Penggunaan</h2>
+      <p uiCardDescription>
+        Buka lewat template reference; konfirmasi dan pembatalan dikirim sebagai output.
+      </p>
+    </div>
+    <div uiCardContent>
+      <pre
+        class="overflow-x-auto rounded-xl border border-border bg-muted/50 p-4 font-mono text-[12px] leading-relaxed text-foreground"
+      ><code>&lt;button uiButton (click)="dialog.open()"&gt;
+  Hapus proyek
+&lt;/button&gt;
+
+&lt;ui-alert-dialog
+  #dialog
+  title="Hapus proyek ini?"
+  description="Data akan dihapus permanen."
+  confirmLabel="Hapus proyek"
+  confirmVariant="destructive"
+  (confirmed)="remove()"
+  (cancelled)="onCancel()"
+&gt;
+  &lt;div uiAlert data-variant="danger"&gt;
+    &lt;ui-icon name="triangle-alert" /&gt;
+    Tindakan ini tidak bisa dibatalkan.
+  &lt;/div&gt;
+&lt;/ui-alert-dialog&gt;</code></pre>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Aksesibilitas</h2>
+      <p uiCardDescription>Perilaku yang sudah ditangani komponen.</p>
+    </div>
+    <div uiCardContent>
+      <ul class="space-y-3 text-sm text-muted-foreground">
+        <li class="flex gap-2.5">
+          <ui-icon name="circle-check" class="mt-0.5 size-4 shrink-0 text-success" />
+          <span>
+            Memakai
+            <code class="font-mono text-[12px] text-foreground">role="alertdialog"</code>
+            dengan <code class="font-mono text-[12px] text-foreground">aria-labelledby</code> dan
+            <code class="font-mono text-[12px] text-foreground">aria-describedby</code>.
+          </span>
+        </li>
+        <li class="flex gap-2.5">
+          <ui-icon name="circle-check" class="mt-0.5 size-4 shrink-0 text-success" />
+          <span>
+            Fokus awal jatuh ke tombol Batal, sehingga aksi destruktif tidak langsung terpicu oleh
+            Enter.
+          </span>
+        </li>
+        <li class="flex gap-2.5">
+          <ui-icon name="circle-check" class="mt-0.5 size-4 shrink-0 text-success" />
+          <span> Klik backdrop diabaikan. Menutup dengan ESC dianggap sebagai pembatalan. </span>
+        </li>
+        <li class="flex gap-2.5">
+          <ui-icon name="circle-check" class="mt-0.5 size-4 shrink-0 text-success" />
+          <span>
+            Tidak ada tombol X: pengguna harus memilih salah satu aksi secara eksplisit.
+          </span>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>API</h2>
+      <p uiCardDescription>
+        Komponen membungkus
+        <code class="font-mono text-[12px]">ui-dialog</code> dan menambahkan perilaku konfirmasi.
+      </p>
+    </div>
+    <div uiCardContent class="px-0 pb-0 sm:px-0">
+      <div class="ui-scroll-x">
+        <table uiTable>
+          <thead>
+            <tr>
+              <th>Properti</th>
+              <th>Jenis</th>
+              <th>Tipe</th>
+              <th>Default</th>
+              <th>Deskripsi</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="font-mono text-[12px] whitespace-nowrap">title</td>
+              <td class="whitespace-nowrap">input</td>
+              <td class="whitespace-nowrap">string</td>
+              <td class="whitespace-nowrap">wajib</td>
+              <td class="text-muted-foreground">Judul dialog.</td>
+            </tr>
+            <tr>
+              <td class="font-mono text-[12px] whitespace-nowrap">description</td>
+              <td class="whitespace-nowrap">input</td>
+              <td class="whitespace-nowrap">string</td>
+              <td class="font-mono text-[12px]">''</td>
+              <td class="text-muted-foreground">Penjelasan singkat di bawah judul.</td>
+            </tr>
+            <tr>
+              <td class="font-mono text-[12px] whitespace-nowrap">confirmLabel</td>
+              <td class="whitespace-nowrap">input</td>
+              <td class="whitespace-nowrap">string</td>
+              <td class="font-mono text-[12px]">'Lanjutkan'</td>
+              <td class="text-muted-foreground">Teks tombol konfirmasi.</td>
+            </tr>
+            <tr>
+              <td class="font-mono text-[12px] whitespace-nowrap">cancelLabel</td>
+              <td class="whitespace-nowrap">input</td>
+              <td class="whitespace-nowrap">string</td>
+              <td class="font-mono text-[12px]">'Batal'</td>
+              <td class="text-muted-foreground">Teks tombol pembatalan.</td>
+            </tr>
+            <tr>
+              <td class="font-mono text-[12px] whitespace-nowrap">confirmVariant</td>
+              <td class="whitespace-nowrap">input</td>
+              <td class="whitespace-nowrap">'primary' | 'destructive'</td>
+              <td class="font-mono text-[12px]">'primary'</td>
+              <td class="text-muted-foreground">Varian warna tombol konfirmasi.</td>
+            </tr>
+            <tr>
+              <td class="font-mono text-[12px] whitespace-nowrap">confirmed</td>
+              <td class="whitespace-nowrap">output</td>
+              <td class="whitespace-nowrap">void</td>
+              <td class="whitespace-nowrap">—</td>
+              <td class="text-muted-foreground">Dipancarkan saat pengguna menekan konfirmasi.</td>
+            </tr>
+            <tr>
+              <td class="font-mono text-[12px] whitespace-nowrap">cancelled</td>
+              <td class="whitespace-nowrap">output</td>
+              <td class="whitespace-nowrap">void</td>
+              <td class="whitespace-nowrap">—</td>
+              <td class="text-muted-foreground">
+                Dipancarkan saat Batal, ESC, atau close programatik.
+              </td>
+            </tr>
+            <tr>
+              <td class="font-mono text-[12px] whitespace-nowrap">open()</td>
+              <td class="whitespace-nowrap">method</td>
+              <td class="whitespace-nowrap">void</td>
+              <td class="whitespace-nowrap">—</td>
+              <td class="text-muted-foreground">Menampilkan dialog.</td>
+            </tr>
+            <tr>
+              <td class="font-mono text-[12px] whitespace-nowrap">close()</td>
+              <td class="whitespace-nowrap">method</td>
+              <td class="whitespace-nowrap">void</td>
+              <td class="whitespace-nowrap">—</td>
+              <td class="text-muted-foreground">Menutup dialog secara programatik.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,294 @@
+<ui-page-header
+  title="Breadcrumb"
+  description="Navigasi hierarki halaman dengan separator kustom, dropdown, dan tampilan collapsed untuk jalur yang panjang."
+>
+  <button uiButton variant="outline" routerLink="/components">
+    <ui-icon name="arrow-left" class="size-4" />
+    Katalog komponen
+  </button>
+</ui-page-header>
+
+<div class="mt-6 grid grid-cols-1 items-start gap-4">
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Basic</h2>
+      <p uiCardDescription>Struktur dasar dengan ikon rumah dan penanda halaman aktif.</p>
+    </div>
+    <div uiCardContent>
+      <nav aria-label="Breadcrumb">
+        <ol uiBreadcrumbList>
+          <li uiBreadcrumbItem>
+            <a uiBreadcrumbLink href="#" aria-label="Beranda">
+              <ui-icon name="home" class="size-4" />
+            </a>
+          </li>
+          <li uiBreadcrumbSeparator aria-hidden="true">
+            <ui-icon name="chevron-right" class="size-3.5" />
+          </li>
+          <li uiBreadcrumbItem>
+            <a uiBreadcrumbLink href="#">Komponen</a>
+          </li>
+          <li uiBreadcrumbSeparator aria-hidden="true">
+            <ui-icon name="chevron-right" class="size-3.5" />
+          </li>
+          <li uiBreadcrumbItem>
+            <span uiBreadcrumbPage aria-current="page">Breadcrumb</span>
+          </li>
+        </ol>
+      </nav>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Custom separator</h2>
+      <p uiCardDescription>Separator bisa berupa teks, ikon, atau titik.</p>
+    </div>
+    <div uiCardContent class="space-y-5">
+      <nav aria-label="Breadcrumb dengan separator slash">
+        <ol uiBreadcrumbList>
+          <li uiBreadcrumbItem><a uiBreadcrumbLink href="#">Beranda</a></li>
+          <li uiBreadcrumbSeparator aria-hidden="true">/</li>
+          <li uiBreadcrumbItem><a uiBreadcrumbLink href="#">Komponen</a></li>
+          <li uiBreadcrumbSeparator aria-hidden="true">/</li>
+          <li uiBreadcrumbItem>
+            <span uiBreadcrumbPage aria-current="page">Breadcrumb</span>
+          </li>
+        </ol>
+      </nav>
+
+      <nav aria-label="Breadcrumb dengan separator chevron">
+        <ol uiBreadcrumbList>
+          <li uiBreadcrumbItem><a uiBreadcrumbLink href="#">Beranda</a></li>
+          <li uiBreadcrumbSeparator aria-hidden="true">
+            <ui-icon name="chevron-right" class="size-3.5" />
+          </li>
+          <li uiBreadcrumbItem><a uiBreadcrumbLink href="#">Komponen</a></li>
+          <li uiBreadcrumbSeparator aria-hidden="true">
+            <ui-icon name="chevron-right" class="size-3.5" />
+          </li>
+          <li uiBreadcrumbItem>
+            <span uiBreadcrumbPage aria-current="page">Breadcrumb</span>
+          </li>
+        </ol>
+      </nav>
+
+      <nav aria-label="Breadcrumb dengan separator titik">
+        <ol uiBreadcrumbList>
+          <li uiBreadcrumbItem><a uiBreadcrumbLink href="#">Beranda</a></li>
+          <li uiBreadcrumbSeparator aria-hidden="true">
+            <span class="size-1 rounded-full bg-muted-foreground/50"></span>
+          </li>
+          <li uiBreadcrumbItem><a uiBreadcrumbLink href="#">Komponen</a></li>
+          <li uiBreadcrumbSeparator aria-hidden="true">
+            <span class="size-1 rounded-full bg-muted-foreground/50"></span>
+          </li>
+          <li uiBreadcrumbItem>
+            <span uiBreadcrumbPage aria-current="page">Breadcrumb</span>
+          </li>
+        </ol>
+      </nav>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Dropdown</h2>
+      <p uiCardDescription>Item breadcrumb bisa membuka menu untuk berpindah ke halaman saudara.</p>
+    </div>
+    <div uiCardContent>
+      <nav aria-label="Breadcrumb dengan dropdown">
+        <ol uiBreadcrumbList>
+          <li uiBreadcrumbItem><a uiBreadcrumbLink href="#">Beranda</a></li>
+          <li uiBreadcrumbSeparator aria-hidden="true">
+            <ui-icon name="chevron-right" class="size-3.5" />
+          </li>
+          <li uiBreadcrumbItem>
+            <button type="button" uiBreadcrumbLink [cdkMenuTriggerFor]="componentMenu">
+              Komponen
+              <ui-icon name="chevron-down" class="size-3.5" />
+            </button>
+          </li>
+          <li uiBreadcrumbSeparator aria-hidden="true">
+            <ui-icon name="chevron-right" class="size-3.5" />
+          </li>
+          <li uiBreadcrumbItem>
+            <span uiBreadcrumbPage aria-current="page">Breadcrumb</span>
+          </li>
+        </ol>
+      </nav>
+
+      <ng-template #componentMenu>
+        <div cdkMenu class="ui-menu-panel w-56">
+          <p class="ui-menu-label">Komponen</p>
+          <a cdkMenuItem routerLink="/components/accordion" class="ui-menu-item">
+            <ui-icon name="chevron-down" class="size-4 text-muted-foreground" />
+            Accordion
+          </a>
+          <a cdkMenuItem routerLink="/components/alert" class="ui-menu-item">
+            <ui-icon name="triangle-alert" class="size-4 text-muted-foreground" />
+            Alert
+          </a>
+          <a cdkMenuItem routerLink="/components/alert-dialog" class="ui-menu-item">
+            <ui-icon name="info" class="size-4 text-muted-foreground" />
+            Alert Dialog
+          </a>
+          <a cdkMenuItem routerLink="/components/aspect-ratio" class="ui-menu-item">
+            <ui-icon name="image" class="size-4 text-muted-foreground" />
+            Aspect Ratio
+          </a>
+          <a cdkMenuItem routerLink="/components/attachment" class="ui-menu-item">
+            <ui-icon name="file-text" class="size-4 text-muted-foreground" />
+            Attachment
+          </a>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Collapsed</h2>
+      <p uiCardDescription>Jalur panjang diringkas menjadi ellipsis yang bisa dibuka.</p>
+    </div>
+    <div uiCardContent>
+      <nav aria-label="Breadcrumb collapsed">
+        <ol uiBreadcrumbList>
+          <li uiBreadcrumbItem><a uiBreadcrumbLink href="#">Beranda</a></li>
+          <li uiBreadcrumbSeparator aria-hidden="true">
+            <ui-icon name="chevron-right" class="size-3.5" />
+          </li>
+          <li uiBreadcrumbItem>
+            <button
+              type="button"
+              uiBreadcrumbLink
+              [cdkMenuTriggerFor]="collapsedMenu"
+              aria-label="Tampilkan halaman tersembunyi"
+            >
+              <span class="grid size-5 place-items-center rounded-md border border-border">
+                <ui-icon name="ellipsis" class="size-3.5" />
+              </span>
+            </button>
+          </li>
+          <li uiBreadcrumbSeparator aria-hidden="true">
+            <ui-icon name="chevron-right" class="size-3.5" />
+          </li>
+          <li uiBreadcrumbItem>
+            <span uiBreadcrumbPage aria-current="page">Breadcrumb</span>
+          </li>
+        </ol>
+      </nav>
+
+      <ng-template #collapsedMenu>
+        <div cdkMenu class="ui-menu-panel w-56">
+          <p class="ui-menu-label">Halaman tersembunyi</p>
+          <a cdkMenuItem routerLink="/components" class="ui-menu-item">
+            <ui-icon name="blocks" class="size-4 text-muted-foreground" />
+            Katalog
+          </a>
+          <a cdkMenuItem routerLink="/components/alert" class="ui-menu-item">
+            <ui-icon name="triangle-alert" class="size-4 text-muted-foreground" />
+            Alert
+          </a>
+          <a cdkMenuItem routerLink="/components/attachment" class="ui-menu-item">
+            <ui-icon name="file-text" class="size-4 text-muted-foreground" />
+            Attachment
+          </a>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Penggunaan</h2>
+      <p uiCardDescription>
+        Susun breadcrumb dari elemen semantik
+        <code class="font-mono text-[12px]">nav &gt; ol &gt; li</code>.
+      </p>
+    </div>
+    <div uiCardContent>
+      <pre
+        class="overflow-x-auto rounded-xl border border-border bg-muted/50 p-4 font-mono text-[12px] leading-relaxed text-foreground"
+      ><code>&lt;nav aria-label="Breadcrumb"&gt;
+  &lt;ol uiBreadcrumbList&gt;
+    &lt;li uiBreadcrumbItem&gt;
+      &lt;a uiBreadcrumbLink href="/"&gt;Beranda&lt;/a&gt;
+    &lt;/li&gt;
+
+    &lt;li uiBreadcrumbSeparator aria-hidden="true"&gt;/&lt;/li&gt;
+
+    &lt;li uiBreadcrumbItem&gt;
+      &lt;button uiBreadcrumbLink&gt;
+        Komponen
+        &lt;ui-icon name="chevron-down" /&gt;
+      &lt;/button&gt;
+    &lt;/li&gt;
+
+    &lt;li uiBreadcrumbSeparator aria-hidden="true"&gt;/&lt;/li&gt;
+
+    &lt;li uiBreadcrumbItem&gt;
+      &lt;span uiBreadcrumbPage aria-current="page"&gt;
+        Breadcrumb
+      &lt;/span&gt;
+    &lt;/li&gt;
+  &lt;/ol&gt;
+&lt;/nav&gt;</code></pre>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>API</h2>
+      <p uiCardDescription>Atribut CSS untuk menyusun breadcrumb.</p>
+    </div>
+    <div uiCardContent class="px-0 pb-0 sm:px-0">
+      <div class="ui-scroll-x">
+        <table uiTable>
+          <thead>
+            <tr>
+              <th>Atribut</th>
+              <th>Elemen</th>
+              <th>Deskripsi</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="font-mono text-[12px] whitespace-nowrap">uiBreadcrumbList</td>
+              <td class="font-mono text-[12px] whitespace-nowrap">&lt;ol&gt;</td>
+              <td class="text-muted-foreground">Flex row, gap, dan ukuran teks breadcrumb.</td>
+            </tr>
+            <tr>
+              <td class="font-mono text-[12px] whitespace-nowrap">uiBreadcrumbItem</td>
+              <td class="font-mono text-[12px] whitespace-nowrap">&lt;li&gt;</td>
+              <td class="text-muted-foreground">
+                Item breadcrumb; mendukung tautan, tombol, atau teks.
+              </td>
+            </tr>
+            <tr>
+              <td class="font-mono text-[12px] whitespace-nowrap">uiBreadcrumbLink</td>
+              <td class="font-mono text-[12px] whitespace-nowrap">&lt;a&gt; / &lt;button&gt;</td>
+              <td class="text-muted-foreground">Warna muted dengan hover dan focus ring.</td>
+            </tr>
+            <tr>
+              <td class="font-mono text-[12px] whitespace-nowrap">uiBreadcrumbPage</td>
+              <td class="font-mono text-[12px] whitespace-nowrap">&lt;span&gt;</td>
+              <td class="text-muted-foreground">
+                Halaman aktif; gunakan bersama
+                <code class="font-mono text-[12px]">aria-current="page"</code>.
+              </td>
+            </tr>
+            <tr>
+              <td class="font-mono text-[12px] whitespace-nowrap">uiBreadcrumbSeparator</td>
+              <td class="font-mono text-[12px] whitespace-nowrap">&lt;li&gt;</td>
+              <td class="text-muted-foreground">
+                Pembatas; sembunyikan dari pembaca layar dengan
+                <code class="font-mono text-[12px]">aria-hidden</code>.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,143 @@
+<ui-page-header
+  title="Message Scroller"
+  description="Konteks percakapan: anchoring, grup chat, posisi baca, live edge, thread tersimpan, memuat pesan lama, animasi pesan baru."
+>
+  <button uiButton variant="outline" routerLink="/components">
+    <ui-icon name="arrow-left" class="size-4" />
+    Katalog komponen
+  </button>
+</ui-page-header>
+
+<div class="mt-6 grid grid-cols-1 items-start gap-4">
+  <div uiCard class="overflow-hidden">
+    <div class="flex flex-wrap items-center justify-between gap-2 border-b border-border px-4 py-3">
+      <div class="min-w-0">
+        <p class="truncate text-sm font-semibold">{{ thread() }}</p>
+        <p class="text-[11px] text-muted-foreground">
+          {{ messages().length }} pesan · scrollTop {{ scrollTop() }}px ·
+          {{ atBottom() ? 'di live edge' : 'di atas' }}
+        </p>
+      </div>
+
+      <div class="flex flex-wrap items-center gap-1">
+        <button
+          uiButton
+          variant="outline"
+          size="sm"
+          [class.bg-primary-soft]="follow()"
+          (click)="toggleFollow()"
+        >
+          <ui-icon name="activity" class="size-3.5" />
+          {{ follow() ? 'Live edge aktif' : 'Ikuti live edge' }}
+        </button>
+        <button uiButton variant="outline" size="sm" (click)="loadEarlier()">
+          <ui-icon name="chevron-up" class="size-3.5" />
+          Muat sebelumnya
+        </button>
+        <button uiButton variant="outline" size="sm" (click)="jumpToFirst()">
+          <ui-icon name="arrow-up-right" class="size-3.5" />
+          Lompat ke awal
+        </button>
+        <button uiButton size="sm" (click)="addMessage()">
+          <ui-icon name="plus" class="size-3.5" />
+          Pesan baru
+        </button>
+      </div>
+    </div>
+
+    <div class="relative">
+      <div
+        #scroller
+        class="h-[26rem] overflow-y-auto px-4 py-4"
+        (scroll)="onScroll()"
+        tabindex="0"
+        aria-label="Daftar pesan"
+      >
+        <div class="space-y-4">
+          @for (message of messages(); track message.id) {
+            <div
+              [id]="'message-' + message.id"
+              uiMessage
+              [attr.data-align]="message.mine ? 'end' : 'start'"
+              [class.ui-fade-up]="lastAdded() === message.id"
+            >
+              <span
+                uiAvatar
+                data-size="sm"
+                [class]="
+                  message.mine ? 'bg-primary-soft text-primary' : 'bg-success-soft text-success'
+                "
+              >
+                {{ message.initials }}
+              </span>
+              <div uiMessageContent>
+                <div uiMessageHeader>
+                  <span uiMessageAuthor>{{ message.author }}</span>
+                  <span uiMessageTime>{{ message.time }}</span>
+                </div>
+                <div uiMessageBody>{{ message.text }}</div>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+
+      @if (newCount() > 0) {
+        <div class="pointer-events-none absolute inset-x-0 bottom-3 flex justify-center">
+          <button uiButton size="sm" class="pointer-events-auto" (click)="scrollToBottom()">
+            <ui-icon name="chevron-down" class="size-3.5" />
+            {{ newCount() }} pesan baru
+          </button>
+        </div>
+      }
+    </div>
+
+    <div class="flex flex-wrap items-center gap-2 border-t border-border px-4 py-3">
+      <span class="text-[11px] text-muted-foreground">Thread tersimpan:</span>
+      <button
+        uiButton
+        size="sm"
+        [variant]="thread() === 'Tim Produk' ? 'primary' : 'outline'"
+        (click)="switchThread('Tim Produk')"
+      >
+        Tim Produk
+      </button>
+      <button
+        uiButton
+        size="sm"
+        [variant]="thread() === 'Dukungan' ? 'primary' : 'outline'"
+        (click)="switchThread('Dukungan')"
+      >
+        Dukungan
+      </button>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Perilaku yang didemokan</h2>
+      <p uiCardDescription>Semua state dibaca dari elemen scroll, tanpa library.</p>
+    </div>
+    <div uiCardContent class="grid grid-cols-1 gap-3 text-sm text-muted-foreground sm:grid-cols-2">
+      @for (
+        item of [
+          'Anchoring turns: pesan sendiri di kanan, pesan lain di kiri.',
+          'Group chat: beberapa pengirim dalam satu thread.',
+          'Keeping context visible: tombol lompat ke awal percakapan.',
+          'Following live edge: auto-scroll saat pesan baru masuk.',
+          'Opening saved threads: beralih antara dua thread.',
+          'Loading earlier messages: posisi scroll dipertahankan.',
+          'Animating new messages: pesan baru memakai fade-up.',
+          'Tracking reader position: indikator scrollTop dan live edge.',
+          'Reading scroll state: tombol pesan baru saat pengguna di atas.',
+        ];
+        track item
+      ) {
+        <div class="flex gap-2">
+          <ui-icon name="circle-check" class="mt-0.5 size-4 shrink-0 text-success" />
+          <span>{{ item }}</span>
+        </div>
+      }
+    </div>
+  </div>
+</div>

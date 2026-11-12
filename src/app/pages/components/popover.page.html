@@ -1,0 +1,88 @@
+<ui-page-header
+  title="Popover"
+  description="Panel ringan yang muncul dari trigger untuk konten singkat, dengan pengaturan alignment."
+>
+  <button uiButton variant="outline" routerLink="/components">
+    <ui-icon name="arrow-left" class="size-4" />
+    Katalog komponen
+  </button>
+</ui-page-header>
+
+<div class="mt-6 grid grid-cols-1 items-start gap-4">
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Basic</h2>
+      <p uiCardDescription>
+        Kontrol state lewat two-way binding <code class="font-mono text-[12px]">[(open)]</code>.
+      </p>
+    </div>
+    <div uiCardContent class="relative pb-56">
+      <div class="relative inline-flex">
+        <button
+          uiButton
+          variant="outline"
+          (click)="basicOpen.set(!basicOpen())"
+          [attr.aria-expanded]="basicOpen()"
+        >
+          Buka popover
+          <ui-icon name="chevron-down" class="size-4" />
+        </button>
+
+        <ui-popover [(open)]="basicOpen">
+          <p class="text-sm font-semibold">Pengaturan cepat</p>
+          <p class="mt-1 text-xs leading-relaxed text-muted-foreground">
+            Popover cocok untuk konten singkat yang tidak memerlukan modal penuh.
+          </p>
+          <div class="mt-3 flex justify-end gap-2">
+            <button uiButton variant="ghost" size="sm" (click)="basicOpen.set(false)">Batal</button>
+            <button uiButton size="sm" (click)="basicOpen.set(false)">Simpan</button>
+          </div>
+        </ui-popover>
+      </div>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Align</h2>
+      <p uiCardDescription>
+        Pilih <code class="font-mono text-[12px]">start</code>,
+        <code class="font-mono text-[12px]">center</code>, atau
+        <code class="font-mono text-[12px]">end</code>.
+      </p>
+    </div>
+    <div uiCardContent>
+      <div class="grid grid-cols-1 gap-6 pb-48 sm:grid-cols-3">
+        <div class="relative flex justify-start">
+          <button uiButton variant="outline" size="sm" (click)="startOpen.set(!startOpen())">
+            Start
+          </button>
+          <ui-popover [(open)]="startOpen" align="start">
+            <p class="text-sm font-semibold">Align start</p>
+            <p class="mt-1 text-xs text-muted-foreground">Panel menempel ke sisi kiri trigger.</p>
+          </ui-popover>
+        </div>
+
+        <div class="relative flex justify-center">
+          <button uiButton variant="outline" size="sm" (click)="centerOpen.set(!centerOpen())">
+            Center
+          </button>
+          <ui-popover [(open)]="centerOpen" align="center">
+            <p class="text-sm font-semibold">Align center</p>
+            <p class="mt-1 text-xs text-muted-foreground">Panel berada di tengah trigger.</p>
+          </ui-popover>
+        </div>
+
+        <div class="relative flex justify-end">
+          <button uiButton variant="outline" size="sm" (click)="endOpen.set(!endOpen())">
+            End
+          </button>
+          <ui-popover [(open)]="endOpen" align="end">
+            <p class="text-sm font-semibold">Align end</p>
+            <p class="mt-1 text-xs text-muted-foreground">Panel menempel ke sisi kanan trigger.</p>
+          </ui-popover>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

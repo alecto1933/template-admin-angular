@@ -1,0 +1,121 @@
+<ui-page-header
+  title="Collapsible"
+  description="Panel tunggal yang bisa dibuka-tutup dengan animasi tinggi, cocok untuk pengaturan, konten dinamis, dan file tree."
+>
+  <button uiButton variant="outline" routerLink="/components">
+    <ui-icon name="arrow-left" class="size-4" />
+    Katalog komponen
+  </button>
+</ui-page-header>
+
+<div class="mt-6 grid grid-cols-1 items-start gap-4">
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Animated</h2>
+      <p uiCardDescription>Tinggi panel dianimasikan dengan CSS grid, tanpa mengukur DOM.</p>
+    </div>
+    <div uiCardContent class="max-w-xl">
+      <ui-collapsible
+        title="Detail pengiriman"
+        description="Alamat dan estimasi tiba"
+        [(open)]="advancedOpen"
+      >
+        <p class="leading-relaxed">
+          Paket dikirim dari Jakarta melalui kurir reguler dan diperkirakan tiba dalam 2–3 hari
+          kerja. Nomor resi akan dikirim melalui email setelah paket diserahkan ke kurir.
+        </p>
+      </ui-collapsible>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Settings panel</h2>
+      <p uiCardDescription>Collapsible dapat membungkus daftar pengaturan.</p>
+    </div>
+    <div uiCardContent class="max-w-xl">
+      <ui-collapsible title="Notifikasi" description="Preferensi email dan push" [open]="true">
+        <div class="divide-y divide-border">
+          <div class="flex items-center justify-between gap-4 py-3 first:pt-0">
+            <div>
+              <p class="text-sm font-medium text-foreground">Email transaksional</p>
+              <p class="ui-help mt-0.5">Invoice dan status pesanan.</p>
+            </div>
+            <ui-switch [(checked)]="emailNotif" ariaLabel="Email transaksional" />
+          </div>
+          <div class="flex items-center justify-between gap-4 py-3 last:pb-0">
+            <div>
+              <p class="text-sm font-medium text-foreground">Notifikasi push</p>
+              <p class="ui-help mt-0.5">Pemberitahuan real-time di browser.</p>
+            </div>
+            <ui-switch [(checked)]="pushNotif" ariaLabel="Notifikasi push" />
+          </div>
+        </div>
+      </ui-collapsible>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Dynamic content</h2>
+      <p uiCardDescription>Konten di dalam panel bisa ditambah atau dihapus.</p>
+    </div>
+    <div uiCardContent class="max-w-xl space-y-3">
+      <div class="flex gap-2">
+        <button uiButton size="sm" variant="outline" (click)="addRow()">
+          <ui-icon name="plus" class="size-3.5" />
+          Tambah baris
+        </button>
+        <button uiButton size="sm" variant="ghost" (click)="removeRow()">Hapus baris</button>
+      </div>
+
+      <ui-collapsible title="Daftar dinamis" [open]="true">
+        <ul class="space-y-1.5">
+          @for (row of dynamicRows(); track $index) {
+            <li class="flex items-center gap-2">
+              <ui-icon name="circle-check" class="size-3.5 text-success" />
+              {{ row }}
+            </li>
+          }
+        </ul>
+      </ui-collapsible>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>File tree</h2>
+      <p uiCardDescription>Collapsible bertingkat untuk struktur folder.</p>
+    </div>
+    <div uiCardContent class="max-w-md">
+      <ui-collapsible title="src" description="Folder sumber" [open]="true">
+        <div class="space-y-2">
+          <ui-collapsible title="app" description="Komponen dan halaman">
+            <ul class="space-y-1.5 font-mono text-xs">
+              <li class="flex items-center gap-2">
+                <ui-icon name="file-text" class="size-3.5" /> app.ts
+              </li>
+              <li class="flex items-center gap-2">
+                <ui-icon name="file-text" class="size-3.5" /> app.routes.ts
+              </li>
+              <li class="flex items-center gap-2">
+                <ui-icon name="file-text" class="size-3.5" /> styles.css
+              </li>
+            </ul>
+          </ui-collapsible>
+
+          <ui-collapsible title="public" description="Aset statis">
+            <ul class="space-y-1.5 font-mono text-xs">
+              <li class="flex items-center gap-2">
+                <ui-icon name="image" class="size-3.5" /> favicon.svg
+              </li>
+              <li class="flex items-center gap-2">
+                <ui-icon name="image" class="size-3.5" /> demo/
+              </li>
+            </ul>
+          </ui-collapsible>
+        </div>
+      </ui-collapsible>
+    </div>
+  </div>
+</div>

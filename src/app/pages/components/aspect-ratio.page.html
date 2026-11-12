@@ -1,0 +1,311 @@
+<ui-page-header
+  title="Aspect Ratio"
+  description="Kunci proporsi media agar tidak bergeser saat gambar atau video dimuat. Memakai properti CSS aspect-ratio tanpa JavaScript."
+>
+  <button uiButton variant="outline" routerLink="/components">
+    <ui-icon name="arrow-left" class="size-4" />
+    Katalog komponen
+  </button>
+</ui-page-header>
+
+<div class="mt-6 grid grid-cols-1 items-start gap-4">
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Rasio umum</h2>
+      <p uiCardDescription>
+        Berikan nilai seperti <code class="font-mono text-[12px]">16 / 9</code>,
+        <code class="font-mono text-[12px]">4 / 3</code>, atau
+        <code class="font-mono text-[12px]">1</code>.
+      </p>
+    </div>
+    <div uiCardContent class="grid grid-cols-1 gap-4 sm:grid-cols-3">
+      <figure class="space-y-2">
+        <ui-aspect-ratio ratio="16 / 9" class="rounded-xl border border-border">
+          <img
+            src="demo/landscape.svg"
+            alt="Ilustrasi pegunungan dan matahari"
+            class="size-full object-cover"
+          />
+        </ui-aspect-ratio>
+        <figcaption class="text-[11px] text-muted-foreground">
+          <span class="font-semibold text-foreground">16:9</span> · video, hero, thumbnail
+        </figcaption>
+      </figure>
+
+      <figure class="space-y-2">
+        <ui-aspect-ratio ratio="4 / 3" class="rounded-xl border border-border">
+          <img
+            src="demo/landscape.svg"
+            alt="Ilustrasi pegunungan dengan potongan 4:3"
+            class="size-full object-cover"
+          />
+        </ui-aspect-ratio>
+        <figcaption class="text-[11px] text-muted-foreground">
+          <span class="font-semibold text-foreground">4:3</span> · foto produk, presentasi
+        </figcaption>
+      </figure>
+
+      <figure class="space-y-2">
+        <ui-aspect-ratio ratio="1 / 1" class="rounded-xl border border-border">
+          <img
+            src="demo/square.svg"
+            alt="Ilustrasi lengkungan berwarna biru"
+            class="size-full object-cover"
+          />
+        </ui-aspect-ratio>
+        <figcaption class="text-[11px] text-muted-foreground">
+          <span class="font-semibold text-foreground">1:1</span> · avatar, galeri, feed
+        </figcaption>
+      </figure>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Kartu media</h2>
+      <p uiCardDescription>
+        Kombinasikan aspect ratio dengan konten di bawahnya tanpa takut layout melompat.
+      </p>
+    </div>
+    <div uiCardContent class="grid grid-cols-1 gap-4 md:grid-cols-2">
+      <article class="overflow-hidden rounded-xl border border-border bg-card">
+        <ui-aspect-ratio ratio="16 / 9">
+          <img src="demo/landscape.svg" alt="Pegunungan biru" class="size-full object-cover" />
+        </ui-aspect-ratio>
+        <div class="space-y-2 p-4">
+          <div class="flex items-center gap-2">
+            <span uiBadge variant="primary">
+              <ui-icon name="image" class="size-3" />
+              Artikel
+            </span>
+            <span class="text-[11px] text-muted-foreground">5 menit baca</span>
+          </div>
+          <h3 class="font-display text-base font-semibold">Membangun dashboard yang cepat</h3>
+          <p class="text-sm leading-relaxed text-muted-foreground">
+            Tips menyusun layout admin yang ringan dan tetap nyaman dipakai setiap hari.
+          </p>
+          <button uiButton variant="soft" size="sm">
+            Baca selengkapnya
+            <ui-icon name="arrow-right" class="size-3.5" />
+          </button>
+        </div>
+      </article>
+
+      <article class="overflow-hidden rounded-xl border border-border bg-card">
+        <ui-aspect-ratio ratio="4 / 3">
+          <img
+            src="demo/portrait.svg"
+            alt="Komposisi lingkaran biru dan kuning"
+            class="size-full object-cover"
+          />
+        </ui-aspect-ratio>
+        <div class="space-y-2 p-4">
+          <div class="flex items-center gap-2">
+            <span uiBadge variant="success">Studi kasus</span>
+            <span class="text-[11px] text-muted-foreground">12 menit baca</span>
+          </div>
+          <h3 class="font-display text-base font-semibold">Merapikan katalog produk</h3>
+          <p class="text-sm leading-relaxed text-muted-foreground">
+            Cara menjaga konsistensi gambar produk di semua ukuran layar.
+          </p>
+          <button uiButton variant="soft" size="sm">
+            Baca selengkapnya
+            <ui-icon name="arrow-right" class="size-3.5" />
+          </button>
+        </div>
+      </article>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Video 16:9</h2>
+      <p uiCardDescription>Ruang video tetap stabil sebelum poster atau player dimuat.</p>
+    </div>
+    <div uiCardContent>
+      <ui-aspect-ratio ratio="16 / 9" class="relative rounded-xl bg-[#0b2b3a]">
+        <img
+          src="demo/landscape.svg"
+          alt=""
+          class="absolute inset-0 size-full object-cover opacity-35"
+        />
+        <div
+          class="absolute inset-0 flex flex-col items-center justify-center gap-4 text-center text-white"
+        >
+          <button
+            type="button"
+            class="grid size-14 place-items-center rounded-full bg-white/15 ring-1 ring-white/30 transition-colors hover:bg-white/25"
+            (click)="playVideo()"
+            aria-label="Putar video profil Alecto Studio"
+          >
+            <ui-icon name="play" class="size-6" />
+          </button>
+          <div>
+            <p class="text-sm font-semibold">Video profil Alecto Studio</p>
+            <p class="text-[11px] text-white/70">Menit pertama sudah cukup?</p>
+          </div>
+        </div>
+        <span
+          class="absolute right-3 bottom-3 rounded-md bg-black/50 px-2 py-1 text-[11px] font-medium text-white"
+        >
+          04:32
+        </span>
+      </ui-aspect-ratio>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Potret &amp; story</h2>
+      <p uiCardDescription>
+        Rasio vertikal untuk konten sosial, katalog, atau preview aplikasi mobile.
+      </p>
+    </div>
+    <div uiCardContent class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+      <figure class="space-y-2">
+        <ui-aspect-ratio ratio="3 / 4" class="relative rounded-xl border border-border">
+          <img
+            src="demo/portrait.svg"
+            alt="Komposisi lingkaran biru"
+            class="size-full object-cover"
+          />
+          <span
+            class="absolute top-3 left-3 rounded-full bg-white/90 px-2.5 py-0.5 text-[10px] font-semibold text-foreground"
+          >
+            Baru
+          </span>
+        </ui-aspect-ratio>
+        <figcaption class="text-[11px] text-muted-foreground">
+          3:4 · kartu produk dan portofolio
+        </figcaption>
+      </figure>
+
+      <figure class="space-y-2">
+        <ui-aspect-ratio ratio="9 / 16" class="relative rounded-xl border border-border bg-muted">
+          <img
+            src="demo/square.svg"
+            alt="Ilustrasi biru dengan aksen kuning"
+            class="size-full object-cover"
+          />
+          <div
+            class="absolute inset-x-3 bottom-3 rounded-lg bg-black/45 p-2.5 text-white backdrop-blur-sm"
+          >
+            <p class="text-[11px] font-semibold">@alecto.studio</p>
+            <p class="text-[10px] text-white/75">Feed vertikal 9:16</p>
+          </div>
+        </ui-aspect-ratio>
+        <figcaption class="text-[11px] text-muted-foreground">
+          9:16 · story, reels, dan layar ponsel
+        </figcaption>
+      </figure>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Penggunaan</h2>
+      <p uiCardDescription>
+        Bungkus media dengan komponen dan isi kelas
+        <code class="font-mono text-[12px]">size-full object-cover</code> pada gambar.
+      </p>
+    </div>
+    <div uiCardContent>
+      <pre
+        class="overflow-x-auto rounded-xl border border-border bg-muted/50 p-4 font-mono text-[12px] leading-relaxed text-foreground"
+      ><code>&lt;!-- Nilai number --&gt;
+&lt;ui-aspect-ratio [ratio]="16 / 9" class="rounded-xl"&gt;
+  &lt;img
+    src="demo/landscape.svg"
+    alt="Deskripsi gambar"
+    class="size-full object-cover"
+  /&gt;
+&lt;/ui-aspect-ratio&gt;
+
+&lt;!-- Nilai string CSS --&gt;
+&lt;ui-aspect-ratio ratio="3 / 4"&gt;
+  &lt;img src="foto.jpg" alt="..." class="size-full object-cover" /&gt;
+&lt;/ui-aspect-ratio&gt;</code></pre>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Aksesibilitas</h2>
+      <p uiCardDescription>Aspect ratio hanya mengatur ruang; semantik media tetap di konten.</p>
+    </div>
+    <div uiCardContent>
+      <ul class="space-y-3 text-sm text-muted-foreground">
+        <li class="flex gap-2.5">
+          <ui-icon name="circle-check" class="mt-0.5 size-4 shrink-0 text-success" />
+          <span>
+            Setiap <code class="font-mono text-[12px] text-foreground">&lt;img&gt;</code> wajib
+            punya <code class="font-mono text-[12px] text-foreground">alt</code>; gunakan
+            <code class="font-mono text-[12px] text-foreground">alt=""</code>
+            untuk gambar dekoratif.
+          </span>
+        </li>
+        <li class="flex gap-2.5">
+          <ui-icon name="circle-check" class="mt-0.5 size-4 shrink-0 text-success" />
+          <span>
+            <code class="font-mono text-[12px] text-foreground">object-cover</code>
+            memotong media. Pastikan bagian penting tidak berada di tepi.
+          </span>
+        </li>
+        <li class="flex gap-2.5">
+          <ui-icon name="circle-check" class="mt-0.5 size-4 shrink-0 text-success" />
+          <span>
+            Video harus punya kontrol atau tombol dengan
+            <code class="font-mono text-[12px] text-foreground">aria-label</code>
+            yang jelas.
+          </span>
+        </li>
+        <li class="flex gap-2.5">
+          <ui-icon name="circle-check" class="mt-0.5 size-4 shrink-0 text-success" />
+          <span> Rasio tetap mencegah pergeseran layout (CLS) saat media selesai dimuat. </span>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>API</h2>
+      <p uiCardDescription>Satu input, tanpa logika JavaScript tambahan.</p>
+    </div>
+    <div uiCardContent class="px-0 pb-0 sm:px-0">
+      <div class="ui-scroll-x">
+        <table uiTable>
+          <thead>
+            <tr>
+              <th>Properti</th>
+              <th>Tipe</th>
+              <th>Default</th>
+              <th>Deskripsi</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="font-mono text-[12px] whitespace-nowrap">ratio</td>
+              <td class="whitespace-nowrap">number | string</td>
+              <td class="font-mono text-[12px]">16 / 9</td>
+              <td class="text-muted-foreground">
+                Nilai CSS
+                <code class="font-mono text-[12px]">aspect-ratio</code>; string seperti
+                <code class="font-mono text-[12px]">'3 / 4'</code> juga diterima.
+              </td>
+            </tr>
+            <tr>
+              <td class="font-mono text-[12px] whitespace-nowrap">class</td>
+              <td class="whitespace-nowrap">host class</td>
+              <td class="whitespace-nowrap">—</td>
+              <td class="text-muted-foreground">
+                Tambahkan <code class="font-mono text-[12px]">rounded-*</code>, border, atau posisi
+                relatif langsung di host.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

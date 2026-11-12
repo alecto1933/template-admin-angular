@@ -1,0 +1,233 @@
+<ui-page-header
+  title="Dialog"
+  description="Modal berbasis elemen native <dialog>: fokus terkelola, ESC, backdrop, konten scroll, footer lengket, dan pemanggilan dari menu."
+>
+  <button uiButton variant="outline" routerLink="/components">
+    <ui-icon name="arrow-left" class="size-4" />
+    Katalog komponen
+  </button>
+</ui-page-header>
+
+<div class="mt-6 grid grid-cols-1 items-start gap-4">
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>No close button</h2>
+      <p uiCardDescription>Sembunyikan tombol X; aksi harus dipilih lewat footer.</p>
+    </div>
+    <div uiCardContent>
+      <button uiButton (click)="noCloseDialog.open()">Buka dialog</button>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Dismiss options</h2>
+      <p uiCardDescription>
+        Dialog bisa menutup lewat backdrop atau memaksa pengguna memilih aksi.
+      </p>
+    </div>
+    <div uiCardContent class="flex flex-wrap gap-2">
+      <button uiButton variant="outline" (click)="dismissDialog.open()">Backdrop menutup</button>
+      <button uiButton variant="outline" (click)="strictDialog.open()">Backdrop diabaikan</button>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Sticky footer &amp; scrollable content</h2>
+      <p uiCardDescription>Body scroll sendiri; header dan footer tetap terlihat.</p>
+    </div>
+    <div uiCardContent>
+      <button uiButton (click)="scrollDialog.open()">Buka dialog panjang</button>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Declarative usage</h2>
+      <p uiCardDescription>
+        Dialog dideklarasikan di template dan dibuka lewat template reference.
+      </p>
+    </div>
+    <div uiCardContent>
+      <button uiButton variant="soft" (click)="declarativeDialog.open()">
+        <ui-icon name="external-link" class="size-4" />
+        Open via template ref
+      </button>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Inside menu</h2>
+      <p uiCardDescription>Buka dialog dari item dropdown menu.</p>
+    </div>
+    <div uiCardContent>
+      <button uiButton variant="outline" [cdkMenuTriggerFor]="dialogMenu">
+        Menu aksi
+        <ui-icon name="chevron-down" class="size-4" />
+      </button>
+
+      <ng-template #dialogMenu>
+        <div cdkMenu class="ui-menu-panel w-52">
+          <button cdkMenuItem type="button" class="ui-menu-item" (click)="menuDialog.open()">
+            <ui-icon name="info" class="size-4 text-muted-foreground" />
+            Lihat informasi
+          </button>
+          <button cdkMenuItem type="button" class="ui-menu-item" (click)="declarativeDialog.open()">
+            <ui-icon name="external-link" class="size-4 text-muted-foreground" />
+            Buka dialog deklaratif
+          </button>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Dynamic component</h2>
+      <p uiCardDescription>Konten di dalam dialog dapat berubah secara dinamis.</p>
+    </div>
+    <div uiCardContent>
+      <button uiButton (click)="dynamicDialog.open()">Buka dialog dinamis</button>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Close dialog</h2>
+      <p uiCardDescription>Tombol di dalam konten dapat menutup dialog secara programatik.</p>
+    </div>
+    <div uiCardContent>
+      <button uiButton variant="outline" (click)="closeDialog.open()">
+        Buka dialog dengan tombol tutup
+      </button>
+    </div>
+  </div>
+</div>
+
+<ui-dialog
+  #noCloseDialog
+  title="Konfirmasi langganan"
+  description="Dialog ini tidak punya tombol X."
+  [showClose]="false"
+>
+  <div class="space-y-3 pb-2">
+    <p class="leading-relaxed">
+      Pilih salah satu aksi di bawah. Menekan ESC tetap menutup dialog dan dianggap sebagai
+      pembatalan.
+    </p>
+    <div uiAlert data-variant="info">
+      <ui-icon name="info" class="mt-0.5 size-4 shrink-0" />
+      <p class="leading-relaxed">Paket dapat dibatalkan kapan saja.</p>
+    </div>
+  </div>
+  <div dialogFooter>
+    <button uiButton variant="outline" (click)="noCloseDialog.close()">Batal</button>
+    <button uiButton (click)="noCloseDialog.close()">Berlangganan</button>
+  </div>
+</ui-dialog>
+
+<ui-dialog
+  #dismissDialog
+  title="Perubahan diterapkan"
+  description="Klik backdrop untuk menutup dialog ini."
+>
+  <p class="pb-2 leading-relaxed">
+    Dialog biasa menutup saat backdrop diklik atau tombol X ditekan.
+  </p>
+  <div dialogFooter>
+    <button uiButton (click)="dismissDialog.close()">Mengerti</button>
+  </div>
+</ui-dialog>
+
+<ui-dialog
+  #strictDialog
+  title="Konfirmasi penting"
+  description="Backdrop tidak menutup dialog ini."
+  [closeOnBackdrop]="false"
+  [showClose]="false"
+>
+  <p class="pb-2 leading-relaxed">Pengguna harus memilih tombol di footer untuk melanjutkan.</p>
+  <div dialogFooter>
+    <button uiButton variant="outline" (click)="strictDialog.close()">Batal</button>
+    <button uiButton (click)="strictDialog.close()">Lanjutkan</button>
+  </div>
+</ui-dialog>
+
+<ui-dialog
+  #scrollDialog
+  title="Syarat dan ketentuan"
+  description="Body dialog bisa scroll; footer tetap di bawah."
+>
+  <div class="space-y-3 pb-2">
+    @for (paragraph of paragraphs; track $index) {
+      <p class="leading-relaxed">{{ paragraph }}</p>
+    }
+  </div>
+  <div dialogFooter>
+    <button uiButton variant="outline" (click)="scrollDialog.close()">Tutup</button>
+    <button uiButton (click)="scrollDialog.close()">Setuju</button>
+  </div>
+</ui-dialog>
+
+<ui-dialog
+  #declarativeDialog
+  title="Dialog deklaratif"
+  description="Dibuka lewat template reference."
+>
+  <p class="pb-2 leading-relaxed">
+    Pola ini sederhana: deklarasikan dialog sekali, lalu panggil
+    <code class="font-mono text-[12px] text-foreground">dialog.open()</code>.
+  </p>
+  <div dialogFooter>
+    <button uiButton (click)="declarativeDialog.close()">Tutup</button>
+  </div>
+</ui-dialog>
+
+<ui-dialog
+  #menuDialog
+  title="Dari dropdown menu"
+  description="Dialog dibuka setelah item menu dipilih."
+>
+  <p class="pb-2 leading-relaxed">
+    Menu tertutup otomatis, lalu dialog tampil dengan fokus terkelola.
+  </p>
+  <div dialogFooter>
+    <button uiButton (click)="menuDialog.close()">Selesai</button>
+  </div>
+</ui-dialog>
+
+<ui-dialog
+  #dynamicDialog
+  title="Konten dinamis"
+  description="Konten di dalam dialog mengikuti state komponen."
+>
+  <div class="space-y-3 pb-2">
+    <p class="leading-relaxed">
+      Tekan tombol untuk menampilkan atau menyembunyikan bagian tambahan.
+    </p>
+    <button uiButton variant="outline" size="sm" (click)="showExtra.set(!showExtra())">
+      {{ showExtra() ? 'Sembunyikan detail' : 'Tampilkan detail' }}
+    </button>
+    @if (showExtra()) {
+      <div uiAlert data-variant="success">
+        <ui-icon name="circle-check" class="mt-0.5 size-4 shrink-0" />
+        <p class="leading-relaxed">Detail tambahan muncul secara dinamis di dalam body dialog.</p>
+      </div>
+    }
+  </div>
+  <div dialogFooter>
+    <button uiButton (click)="dynamicDialog.close()">Tutup</button>
+  </div>
+</ui-dialog>
+
+<ui-dialog #closeDialog title="Tutup dari dalam" description="Tombol di body dapat menutup dialog.">
+  <div class="space-y-3 pb-2">
+    <p class="leading-relaxed">
+      Panggil <code class="font-mono text-[12px] text-foreground">close()</code>
+      pada template reference dialog.
+    </p>
+    <button uiButton variant="soft" (click)="closeDialog.close()">Tutup sekarang</button>
+  </div>
+</ui-dialog>

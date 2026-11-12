@@ -1,0 +1,370 @@
+<ui-page-header
+  title="Pengaturan"
+  description="Kelola profil workspace, notifikasi, keamanan, dan tagihan dalam satu tempat."
+>
+  <button uiButton variant="outline" (click)="saveAll()">
+    <ui-icon name="check" class="size-4" />
+    Simpan perubahan
+  </button>
+</ui-page-header>
+
+<div class="mt-6">
+  <ui-tabs ariaLabel="Pengaturan">
+    <ng-template uiTab label="Umum" icon="settings">
+      <div class="grid grid-cols-1 items-start gap-4 lg:grid-cols-3">
+        <div uiCard class="lg:col-span-2">
+          <div uiCardHeader>
+            <h2 uiCardTitle>Profil workspace</h2>
+            <p uiCardDescription>Informasi ini tampil di invoice dan email pelanggan.</p>
+          </div>
+          <div uiCardContent class="grid gap-4 sm:grid-cols-2">
+            <div class="space-y-1.5">
+              <label uiLabel for="workspace-name">Nama workspace</label>
+              <input uiInput id="workspace-name" type="text" value="Alecto Studio" />
+            </div>
+            <div class="space-y-1.5">
+              <label uiLabel for="workspace-slug">URL workspace</label>
+              <div class="flex items-center">
+                <span
+                  class="flex h-10 items-center rounded-l-xl border border-r-0 border-input bg-muted px-3 text-xs text-muted-foreground"
+                >
+                  alecto.id/
+                </span>
+                <input
+                  uiInput
+                  id="workspace-slug"
+                  type="text"
+                  value="studio"
+                  class="rounded-l-none"
+                />
+              </div>
+            </div>
+            <div class="space-y-1.5 sm:col-span-2">
+              <label uiLabel for="workspace-desc">Deskripsi</label>
+              <textarea uiTextarea id="workspace-desc" rows="3">
+Toko merchandise dan aksesori desain lokal.</textarea>
+            </div>
+            <div class="space-y-1.5">
+              <label uiLabel for="workspace-language">Bahasa</label>
+              <select uiSelect id="workspace-language">
+                <option>Bahasa Indonesia</option>
+                <option>English</option>
+              </select>
+            </div>
+            <div class="space-y-1.5">
+              <label uiLabel for="workspace-timezone">Zona waktu</label>
+              <select uiSelect id="workspace-timezone">
+                <option>Asia/Jakarta (WIB)</option>
+                <option>Asia/Makassar (WITA)</option>
+                <option>Asia/Jayapura (WIT)</option>
+              </select>
+            </div>
+          </div>
+          <div uiCardFooter class="justify-end">
+            <button uiButton variant="outline" type="button">Batal</button>
+            <button uiButton type="button" (click)="save('Profil workspace')">Simpan</button>
+          </div>
+        </div>
+
+        <div uiCard>
+          <div uiCardHeader>
+            <h2 uiCardTitle>Logo workspace</h2>
+            <p uiCardDescription>Dipakai di sidebar dan invoice.</p>
+          </div>
+          <div uiCardContent class="space-y-4">
+            <div
+              class="flex flex-col items-center gap-3 rounded-2xl border border-dashed border-input bg-muted/40 p-6 text-center"
+            >
+              <span
+                class="grid size-14 place-items-center rounded-2xl bg-primary text-primary-foreground shadow-lg shadow-primary/20"
+              >
+                <ui-icon name="sparkles" class="size-7" />
+              </span>
+              <div>
+                <p class="text-sm font-medium">logo-alecto.svg</p>
+                <p class="ui-help">SVG atau PNG, maksimal 1 MB.</p>
+              </div>
+              <button uiButton variant="outline" size="sm" type="button">Ganti logo</button>
+            </div>
+            <div uiAlert data-variant="info">
+              <ui-icon name="info" class="mt-0.5 size-4 shrink-0" />
+              <p class="leading-relaxed">Gunakan logo persegi agar tampil rapi di semua ukuran.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+
+    <ng-template uiTab label="Notifikasi" icon="bell">
+      <div uiCard class="max-w-3xl">
+        <div uiCardHeader>
+          <h2 uiCardTitle>Email &amp; notifikasi</h2>
+          <p uiCardDescription>Tentukan pemberitahuan apa yang dikirim ke seluruh admin.</p>
+        </div>
+        <div uiCardContent class="divide-y divide-border">
+          <div class="flex items-start justify-between gap-6 py-4 first:pt-0">
+            <div>
+              <p class="text-sm font-medium">Pesanan baru</p>
+              <p class="ui-help mt-0.5">Email setiap kali ada pesanan yang dibayar.</p>
+            </div>
+            <ui-switch ariaLabel="Notifikasi pesanan baru" [(checked)]="orderUpdates" />
+          </div>
+          <div class="flex items-start justify-between gap-6 py-4">
+            <div>
+              <p class="text-sm font-medium">Peringatan stok</p>
+              <p class="ui-help mt-0.5">Beri tahu saat stok produk di bawah 5 unit.</p>
+            </div>
+            <ui-switch ariaLabel="Peringatan stok menipis" [(checked)]="stockAlerts" />
+          </div>
+          <div class="flex items-start justify-between gap-6 py-4">
+            <div>
+              <p class="text-sm font-medium">Ulasan pelanggan</p>
+              <p class="ui-help mt-0.5">
+                Notifikasi saat ulasan baru dengan rating di bawah 3 masuk.
+              </p>
+            </div>
+            <ui-switch ariaLabel="Notifikasi ulasan pelanggan" [(checked)]="reviewAlerts" />
+          </div>
+          <div class="flex items-start justify-between gap-6 py-4 last:pb-0">
+            <div>
+              <p class="text-sm font-medium">Email pemasaran</p>
+              <p class="ui-help mt-0.5">Tips, webinar, dan penawaran dari tim Alecto.</p>
+            </div>
+            <ui-switch ariaLabel="Email pemasaran" [(checked)]="marketingEmails" />
+          </div>
+        </div>
+        <div uiCardFooter class="justify-end">
+          <button uiButton type="button" (click)="save('Preferensi notifikasi')">
+            Simpan preferensi
+          </button>
+        </div>
+      </div>
+    </ng-template>
+
+    <ng-template uiTab label="Keamanan" icon="shield-check">
+      <div class="grid grid-cols-1 items-start gap-4 lg:grid-cols-3">
+        <div uiCard class="lg:col-span-2">
+          <div uiCardHeader>
+            <h2 uiCardTitle>Ubah kata sandi</h2>
+            <p uiCardDescription>Gunakan minimal 12 karakter dengan kombinasi angka dan simbol.</p>
+          </div>
+          <div uiCardContent class="grid gap-4">
+            <div class="space-y-1.5">
+              <label uiLabel for="current-password">Kata sandi saat ini</label>
+              <input
+                uiInput
+                id="current-password"
+                type="password"
+                autocomplete="current-password"
+              />
+            </div>
+            <div class="grid gap-4 sm:grid-cols-2">
+              <div class="space-y-1.5">
+                <label uiLabel for="new-password">Kata sandi baru</label>
+                <input uiInput id="new-password" type="password" autocomplete="new-password" />
+              </div>
+              <div class="space-y-1.5">
+                <label uiLabel for="confirm-password">Konfirmasi kata sandi</label>
+                <input uiInput id="confirm-password" type="password" autocomplete="new-password" />
+              </div>
+            </div>
+          </div>
+          <div uiCardFooter class="justify-end">
+            <button uiButton type="button" (click)="save('Kata sandi')">Perbarui kata sandi</button>
+          </div>
+        </div>
+
+        <div uiCard>
+          <div uiCardHeader>
+            <h2 uiCardTitle>Autentikasi dua faktor</h2>
+            <p uiCardDescription>Lapisan keamanan tambahan saat login.</p>
+          </div>
+          <div uiCardContent class="space-y-4">
+            <div
+              class="flex items-center justify-between gap-3 rounded-xl border border-border bg-muted/40 px-3.5 py-3"
+            >
+              <span class="flex items-center gap-2 text-sm font-medium">
+                <ui-icon name="shield-check" class="size-4 text-success" />
+                Status
+              </span>
+              <span uiBadge [variant]="twoFactor() ? 'success' : 'danger'">
+                {{ twoFactor() ? 'Aktif' : 'Nonaktif' }}
+              </span>
+            </div>
+            <ui-switch
+              ariaLabel="Autentikasi dua faktor"
+              [(checked)]="twoFactor"
+              label="Wajibkan 2FA untuk semua admin"
+            />
+          </div>
+        </div>
+
+        <div uiCard class="lg:col-span-3">
+          <div uiCardHeader>
+            <h2 uiCardTitle>Sesi aktif</h2>
+            <p uiCardDescription>Perangkat yang saat ini masuk ke akun Anda.</p>
+          </div>
+          <div uiCardContent class="space-y-3">
+            @for (session of sessions; track session.device) {
+              <div class="flex flex-wrap items-center gap-3 rounded-xl border border-border p-3.5">
+                <span
+                  class="grid size-10 shrink-0 place-items-center rounded-xl bg-muted text-muted-foreground"
+                >
+                  <ui-icon [name]="session.icon" class="size-5" />
+                </span>
+                <div class="min-w-0 flex-1">
+                  <p class="flex items-center gap-2 text-sm font-medium">
+                    {{ session.device }}
+                    @if (session.current) {
+                      <span uiBadge variant="success">Saat ini</span>
+                    }
+                  </p>
+                  <p class="text-xs text-muted-foreground">
+                    {{ session.location }} · {{ session.time }}
+                  </p>
+                </div>
+                @if (!session.current) {
+                  <button
+                    uiButton
+                    variant="outline"
+                    size="sm"
+                    type="button"
+                    (click)="revokeSession(session.device)"
+                  >
+                    Cabut sesi
+                  </button>
+                }
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+    </ng-template>
+
+    <ng-template uiTab label="Tagihan" icon="credit-card">
+      <div class="grid grid-cols-1 items-start gap-4 lg:grid-cols-3">
+        <div uiCard class="lg:col-span-2">
+          <div uiCardHeader>
+            <h2 uiCardTitle>Paket langganan</h2>
+            <p uiCardDescription>Perpanjangan otomatis setiap bulan.</p>
+          </div>
+          <div uiCardContent class="space-y-5">
+            <div
+              class="flex flex-wrap items-center justify-between gap-4 rounded-2xl bg-neutral-950 p-5 text-white"
+            >
+              <div>
+                <p class="text-xs font-semibold tracking-[0.14em] uppercase opacity-80">
+                  Paket aktif
+                </p>
+                <p class="mt-1 font-display text-2xl font-bold">Alecto Pro</p>
+                <p class="mt-1 text-sm opacity-85">Rp 249.000 / bulan</p>
+              </div>
+              <button
+                uiButton
+                variant="secondary"
+                type="button"
+                class="border-white/20 bg-white/15 text-white hover:bg-white/25"
+                (click)="upgrade()"
+              >
+                Upgrade paket
+              </button>
+            </div>
+
+            <div class="grid gap-4 sm:grid-cols-3">
+              <div class="rounded-xl border border-border p-4">
+                <p class="text-xs text-muted-foreground">Anggota tim</p>
+                <p class="mt-1 font-display text-xl font-bold">8 / 10</p>
+              </div>
+              <div class="rounded-xl border border-border p-4">
+                <p class="text-xs text-muted-foreground">Produk aktif</p>
+                <p class="mt-1 font-display text-xl font-bold">124</p>
+              </div>
+              <div class="rounded-xl border border-border p-4">
+                <p class="text-xs text-muted-foreground">Penyimpanan</p>
+                <p class="mt-1 font-display text-xl font-bold">6,8 GB</p>
+              </div>
+            </div>
+
+            <div class="space-y-2">
+              <div class="flex items-center justify-between text-xs">
+                <span class="font-medium">Penggunaan penyimpanan</span>
+                <span class="text-muted-foreground">68% dari 10 GB</span>
+              </div>
+              <div
+                class="ui-progress"
+                role="progressbar"
+                aria-valuenow="68"
+                aria-valuemin="0"
+                aria-valuemax="100"
+              >
+                <div class="ui-progress-bar" style="width: 68%"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div uiCard>
+          <div uiCardHeader>
+            <h2 uiCardTitle>Metode pembayaran</h2>
+            <p uiCardDescription>Kartu yang dipakai untuk tagihan.</p>
+          </div>
+          <div uiCardContent class="space-y-4">
+            <div class="rounded-2xl border border-border bg-muted/40 p-4">
+              <div class="flex items-center justify-between">
+                <span class="flex items-center gap-2 text-sm font-medium">
+                  <ui-icon name="credit-card" class="size-4" />
+                  Visa •••• 4242
+                </span>
+                <span uiBadge variant="success">Aktif</span>
+              </div>
+              <p class="mt-2 text-xs text-muted-foreground">Berlaku hingga 08/2028</p>
+            </div>
+            <button uiButton variant="outline" type="button" class="w-full">
+              Ganti metode pembayaran
+            </button>
+          </div>
+        </div>
+
+        <div uiCard class="lg:col-span-3">
+          <div uiCardHeader>
+            <h2 uiCardTitle>Riwayat invoice</h2>
+            <p uiCardDescription>Unduh invoice untuk keperluan pembukuan.</p>
+          </div>
+          <div uiCardContent class="px-0 pb-0 sm:px-0">
+            <div class="ui-scroll-x">
+              <table uiTable>
+                <thead>
+                  <tr>
+                    <th>Invoice</th>
+                    <th>Tanggal</th>
+                    <th>Jumlah</th>
+                    <th>Status</th>
+                    <th class="pr-5 text-right sm:pr-6">Aksi</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for (invoice of invoices; track invoice.id) {
+                    <tr>
+                      <td class="font-mono text-[12px] font-semibold">{{ invoice.id }}</td>
+                      <td class="text-muted-foreground">{{ invoice.date }}</td>
+                      <td class="font-medium">{{ invoice.amount }}</td>
+                      <td>
+                        <span uiBadge variant="success">{{ invoice.status }}</span>
+                      </td>
+                      <td class="pr-5 text-right sm:pr-6">
+                        <button uiButton variant="ghost" size="sm" type="button">
+                          <ui-icon name="download" class="size-3.5" />
+                          Unduh
+                        </button>
+                      </td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+  </ui-tabs>
+</div>

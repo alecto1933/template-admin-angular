@@ -1,0 +1,103 @@
+<ui-page-header
+  title="Native Select"
+  description="Select native dengan optgroup, state disabled, invalid, dan integrasi reactive form."
+>
+  <button uiButton variant="outline" routerLink="/components">
+    <ui-icon name="arrow-left" class="size-4" />
+    Katalog komponen
+  </button>
+</ui-page-header>
+
+<div class="mt-6 grid grid-cols-1 items-start gap-4">
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Groups</h2>
+      <p uiCardDescription>
+        Kelompokkan opsi dengan <code class="font-mono text-[12px]">optgroup</code>.
+      </p>
+    </div>
+    <div uiCardContent class="max-w-md space-y-2">
+      <label uiLabel for="ns-group">Kota</label>
+      <select uiSelect id="ns-group">
+        <optgroup label="Jawa">
+          <option>Jakarta</option>
+          <option>Bandung</option>
+          <option>Surabaya</option>
+        </optgroup>
+        <optgroup label="Bali &amp; Nusa Tenggara">
+          <option>Denpasar</option>
+          <option>Mataram</option>
+        </optgroup>
+        <optgroup label="Sumatra">
+          <option>Medan</option>
+          <option>Palembang</option>
+        </optgroup>
+      </select>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Disabled &amp; invalid</h2>
+      <p uiCardDescription>State nonaktif dan error.</p>
+    </div>
+    <div uiCardContent class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+      <div class="space-y-2">
+        <label uiLabel for="ns-disabled">Paket</label>
+        <select uiSelect id="ns-disabled" disabled>
+          <option>Pro (aktif)</option>
+        </select>
+        <p class="ui-help">Paket diatur oleh admin.</p>
+      </div>
+
+      <div class="space-y-2">
+        <label uiLabel for="ns-invalid">Negara</label>
+        <select uiSelect id="ns-invalid" aria-invalid="true">
+          <option value="">Pilih negara…</option>
+          <option>Indonesia</option>
+          <option>Malaysia</option>
+        </select>
+        <p class="ui-error">
+          <ui-icon name="circle-help" class="size-3" />
+          Negara wajib dipilih.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Form</h2>
+      <p uiCardDescription>Select native di dalam reactive form.</p>
+    </div>
+    <div uiCardContent>
+      <form [formGroup]="form" (ngSubmit)="submit()" class="max-w-md space-y-3" novalidate>
+        <div class="space-y-2">
+          <label uiLabel for="ns-form">Negara</label>
+          <select
+            uiSelect
+            id="ns-form"
+            formControlName="country"
+            [attr.aria-invalid]="
+              form.controls.country.invalid && (form.controls.country.touched || submitted())
+                ? 'true'
+                : null
+            "
+          >
+            <option value="">Pilih negara…</option>
+            <option value="id">Indonesia</option>
+            <option value="my">Malaysia</option>
+            <option value="sg">Singapura</option>
+          </select>
+          @if (form.controls.country.invalid && (form.controls.country.touched || submitted())) {
+            <p class="ui-error">
+              <ui-icon name="circle-help" class="size-3" />
+              Negara wajib dipilih.
+            </p>
+          }
+        </div>
+        <button uiButton type="submit">Simpan</button>
+      </form>
+    </div>
+  </div>
+</div>

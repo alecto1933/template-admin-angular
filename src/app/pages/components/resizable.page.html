@@ -1,0 +1,94 @@
+<ui-page-header
+  title="Resizable"
+  description="Panel yang bisa diubah ukurannya secara horizontal atau vertikal, dengan handle yang bisa dioperasikan keyboard."
+>
+  <button uiButton variant="outline" routerLink="/components">
+    <ui-icon name="arrow-left" class="size-4" />
+    Katalog komponen
+  </button>
+</ui-page-header>
+
+<div class="mt-6 grid grid-cols-1 items-start gap-4">
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Horizontal</h2>
+      <p uiCardDescription>Geser handle atau gunakan Arrow Left/Right saat handle fokus.</p>
+    </div>
+    <div uiCardContent>
+      <ui-resizable [(size)]="horizontal">
+        <div resizableStart class="space-y-2">
+          <p class="text-sm font-semibold">Panel kiri</p>
+          <p class="text-xs text-muted-foreground">
+            Lebar {{ horizontal() }}% — drag handle untuk mengubah.
+          </p>
+          <div class="space-y-2">
+            @for (item of [1, 2, 3, 4]; track item) {
+              <div class="rounded-lg border border-border p-2 text-xs">Item {{ item }}</div>
+            }
+          </div>
+        </div>
+
+        <div resizableEnd class="space-y-2">
+          <p class="text-sm font-semibold">Panel kanan</p>
+          <p class="text-xs text-muted-foreground">Konten menyesuaikan sisa ruang.</p>
+          <div class="h-40 rounded-lg bg-muted/40"></div>
+        </div>
+      </ui-resizable>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Vertical</h2>
+      <p uiCardDescription>Orientasi vertikal untuk editor atau panel bawah.</p>
+    </div>
+    <div uiCardContent>
+      <ui-resizable orientation="vertical" [(size)]="vertical">
+        <div resizableStart>
+          <p class="text-sm font-semibold">Panel atas</p>
+          <p class="mt-1 text-xs text-muted-foreground">Tinggi {{ vertical() }}%.</p>
+        </div>
+        <div resizableEnd>
+          <p class="text-sm font-semibold">Panel bawah</p>
+          <div class="mt-2 h-20 rounded-lg bg-muted/40"></div>
+        </div>
+      </ui-resizable>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Handle &amp; dynamic panels</h2>
+      <p uiCardDescription>Handle selalu terlihat; ukuran dan konten dapat diubah dari luar.</p>
+    </div>
+    <div uiCardContent class="space-y-3">
+      <div class="flex flex-wrap gap-2">
+        <button uiButton size="sm" variant="outline" (click)="dynamic.set(30)">30%</button>
+        <button uiButton size="sm" variant="outline" (click)="dynamic.set(50)">50%</button>
+        <button uiButton size="sm" variant="outline" (click)="dynamic.set(70)">70%</button>
+        <button uiButton size="sm" (click)="extraContent.set(!extraContent())">
+          {{ extraContent() ? 'Sembunyikan konten' : 'Tambah konten' }}
+        </button>
+      </div>
+
+      <ui-resizable [(size)]="dynamic">
+        <div resizableStart class="space-y-2">
+          <p class="text-sm font-semibold">Konten dinamis</p>
+          <p class="text-xs text-muted-foreground">Ukuran {{ dynamic() }}%</p>
+          @if (extraContent()) {
+            <div uiAlert data-variant="info" class="text-xs">
+              <ui-icon name="info" class="mt-0.5 size-4 shrink-0" />
+              Konten tambahan muncul di panel ini.
+            </div>
+          }
+        </div>
+        <div resizableEnd class="space-y-2">
+          <p class="text-sm font-semibold">Panel kanan</p>
+          <p class="text-xs text-muted-foreground">
+            Coba fokus ke handle lalu gunakan tombol panah.
+          </p>
+        </div>
+      </ui-resizable>
+    </div>
+  </div>
+</div>

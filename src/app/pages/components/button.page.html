@@ -1,0 +1,156 @@
+<ui-page-header
+  title="Button"
+  description="Tombol untuk aksi utama, sekunder, destruktif, ikon, hingga tautan. Mendukung loading state dan elemen anchor."
+>
+  <button uiButton variant="outline" routerLink="/components">
+    <ui-icon name="arrow-left" class="size-4" />
+    Katalog komponen
+  </button>
+</ui-page-header>
+
+<div class="mt-6 grid grid-cols-1 items-start gap-4">
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Variants</h2>
+      <p uiCardDescription>Pilih varian sesuai tingkat kepentingan aksi.</p>
+    </div>
+    <div uiCardContent class="flex flex-wrap items-center gap-2">
+      <button uiButton>Default</button>
+      <button uiButton variant="outline">Outline</button>
+      <button uiButton variant="secondary">Secondary</button>
+      <button uiButton variant="ghost">Ghost</button>
+      <button uiButton variant="destructive">Destructive</button>
+      <button uiButton variant="link">Link</button>
+      <button uiButton variant="soft">Soft</button>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Size</h2>
+      <p uiCardDescription>
+        Ukuran <code class="font-mono text-[12px]">sm</code>, default,
+        <code class="font-mono text-[12px]">lg</code>, dan ikon.
+      </p>
+    </div>
+    <div uiCardContent class="flex flex-wrap items-center gap-2">
+      <button uiButton size="sm">Small</button>
+      <button uiButton>Default</button>
+      <button uiButton size="lg">Large</button>
+      <button uiButton size="icon" aria-label="Tambah">
+        <ui-icon name="plus" class="size-4" />
+      </button>
+      <button uiButton size="icon-sm" variant="outline" aria-label="Pengaturan">
+        <ui-icon name="settings" class="size-4" />
+      </button>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>With icon</h2>
+      <p uiCardDescription>Ikon membantu mempercepat pemindaian aksi.</p>
+    </div>
+    <div uiCardContent class="flex flex-wrap items-center gap-2">
+      <button uiButton>
+        <ui-icon name="plus" class="size-4" />
+        Tambah produk
+      </button>
+      <button uiButton variant="outline">
+        <ui-icon name="download" class="size-4" />
+        Unduh laporan
+      </button>
+      <button uiButton variant="ghost">
+        <ui-icon name="settings" class="size-4" />
+        Pengaturan
+      </button>
+      <button uiButton variant="destructive">
+        <ui-icon name="trash-2" class="size-4" />
+        Hapus
+      </button>
+      <button uiButton variant="link">
+        Lihat selengkapnya
+        <ui-icon name="arrow-right" class="size-3.5" />
+      </button>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Rounded</h2>
+      <p uiCardDescription>
+        Tambahkan <code class="font-mono text-[12px]">rounded-full</code> untuk tombol pill.
+      </p>
+    </div>
+    <div uiCardContent class="flex flex-wrap items-center gap-2">
+      <button uiButton class="rounded-full">Rounded</button>
+      <button uiButton variant="outline" class="rounded-full">Outline pill</button>
+      <button uiButton variant="soft" class="rounded-full">
+        <ui-icon name="sparkles" class="size-4" />
+        Dengan ikon
+      </button>
+      <button uiButton size="icon" class="rounded-full" aria-label="Tambah">
+        <ui-icon name="plus" class="size-4" />
+      </button>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Spinner</h2>
+      <p uiCardDescription>
+        Gunakan input <code class="font-mono text-[12px]">loading</code> untuk menonaktifkan tombol
+        dan menampilkan spinner.
+      </p>
+    </div>
+    <div uiCardContent class="flex flex-wrap items-center gap-2">
+      <button uiButton loading>Menyimpan…</button>
+      <button uiButton variant="outline" loading>Memuat</button>
+      <button uiButton variant="soft" loading>Mengunggah</button>
+      <button uiButton variant="destructive" loading>Menghapus</button>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>As anchor</h2>
+      <p uiCardDescription>
+        Atribut <code class="font-mono text-[12px]">uiButton</code> juga bekerja pada
+        <code class="font-mono text-[12px]">&lt;a&gt;</code>.
+      </p>
+    </div>
+    <div uiCardContent class="flex flex-wrap items-center gap-2">
+      <a uiButton href="#">
+        Buka dokumentasi
+        <ui-icon name="external-link" class="size-4" />
+      </a>
+      <a uiButton variant="outline" href="#">
+        Lihat repositori
+        <ui-icon name="arrow-up-right" class="size-4" />
+      </a>
+      <a uiButton variant="ghost" href="#"> Pelajari lebih lanjut </a>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Penggunaan</h2>
+      <p uiCardDescription>Satu directive, banyak varian.</p>
+    </div>
+    <div uiCardContent>
+      <pre
+        class="overflow-x-auto rounded-xl border border-border bg-muted/50 p-4 font-mono text-[12px] leading-relaxed text-foreground"
+      ><code>&lt;button uiButton&gt;Simpan&lt;/button&gt;
+&lt;button uiButton variant="outline" size="sm"&gt;Batal&lt;/button&gt;
+&lt;button uiButton loading&gt;Menyimpan…&lt;/button&gt;
+
+&lt;a uiButton variant="outline" href="/docs"&gt;
+  Dokumentasi
+&lt;/a&gt;
+
+&lt;button uiButton size="icon" aria-label="Tambah"&gt;
+  &lt;ui-icon name="plus" class="size-4" /&gt;
+&lt;/button&gt;</code></pre>
+    </div>
+  </div>
+</div>

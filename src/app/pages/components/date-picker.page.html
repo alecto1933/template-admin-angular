@@ -1,0 +1,155 @@
+<ui-page-header
+  title="Date Picker"
+  description="Pemilih tanggal dalam popover: konfigurasi kustom, multiple, range, format, input picker, tanggal + waktu, dan integrasi form."
+>
+  <button uiButton variant="outline" routerLink="/components">
+    <ui-icon name="arrow-left" class="size-4" />
+    Katalog komponen
+  </button>
+</ui-page-header>
+
+<div class="mt-6 grid grid-cols-1 items-start gap-4">
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Custom configs</h2>
+      <p uiCardDescription>Mode single dengan pemilih bulan/tahun dan format tanggal panjang.</p>
+    </div>
+    <div uiCardContent class="max-w-md space-y-2">
+      <label uiLabel for="dp-custom">Tanggal</label>
+      <ui-date-picker
+        inputId="dp-custom"
+        [showSelectors]="true"
+        dateFormat="long"
+        [(value)]="single"
+        placeholder="Pilih tanggal…"
+      />
+      <p class="ui-help">Header memakai select bulan dan tahun.</p>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Multiple selection</h2>
+      <p uiCardDescription>Pilih beberapa tanggal sekaligus.</p>
+    </div>
+    <div uiCardContent class="max-w-md space-y-2">
+      <label uiLabel for="dp-multiple">Tanggal</label>
+      <ui-date-picker
+        inputId="dp-multiple"
+        mode="multiple"
+        [(value)]="multiple"
+        placeholder="Pilih beberapa tanggal…"
+      />
+      <p class="ui-help">Terpilih: {{ multiple().length }} tanggal</p>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Range picker</h2>
+      <p uiCardDescription>Pilih tanggal awal dan akhir; rentang ditampilkan di input.</p>
+    </div>
+    <div uiCardContent class="max-w-md space-y-2">
+      <label uiLabel for="dp-range">Rentang</label>
+      <ui-date-picker
+        inputId="dp-range"
+        mode="range"
+        [(value)]="range"
+        placeholder="Pilih rentang tanggal…"
+      />
+      <p class="ui-help">
+        {{ range().length === 2 ? 'Rentang lengkap' : 'Pilih dua tanggal' }}
+      </p>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Format date</h2>
+      <p uiCardDescription>
+        Format tampilan: <code class="font-mono text-[12px]">short</code>,
+        <code class="font-mono text-[12px]">long</code>, atau
+        <code class="font-mono text-[12px]">iso</code>.
+      </p>
+    </div>
+    <div uiCardContent class="grid grid-cols-1 gap-3 lg:grid-cols-2">
+      <div class="space-y-2">
+        <label uiLabel for="dp-short">Short</label>
+        <ui-date-picker inputId="dp-short" dateFormat="short" [(value)]="shortValue" />
+      </div>
+      <div class="space-y-2">
+        <label uiLabel for="dp-long">Long</label>
+        <ui-date-picker inputId="dp-long" dateFormat="long" [(value)]="longValue" />
+      </div>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Input picker &amp; date time</h2>
+      <p uiCardDescription>Date picker sebagai input biasa, atau digabung dengan input waktu.</p>
+    </div>
+    <div uiCardContent class="grid grid-cols-1 gap-4 lg:grid-cols-2">
+      <div class="space-y-2">
+        <label uiLabel for="dp-input">Tanggal</label>
+        <ui-date-picker inputId="dp-input" [clearable]="true" />
+      </div>
+      <div class="space-y-2">
+        <label uiLabel>Tanggal &amp; waktu</label>
+        <div class="grid grid-cols-2 gap-2">
+          <ui-date-picker />
+          <input uiInput type="time" value="09:30" aria-label="Waktu" />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Month year picker</h2>
+      <p uiCardDescription>Fokus pada bulan dan tahun dengan selector di header.</p>
+    </div>
+    <div uiCardContent class="max-w-md space-y-2">
+      <label uiLabel for="dp-month">Periode</label>
+      <ui-date-picker inputId="dp-month" [showSelectors]="true" placeholder="Pilih periode…" />
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Form</h2>
+      <p uiCardDescription>Empat varian form: single, input picker, multiple, dan range.</p>
+    </div>
+    <div uiCardContent>
+      <form [formGroup]="form" (ngSubmit)="submit()" class="grid grid-cols-1 gap-4 xl:grid-cols-2">
+        <div class="space-y-2">
+          <label uiLabel for="dp-form-single">Single</label>
+          <ui-date-picker inputId="dp-form-single" formControlName="single" />
+        </div>
+
+        <div class="space-y-2">
+          <label uiLabel for="dp-form-input">Input picker</label>
+          <ui-date-picker
+            inputId="dp-form-input"
+            formControlName="inputPicker"
+            [clearable]="true"
+          />
+        </div>
+
+        <div class="space-y-2">
+          <label uiLabel for="dp-form-multiple">Multiple</label>
+          <ui-date-picker inputId="dp-form-multiple" mode="multiple" formControlName="multiple" />
+        </div>
+
+        <div class="space-y-2">
+          <label uiLabel for="dp-form-range">Range</label>
+          <ui-date-picker inputId="dp-form-range" mode="range" formControlName="range" />
+        </div>
+
+        <div class="xl:col-span-2">
+          <button uiButton type="submit">Simpan tanggal</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

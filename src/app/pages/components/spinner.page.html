@@ -1,0 +1,141 @@
+<ui-page-header
+  title="Spinner"
+  description="Indikator loading dengan ikon kustom, ukuran, warna, serta penggunaan di button, badge, input group, empty state, dan item."
+>
+  <button uiButton variant="outline" routerLink="/components">
+    <ui-icon name="arrow-left" class="size-4" />
+    Katalog komponen
+  </button>
+</ui-page-header>
+
+<div class="mt-6 grid grid-cols-1 items-start gap-4">
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Custom icon</h2>
+      <p uiCardDescription>Gunakan ikon apa pun; animasi spin tetap sama.</p>
+    </div>
+    <div uiCardContent class="flex flex-wrap items-center gap-6 text-primary">
+      <ui-spinner icon="loader-circle" size="lg" />
+      <ui-spinner icon="refresh-cw" size="lg" class="text-success" />
+      <ui-spinner icon="sparkles" size="lg" class="text-warning" />
+      <ui-spinner icon="activity" size="lg" class="text-destructive" />
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Size</h2>
+      <p uiCardDescription>Lima ukuran dari xs sampai xl.</p>
+    </div>
+    <div uiCardContent class="flex flex-wrap items-center gap-6">
+      <div class="flex flex-col items-center gap-2">
+        <ui-spinner size="xs" />
+        <span class="text-[10px] text-muted-foreground">xs</span>
+      </div>
+      <div class="flex flex-col items-center gap-2">
+        <ui-spinner size="sm" />
+        <span class="text-[10px] text-muted-foreground">sm</span>
+      </div>
+      <div class="flex flex-col items-center gap-2">
+        <ui-spinner />
+        <span class="text-[10px] text-muted-foreground">md</span>
+      </div>
+      <div class="flex flex-col items-center gap-2">
+        <ui-spinner size="lg" />
+        <span class="text-[10px] text-muted-foreground">lg</span>
+      </div>
+      <div class="flex flex-col items-center gap-2">
+        <ui-spinner size="xl" />
+        <span class="text-[10px] text-muted-foreground">xl</span>
+      </div>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Color</h2>
+      <p uiCardDescription>Warna mengikuti utility text-*.</p>
+    </div>
+    <div uiCardContent class="flex flex-wrap items-center gap-6">
+      <ui-spinner size="lg" class="text-primary" />
+      <ui-spinner size="lg" class="text-success" />
+      <ui-spinner size="lg" class="text-warning" />
+      <ui-spinner size="lg" class="text-destructive" />
+      <ui-spinner size="lg" class="text-muted-foreground" />
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Button</h2>
+      <p uiCardDescription>Spinner di dalam tombol dan state loading bawaan.</p>
+    </div>
+    <div uiCardContent class="flex flex-wrap gap-2">
+      <button uiButton>
+        <ui-spinner size="sm" class="text-primary-foreground" />
+        Menyimpan…
+      </button>
+      <button uiButton variant="outline">
+        <ui-spinner size="sm" />
+        Memuat
+      </button>
+      <button uiButton loading>Loading state</button>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Badge &amp; input group</h2>
+      <p uiCardDescription>Spinner kecil untuk status proses.</p>
+    </div>
+    <div uiCardContent class="space-y-4">
+      <div class="flex flex-wrap gap-2">
+        <span uiBadge variant="primary">
+          <ui-spinner size="xs" class="text-primary" />
+          Memproses
+        </span>
+        <span uiBadge variant="success">
+          <ui-spinner size="xs" class="text-success" />
+          Menyinkronkan
+        </span>
+        <span uiBadge variant="warning">
+          <ui-spinner size="xs" class="text-warning" />
+          Menunggu
+        </span>
+      </div>
+
+      <div class="ui-input-group max-w-md">
+        <span class="ui-input-group-addon">
+          <ui-spinner size="sm" />
+        </span>
+        <input uiInput type="text" value="Memuat data…" readonly aria-label="Memuat data" />
+      </div>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Empty &amp; item</h2>
+      <p uiCardDescription>Spinner sebagai state loading untuk konten.</p>
+    </div>
+    <div uiCardContent class="space-y-4">
+      <div
+        class="flex flex-col items-center rounded-xl border border-dashed border-input px-6 py-10 text-center"
+      >
+        <ui-spinner size="lg" class="text-primary" />
+        <p class="mt-3 text-sm font-medium">Memuat pesanan…</p>
+        <p class="ui-help mt-1">Mohon tunggu sebentar.</p>
+      </div>
+
+      <div uiItem>
+        <span uiItemMedia>
+          <ui-spinner size="sm" />
+        </span>
+        <div uiItemContent>
+          <span uiItemTitle>Menyinkronkan produk</span>
+          <span uiItemDescription>Mengambil data dari supplier…</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

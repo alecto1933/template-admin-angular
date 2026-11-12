@@ -1,0 +1,84 @@
+<ui-page-header
+  title="Sonner (Toast)"
+  description="Notifikasi sementara dengan tipe, deskripsi, dan posisi yang bisa diubah."
+>
+  <button uiButton variant="outline" routerLink="/components">
+    <ui-icon name="arrow-left" class="size-4" />
+    Katalog komponen
+  </button>
+</ui-page-header>
+
+<div class="mt-6 grid grid-cols-1 items-start gap-4">
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Types</h2>
+      <p uiCardDescription>Success, error, warning, dan info.</p>
+    </div>
+    <div uiCardContent class="flex flex-wrap gap-2">
+      <button uiButton variant="outline" (click)="show('success')">
+        <ui-icon name="circle-check" class="size-4 text-success" />
+        Success
+      </button>
+      <button uiButton variant="outline" (click)="show('error')">
+        <ui-icon name="triangle-alert" class="size-4 text-destructive" />
+        Error
+      </button>
+      <button uiButton variant="outline" (click)="show('warning')">
+        <ui-icon name="triangle-alert" class="size-4 text-warning" />
+        Warning
+      </button>
+      <button uiButton variant="outline" (click)="show('info')">
+        <ui-icon name="info" class="size-4 text-primary" />
+        Info
+      </button>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Description</h2>
+      <p uiCardDescription>Judul singkat dengan penjelasan tambahan.</p>
+    </div>
+    <div uiCardContent class="flex flex-wrap gap-2">
+      <button uiButton (click)="showDescription()">Toast dengan deskripsi</button>
+      <button
+        uiButton
+        variant="outline"
+        (click)="
+          toastService.warning(
+            'Stok menipis',
+            'Kaos Alecto tersisa 4 unit. Segera lakukan restock.'
+          )
+        "
+      >
+        Peringatan stok
+      </button>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Position</h2>
+      <p uiCardDescription>Posisi berlaku global untuk toaster. Klik untuk memindahkan.</p>
+    </div>
+    <div uiCardContent class="space-y-3">
+      <div class="grid grid-cols-2 gap-2 sm:grid-cols-3">
+        @for (position of positions; track position) {
+          <button
+            uiButton
+            variant="outline"
+            size="sm"
+            (click)="setPosition(position)"
+            [class.bg-primary-soft]="toastService.position() === position"
+          >
+            {{ position }}
+          </button>
+        }
+      </div>
+      <p class="ui-help">
+        Posisi aktif:
+        <span class="font-semibold text-foreground">{{ toastService.position() }}</span>
+      </p>
+    </div>
+  </div>
+</div>

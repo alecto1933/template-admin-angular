@@ -1,0 +1,285 @@
+<ui-page-header
+  title="Alert"
+  description="Pesan kontekstual untuk memberi informasi, konfirmasi, peringatan, atau error — dengan warna dan ikon yang konsisten."
+>
+  <button uiButton variant="outline" routerLink="/components">
+    <ui-icon name="arrow-left" class="size-4" />
+    Katalog komponen
+  </button>
+</ui-page-header>
+
+<div class="mt-6 grid grid-cols-1 items-start gap-4">
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Empat tingkat kepentingan</h2>
+      <p uiCardDescription>
+        Gunakan varian yang sesuai: informasi netral, konfirmasi, peringatan, atau kegagalan.
+      </p>
+    </div>
+    <div uiCardContent class="space-y-3">
+      <div uiAlert data-variant="info" role="status">
+        <ui-icon name="info" class="mt-0.5 size-4 shrink-0" />
+        <div class="min-w-0">
+          <p class="font-semibold">Informasi</p>
+          <p class="mt-0.5 leading-relaxed">
+            Data disinkronkan otomatis setiap 5 menit. Perubahan terakhir 2 menit lalu.
+          </p>
+        </div>
+      </div>
+
+      <div uiAlert data-variant="success" role="status">
+        <ui-icon name="circle-check" class="mt-0.5 size-4 shrink-0" />
+        <div class="min-w-0">
+          <p class="font-semibold">Berhasil</p>
+          <p class="mt-0.5 leading-relaxed">
+            Profil workspace berhasil disimpan dan langsung diterapkan ke semua anggota tim.
+          </p>
+        </div>
+      </div>
+
+      <div uiAlert data-variant="warning" role="status">
+        <ui-icon name="triangle-alert" class="mt-0.5 size-4 shrink-0" />
+        <div class="min-w-0">
+          <p class="font-semibold">Perhatian</p>
+          <p class="mt-0.5 leading-relaxed">
+            Kuota unggahan tersisa 12% dari total paket. Hapus file lama atau upgrade penyimpanan.
+          </p>
+        </div>
+      </div>
+
+      <div uiAlert data-variant="danger" role="alert">
+        <ui-icon name="triangle-alert" class="mt-0.5 size-4 shrink-0" />
+        <div class="min-w-0">
+          <p class="font-semibold">Pembayaran gagal</p>
+          <p class="mt-0.5 leading-relaxed">
+            Kartu ditolak oleh penyedia pembayaran. Periksa detail kartu atau gunakan metode lain.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Dengan aksi</h2>
+      <p uiCardDescription>
+        Alert bisa memuat tombol untuk menyelesaikan masalah langsung dari pesannya.
+      </p>
+    </div>
+    <div uiCardContent class="space-y-3">
+      <div uiAlert data-variant="warning">
+        <ui-icon name="package" class="mt-0.5 size-4 shrink-0" />
+        <div class="min-w-0 flex-1">
+          <p class="font-semibold">Stok hampir habis</p>
+          <p class="mt-0.5 leading-relaxed">Produk “Kaos Alecto” tersisa 4 unit.</p>
+          <div class="mt-3 flex flex-wrap gap-2">
+            <button uiButton variant="outline" size="sm">Perbarui stok</button>
+            <button uiButton variant="ghost" size="sm">Abaikan</button>
+          </div>
+        </div>
+      </div>
+
+      <div uiAlert data-variant="danger">
+        <ui-icon name="refresh-cw" class="mt-0.5 size-4 shrink-0" />
+        <div class="min-w-0 flex-1">
+          <p class="font-semibold">Sinkronisasi gagal</p>
+          <p class="mt-0.5 leading-relaxed">
+            Koneksi ke penyedia pembayaran terputus sejak 10 menit lalu.
+          </p>
+          <div class="mt-3 flex flex-wrap gap-2">
+            <button uiButton variant="destructive" size="sm">Coba lagi</button>
+            <button uiButton variant="ghost" size="sm">Lihat status</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Bisa ditutup</h2>
+      <p uiCardDescription>
+        Tombol tutup memberi kontrol ke pengguna. Gunakan
+        <code class="font-mono text-[12px]">aria-label</code> pada tombolnya.
+      </p>
+    </div>
+    <div uiCardContent class="space-y-3">
+      @for (alert of dismissible(); track alert.id) {
+        <div uiAlert [attr.data-variant]="alert.variant" role="status">
+          <ui-icon [name]="alert.icon" class="mt-0.5 size-4 shrink-0" />
+          <div class="min-w-0 flex-1">
+            <p class="font-semibold">{{ alert.title }}</p>
+            <p class="mt-0.5 leading-relaxed">{{ alert.message }}</p>
+          </div>
+          <button
+            type="button"
+            class="grid size-7 shrink-0 place-items-center rounded-md opacity-70 transition-opacity hover:bg-black/5 hover:opacity-100 dark:hover:bg-white/10"
+            (click)="dismiss(alert.id)"
+            aria-label="Tutup peringatan"
+          >
+            <ui-icon name="x" class="size-4" />
+          </button>
+        </div>
+      } @empty {
+        <div
+          class="flex flex-col items-center gap-3 rounded-xl border border-dashed border-border px-4 py-8 text-center"
+        >
+          <span class="grid size-10 place-items-center rounded-xl bg-muted text-muted-foreground">
+            <ui-icon name="circle-check" class="size-5" />
+          </span>
+          <div>
+            <p class="text-sm font-semibold text-foreground">Semua alert ditutup</p>
+            <p class="mt-1 text-xs text-muted-foreground">Tampilkan lagi untuk mengulang demo.</p>
+          </div>
+          <button uiButton variant="outline" size="sm" (click)="restore()">Tampilkan lagi</button>
+        </div>
+      }
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Tanpa ikon</h2>
+      <p uiCardDescription>
+        Untuk pesan singkat, ikon opsional. Tetap sertakan teks yang jelas — jangan hanya
+        mengandalkan warna.
+      </p>
+    </div>
+    <div uiCardContent class="space-y-3">
+      <div uiAlert data-variant="info">
+        <p class="leading-relaxed">
+          Mode maintenance dijadwalkan <span class="font-semibold">Sabtu, 22.00 WIB</span>
+          selama 30 menit.
+        </p>
+      </div>
+      <div uiAlert data-variant="success">
+        <p class="leading-relaxed">
+          Semua invoice bulan ini sudah dibayar. Tidak ada tagihan tertunda.
+        </p>
+      </div>
+      <div uiAlert data-variant="danger">
+        <p class="leading-relaxed">
+          Akun <span class="font-semibold">dim@alecto.id</span> gagal login 5 kali. Sesi diblokir
+          sementara.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Penggunaan</h2>
+      <p uiCardDescription>
+        Cukup tambahkan atribut <code class="font-mono text-[12px]">uiAlert</code> dan
+        <code class="font-mono text-[12px]">data-variant</code>.
+      </p>
+    </div>
+    <div uiCardContent>
+      <pre
+        class="overflow-x-auto rounded-xl border border-border bg-muted/50 p-4 font-mono text-[12px] leading-relaxed text-foreground"
+      ><code>&lt;div uiAlert data-variant="warning" role="status"&gt;
+  &lt;ui-icon
+    name="triangle-alert"
+    class="mt-0.5 size-4 shrink-0"
+  /&gt;
+
+  &lt;div class="min-w-0 flex-1"&gt;
+    &lt;p class="font-semibold"&gt;Stok menipis&lt;/p&gt;
+    &lt;p class="mt-0.5"&gt;Tersisa 4 unit.&lt;/p&gt;
+
+    &lt;button uiButton variant="outline" size="sm"&gt;
+      Perbarui stok
+    &lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Aksesibilitas</h2>
+      <p uiCardDescription>Aturan singkat saat memakai alert.</p>
+    </div>
+    <div uiCardContent>
+      <ul class="grid gap-3 text-sm text-muted-foreground sm:grid-cols-2">
+        <li class="flex gap-2.5">
+          <ui-icon name="circle-check" class="mt-0.5 size-4 shrink-0 text-success" />
+          <span>
+            Gunakan <code class="font-mono text-[12px] text-foreground">role="alert"</code>
+            hanya untuk pesan penting yang muncul setelah aksi pengguna.
+          </span>
+        </li>
+        <li class="flex gap-2.5">
+          <ui-icon name="circle-check" class="mt-0.5 size-4 shrink-0 text-success" />
+          <span>
+            Untuk informasi non-kritis, gunakan
+            <code class="font-mono text-[12px] text-foreground">role="status"</code>
+            agar tidak menginterupsi screen reader.
+          </span>
+        </li>
+        <li class="flex gap-2.5">
+          <ui-icon name="circle-check" class="mt-0.5 size-4 shrink-0 text-success" />
+          <span>
+            Selalu sertakan teks dan ikon; warna saja tidak cukup untuk membedakan tingkat
+            kepentingan.
+          </span>
+        </li>
+        <li class="flex gap-2.5">
+          <ui-icon name="circle-check" class="mt-0.5 size-4 shrink-0 text-success" />
+          <span>
+            Tombol tutup wajib punya
+            <code class="font-mono text-[12px] text-foreground">aria-label</code>
+            yang menjelaskan aksinya.
+          </span>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>API</h2>
+      <p uiCardDescription>Alert adalah directive styling; konten dan ikon diproyeksikan manual.</p>
+    </div>
+    <div uiCardContent class="px-0 pb-0 sm:px-0">
+      <div class="ui-scroll-x">
+        <table uiTable>
+          <thead>
+            <tr>
+              <th>Atribut</th>
+              <th>Tipe</th>
+              <th>Nilai</th>
+              <th>Default</th>
+              <th>Deskripsi</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="font-mono text-[12px] whitespace-nowrap">uiAlert</td>
+              <td class="whitespace-nowrap">atribut</td>
+              <td class="whitespace-nowrap">—</td>
+              <td class="whitespace-nowrap">—</td>
+              <td class="text-muted-foreground">Menerapkan layout, border, dan padding alert.</td>
+            </tr>
+            <tr>
+              <td class="font-mono text-[12px] whitespace-nowrap">data-variant</td>
+              <td class="whitespace-nowrap">string</td>
+              <td class="whitespace-nowrap">'info' | 'success' | 'warning' | 'danger'</td>
+              <td class="font-mono text-[12px]">'info'</td>
+              <td class="text-muted-foreground">Mengatur warna latar, border, dan teks.</td>
+            </tr>
+            <tr>
+              <td class="font-mono text-[12px] whitespace-nowrap">role</td>
+              <td class="whitespace-nowrap">string</td>
+              <td class="whitespace-nowrap">'status' | 'alert'</td>
+              <td class="whitespace-nowrap">—</td>
+              <td class="text-muted-foreground">
+                Semantik live region; pilih sesuai urgensi pesan.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

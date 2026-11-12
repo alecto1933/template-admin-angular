@@ -1,0 +1,379 @@
+<ui-page-header
+  title="Accordion"
+  description="Panel yang bisa dibuka-tutup untuk merangkum konten panjang. Dibangun sendiri dengan signals, animasi CSS, dan atribut ARIA."
+>
+  <button uiButton variant="outline" routerLink="/components">
+    <ui-icon name="arrow-left" class="size-4" />
+    Katalog komponen
+  </button>
+</ui-page-header>
+
+<div class="mt-6 grid grid-cols-1 items-start gap-4">
+  <div uiCard>
+    <div uiCardHeader>
+      <div class="flex flex-wrap items-center gap-2">
+        <span class="text-[10px] font-semibold tracking-[0.14em] text-muted-foreground uppercase">
+          Single
+        </span>
+        <span uiBadge variant="primary">Default</span>
+      </div>
+      <h2 uiCardTitle>Basic</h2>
+      <p uiCardDescription>
+        Hanya satu panel terbuka pada satu waktu. Item pertama dibuka secara default.
+      </p>
+    </div>
+    <div uiCardContent>
+      <ui-accordion>
+        <ui-accordion-item title="Apa itu Alecto Admin?" [open]="true">
+          <p>
+            Alecto Admin adalah template dashboard yang seluruh komponennya ditulis sendiri dengan
+            Angular dan Tailwind CSS — tanpa library UI eksternal.
+          </p>
+        </ui-accordion-item>
+        <ui-accordion-item title="Apakah komponennya bisa diubah?">
+          <p>
+            Bisa. Semua komponen berada di
+            <code class="rounded bg-muted px-1 py-0.5 font-mono text-[12px] text-foreground"
+              >src/app/shared/ui</code
+            >
+            dan styling-nya di
+            <code class="rounded bg-muted px-1 py-0.5 font-mono text-[12px] text-foreground"
+              >src/styles.css</code
+            >.
+          </p>
+        </ui-accordion-item>
+        <ui-accordion-item title="Bagaimana cara menambah menu baru?">
+          <p>
+            Tambahkan item pada
+            <code class="rounded bg-muted px-1 py-0.5 font-mono text-[12px] text-foreground"
+              >src/app/core/nav.ts</code
+            >, lalu daftarkan route-nya di
+            <code class="rounded bg-muted px-1 py-0.5 font-mono text-[12px] text-foreground"
+              >app.routes.ts</code
+            >.
+          </p>
+        </ui-accordion-item>
+      </ui-accordion>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <div class="flex flex-wrap items-center gap-2">
+        <span class="text-[10px] font-semibold tracking-[0.14em] text-muted-foreground uppercase">
+          Multiple
+        </span>
+      </div>
+      <h2 uiCardTitle>Beberapa panel terbuka</h2>
+      <p uiCardDescription>
+        Gunakan <code class="font-mono text-[12px]">type="multiple"</code> bila pengguna boleh
+        membuka lebih dari satu panel.
+      </p>
+    </div>
+    <div uiCardContent>
+      <ui-accordion type="multiple">
+        <ui-accordion-item title="Notifikasi email" [open]="true">
+          <p>
+            Kirim email untuk setiap pesanan baru, perubahan status, dan invoice yang jatuh tempo.
+          </p>
+        </ui-accordion-item>
+        <ui-accordion-item title="Notifikasi push">
+          <p>
+            Pemberitahuan real-time di browser dan aplikasi mobile untuk aktivitas yang butuh
+            perhatian cepat.
+          </p>
+        </ui-accordion-item>
+        <ui-accordion-item title="Ringkasan mingguan" [open]="true">
+          <p>
+            Laporan performa toko setiap Senin pagi, berisi pendapatan, pesanan, dan produk
+            terlaris.
+          </p>
+        </ui-accordion-item>
+      </ui-accordion>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <div class="flex flex-wrap items-center gap-2">
+        <span class="text-[10px] font-semibold tracking-[0.14em] text-muted-foreground uppercase">
+          Non-collapsible
+        </span>
+      </div>
+      <h2 uiCardTitle>Selalu ada yang terbuka</h2>
+      <p uiCardDescription>
+        Klik panel yang sedang aktif tidak akan menutupnya, sehingga minimal satu panel selalu
+        terlihat.
+      </p>
+    </div>
+    <div uiCardContent>
+      <ui-accordion [collapsible]="false">
+        <ui-accordion-item title="Paket Starter" [open]="true">
+          <p>
+            Cocok untuk toko yang baru mulai. Termasuk 3 anggota tim, 100 produk, dan laporan dasar.
+          </p>
+        </ui-accordion-item>
+        <ui-accordion-item title="Paket Pro">
+          <p>
+            Untuk tim yang sedang bertumbuh. Anggota tak terbatas, analitik lanjutan, dan integrasi
+            pembayaran.
+          </p>
+        </ui-accordion-item>
+        <ui-accordion-item title="Paket Enterprise">
+          <p>Dukungan prioritas, SLA khusus, dan onboarding bersama tim kami.</p>
+        </ui-accordion-item>
+      </ui-accordion>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <div class="flex flex-wrap items-center gap-2">
+        <span class="text-[10px] font-semibold tracking-[0.14em] text-muted-foreground uppercase">
+          State
+        </span>
+      </div>
+      <h2 uiCardTitle>Item nonaktif</h2>
+      <p uiCardDescription>
+        Tambahkan atribut <code class="font-mono text-[12px]">disabled</code>
+        untuk menonaktifkan satu panel.
+      </p>
+    </div>
+    <div uiCardContent>
+      <ui-accordion>
+        <ui-accordion-item title="Integrasi pembayaran" [open]="true">
+          <p>Hubungkan Midtrans, Xendit, atau gateway lain untuk menerima pembayaran otomatis.</p>
+        </ui-accordion-item>
+        <ui-accordion-item title="Pengiriman otomatis" disabled>
+          <p>Fitur ini belum tersedia di paket Anda. Upgrade untuk membuka integrasi kurir.</p>
+        </ui-accordion-item>
+        <ui-accordion-item title="Diskon &amp; kupon">
+          <p>Buat kode promo, atur periode berlaku, dan batasi penggunaan per pelanggan.</p>
+        </ui-accordion-item>
+      </ui-accordion>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <div class="flex flex-wrap items-center gap-2">
+        <span class="text-[10px] font-semibold tracking-[0.14em] text-muted-foreground uppercase">
+          Rich content
+        </span>
+        <span uiBadge variant="success">FAQ</span>
+      </div>
+      <h2 uiCardTitle>Konten bebas di dalam panel</h2>
+      <p uiCardDescription>Panel bisa berisi paragraf, list, kode, alert, bahkan tombol aksi.</p>
+    </div>
+    <div uiCardContent>
+      <ui-accordion type="multiple">
+        <ui-accordion-item title="Bagaimana cara menambah halaman baru?" [open]="true">
+          <div class="space-y-3">
+            <p>Ada tiga langkah yang perlu dilakukan:</p>
+            <ol class="list-decimal space-y-1 pl-5">
+              <li>
+                Buat komponen halaman di
+                <code class="rounded bg-muted px-1 py-0.5 font-mono text-[12px] text-foreground"
+                  >src/app/pages/</code
+                >.
+              </li>
+              <li>
+                Daftarkan route lazy-load beserta
+                <code class="rounded bg-muted px-1 py-0.5 font-mono text-[12px] text-foreground"
+                  >data.page</code
+                >
+                di <code class="font-mono text-[12px]">app.routes.ts</code>.
+              </li>
+              <li>
+                Tambahkan item menu di
+                <code class="font-mono text-[12px]">core/nav.ts</code>.
+              </li>
+            </ol>
+            <div uiAlert data-variant="info">
+              <ui-icon name="info" class="mt-0.5 size-4 shrink-0" />
+              <p class="leading-relaxed">
+                Judul di topbar diambil dari
+                <code class="font-mono text-[12px]">data.page</code>, jadi tidak perlu mengatur
+                judul dua kali.
+              </p>
+            </div>
+          </div>
+        </ui-accordion-item>
+
+        <ui-accordion-item title="Bisakah saya mengganti warna brand?">
+          <div class="space-y-3">
+            <p>
+              Semua warna berasal dari CSS variable di
+              <code class="font-mono text-[12px]">src/styles.css</code>. Cukup ubah
+              <code class="font-mono text-[12px]">--primary</code> pada
+              <code class="font-mono text-[12px]">:root</code> dan
+              <code class="font-mono text-[12px]">.dark</code>.
+            </p>
+            <div class="flex flex-wrap gap-2">
+              <span uiBadge variant="outline">--primary</span>
+              <span uiBadge variant="outline">--ring</span>
+              <span uiBadge variant="outline">--chart-1</span>
+              <span uiBadge variant="outline">--radius</span>
+            </div>
+          </div>
+        </ui-accordion-item>
+
+        <ui-accordion-item title="Apakah perlu library tambahan?">
+          <div class="space-y-3">
+            <p>
+              Tidak. Accordion ini hanya memakai Angular signals dan CSS. Ikon chevron diambil dari
+              registry ikon milik template.
+            </p>
+            <div class="flex flex-wrap gap-2">
+              <button uiButton variant="soft" size="sm">
+                <ui-icon name="book-open" class="size-3.5" />
+                Baca panduan
+              </button>
+              <button uiButton variant="outline" size="sm">
+                <ui-icon name="copy" class="size-3.5" />
+                Salin contoh
+              </button>
+            </div>
+          </div>
+        </ui-accordion-item>
+
+        <ui-accordion-item title="Dukungan enterprise" disabled>
+          <p>Hubungi tim sales untuk paket enterprise dan SLA khusus.</p>
+        </ui-accordion-item>
+      </ui-accordion>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Penggunaan</h2>
+      <p uiCardDescription>API sederhana: satu komponen induk dan item yang diproyeksikan.</p>
+    </div>
+    <div uiCardContent>
+      <pre
+        class="overflow-x-auto rounded-xl border border-border bg-muted/50 p-4 font-mono text-[12px] leading-relaxed text-foreground"
+      ><code>&lt;ui-accordion type="multiple"&gt;
+  &lt;ui-accordion-item
+    title="Judul panel"
+    [open]="true"
+  &gt;
+    Konten panel di sini.
+  &lt;/ui-accordion-item&gt;
+
+  &lt;ui-accordion-item title="Panel lain"&gt;
+    Konten panel lain.
+  &lt;/ui-accordion-item&gt;
+&lt;/ui-accordion&gt;</code></pre>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Aksesibilitas</h2>
+      <p uiCardDescription>Perilaku yang sudah ditangani tanpa konfigurasi tambahan.</p>
+    </div>
+    <div uiCardContent>
+      <ul class="space-y-3 text-sm text-muted-foreground">
+        <li class="flex gap-2.5">
+          <ui-icon name="circle-check" class="mt-0.5 size-4 shrink-0 text-success" />
+          <span>
+            Trigger memakai elemen
+            <code class="font-mono text-[12px] text-foreground">button</code>, jadi bisa diakses
+            dengan Tab, Enter, dan Space.
+          </span>
+        </li>
+        <li class="flex gap-2.5">
+          <ui-icon name="circle-check" class="mt-0.5 size-4 shrink-0 text-success" />
+          <span>
+            <code class="font-mono text-[12px] text-foreground">aria-expanded</code>
+            dan
+            <code class="font-mono text-[12px] text-foreground">aria-controls</code>
+            menandai state panel.
+          </span>
+        </li>
+        <li class="flex gap-2.5">
+          <ui-icon name="circle-check" class="mt-0.5 size-4 shrink-0 text-success" />
+          <span>
+            Panel tertutup diberi
+            <code class="font-mono text-[12px] text-foreground">inert</code>, sehingga tautan di
+            dalamnya tidak bisa difokus.
+          </span>
+        </li>
+        <li class="flex gap-2.5">
+          <ui-icon name="circle-check" class="mt-0.5 size-4 shrink-0 text-success" />
+          <span>
+            Animasi tinggi mengikuti pengaturan
+            <code class="font-mono text-[12px] text-foreground">prefers-reduced-motion</code>.
+          </span>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>API</h2>
+      <p uiCardDescription>
+        Semua input bersifat opsional kecuali
+        <code class="font-mono text-[12px]">title</code>.
+      </p>
+    </div>
+    <div uiCardContent class="px-0 pb-0 sm:px-0">
+      <div class="ui-scroll-x">
+        <table uiTable>
+          <thead>
+            <tr>
+              <th>Komponen</th>
+              <th>Input</th>
+              <th>Tipe</th>
+              <th>Default</th>
+              <th>Deskripsi</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="font-mono text-[12px] whitespace-nowrap">ui-accordion</td>
+              <td class="font-mono text-[12px]">type</td>
+              <td class="whitespace-nowrap">'single' | 'multiple'</td>
+              <td class="font-mono text-[12px]">'single'</td>
+              <td class="text-muted-foreground">Menentukan berapa panel yang boleh terbuka.</td>
+            </tr>
+            <tr>
+              <td class="font-mono text-[12px] whitespace-nowrap">ui-accordion</td>
+              <td class="font-mono text-[12px]">collapsible</td>
+              <td class="whitespace-nowrap">boolean</td>
+              <td class="font-mono text-[12px]">true</td>
+              <td class="text-muted-foreground">Pada mode single, izinkan panel aktif ditutup.</td>
+            </tr>
+            <tr>
+              <td class="font-mono text-[12px] whitespace-nowrap">ui-accordion-item</td>
+              <td class="font-mono text-[12px]">title</td>
+              <td class="whitespace-nowrap">string</td>
+              <td class="font-mono text-[12px]">wajib</td>
+              <td class="text-muted-foreground">Teks pada trigger.</td>
+            </tr>
+            <tr>
+              <td class="font-mono text-[12px] whitespace-nowrap">ui-accordion-item</td>
+              <td class="font-mono text-[12px]">open</td>
+              <td class="whitespace-nowrap">boolean (two-way)</td>
+              <td class="font-mono text-[12px]">false</td>
+              <td class="text-muted-foreground">
+                State panel; mendukung
+                <code class="font-mono text-[12px]">[(open)]</code>.
+              </td>
+            </tr>
+            <tr>
+              <td class="font-mono text-[12px] whitespace-nowrap">ui-accordion-item</td>
+              <td class="font-mono text-[12px]">disabled</td>
+              <td class="whitespace-nowrap">boolean</td>
+              <td class="font-mono text-[12px]">false</td>
+              <td class="text-muted-foreground">
+                Menonaktifkan trigger dan mengurangi opacity item.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,192 @@
+<ui-page-header
+  title="Badge"
+  description="Label kecil untuk status, kategori, hitungan, atau penanda. Mendukung ikon, spinner, link, dan warna kustom."
+>
+  <button uiButton variant="outline" routerLink="/components">
+    <ui-icon name="arrow-left" class="size-4" />
+    Katalog komponen
+  </button>
+</ui-page-header>
+
+<div class="mt-6 grid grid-cols-1 items-start gap-4">
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Variants</h2>
+      <p uiCardDescription>Enam varian siap pakai untuk kebutuhan status yang berbeda.</p>
+    </div>
+    <div uiCardContent class="flex flex-wrap items-center gap-2">
+      <span uiBadge>Default</span>
+      <span uiBadge variant="primary">Primary</span>
+      <span uiBadge variant="success">Success</span>
+      <span uiBadge variant="warning">Warning</span>
+      <span uiBadge variant="danger">Danger</span>
+      <span uiBadge variant="outline">Outline</span>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>With icon</h2>
+      <p uiCardDescription>Ikon memperkuat makna tanpa bergantung pada warna saja.</p>
+    </div>
+    <div uiCardContent class="flex flex-wrap items-center gap-2">
+      <span uiBadge variant="success">
+        <ui-icon name="check" class="size-3" />
+        Terverifikasi
+      </span>
+      <span uiBadge variant="warning">
+        <ui-icon name="clock" class="size-3" />
+        Menunggu
+      </span>
+      <span uiBadge variant="primary">
+        <ui-icon name="star" class="size-3" />
+        Unggulan
+      </span>
+      <span uiBadge variant="danger">
+        <ui-icon name="triangle-alert" class="size-3" />
+        Gagal
+      </span>
+      <span uiBadge variant="outline">
+        <ui-icon name="archive" class="size-3" />
+        Arsip
+      </span>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>With spinner</h2>
+      <p uiCardDescription>Cocok untuk status proses singkat di dalam tabel atau kartu.</p>
+    </div>
+    <div uiCardContent class="flex flex-wrap items-center gap-2">
+      <span uiBadge variant="primary">
+        <ui-icon name="loader-circle" class="size-3 animate-spin" />
+        Menyimpan…
+      </span>
+      <span uiBadge variant="outline">
+        <ui-icon name="loader-circle" class="size-3 animate-spin" />
+        Mengunggah 64%
+      </span>
+      <span uiBadge variant="warning">
+        <ui-icon name="loader-circle" class="size-3 animate-spin" />
+        Memproses
+      </span>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Link</h2>
+      <p uiCardDescription>
+        Badge bisa menjadi tautan. Tambahkan hover state agar terasa interaktif.
+      </p>
+    </div>
+    <div uiCardContent class="flex flex-wrap items-center gap-2">
+      <a uiBadge variant="primary" href="#" class="transition-opacity hover:opacity-80">
+        Buka dokumentasi
+        <ui-icon name="arrow-up-right" class="size-3" />
+      </a>
+      <a
+        uiBadge
+        variant="outline"
+        href="#"
+        class="transition-colors hover:bg-accent hover:text-accent-foreground"
+      >
+        Lihat detail
+        <ui-icon name="arrow-right" class="size-3" />
+      </a>
+      <a uiBadge variant="success" href="#" class="transition-opacity hover:opacity-80">
+        <ui-icon name="external-link" class="size-3" />
+        Situs eksternal
+      </a>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Custom colors</h2>
+      <p uiCardDescription>Timpa warna lewat utility Tailwind; tetap sediakan varian dark mode.</p>
+    </div>
+    <div uiCardContent class="flex flex-wrap items-center gap-2">
+      <span uiBadge class="bg-sky-100 text-sky-700 dark:bg-sky-950 dark:text-sky-300"> Sky </span>
+      <span uiBadge class="bg-teal-100 text-teal-700 dark:bg-teal-950 dark:text-teal-300">
+        Teal
+      </span>
+      <span uiBadge class="bg-lime-100 text-lime-700 dark:bg-lime-950 dark:text-lime-300">
+        Lime
+      </span>
+      <span uiBadge class="bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300">
+        Amber
+      </span>
+      <span uiBadge class="bg-rose-100 text-rose-700 dark:bg-rose-950 dark:text-rose-300">
+        Rose
+      </span>
+      <span uiBadge class="bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-200">
+        Slate
+      </span>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Penggunaan</h2>
+      <p uiCardDescription>
+        Tambahkan atribut <code class="font-mono text-[12px]">uiBadge</code> pada elemen apa pun.
+      </p>
+    </div>
+    <div uiCardContent>
+      <pre
+        class="overflow-x-auto rounded-xl border border-border bg-muted/50 p-4 font-mono text-[12px] leading-relaxed text-foreground"
+      ><code>&lt;span uiBadge variant="success"&gt;Aktif&lt;/span&gt;
+
+&lt;span uiBadge variant="warning"&gt;
+  &lt;ui-icon name="clock" class="size-3" /&gt;
+  Menunggu
+&lt;/span&gt;
+
+&lt;a uiBadge variant="outline" href="/docs"&gt;
+  Dokumentasi
+  &lt;ui-icon name="arrow-up-right" class="size-3" /&gt;
+&lt;/a&gt;</code></pre>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>API</h2>
+      <p uiCardDescription>Varian warna dan perilaku dasar badge.</p>
+    </div>
+    <div uiCardContent class="px-0 pb-0 sm:px-0">
+      <div class="ui-scroll-x">
+        <table uiTable>
+          <thead>
+            <tr>
+              <th>Properti</th>
+              <th>Nilai</th>
+              <th>Default</th>
+              <th>Deskripsi</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="font-mono text-[12px] whitespace-nowrap">variant</td>
+              <td class="whitespace-nowrap">
+                default | primary | success | warning | danger | outline
+              </td>
+              <td class="font-mono text-[12px]">'default'</td>
+              <td class="text-muted-foreground">Warna latar dan teks badge.</td>
+            </tr>
+            <tr>
+              <td class="font-mono text-[12px] whitespace-nowrap">class</td>
+              <td class="whitespace-nowrap">string</td>
+              <td class="whitespace-nowrap">—</td>
+              <td class="text-muted-foreground">
+                Utility Tailwind untuk warna kustom, ikon, atau hover.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,262 @@
+<ui-page-header
+  title="Carousel"
+  description="Slider berbasis scroll-snap dengan kontrol navigasi, pengaturan ukuran, jarak antar slide, orientasi, dan jumlah slide terlihat."
+>
+  <button uiButton variant="outline" routerLink="/components">
+    <ui-icon name="arrow-left" class="size-4" />
+    Katalog komponen
+  </button>
+</ui-page-header>
+
+<div class="mt-6 grid grid-cols-1 items-start gap-4">
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Sizes</h2>
+      <p uiCardDescription>
+        Tinggi minimum slide mengikuti ukuran
+        <code class="font-mono text-[12px]">sm</code>,
+        <code class="font-mono text-[12px]">md</code>, dan
+        <code class="font-mono text-[12px]">lg</code>.
+      </p>
+    </div>
+    <div uiCardContent class="space-y-6">
+      <div class="space-y-2">
+        <p class="text-[11px] font-semibold text-muted-foreground">Small</p>
+        <ui-carousel size="sm" [slides]="3" [spacing]="12">
+          @for (item of slides; track item.title) {
+            <div
+              class="flex h-full flex-col justify-between rounded-xl border border-border bg-card p-3"
+            >
+              <span [class]="'grid size-8 place-items-center rounded-lg ' + item.tone">
+                <ui-icon [name]="item.icon" class="size-3.5" />
+              </span>
+              <div class="mt-3">
+                <p class="font-display text-xs font-semibold">{{ item.title }}</p>
+                <p class="mt-1 text-[11px] text-muted-foreground">{{ item.text }}</p>
+              </div>
+            </div>
+          }
+        </ui-carousel>
+      </div>
+
+      <div class="space-y-2">
+        <p class="text-[11px] font-semibold text-muted-foreground">Medium</p>
+        <ui-carousel size="md" [slides]="3" [spacing]="12">
+          @for (item of slides; track item.title) {
+            <div
+              class="flex h-full flex-col justify-between rounded-xl border border-border bg-card p-4"
+            >
+              <span [class]="'grid size-9 place-items-center rounded-lg ' + item.tone">
+                <ui-icon [name]="item.icon" class="size-4" />
+              </span>
+              <div class="mt-4">
+                <p class="font-display text-sm font-semibold">{{ item.title }}</p>
+                <p class="mt-1 text-xs text-muted-foreground">{{ item.text }}</p>
+              </div>
+            </div>
+          }
+        </ui-carousel>
+      </div>
+
+      <div class="space-y-2">
+        <p class="text-[11px] font-semibold text-muted-foreground">Large</p>
+        <ui-carousel size="lg" [slides]="2" [spacing]="16">
+          @for (item of slides; track item.title) {
+            <div
+              class="flex h-full flex-col justify-between rounded-xl border border-border bg-card p-6"
+            >
+              <span [class]="'grid size-10 place-items-center rounded-xl ' + item.tone">
+                <ui-icon [name]="item.icon" class="size-5" />
+              </span>
+              <div class="mt-6">
+                <p class="font-display text-base font-semibold">{{ item.title }}</p>
+                <p class="mt-1 text-sm text-muted-foreground">{{ item.text }}</p>
+              </div>
+            </div>
+          }
+        </ui-carousel>
+      </div>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Spacing</h2>
+      <p uiCardDescription>
+        Jarak antar slide diatur lewat input
+        <code class="font-mono text-[12px]">spacing</code> (piksel).
+      </p>
+    </div>
+    <div uiCardContent class="space-y-6">
+      @for (gap of [0, 16, 32]; track gap) {
+        <div class="space-y-2">
+          <p class="text-[11px] font-semibold text-muted-foreground">spacing="{{ gap }}px"</p>
+          <ui-carousel [slides]="3" [spacing]="gap">
+            @for (item of slides; track item.title) {
+              <div
+                class="flex h-full flex-col justify-between rounded-xl border border-border bg-card p-4"
+              >
+                <span [class]="'grid size-9 place-items-center rounded-lg ' + item.tone">
+                  <ui-icon [name]="item.icon" class="size-4" />
+                </span>
+                <div class="mt-4">
+                  <p class="font-display text-sm font-semibold">{{ item.title }}</p>
+                  <p class="mt-1 text-xs text-muted-foreground">{{ item.text }}</p>
+                </div>
+              </div>
+            }
+          </ui-carousel>
+        </div>
+      }
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Orientation</h2>
+      <p uiCardDescription>Horizontal untuk galeri, vertikal untuk daftar yang bisa digeser.</p>
+    </div>
+    <div uiCardContent class="grid grid-cols-1 gap-6 lg:grid-cols-2">
+      <div class="space-y-2">
+        <p class="text-[11px] font-semibold text-muted-foreground">Horizontal</p>
+        <ui-carousel [slides]="2" [spacing]="12">
+          @for (item of slides; track item.title) {
+            <div
+              class="flex h-full flex-col justify-between rounded-xl border border-border bg-card p-4"
+            >
+              <span [class]="'grid size-9 place-items-center rounded-lg ' + item.tone">
+                <ui-icon [name]="item.icon" class="size-4" />
+              </span>
+              <div class="mt-4">
+                <p class="font-display text-sm font-semibold">{{ item.title }}</p>
+                <p class="mt-1 text-xs text-muted-foreground">{{ item.text }}</p>
+              </div>
+            </div>
+          }
+        </ui-carousel>
+      </div>
+
+      <div class="space-y-2">
+        <p class="text-[11px] font-semibold text-muted-foreground">Vertical</p>
+        <ui-carousel orientation="vertical" [spacing]="12">
+          @for (item of slides; track item.title) {
+            <div class="flex items-center gap-3 rounded-xl border border-border bg-card p-3">
+              <span [class]="'grid size-9 shrink-0 place-items-center rounded-lg ' + item.tone">
+                <ui-icon [name]="item.icon" class="size-4" />
+              </span>
+              <div class="min-w-0">
+                <p class="truncate font-display text-sm font-semibold">{{ item.title }}</p>
+                <p class="truncate text-xs text-muted-foreground">{{ item.text }}</p>
+              </div>
+            </div>
+          }
+        </ui-carousel>
+      </div>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Slide count</h2>
+      <p uiCardDescription>Atur berapa slide yang terlihat sekaligus.</p>
+    </div>
+    <div uiCardContent class="space-y-6">
+      @for (count of [1, 2, 3]; track count) {
+        <div class="space-y-2">
+          <p class="text-[11px] font-semibold text-muted-foreground">slides="{{ count }}"</p>
+          <ui-carousel [slides]="count" [spacing]="12">
+            @for (item of slides; track item.title) {
+              <div
+                class="flex h-full flex-col justify-between rounded-xl border border-border bg-card p-4"
+              >
+                <span [class]="'grid size-9 place-items-center rounded-lg ' + item.tone">
+                  <ui-icon [name]="item.icon" class="size-4" />
+                </span>
+                <div class="mt-4">
+                  <p class="font-display text-sm font-semibold">{{ item.title }}</p>
+                  <p class="mt-1 text-xs text-muted-foreground">{{ item.text }}</p>
+                </div>
+              </div>
+            }
+          </ui-carousel>
+        </div>
+      }
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Penggunaan</h2>
+      <p uiCardDescription>
+        Setiap anak langsung dari
+        <code class="font-mono text-[12px]">ui-carousel</code> menjadi satu slide.
+      </p>
+    </div>
+    <div uiCardContent>
+      <pre
+        class="overflow-x-auto rounded-xl border border-border bg-muted/50 p-4 font-mono text-[12px] leading-relaxed text-foreground"
+      ><code>&lt;ui-carousel [slides]="3" [spacing]="16" size="md"&gt;
+  &lt;article&gt;Slide 1&lt;/article&gt;
+  &lt;article&gt;Slide 2&lt;/article&gt;
+  &lt;article&gt;Slide 3&lt;/article&gt;
+&lt;/ui-carousel&gt;
+
+&lt;ui-carousel orientation="vertical" [spacing]="12"&gt;
+  ...
+&lt;/ui-carousel&gt;</code></pre>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>API</h2>
+      <p uiCardDescription>Input carousel.</p>
+    </div>
+    <div uiCardContent class="px-0 pb-0 sm:px-0">
+      <div class="ui-scroll-x">
+        <table uiTable>
+          <thead>
+            <tr>
+              <th>Properti</th>
+              <th>Tipe</th>
+              <th>Default</th>
+              <th>Deskripsi</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="font-mono text-[12px] whitespace-nowrap">slides</td>
+              <td class="whitespace-nowrap">number</td>
+              <td class="font-mono text-[12px]">3</td>
+              <td class="text-muted-foreground">Jumlah slide yang terlihat (horizontal).</td>
+            </tr>
+            <tr>
+              <td class="font-mono text-[12px] whitespace-nowrap">spacing</td>
+              <td class="whitespace-nowrap">number</td>
+              <td class="font-mono text-[12px]">16</td>
+              <td class="text-muted-foreground">Jarak antar slide dalam px.</td>
+            </tr>
+            <tr>
+              <td class="font-mono text-[12px] whitespace-nowrap">orientation</td>
+              <td class="whitespace-nowrap">'horizontal' | 'vertical'</td>
+              <td class="font-mono text-[12px]">'horizontal'</td>
+              <td class="text-muted-foreground">Arah geser carousel.</td>
+            </tr>
+            <tr>
+              <td class="font-mono text-[12px] whitespace-nowrap">size</td>
+              <td class="whitespace-nowrap">'sm' | 'md' | 'lg'</td>
+              <td class="font-mono text-[12px]">'md'</td>
+              <td class="text-muted-foreground">Tinggi minimum slide.</td>
+            </tr>
+            <tr>
+              <td class="font-mono text-[12px] whitespace-nowrap">ariaLabel</td>
+              <td class="whitespace-nowrap">string</td>
+              <td class="font-mono text-[12px]">'Carousel'</td>
+              <td class="text-muted-foreground">Label region carousel.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

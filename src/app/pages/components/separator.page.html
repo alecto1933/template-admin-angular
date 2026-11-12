@@ -1,0 +1,108 @@
+<ui-page-header
+  title="Separator"
+  description="Pemisah horizontal dan vertikal, di dalam menu, serta antar item daftar."
+>
+  <button uiButton variant="outline" routerLink="/components">
+    <ui-icon name="arrow-left" class="size-4" />
+    Katalog komponen
+  </button>
+</ui-page-header>
+
+<div class="mt-6 grid grid-cols-1 items-start gap-4">
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Horizontal &amp; vertical</h2>
+      <p uiCardDescription>
+        Gunakan <code class="font-mono text-[12px]">data-orientation="vertical"</code>
+        untuk pemisah tegak.
+      </p>
+    </div>
+    <div uiCardContent class="space-y-8">
+      <div class="space-y-3">
+        <p class="text-sm font-medium">Konten di atas</p>
+        <div uiSeparator></div>
+        <p class="text-sm text-muted-foreground">Konten di bawah</p>
+      </div>
+
+      <div class="flex h-16 items-center gap-4 text-sm">
+        <span>Kiri</span>
+        <div uiSeparator data-orientation="vertical"></div>
+        <span class="text-muted-foreground">Tengah</span>
+        <div uiSeparator data-orientation="vertical"></div>
+        <span>Kanan</span>
+      </div>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Menu</h2>
+      <p uiCardDescription>Pemisah di dalam dropdown menu memisahkan kelompok aksi.</p>
+    </div>
+    <div uiCardContent>
+      <button uiButton variant="outline" [cdkMenuTriggerFor]="menu">
+        Buka menu
+        <ui-icon name="chevron-down" class="size-4" />
+      </button>
+
+      <ng-template #menu>
+        <div cdkMenu class="ui-menu-panel w-52">
+          <button cdkMenuItem type="button" class="ui-menu-item" (click)="action('Profil')">
+            Profil
+          </button>
+          <button cdkMenuItem type="button" class="ui-menu-item" (click)="action('Pengaturan')">
+            Pengaturan
+          </button>
+          <div class="ui-menu-separator"></div>
+          <button cdkMenuItem type="button" class="ui-menu-item" (click)="action('Bantuan')">
+            Bantuan
+          </button>
+          <div class="ui-menu-separator"></div>
+          <button
+            cdkMenuItem
+            type="button"
+            class="ui-menu-item is-destructive"
+            (click)="action('Keluar')"
+          >
+            Keluar
+          </button>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>List</h2>
+      <p uiCardDescription>Pemisah antar baris daftar memakai border tipis.</p>
+    </div>
+    <div uiCardContent class="p-0 sm:p-0">
+      <ul class="divide-y divide-border">
+        <li class="flex items-center gap-3 px-5 py-4 sm:px-6">
+          <span uiAvatar data-size="sm" class="bg-primary-soft text-primary">RP</span>
+          <div class="min-w-0 flex-1">
+            <p class="text-sm font-medium">Raka Pratama</p>
+            <p class="text-xs text-muted-foreground">raka@alecto.id</p>
+          </div>
+          <span uiMarker data-variant="success">Admin</span>
+        </li>
+        <li class="flex items-center gap-3 px-5 py-4 sm:px-6">
+          <span uiAvatar data-size="sm" class="bg-success-soft text-success">DL</span>
+          <div class="min-w-0 flex-1">
+            <p class="text-sm font-medium">Dewi Lestari</p>
+            <p class="text-xs text-muted-foreground">dewi@alecto.id</p>
+          </div>
+          <span uiMarker data-variant="default">Product</span>
+        </li>
+        <li class="flex items-center gap-3 px-5 py-4 sm:px-6">
+          <span uiAvatar data-size="sm" class="bg-warning-soft text-warning">BS</span>
+          <div class="min-w-0 flex-1">
+            <p class="text-sm font-medium">Bagas Saputra</p>
+            <p class="text-xs text-muted-foreground">bagas@alecto.id</p>
+          </div>
+          <span uiMarker data-variant="outline">Engineer</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

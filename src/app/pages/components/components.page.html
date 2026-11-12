@@ -1,0 +1,391 @@
+<ui-page-header
+  title="Komponen"
+  description="Katalog komponen UI milik template ini — semuanya ditulis sendiri, tanpa library komponen eksternal."
+>
+  <button uiButton variant="outline" (click)="showToast('info')">
+    <ui-icon name="book-open" class="size-4" />
+    Panduan penggunaan
+  </button>
+  <button uiButton variant="outline" routerLink="/components/accordion">
+    <ui-icon name="chevron-down" class="size-4" />
+    Accordion
+  </button>
+  <button uiButton variant="outline" routerLink="/components/alert">
+    <ui-icon name="triangle-alert" class="size-4" />
+    Alert
+  </button>
+  <button uiButton (click)="openDialog()">
+    <ui-icon name="sparkles" class="size-4" />
+    Buka dialog
+  </button>
+</ui-page-header>
+
+<div class="mt-6 grid grid-cols-1 items-start gap-4 lg:grid-cols-2">
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Button</h2>
+      <p uiCardDescription>Tujuh varian, lima ukuran, plus state loading dan disabled.</p>
+    </div>
+    <div uiCardContent class="space-y-5">
+      <div class="flex flex-wrap items-center gap-2">
+        <button uiButton>Primary</button>
+        <button uiButton variant="secondary">Secondary</button>
+        <button uiButton variant="soft">Soft</button>
+        <button uiButton variant="outline">Outline</button>
+        <button uiButton variant="ghost">Ghost</button>
+        <button uiButton variant="destructive">Destructive</button>
+        <button uiButton variant="link">Link</button>
+      </div>
+
+      <div class="flex flex-wrap items-center gap-2">
+        <button uiButton size="sm">Small</button>
+        <button uiButton>Medium</button>
+        <button uiButton size="lg">Large</button>
+        <button uiButton size="icon" aria-label="Tambah">
+          <ui-icon name="plus" class="size-4" />
+        </button>
+        <button uiButton size="icon-sm" variant="outline" aria-label="Pengaturan">
+          <ui-icon name="sliders-horizontal" class="size-4" />
+        </button>
+      </div>
+
+      <div class="flex flex-wrap items-center gap-2">
+        <button uiButton [loading]="loading()" (click)="simulateLoading()">
+          {{ loading() ? 'Memproses...' : 'Simulasikan loading' }}
+        </button>
+        <button uiButton variant="outline" disabled>Disabled</button>
+        <button uiButton variant="soft">
+          <ui-icon name="download" class="size-4" />
+          Dengan ikon
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Badge</h2>
+      <p uiCardDescription>Label status dan penanda kecil.</p>
+    </div>
+    <div uiCardContent class="flex flex-wrap items-center gap-2">
+      <span uiBadge>Default</span>
+      <span uiBadge variant="primary">Primary</span>
+      <span uiBadge variant="success">
+        <ui-icon name="check" class="size-3" />
+        Success
+      </span>
+      <span uiBadge variant="warning">Warning</span>
+      <span uiBadge variant="danger">Danger</span>
+      <span uiBadge variant="outline">Outline</span>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Form control</h2>
+      <p uiCardDescription>Input, select, textarea, checkbox, dan switch dengan state validasi.</p>
+    </div>
+    <div uiCardContent class="space-y-4">
+      <div class="space-y-1.5">
+        <label uiLabel for="demo-name">Nama lengkap</label>
+        <input uiInput id="demo-name" type="text" placeholder="Raka Pratama" />
+        <p class="ui-help">Teks bantuan tampil di bawah input.</p>
+      </div>
+
+      <div class="space-y-1.5">
+        <label uiLabel for="demo-email">Email</label>
+        <input
+          uiInput
+          id="demo-email"
+          type="email"
+          value="bukan-email"
+          aria-invalid="true"
+          aria-describedby="demo-email-error"
+        />
+        <p id="demo-email-error" class="ui-error">
+          <ui-icon name="circle-help" class="size-3" />
+          Format email tidak valid.
+        </p>
+      </div>
+
+      <div class="grid gap-4 sm:grid-cols-2">
+        <div class="space-y-1.5">
+          <label uiLabel for="demo-role">Peran</label>
+          <select uiSelect id="demo-role">
+            <option>Admin</option>
+            <option>Manajer</option>
+            <option>Staf</option>
+          </select>
+        </div>
+        <div class="space-y-1.5">
+          <label uiLabel for="demo-plan">Paket</label>
+          <select uiSelect id="demo-plan" disabled>
+            <option>Pro (aktif)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="space-y-1.5">
+        <label uiLabel for="demo-note">Catatan</label>
+        <textarea uiTextarea id="demo-note" rows="3" placeholder="Tulis catatan..."></textarea>
+      </div>
+
+      <div class="flex flex-wrap items-center gap-x-6 gap-y-3 border-t border-border pt-4">
+        <label class="flex cursor-pointer items-center gap-2.5 text-sm">
+          <input uiCheckbox type="checkbox" checked />
+          Setuju dengan syarat
+        </label>
+        <label class="flex cursor-pointer items-center gap-2.5 text-sm">
+          <input uiCheckbox type="checkbox" />
+          Kirim salinan
+        </label>
+        <ui-switch
+          ariaLabel="Contoh switch"
+          [(checked)]="twoFactor"
+          label="Autentikasi dua faktor"
+        />
+      </div>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Alert</h2>
+      <p uiCardDescription>Pesan kontekstual dengan empat tingkat kepentingan.</p>
+    </div>
+    <div uiCardContent class="space-y-3">
+      <div uiAlert data-variant="info">
+        <ui-icon name="info" class="mt-0.5 size-4 shrink-0" />
+        <div>
+          <p class="font-semibold">Informasi</p>
+          <p class="mt-0.5 leading-relaxed">Data disinkronkan otomatis setiap 5 menit.</p>
+        </div>
+      </div>
+      <div uiAlert data-variant="success">
+        <ui-icon name="circle-check" class="mt-0.5 size-4 shrink-0" />
+        <div>
+          <p class="font-semibold">Berhasil</p>
+          <p class="mt-0.5 leading-relaxed">Perubahan berhasil disimpan dan langsung aktif.</p>
+        </div>
+      </div>
+      <div uiAlert data-variant="warning">
+        <ui-icon name="triangle-alert" class="mt-0.5 size-4 shrink-0" />
+        <div>
+          <p class="font-semibold">Perhatian</p>
+          <p class="mt-0.5 leading-relaxed">Kuota unggahan tersisa 12% dari total paket.</p>
+        </div>
+      </div>
+      <div uiAlert data-variant="danger">
+        <ui-icon name="triangle-alert" class="mt-0.5 size-4 shrink-0" />
+        <div>
+          <p class="font-semibold">Gagal</p>
+          <p class="mt-0.5 leading-relaxed">Pembayaran ditolak oleh penyedia kartu.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Dialog, toast &amp; menu</h2>
+      <p uiCardDescription>Lapisan interaktif dengan fokus terkelola dan animasi halus.</p>
+    </div>
+    <div uiCardContent class="space-y-5">
+      <div class="flex flex-wrap items-center gap-2">
+        <button uiButton variant="outline" (click)="openDialog()">
+          <ui-icon name="blocks" class="size-4" />
+          Buka dialog
+        </button>
+        <button uiButton variant="soft" (click)="showToast('success')">Toast sukses</button>
+        <button uiButton variant="ghost" (click)="showToast('error')">Toast error</button>
+        <button uiButton variant="ghost" (click)="showToast('warning')">Toast warning</button>
+      </div>
+
+      <div class="border-t border-border pt-5">
+        <p class="mb-2 text-xs font-semibold tracking-wide text-muted-foreground uppercase">
+          Dropdown menu (CDK Menu)
+        </p>
+        <button uiButton variant="outline" [cdkMenuTriggerFor]="demoMenu">
+          Buka menu
+          <ui-icon name="chevron-down" class="size-4" />
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Tabs</h2>
+      <p uiCardDescription>Navigasi tab dengan dukungan keyboard dan state aktif.</p>
+    </div>
+    <div uiCardContent>
+      <ui-tabs ariaLabel="Contoh tab">
+        <ng-template uiTab label="Ringkasan">
+          <p class="text-sm leading-relaxed text-muted-foreground">
+            Panel pertama hanya dirender saat tab aktif. Konten memakai
+            <code class="rounded bg-muted px-1 py-0.5 text-[12px]">&#64;if</code>
+            di balik layar, jadi tidak ada biaya render untuk tab yang tidak terlihat.
+          </p>
+        </ng-template>
+        <ng-template uiTab label="Keamanan" icon="shield-check">
+          <div uiAlert data-variant="success">
+            <ui-icon name="shield-check" class="mt-0.5 size-4 shrink-0" />
+            <p class="leading-relaxed">Autentikasi dua faktor aktif untuk semua anggota tim.</p>
+          </div>
+        </ng-template>
+        <ng-template uiTab label="Keuangan" icon="credit-card">
+          <p class="text-sm leading-relaxed text-muted-foreground">
+            Tagihan berikutnya jatuh tempo pada 1 Desember 2026 sebesar Rp 249.000.
+          </p>
+        </ng-template>
+      </ui-tabs>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Avatar, skeleton &amp; progress</h2>
+      <p uiCardDescription>Elemen pendukung untuk daftar dan loading.</p>
+    </div>
+    <div uiCardContent class="space-y-6">
+      <div class="flex flex-wrap items-center gap-3">
+        <span uiAvatar data-size="xs" class="bg-primary-soft text-primary">RP</span>
+        <span uiAvatar data-size="sm" class="bg-success-soft text-success">DL</span>
+        <span uiAvatar class="bg-warning-soft text-warning">BS</span>
+        <span uiAvatar data-size="lg" class="bg-chart-2/15 text-chart-2">SN</span>
+        <span uiAvatar data-size="xl" class="bg-primary text-primary-foreground">AW</span>
+        <div class="flex -space-x-2">
+          <span uiAvatar data-size="sm" class="ring-2 ring-card bg-primary-soft text-primary"
+            >MA</span
+          >
+          <span uiAvatar data-size="sm" class="ring-2 ring-card bg-success-soft text-success"
+            >FN</span
+          >
+          <span uiAvatar data-size="sm" class="ring-2 ring-card bg-warning-soft text-warning"
+            >+6</span
+          >
+        </div>
+      </div>
+
+      <div class="space-y-2">
+        <div class="flex items-center gap-3">
+          <span uiSkeleton class="size-10 rounded-full"></span>
+          <div class="flex-1 space-y-2">
+            <span uiSkeleton class="block h-3 w-1/3"></span>
+            <span uiSkeleton class="block h-3 w-2/3"></span>
+          </div>
+        </div>
+        <span uiSkeleton class="block h-24 w-full rounded-xl"></span>
+      </div>
+
+      <div class="space-y-2">
+        <div class="flex items-center justify-between text-xs">
+          <span class="font-medium">Penyimpanan</span>
+          <span class="text-muted-foreground">{{ progressValue }}% dari 10 GB</span>
+        </div>
+        <div
+          class="ui-progress"
+          role="progressbar"
+          aria-valuenow="68"
+          aria-valuemin="0"
+          aria-valuemax="100"
+        >
+          <div class="ui-progress-bar" [style.width.%]="progressValue"></div>
+        </div>
+      </div>
+
+      <div class="flex flex-wrap items-center gap-3">
+        <span class="rounded-lg border border-border px-3 py-2 text-xs">rounded-lg</span>
+        <span class="rounded-xl border border-border px-3 py-2 text-xs">rounded-xl</span>
+        <span class="rounded-2xl border border-border px-3 py-2 text-xs">rounded-2xl</span>
+        <span class="rounded-3xl border border-border px-3 py-2 text-xs">rounded-3xl</span>
+        <span class="rounded-full border border-border px-3 py-2 text-xs">rounded-full</span>
+      </div>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Design token</h2>
+      <p uiCardDescription>Semua warna berasal dari CSS variable, otomatis ikut mode gelap.</p>
+    </div>
+    <div uiCardContent class="grid grid-cols-2 gap-3 sm:grid-cols-4">
+      @for (swatch of swatches; track swatch.name) {
+        <div class="space-y-1.5">
+          <span
+            class="block h-12 w-full rounded-xl border border-border"
+            [class]="'block h-12 w-full rounded-xl border border-border ' + swatch.classes"
+          ></span>
+          <p class="text-[11px] font-medium text-muted-foreground">
+            {{ swatch.name }}
+          </p>
+        </div>
+      }
+    </div>
+  </div>
+</div>
+
+<ng-template #demoMenu>
+  <div cdkMenu class="ui-menu-panel">
+    <p class="ui-menu-label">Aksi cepat</p>
+    <button cdkMenuItem type="button" class="ui-menu-item" (click)="menuAction('Lihat profil')">
+      <ui-icon name="user" class="size-4 text-muted-foreground" />
+      Lihat profil
+      <span class="ui-shortcut">⌘P</span>
+    </button>
+    <button cdkMenuItem type="button" class="ui-menu-item" (click)="menuAction('Salin tautan')">
+      <ui-icon name="copy" class="size-4 text-muted-foreground" />
+      Salin tautan
+      <span class="ui-shortcut">⌘C</span>
+    </button>
+    <button cdkMenuItem type="button" class="ui-menu-item" (click)="menuAction('Unduh data')">
+      <ui-icon name="download" class="size-4 text-muted-foreground" />
+      Unduh data
+    </button>
+    <div class="ui-menu-separator"></div>
+    <button
+      cdkMenuItem
+      type="button"
+      class="ui-menu-item is-destructive"
+      (click)="menuAction('Hapus item')"
+    >
+      <ui-icon name="trash-2" class="size-4" />
+      Hapus item
+    </button>
+  </div>
+</ng-template>
+
+<ui-dialog
+  #demoDialog
+  title="Contoh dialog"
+  description="Dialog memakai elemen native <dialog>, jadi fokus dan tombol ESC bekerja otomatis."
+>
+  <div class="space-y-4 pb-2">
+    <div class="space-y-1.5">
+      <label uiLabel for="dialog-name">Nama workspace</label>
+      <input uiInput id="dialog-name" type="text" value="Alecto Studio" />
+    </div>
+    <div class="space-y-1.5">
+      <label uiLabel for="dialog-visibility">Visibilitas</label>
+      <select uiSelect id="dialog-visibility">
+        <option>Publik</option>
+        <option>Hanya anggota tim</option>
+        <option>Privat</option>
+      </select>
+    </div>
+    <div uiAlert data-variant="info">
+      <ui-icon name="info" class="mt-0.5 size-4 shrink-0" />
+      <p class="leading-relaxed">
+        Perubahan visibilitas berlaku untuk semua tautan yang dibagikan.
+      </p>
+    </div>
+  </div>
+
+  <div dialogFooter>
+    <button uiButton variant="outline" type="button" (click)="demoDialog.close()">Batal</button>
+    <button uiButton type="button" (click)="confirmDialog()">
+      <ui-icon name="check" class="size-4" />
+      Simpan
+    </button>
+  </div>
+</ui-dialog>

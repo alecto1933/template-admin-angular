@@ -1,0 +1,60 @@
+<ui-page-header
+  title="Scroll Area"
+  description="Area scroll horizontal dengan kartu yang tetap rapi dan scrollbar tipis."
+>
+  <button uiButton variant="outline" routerLink="/components">
+    <ui-icon name="arrow-left" class="size-4" />
+    Katalog komponen
+  </button>
+</ui-page-header>
+
+<div class="mt-6 grid grid-cols-1 items-start gap-4">
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Horizontal</h2>
+      <p uiCardDescription>Geser dengan mouse, trackpad, atau tombol shift + scroll.</p>
+    </div>
+    <div uiCardContent>
+      <div
+        class="flex snap-x snap-mandatory gap-3 overflow-x-auto pb-3 [scrollbar-width:thin]"
+        tabindex="0"
+        aria-label="Daftar kartu yang bisa digeser horizontal"
+      >
+        @for (item of items; track item.title) {
+          <div class="w-64 shrink-0 snap-start rounded-xl border border-border bg-card p-4">
+            <span class="grid size-9 place-items-center rounded-lg bg-primary-soft text-primary">
+              <ui-icon name="package" class="size-4" />
+            </span>
+            <p class="mt-4 font-display text-sm font-semibold">{{ item.title }}</p>
+            <p class="mt-1 text-xs leading-relaxed text-muted-foreground">
+              {{ item.text }}
+            </p>
+            <button uiButton variant="soft" size="sm" class="mt-3">Lihat</button>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Dengan snap</h2>
+      <p uiCardDescription>
+        Tambahkan <code class="font-mono text-[12px]">snap-x</code> dan
+        <code class="font-mono text-[12px]">snap-start</code> agar kartu berhenti rapi.
+      </p>
+    </div>
+    <div uiCardContent>
+      <div class="flex snap-x snap-mandatory gap-3 overflow-x-auto pb-3">
+        @for (item of items; track item.title) {
+          <div
+            class="flex h-32 w-44 shrink-0 snap-start flex-col justify-between rounded-xl border border-border bg-muted/40 p-4"
+          >
+            <ui-icon name="image" class="size-5 text-muted-foreground" />
+            <p class="text-xs font-semibold">{{ item.title }}</p>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+</div>

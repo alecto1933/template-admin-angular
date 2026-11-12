@@ -1,0 +1,217 @@
+<ui-page-header
+  title="Item"
+  description="Baris konten serbaguna dengan media, title, description, actions, header, footer, dan group."
+>
+  <button uiButton variant="outline" routerLink="/components">
+    <ui-icon name="arrow-left" class="size-4" />
+    Katalog komponen
+  </button>
+</ui-page-header>
+
+<div class="mt-6 grid grid-cols-1 items-start gap-4">
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Variants</h2>
+      <p uiCardDescription>Default, outline, muted, dan ghost.</p>
+    </div>
+    <div uiCardContent class="grid grid-cols-1 gap-3 lg:grid-cols-2">
+      <div uiItem>
+        <span uiItemMedia><ui-icon name="file-text" class="size-5" /></span>
+        <div uiItemContent>
+          <span uiItemTitle>Default item</span>
+          <span uiItemDescription>Border dan latar kartu standar.</span>
+        </div>
+      </div>
+
+      <div uiItem data-variant="outline">
+        <span uiItemMedia><ui-icon name="archive" class="size-5" /></span>
+        <div uiItemContent>
+          <span uiItemTitle>Outline</span>
+          <span uiItemDescription>Latar transparan mengikuti parent.</span>
+        </div>
+      </div>
+
+      <div uiItem data-variant="muted">
+        <span uiItemMedia><ui-icon name="package" class="size-5" /></span>
+        <div uiItemContent>
+          <span uiItemTitle>Muted</span>
+          <span uiItemDescription>Latar lembut untuk konten sekunder.</span>
+        </div>
+      </div>
+
+      <div uiItem data-variant="ghost">
+        <span uiItemMedia><ui-icon name="star" class="size-5" /></span>
+        <div uiItemContent>
+          <span uiItemTitle>Ghost</span>
+          <span uiItemDescription>Tanpa border, padding lebih rapat.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Icon, avatar &amp; image</h2>
+      <p uiCardDescription>Media bisa berupa ikon, avatar, atau gambar.</p>
+    </div>
+    <div uiCardContent class="space-y-3">
+      <div uiItem>
+        <span uiItemMedia><ui-icon name="settings" class="size-5" /></span>
+        <div uiItemContent>
+          <span uiItemTitle>Pengaturan workspace</span>
+          <span uiItemDescription>Kelola nama, logo, dan domain.</span>
+        </div>
+      </div>
+
+      <div uiItem>
+        <span uiAvatar class="bg-primary-soft text-primary">DL</span>
+        <div uiItemContent>
+          <span uiItemTitle>Dewi Lestari</span>
+          <span uiItemDescription>Product Lead · dewi@alecto.id</span>
+        </div>
+      </div>
+
+      <div uiItem>
+        <span uiItemMedia><img src="demo/landscape.svg" alt="Pegunungan" /></span>
+        <div uiItemContent>
+          <span uiItemTitle>hero-dashboard.png</span>
+          <span uiItemDescription>PNG · 2400×1600 · 1,2 MB</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Group</h2>
+      <p uiCardDescription>Beberapa item berurutan dengan jarak konsisten.</p>
+    </div>
+    <div uiCardContent>
+      <div uiItemGroup>
+        <div uiItem>
+          <span uiItemMedia><ui-icon name="wallet" class="size-5" /></span>
+          <div uiItemContent>
+            <span uiItemTitle>Metode pembayaran</span>
+            <span uiItemDescription>Visa •••• 4242</span>
+          </div>
+          <button uiButton variant="ghost" size="icon-sm" aria-label="Edit metode pembayaran">
+            <ui-icon name="pencil" class="size-4" />
+          </button>
+        </div>
+        <div uiItem>
+          <span uiItemMedia><ui-icon name="bell" class="size-5" /></span>
+          <div uiItemContent>
+            <span uiItemTitle>Notifikasi</span>
+            <span uiItemDescription>Email dan push notification</span>
+          </div>
+          <button uiButton variant="ghost" size="icon-sm" aria-label="Buka notifikasi">
+            <ui-icon name="chevron-right" class="size-4" />
+          </button>
+        </div>
+        <div uiItem>
+          <span uiItemMedia><ui-icon name="shield-check" class="size-5" /></span>
+          <div uiItemContent>
+            <span uiItemTitle>Keamanan</span>
+            <span uiItemDescription>2FA aktif untuk semua admin</span>
+          </div>
+          <button uiButton variant="ghost" size="icon-sm" aria-label="Buka keamanan">
+            <ui-icon name="chevron-right" class="size-4" />
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Header &amp; footer</h2>
+      <p uiCardDescription>Item bisa memiliki header dan footer internal.</p>
+    </div>
+    <div uiCardContent>
+      <div uiItem class="flex-col">
+        <div uiItemHeader class="w-full">
+          <div>
+            <span uiItemTitle>Invoice #INV-2049</span>
+            <span uiItemDescription>Dibuat 10 Nov 2026</span>
+          </div>
+          <span uiMarker data-variant="success">
+            <span uiMarkerDot></span>
+            Lunas
+          </span>
+        </div>
+
+        <div uiItemFooter class="w-full">
+          <span class="text-xs text-muted-foreground">3 item · Rp 4.250.000</span>
+          <button uiButton variant="soft" size="sm" class="ml-auto">Lihat invoice</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Link</h2>
+      <p uiCardDescription>Item dapat menjadi anchor.</p>
+    </div>
+    <div uiCardContent>
+      <a uiItem href="#" class="transition-colors hover:bg-muted/40">
+        <span uiItemMedia><ui-icon name="book-open" class="size-5" /></span>
+        <div uiItemContent>
+          <span uiItemTitle>Dokumentasi komponen</span>
+          <span uiItemDescription>Panduan penggunaan dan API.</span>
+        </div>
+        <ui-icon name="arrow-up-right" class="size-4 text-muted-foreground" />
+      </a>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Dropdown</h2>
+      <p uiCardDescription>Actions di sisi kanan item.</p>
+    </div>
+    <div uiCardContent>
+      <div uiItem>
+        <span uiItemMedia><ui-icon name="file-text" class="size-5" /></span>
+        <div uiItemContent>
+          <span uiItemTitle>laporan-kuartal-3.pdf</span>
+          <span uiItemDescription>PDF · 2,4 MB · diunggah 2 jam lalu</span>
+        </div>
+        <div uiItemActions>
+          <button
+            uiButton
+            variant="ghost"
+            size="icon-sm"
+            [cdkMenuTriggerFor]="itemMenu"
+            aria-label="Aksi laporan"
+          >
+            <ui-icon name="more-horizontal" class="size-4" />
+          </button>
+        </div>
+      </div>
+
+      <ng-template #itemMenu>
+        <div cdkMenu class="ui-menu-panel w-48">
+          <button cdkMenuItem type="button" class="ui-menu-item" (click)="action('Buka')">
+            <ui-icon name="eye" class="size-4 text-muted-foreground" />
+            Buka
+          </button>
+          <button cdkMenuItem type="button" class="ui-menu-item" (click)="action('Unduh')">
+            <ui-icon name="download" class="size-4 text-muted-foreground" />
+            Unduh
+          </button>
+          <div class="ui-menu-separator"></div>
+          <button
+            cdkMenuItem
+            type="button"
+            class="ui-menu-item is-destructive"
+            (click)="action('Hapus')"
+          >
+            <ui-icon name="trash-2" class="size-4" />
+            Hapus
+          </button>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+</div>

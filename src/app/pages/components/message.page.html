@@ -1,0 +1,154 @@
+<ui-page-header
+  title="Message"
+  description="Pesan percakapan dengan avatar, grup, header/footer, aksi, dan lampiran."
+>
+  <button uiButton variant="outline" routerLink="/components">
+    <ui-icon name="arrow-left" class="size-4" />
+    Katalog komponen
+  </button>
+</ui-page-header>
+
+<div class="mt-6 grid grid-cols-1 items-start gap-4">
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Avatar</h2>
+      <p uiCardDescription>Pesan dengan avatar pengirim.</p>
+    </div>
+    <div uiCardContent>
+      <div uiMessage>
+        <span uiAvatar class="bg-primary-soft text-primary">DL</span>
+        <div uiMessageContent>
+          <div uiMessageBody>Halo, apakah laporan mingguan sudah siap?</div>
+          <div uiMessageFooter>
+            <span uiMessageTime>10:20</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Group</h2>
+      <p uiCardDescription>Beberapa pesan berurutan dari pengirim yang sama.</p>
+    </div>
+    <div uiCardContent>
+      <div uiMessageGroup>
+        <div uiMessage>
+          <span uiAvatar class="bg-success-soft text-success">BS</span>
+          <div uiMessageContent>
+            <div uiMessageBody>Aku sudah cek inventory pagi ini.</div>
+            <div uiMessageFooter><span uiMessageTime>09:42</span></div>
+          </div>
+        </div>
+        <div uiMessage>
+          <span class="size-10"></span>
+          <div uiMessageContent>
+            <div uiMessageBody>Ada 4 produk yang stoknya di bawah batas.</div>
+            <div uiMessageFooter><span uiMessageTime>09:42</span></div>
+          </div>
+        </div>
+        <div uiMessage>
+          <span class="size-10"></span>
+          <div uiMessageContent>
+            <div uiMessageBody>Mau aku buatkan daftar restock?</div>
+            <div uiMessageFooter><span uiMessageTime>09:43</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Header &amp; footer</h2>
+      <p uiCardDescription>Informasi pengirim dan status pesan.</p>
+    </div>
+    <div uiCardContent>
+      <div uiMessage>
+        <span uiAvatar class="bg-primary-soft text-primary">RP</span>
+        <div uiMessageContent>
+          <div uiMessageHeader>
+            <span uiMessageAuthor>Raka Pratama</span>
+            <span uiMessageTime>10:24</span>
+            <span uiMarker data-variant="outline">Admin</span>
+          </div>
+          <div uiMessageBody>Invoice #INV-2049 sudah kubayar, mohon dicek.</div>
+          <div uiMessageFooter>
+            <ui-icon name="check-check" class="size-3.5 text-primary" />
+            Dibaca · 2 menit lalu
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Actions</h2>
+      <p uiCardDescription>Aksi pesan muncul di footer.</p>
+    </div>
+    <div uiCardContent>
+      <div uiMessage>
+        <span uiAvatar class="bg-warning-soft text-warning">SN</span>
+        <div uiMessageContent class="max-w-full">
+          <div uiMessageBody>Bisa bantu review desain halaman checkout?</div>
+          <div uiMessageFooter>
+            <div uiMessageActions>
+              <button uiButton variant="ghost" size="sm" (click)="action('Balas')">
+                <ui-icon name="arrow-left" class="size-3.5" />
+                Balas
+              </button>
+              <button uiButton variant="ghost" size="sm" (click)="action('Salin')">
+                <ui-icon name="copy" class="size-3.5" />
+                Salin
+              </button>
+              <button uiButton variant="ghost" size="sm" (click)="action('Tandai')">
+                <ui-icon name="star" class="size-3.5" />
+                Tandai
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Attachment</h2>
+      <p uiCardDescription>Lampiran file di dalam pesan.</p>
+    </div>
+    <div uiCardContent>
+      <div uiMessage>
+        <span uiAvatar class="bg-primary-soft text-primary">DL</span>
+        <div uiMessageContent class="max-w-full">
+          <div uiMessageHeader>
+            <span uiMessageAuthor>Dewi Lestari</span>
+            <span uiMessageTime>10:26</span>
+          </div>
+          <div uiMessageBody class="space-y-2">
+            <p>Ini invoice dan bukti pembayarannya ya.</p>
+            <ui-attachment
+              name="invoice-2049.pdf"
+              description="PDF · 180 KB"
+              icon="file-text"
+              state="done"
+            >
+              <button
+                uiButton
+                variant="ghost"
+                size="icon-sm"
+                aria-label="Unduh invoice-2049.pdf"
+                (click)="action('Unduh invoice')"
+              >
+                <ui-icon name="download" class="size-4" />
+              </button>
+            </ui-attachment>
+          </div>
+          <div uiMessageFooter><span uiMessageTime>10:26</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,266 @@
+<ui-page-header
+  title="Pagination"
+  description="Navigasi halaman dengan query params, tombol ikon, dan kontrol lanjutan (first/last, ellipsis, page size)."
+>
+  <button uiButton variant="outline" routerLink="/components">
+    <ui-icon name="arrow-left" class="size-4" />
+    Katalog komponen
+  </button>
+</ui-page-header>
+
+<div class="mt-6 grid grid-cols-1 items-start gap-4">
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Query params</h2>
+      <p uiCardDescription>
+        Halaman aktif disimpan di URL (<code class="font-mono text-[12px]">?page=</code>).
+      </p>
+    </div>
+    <div uiCardContent class="space-y-3">
+      <div class="flex flex-wrap items-center gap-1">
+        <button
+          uiButton
+          variant="outline"
+          size="icon-sm"
+          [disabled]="queryPage() === 1"
+          (click)="goQuery(queryPage() - 1)"
+          aria-label="Halaman sebelumnya"
+        >
+          <ui-icon name="chevron-left" class="size-4" />
+        </button>
+
+        @for (item of queryPages(); track $index) {
+          @if (item === 'ellipsis') {
+            <span class="px-1 text-xs text-muted-foreground">…</span>
+          } @else {
+            <button
+              uiButton
+              [variant]="item === queryPage() ? 'primary' : 'ghost'"
+              size="icon-sm"
+              (click)="goQuery(item)"
+              [attr.aria-current]="item === queryPage() ? 'page' : null"
+              [attr.aria-label]="'Halaman ' + item"
+            >
+              {{ item }}
+            </button>
+          }
+        }
+
+        <button
+          uiButton
+          variant="outline"
+          size="icon-sm"
+          [disabled]="queryPage() === totalPages()"
+          (click)="goQuery(queryPage() + 1)"
+          aria-label="Halaman berikutnya"
+        >
+          <ui-icon name="chevron-right" class="size-4" />
+        </button>
+      </div>
+      <p class="ui-help">
+        URL: <code class="font-mono">?page={{ queryPage() }}</code> · Halaman {{ queryPage() }} dari
+        {{ totalPages() }}
+      </p>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Icon only</h2>
+      <p uiCardDescription>Hanya tombol previous dan next.</p>
+    </div>
+    <div uiCardContent class="flex flex-wrap items-center gap-3">
+      <button
+        uiButton
+        variant="outline"
+        size="icon"
+        [disabled]="iconPage() === 1"
+        (click)="goIcon(iconPage() - 1)"
+        aria-label="Halaman sebelumnya"
+      >
+        <ui-icon name="chevron-left" class="size-4" />
+      </button>
+      <span class="text-xs text-muted-foreground">
+        Halaman <span class="font-semibold text-foreground">{{ iconPage() }}</span> dari
+        {{ totalPages() }}
+      </span>
+      <button
+        uiButton
+        variant="outline"
+        size="icon"
+        [disabled]="iconPage() === totalPages()"
+        (click)="goIcon(iconPage() + 1)"
+        aria-label="Halaman berikutnya"
+      >
+        <ui-icon name="chevron-right" class="size-4" />
+      </button>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Advanced pagination</h2>
+      <p uiCardDescription>First/last, ellipsis, dan pemilih jumlah per halaman.</p>
+    </div>
+    <div uiCardContent class="space-y-3">
+      <div class="flex flex-wrap items-center gap-1">
+        <button
+          uiButton
+          variant="outline"
+          size="icon-sm"
+          [disabled]="page() === 1"
+          (click)="go(1)"
+          aria-label="Halaman pertama"
+        >
+          <ui-icon name="chevrons-left" class="size-4" />
+        </button>
+        <button
+          uiButton
+          variant="outline"
+          size="icon-sm"
+          [disabled]="page() === 1"
+          (click)="go(page() - 1)"
+          aria-label="Halaman sebelumnya"
+        >
+          <ui-icon name="chevron-left" class="size-4" />
+        </button>
+
+        @for (item of pages(); track $index) {
+          @if (item === 'ellipsis') {
+            <span class="px-1 text-xs text-muted-foreground">…</span>
+          } @else {
+            <button
+              uiButton
+              [variant]="item === page() ? 'primary' : 'ghost'"
+              size="icon-sm"
+              (click)="go(item)"
+              [attr.aria-current]="item === page() ? 'page' : null"
+              [attr.aria-label]="'Halaman ' + item"
+            >
+              {{ item }}
+            </button>
+          }
+        }
+
+        <button
+          uiButton
+          variant="outline"
+          size="icon-sm"
+          [disabled]="page() === totalPages()"
+          (click)="go(page() + 1)"
+          aria-label="Halaman berikutnya"
+        >
+          <ui-icon name="chevron-right" class="size-4" />
+        </button>
+        <button
+          uiButton
+          variant="outline"
+          size="icon-sm"
+          [disabled]="page() === totalPages()"
+          (click)="go(totalPages())"
+          aria-label="Halaman terakhir"
+        >
+          <ui-icon name="chevrons-right" class="size-4" />
+        </button>
+      </div>
+
+      <div class="flex flex-wrap items-center justify-between gap-3">
+        <p class="ui-help">
+          Menampilkan {{ (page() - 1) * pageSize() + 1 }}–{{
+            min(page() * pageSize(), totalItems)
+          }}
+          dari {{ totalItems }} item
+        </p>
+        <div class="flex items-center gap-2">
+          <label for="page-size" class="text-xs text-muted-foreground">Per halaman</label>
+          <select
+            id="page-size"
+            uiSelect
+            class="h-8 w-20 text-xs"
+            [value]="pageSize()"
+            (change)="onPageSizeChange($event)"
+          >
+            <option value="10">10</option>
+            <option value="20">20</option>
+            <option value="50">50</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Advanced pagination — query params</h2>
+      <p uiCardDescription>
+        Kontrol lanjutan yang tersinkron dengan
+        <code class="font-mono text-[12px]">?halaman=</code>.
+      </p>
+    </div>
+    <div uiCardContent class="space-y-3">
+      <div class="flex flex-wrap items-center gap-1">
+        <button
+          uiButton
+          variant="outline"
+          size="icon-sm"
+          [disabled]="advancedQueryPage() === 1"
+          (click)="goAdvancedQuery(1)"
+          aria-label="Halaman pertama"
+        >
+          <ui-icon name="chevrons-left" class="size-4" />
+        </button>
+        <button
+          uiButton
+          variant="outline"
+          size="icon-sm"
+          [disabled]="advancedQueryPage() === 1"
+          (click)="goAdvancedQuery(advancedQueryPage() - 1)"
+          aria-label="Halaman sebelumnya"
+        >
+          <ui-icon name="chevron-left" class="size-4" />
+        </button>
+
+        @for (item of advancedQueryPages(); track $index) {
+          @if (item === 'ellipsis') {
+            <span class="px-1 text-xs text-muted-foreground">…</span>
+          } @else {
+            <button
+              uiButton
+              [variant]="item === advancedQueryPage() ? 'primary' : 'ghost'"
+              size="icon-sm"
+              (click)="goAdvancedQuery(item)"
+              [attr.aria-current]="item === advancedQueryPage() ? 'page' : null"
+              [attr.aria-label]="'Halaman ' + item"
+            >
+              {{ item }}
+            </button>
+          }
+        }
+
+        <button
+          uiButton
+          variant="outline"
+          size="icon-sm"
+          [disabled]="advancedQueryPage() === totalPages()"
+          (click)="goAdvancedQuery(advancedQueryPage() + 1)"
+          aria-label="Halaman berikutnya"
+        >
+          <ui-icon name="chevron-right" class="size-4" />
+        </button>
+        <button
+          uiButton
+          variant="outline"
+          size="icon-sm"
+          [disabled]="advancedQueryPage() === totalPages()"
+          (click)="goAdvancedQuery(totalPages())"
+          aria-label="Halaman terakhir"
+        >
+          <ui-icon name="chevrons-right" class="size-4" />
+        </button>
+      </div>
+      <p class="ui-help">
+        URL: <code class="font-mono">?halaman={{ advancedQueryPage() }}</code>
+      </p>
+    </div>
+  </div>
+</div>

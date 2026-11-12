@@ -1,0 +1,55 @@
+<ui-page-header
+  title="Command"
+  description="Command palette dengan pencarian, keyboard navigation, shortcut, grup, dan daftar yang bisa di-scroll."
+>
+  <button uiButton variant="outline" routerLink="/components">
+    <ui-icon name="arrow-left" class="size-4" />
+    Katalog komponen
+  </button>
+</ui-page-header>
+
+<div class="mt-6 grid grid-cols-1 items-start gap-4">
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Basic</h2>
+      <p uiCardDescription>Cari dan jalankan perintah dengan klik atau tombol Enter.</p>
+    </div>
+    <div uiCardContent class="max-w-xl">
+      <ui-command [items]="navigation" (selected)="run($event)" />
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Shortcuts</h2>
+      <p uiCardDescription>Tampilkan shortcut keyboard di sisi kanan item.</p>
+    </div>
+    <div uiCardContent class="max-w-xl">
+      <ui-command
+        [items]="shortcuts"
+        placeholder="Cari perintah atau shortcut…"
+        (selected)="run($event)"
+      />
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Groups</h2>
+      <p uiCardDescription>Kelompokkan perintah dengan header grup.</p>
+    </div>
+    <div uiCardContent class="max-w-xl">
+      <ui-command [items]="commands" (selected)="run($event)" />
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Scrollable</h2>
+      <p uiCardDescription>Batasi tinggi daftar; item aktif otomatis di-scroll ke tampilan.</p>
+    </div>
+    <div uiCardContent class="max-w-xl">
+      <ui-command [items]="many" [maxHeight]="220" (selected)="run($event)" />
+    </div>
+  </div>
+</div>

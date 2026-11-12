@@ -1,0 +1,410 @@
+<ui-page-header
+  title="Attachment"
+  description="Baris lampiran file dengan thumbnail, status unggah, ukuran berbeda, grup, dan mode trigger — semuanya dibuat sendiri."
+>
+  <button uiButton variant="outline" routerLink="/components">
+    <ui-icon name="arrow-left" class="size-4" />
+    Katalog komponen
+  </button>
+</ui-page-header>
+
+<div class="mt-6 grid grid-cols-1 items-start gap-4">
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Ukuran</h2>
+      <p uiCardDescription>
+        Tiga ukuran: <code class="font-mono text-[12px]">sm</code>,
+        <code class="font-mono text-[12px]">md</code> (default), dan
+        <code class="font-mono text-[12px]">lg</code>.
+      </p>
+    </div>
+    <div uiCardContent class="space-y-3">
+      <ui-attachment
+        size="sm"
+        name="catatan-rilis.txt"
+        description="TXT · 12 KB"
+        icon="file-text"
+      />
+
+      <ui-attachment
+        name="laporan-kuartal-3.pdf"
+        description="PDF · 2,4 MB"
+        icon="file-text"
+        state="done"
+      />
+
+      <ui-attachment
+        size="lg"
+        name="presentasi-brand.pptx"
+        description="PowerPoint · 8,1 MB · 34 slide"
+        icon="package"
+      />
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Dengan gambar</h2>
+      <p uiCardDescription>
+        Gunakan input
+        <code class="font-mono text-[12px]">image</code> untuk menampilkan thumbnail. Ikon tetap
+        dipakai bila gambar tidak tersedia.
+      </p>
+    </div>
+    <div uiCardContent class="grid grid-cols-1 gap-3 md:grid-cols-2">
+      <ui-attachment
+        image="demo/landscape.svg"
+        name="hero-dashboard.png"
+        description="PNG · 2400×1600 · 1,2 MB"
+      >
+        <button
+          uiButton
+          variant="ghost"
+          size="icon-sm"
+          aria-label="Unduh hero-dashboard.png"
+          (click)="download('hero-dashboard.png')"
+        >
+          <ui-icon name="download" class="size-4" />
+        </button>
+        <button
+          uiButton
+          variant="ghost"
+          size="icon-sm"
+          class="text-destructive hover:text-destructive"
+          aria-label="Hapus hero-dashboard.png"
+          (click)="remove('hero-dashboard.png')"
+        >
+          <ui-icon name="trash-2" class="size-4" />
+        </button>
+      </ui-attachment>
+
+      <ui-attachment
+        image="demo/square.svg"
+        name="ilustrasi-katalog.png"
+        description="PNG · 1200×1200 · 640 KB"
+      >
+        <button
+          uiButton
+          variant="ghost"
+          size="icon-sm"
+          aria-label="Unduh ilustrasi-katalog.png"
+          (click)="download('ilustrasi-katalog.png')"
+        >
+          <ui-icon name="download" class="size-4" />
+        </button>
+        <button
+          uiButton
+          variant="ghost"
+          size="icon-sm"
+          class="text-destructive hover:text-destructive"
+          aria-label="Hapus ilustrasi-katalog.png"
+          (click)="remove('ilustrasi-katalog.png')"
+        >
+          <ui-icon name="trash-2" class="size-4" />
+        </button>
+      </ui-attachment>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>State</h2>
+      <p uiCardDescription>
+        Status unggah ditampilkan lewat ikon, teks, dan progress bar — bukan hanya warna.
+      </p>
+    </div>
+    <div uiCardContent class="space-y-3">
+      <ui-attachment
+        name="video-produk.mp4"
+        description="Mengunggah · 64%"
+        icon="play"
+        state="uploading"
+        [progress]="64"
+      />
+
+      <ui-attachment
+        name="foto-produk.jpg"
+        description="Memproses metadata…"
+        icon="image"
+        state="processing"
+      />
+
+      <ui-attachment
+        name="invoice-2049.pdf"
+        description="PDF · 180 KB · Selesai"
+        icon="file-text"
+        state="done"
+      />
+
+      <ui-attachment
+        name="kontrak-kerjasama.pdf"
+        description="Gagal · format tidak didukung"
+        icon="file-text"
+        state="error"
+      />
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Group</h2>
+      <p uiCardDescription>
+        Bungkus beberapa lampiran dengan
+        <code class="font-mono text-[12px]">ui-attachment-group</code> untuk membuat satu daftar
+        berbagi border.
+      </p>
+    </div>
+    <div uiCardContent>
+      <ui-attachment-group>
+        <ui-attachment size="sm" name="logo-alecto.svg" description="SVG · 4 KB" icon="image">
+          <button
+            uiButton
+            variant="ghost"
+            size="icon-sm"
+            aria-label="Unduh logo-alecto.svg"
+            (click)="download('logo-alecto.svg')"
+          >
+            <ui-icon name="download" class="size-4" />
+          </button>
+        </ui-attachment>
+
+        <ui-attachment
+          size="sm"
+          name="brand-guidelines.pdf"
+          description="PDF · 6,8 MB"
+          icon="file-text"
+        >
+          <button
+            uiButton
+            variant="ghost"
+            size="icon-sm"
+            aria-label="Unduh brand-guidelines.pdf"
+            (click)="download('brand-guidelines.pdf')"
+          >
+            <ui-icon name="download" class="size-4" />
+          </button>
+        </ui-attachment>
+
+        <ui-attachment
+          size="sm"
+          name="aset-fotografi-produk-2026.zip"
+          description="ZIP · 148 MB · 42 file"
+          icon="archive"
+        >
+          <button
+            uiButton
+            variant="ghost"
+            size="icon-sm"
+            aria-label="Unduh aset fotografi produk"
+            (click)="download('aset-fotografi-produk-2026.zip')"
+          >
+            <ui-icon name="download" class="size-4" />
+          </button>
+        </ui-attachment>
+      </ui-attachment-group>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Trigger</h2>
+      <p uiCardDescription>
+        Tambahkan input <code class="font-mono text-[12px]">interactive</code>
+        agar seluruh baris bisa diklik dan diakses lewat keyboard.
+      </p>
+    </div>
+    <div uiCardContent class="space-y-3">
+      <ui-attachment
+        interactive
+        image="demo/portrait.svg"
+        name="preview-portrait.png"
+        description="Klik untuk membuka preview"
+        (activated)="openFile('preview-portrait.png')"
+      />
+
+      <ui-attachment
+        interactive
+        name="invoice-2049.pdf"
+        description="Klik untuk membuka dokumen"
+        icon="file-text"
+        state="done"
+        (activated)="openFile('invoice-2049.pdf')"
+      />
+
+      <p class="text-[11px] text-muted-foreground">
+        Saat baris bersifat interaktif, jangan menaruh tombol aksi di dalamnya. Gunakan baris biasa
+        untuk lampiran yang punya aksi unduh/hapus.
+      </p>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Penggunaan</h2>
+      <p uiCardDescription>Konten aksi diproyeksikan langsung ke dalam komponen.</p>
+    </div>
+    <div uiCardContent>
+      <pre
+        class="overflow-x-auto rounded-xl border border-border bg-muted/50 p-4 font-mono text-[12px] leading-relaxed text-foreground"
+      ><code>&lt;ui-attachment
+  name="invoice.pdf"
+  description="PDF · 2,4 MB"
+  icon="file-text"
+  state="done"
+&gt;
+  &lt;button uiButton size="icon-sm" aria-label="Unduh"&gt;
+    &lt;ui-icon name="download" /&gt;
+  &lt;/button&gt;
+&lt;/ui-attachment&gt;
+
+&lt;ui-attachment-group&gt;
+  &lt;ui-attachment size="sm" name="logo.svg" /&gt;
+  &lt;ui-attachment size="sm" name="brand.pdf" /&gt;
+&lt;/ui-attachment-group&gt;
+
+&lt;ui-attachment
+  interactive
+  name="invoice.pdf"
+  (activated)="open()"
+/&gt;</code></pre>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Aksesibilitas</h2>
+      <p uiCardDescription>Perilaku yang sudah ditangani oleh komponen.</p>
+    </div>
+    <div uiCardContent>
+      <ul class="space-y-3 text-sm text-muted-foreground">
+        <li class="flex gap-2.5">
+          <ui-icon name="circle-check" class="mt-0.5 size-4 shrink-0 text-success" />
+          <span>
+            Mode interaktif memberi
+            <code class="font-mono text-[12px] text-foreground">role="button"</code>,
+            <code class="font-mono text-[12px] text-foreground">tabindex="0"</code>, dan dukungan
+            Enter/Space.
+          </span>
+        </li>
+        <li class="flex gap-2.5">
+          <ui-icon name="circle-check" class="mt-0.5 size-4 shrink-0 text-success" />
+          <span>
+            Tombol aksi memakai
+            <code class="font-mono text-[12px] text-foreground">&lt;button&gt;</code> dengan
+            <code class="font-mono text-[12px] text-foreground">aria-label</code>
+            dan tidak memicu aksi trigger.
+          </span>
+        </li>
+        <li class="flex gap-2.5">
+          <ui-icon name="circle-check" class="mt-0.5 size-4 shrink-0 text-success" />
+          <span>
+            Progress unggah memakai
+            <code class="font-mono text-[12px] text-foreground">role="progressbar"</code>
+            dengan <code class="font-mono text-[12px] text-foreground">aria-valuenow</code>.
+          </span>
+        </li>
+        <li class="flex gap-2.5">
+          <ui-icon name="circle-check" class="mt-0.5 size-4 shrink-0 text-success" />
+          <span>
+            Nama file panjang dipotong secara visual, tetapi tetap tersedia lewat atribut
+            <code class="font-mono text-[12px] text-foreground">title</code>.
+          </span>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>API</h2>
+      <p uiCardDescription>
+        <code class="font-mono text-[12px]">ui-attachment-group</code> tidak punya input; cukup
+        bungkus beberapa lampiran.
+      </p>
+    </div>
+    <div uiCardContent class="px-0 pb-0 sm:px-0">
+      <div class="ui-scroll-x">
+        <table uiTable>
+          <thead>
+            <tr>
+              <th>Properti</th>
+              <th>Jenis</th>
+              <th>Tipe</th>
+              <th>Default</th>
+              <th>Deskripsi</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="font-mono text-[12px] whitespace-nowrap">name</td>
+              <td class="whitespace-nowrap">input</td>
+              <td class="whitespace-nowrap">string</td>
+              <td class="whitespace-nowrap">wajib</td>
+              <td class="text-muted-foreground">Nama atau judul file.</td>
+            </tr>
+            <tr>
+              <td class="font-mono text-[12px] whitespace-nowrap">description</td>
+              <td class="whitespace-nowrap">input</td>
+              <td class="whitespace-nowrap">string</td>
+              <td class="font-mono text-[12px]">''</td>
+              <td class="text-muted-foreground">Metadata singkat: tipe, ukuran, status.</td>
+            </tr>
+            <tr>
+              <td class="font-mono text-[12px] whitespace-nowrap">icon</td>
+              <td class="whitespace-nowrap">input</td>
+              <td class="whitespace-nowrap">IconName</td>
+              <td class="font-mono text-[12px]">'file-text'</td>
+              <td class="text-muted-foreground">Ikon saat tidak memakai thumbnail.</td>
+            </tr>
+            <tr>
+              <td class="font-mono text-[12px] whitespace-nowrap">image</td>
+              <td class="whitespace-nowrap">input</td>
+              <td class="whitespace-nowrap">string | null</td>
+              <td class="whitespace-nowrap">null</td>
+              <td class="text-muted-foreground">URL thumbnail gambar.</td>
+            </tr>
+            <tr>
+              <td class="font-mono text-[12px] whitespace-nowrap">size</td>
+              <td class="whitespace-nowrap">input</td>
+              <td class="whitespace-nowrap">'sm' | 'md' | 'lg'</td>
+              <td class="font-mono text-[12px]">'md'</td>
+              <td class="text-muted-foreground">Ukuran baris lampiran.</td>
+            </tr>
+            <tr>
+              <td class="font-mono text-[12px] whitespace-nowrap">state</td>
+              <td class="whitespace-nowrap">input</td>
+              <td class="whitespace-nowrap">
+                'idle' | 'uploading' | 'processing' | 'done' | 'error'
+              </td>
+              <td class="font-mono text-[12px]">'idle'</td>
+              <td class="text-muted-foreground">Status unggah dan tampilan feedback.</td>
+            </tr>
+            <tr>
+              <td class="font-mono text-[12px] whitespace-nowrap">progress</td>
+              <td class="whitespace-nowrap">input</td>
+              <td class="whitespace-nowrap">number</td>
+              <td class="font-mono text-[12px]">0</td>
+              <td class="text-muted-foreground">Persentase progress bar saat state uploading.</td>
+            </tr>
+            <tr>
+              <td class="font-mono text-[12px] whitespace-nowrap">interactive</td>
+              <td class="whitespace-nowrap">input</td>
+              <td class="whitespace-nowrap">boolean</td>
+              <td class="font-mono text-[12px]">false</td>
+              <td class="text-muted-foreground">Membuat seluruh baris menjadi trigger.</td>
+            </tr>
+            <tr>
+              <td class="font-mono text-[12px] whitespace-nowrap">activated</td>
+              <td class="whitespace-nowrap">output</td>
+              <td class="whitespace-nowrap">void</td>
+              <td class="whitespace-nowrap">—</td>
+              <td class="text-muted-foreground">
+                Dipancarkan saat baris interaktif diklik atau ditekan.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

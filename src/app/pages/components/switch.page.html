@@ -1,0 +1,141 @@
+<ui-page-header
+  title="Switch"
+  description="Toggle on/off dengan deskripsi, choice card, state disabled, invalid, dan tiga ukuran."
+>
+  <button uiButton variant="outline" routerLink="/components">
+    <ui-icon name="arrow-left" class="size-4" />
+    Katalog komponen
+  </button>
+</ui-page-header>
+
+<div class="mt-6 grid grid-cols-1 items-start gap-4">
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Description</h2>
+      <p uiCardDescription>Switch dengan label dan teks bantuan.</p>
+    </div>
+    <div uiCardContent class="divide-y divide-border">
+      <div class="flex items-start justify-between gap-6 py-4 first:pt-0">
+        <div class="min-w-0">
+          <p class="text-sm font-medium">Email transaksional</p>
+          <p class="ui-help mt-0.5">Invoice dan status pesanan.</p>
+        </div>
+        <ui-switch [(checked)]="email" ariaLabel="Email transaksional" />
+      </div>
+      <div class="flex items-start justify-between gap-6 py-4">
+        <div class="min-w-0">
+          <p class="text-sm font-medium">Notifikasi push</p>
+          <p class="ui-help mt-0.5">Pemberitahuan real-time di browser.</p>
+        </div>
+        <ui-switch [(checked)]="push" ariaLabel="Notifikasi push" />
+      </div>
+      <div class="flex items-start justify-between gap-6 py-4 last:pb-0">
+        <div class="min-w-0">
+          <p class="text-sm font-medium">Ringkasan mingguan</p>
+          <p class="ui-help mt-0.5">Laporan performa setiap Senin.</p>
+        </div>
+        <ui-switch [(checked)]="digest" ariaLabel="Ringkasan mingguan" />
+      </div>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Choice card</h2>
+      <p uiCardDescription>Switch di dalam kartu pilihan.</p>
+    </div>
+    <div uiCardContent class="grid grid-cols-1 gap-3 md:grid-cols-3">
+      <div
+        class="rounded-xl border p-4 transition-colors"
+        [class]="choice() === 'starter' ? 'border-primary bg-primary-soft/30' : 'border-border'"
+      >
+        <div class="flex items-center justify-between gap-2">
+          <p class="text-sm font-semibold">Starter</p>
+          <ui-switch
+            [checked]="choice() === 'starter'"
+            (checkedChange)="choice.set('starter')"
+            ariaLabel="Pilih Starter"
+          />
+        </div>
+        <p class="ui-help mt-2">3 anggota dan 100 produk.</p>
+      </div>
+
+      <div
+        class="rounded-xl border p-4 transition-colors"
+        [class]="choice() === 'pro' ? 'border-primary bg-primary-soft/30' : 'border-border'"
+      >
+        <div class="flex items-center justify-between gap-2">
+          <p class="text-sm font-semibold">Pro</p>
+          <ui-switch
+            [checked]="choice() === 'pro'"
+            (checkedChange)="choice.set('pro')"
+            ariaLabel="Pilih Pro"
+          />
+        </div>
+        <p class="ui-help mt-2">Anggota tak terbatas dan analitik lanjutan.</p>
+      </div>
+
+      <div
+        class="rounded-xl border p-4 transition-colors"
+        [class]="choice() === 'enterprise' ? 'border-primary bg-primary-soft/30' : 'border-border'"
+      >
+        <div class="flex items-center justify-between gap-2">
+          <p class="text-sm font-semibold">Enterprise</p>
+          <ui-switch
+            [checked]="choice() === 'enterprise'"
+            (checkedChange)="choice.set('enterprise')"
+            ariaLabel="Pilih Enterprise"
+          />
+        </div>
+        <p class="ui-help mt-2">SLA khusus dan dukungan prioritas.</p>
+      </div>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Disabled &amp; invalid</h2>
+      <p uiCardDescription>State nonaktif dan error.</p>
+    </div>
+    <div uiCardContent class="grid grid-cols-1 gap-5 sm:grid-cols-2">
+      <div class="flex items-center justify-between gap-4 rounded-xl border border-border p-4">
+        <div>
+          <p class="text-sm font-medium">Wajib 2FA</p>
+          <p class="ui-help mt-0.5">Diatur oleh administrator.</p>
+        </div>
+        <ui-switch [checked]="twoFactor()" [disabled]="true" ariaLabel="Wajib 2FA" />
+      </div>
+
+      <div
+        class="flex items-center justify-between gap-4 rounded-xl border border-destructive/30 p-4"
+      >
+        <div>
+          <p class="text-sm font-medium">Persetujuan pemasaran</p>
+          <p class="ui-error mt-0.5">Persetujuan wajib diberikan.</p>
+        </div>
+        <ui-switch [(checked)]="invalid" [invalid]="true" ariaLabel="Persetujuan pemasaran" />
+      </div>
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Sizes</h2>
+      <p uiCardDescription>Ukuran sm, md (default), dan lg.</p>
+    </div>
+    <div uiCardContent class="flex flex-wrap items-center gap-6">
+      <div class="flex items-center gap-3">
+        <ui-switch size="sm" [(checked)]="sizes" ariaLabel="Switch kecil" />
+        <span class="text-xs text-muted-foreground">sm</span>
+      </div>
+      <div class="flex items-center gap-3">
+        <ui-switch [(checked)]="sizes" ariaLabel="Switch default" />
+        <span class="text-xs text-muted-foreground">md</span>
+      </div>
+      <div class="flex items-center gap-3">
+        <ui-switch size="lg" [(checked)]="sizes" ariaLabel="Switch besar" />
+        <span class="text-xs text-muted-foreground">lg</span>
+      </div>
+    </div>
+  </div>
+</div>

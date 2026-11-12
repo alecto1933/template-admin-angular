@@ -1,0 +1,97 @@
+<ui-page-header
+  title="Code Block"
+  description="Penampil kode dengan header, aksi salin, nomor baris, wrap, highlight, diff, tinggi maksimum, ukuran, dan gaya destruktif."
+>
+  <button uiButton variant="outline" routerLink="/components">
+    <ui-icon name="arrow-left" class="size-4" />
+    Katalog komponen
+  </button>
+</ui-page-header>
+
+<div class="mt-6 grid grid-cols-1 items-start gap-4">
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Basic</h2>
+      <p uiCardDescription>Tanpa header dan nomor baris.</p>
+    </div>
+    <div uiCardContent>
+      <ui-code-block [code]="basic" />
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Header &amp; actions</h2>
+      <p uiCardDescription>Judul, bahasa, dan tombol salin di header.</p>
+    </div>
+    <div uiCardContent>
+      <ui-code-block [showHeader]="true" title="utils/greet.ts" language="ts" [code]="header" />
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Floating actions</h2>
+      <p uiCardDescription>Tombol salin melayang di sudut kanan kode.</p>
+    </div>
+    <div uiCardContent>
+      <ui-code-block [floatingActions]="true" [code]="header" />
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Line numbers &amp; start line</h2>
+      <p uiCardDescription>Nomor baris bisa dimulai dari angka berapa pun.</p>
+    </div>
+    <div uiCardContent class="grid grid-cols-1 gap-3 lg:grid-cols-2">
+      <ui-code-block [showLineNumbers]="true" [code]="header" />
+      <ui-code-block [showLineNumbers]="true" [startLine]="42" [code]="header" />
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Wrap, highlight &amp; diff</h2>
+      <p uiCardDescription>Tiga mode tampilan kode yang sering dipakai.</p>
+    </div>
+    <div uiCardContent class="space-y-3">
+      <ui-code-block [wrap]="true" [showHeader]="true" title="wrap.ts" [code]="wrap" />
+      <ui-code-block
+        [showLineNumbers]="true"
+        [highlightLines]="[3, 4, 5]"
+        [showHeader]="true"
+        title="highlight.ts"
+        [code]="highlighted"
+      />
+      <ui-code-block [showLineNumbers]="true" [showHeader]="true" title="diff.ts" [code]="diff" />
+    </div>
+  </div>
+
+  <div uiCard>
+    <div uiCardHeader>
+      <h2 uiCardTitle>Height, size &amp; destructive</h2>
+      <p uiCardDescription>Batasi tinggi, ubah ukuran font, atau tampilkan kode error.</p>
+    </div>
+    <div uiCardContent class="space-y-3">
+      <ui-code-block
+        [maxHeight]="160"
+        [showLineNumbers]="true"
+        [showHeader]="true"
+        title="long.ts"
+        [code]="longCode"
+      />
+      <div class="grid grid-cols-1 gap-3 lg:grid-cols-2">
+        <ui-code-block size="sm" [showHeader]="true" title="small.ts" [code]="header" />
+        <ui-code-block size="lg" [showHeader]="true" title="large.ts" [code]="header" />
+      </div>
+      <ui-code-block
+        [destructive]="true"
+        [showHeader]="true"
+        title="error.log"
+        language="log"
+        [code]="errorCode"
+      />
+    </div>
+  </div>
+</div>
