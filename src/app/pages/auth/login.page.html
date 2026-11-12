@@ -4,13 +4,53 @@
 >
   <div class="relative flex min-h-dvh min-w-0 flex-col xl:min-h-0 xl:order-2 xl:overflow-y-auto">
     <header
-      class="absolute inset-x-0 top-0 z-10 flex items-center justify-end px-5 py-5 sm:px-8 xl:px-4 xl:py-4"
+      class="absolute inset-x-0 top-0 z-10 flex items-center justify-between gap-3 px-5 py-5 sm:px-8 xl:px-4 xl:py-4"
     >
+      <button
+        type="button"
+        class="grid size-9 place-items-center rounded-lg border border-border bg-card transition-colors outline-none hover:bg-accent focus-visible:border-primary"
+        [cdkMenuTriggerFor]="languageMenu"
+        [attr.aria-label]="lang() === 'id' ? 'Bahasa: Indonesia' : 'Language: English'"
+      >
+        <img
+          [src]="'/images/flags/' + lang() + '.svg'"
+          alt=""
+          class="h-4 w-6 rounded-[2px] object-cover ring-1 ring-black/5"
+        />
+      </button>
+
+      <ng-template #languageMenu>
+        <div cdkMenu class="ui-menu-panel w-44">
+          <button cdkMenuItem type="button" class="ui-menu-item" (click)="setLang('id')">
+            <img
+              src="/images/flags/id.svg"
+              alt=""
+              class="h-3.5 w-5 rounded-[2px] object-cover ring-1 ring-black/5"
+            />
+            Indonesia
+            @if (lang() === 'id') {
+              <ui-icon name="check" class="ml-auto size-4 text-primary" />
+            }
+          </button>
+          <button cdkMenuItem type="button" class="ui-menu-item" (click)="setLang('en')">
+            <img
+              src="/images/flags/en.svg"
+              alt=""
+              class="h-3.5 w-5 rounded-[2px] object-cover ring-1 ring-black/5"
+            />
+            English
+            @if (lang() === 'en') {
+              <ui-icon name="check" class="ml-auto size-4 text-primary" />
+            }
+          </button>
+        </div>
+      </ng-template>
+
       <button
         type="button"
         class="grid size-10 place-items-center rounded-xl text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
         (click)="theme.toggle()"
-        [attr.aria-label]="theme.isDark() ? 'Aktifkan mode terang' : 'Aktifkan mode gelap'"
+        [attr.aria-label]="theme.isDark() ? t().themeLight : t().themeDark"
       >
         <ui-icon [name]="theme.isDark() ? 'sun' : 'moon'" class="size-[18px]" />
       </button>
@@ -27,17 +67,17 @@
             class="mx-auto h-30 w-auto"
           />
           <h1 class="font-display text-[22px] leading-tight font-bold tracking-tight">
-            VENDOR MANAGEMENT SYSTEM
+            {{ t().title }}
           </h1>
           <p class="text-sm leading-relaxed text-muted-foreground">
-            Please sign in to your account
+            {{ t().subtitle }}
           </p>
         </div>
 
         <form [formGroup]="form" (ngSubmit)="submit()" class="mt-8 space-y-4 xl:mt-6" novalidate>
           <div class="space-y-1.5">
             <div class="flex flex-wrap items-center justify-between gap-2">
-              <label uiLabel for="login-username">Username</label>
+              <label uiLabel for="login-username">{{ t().usernameLabel }}</label>
               <button
                 uiButton
                 variant="link"
@@ -46,7 +86,7 @@
                 class="h-auto text-xs font-medium text-primary"
                 (click)="forgotUsername()"
               >
-                Lupa username?
+                {{ t().forgotUsername }}
               </button>
             </div>
             <div class="relative">
@@ -68,14 +108,14 @@
             @if (invalid('username')) {
               <p class="ui-error">
                 <ui-icon name="circle-help" class="size-3" />
-                Username wajib diisi.
+                {{ t().usernameRequired }}
               </p>
             }
           </div>
 
           <div class="space-y-1.5">
             <div class="flex flex-wrap items-center justify-between gap-2">
-              <label uiLabel for="login-password">Kata sandi</label>
+              <label uiLabel for="login-password">{{ t().passwordLabel }}</label>
               <button
                 uiButton
                 variant="link"
@@ -84,7 +124,7 @@
                 class="h-auto text-xs font-medium text-primary"
                 (click)="forgotPassword()"
               >
-                Lupa kata sandi?
+                {{ t().forgotPassword }}
               </button>
             </div>
             <div class="relative">
@@ -116,13 +156,13 @@
             @if (invalid('password')) {
               <p class="ui-error">
                 <ui-icon name="circle-help" class="size-3" />
-                Kata sandi minimal 6 karakter.
+                {{ t().passwordMin }}
               </p>
             }
           </div>
 
           <button uiButton type="submit" size="lg" class="mt-2 w-full" [loading]="loading()">
-            {{ loading() ? 'Memproses...' : 'Masuk' }}
+            {{ loading() ? t().submitting : t().submit }}
             @if (!loading()) {
               <ui-icon name="arrow-right" class="size-4" />
             }
@@ -130,13 +170,13 @@
         </form>
 
         <p class="mt-8 text-center text-xs text-muted-foreground xl:mt-4">
-          Do you want to be our vendor?
+          {{ t().vendorPrompt }}
           <button
             type="button"
             class="font-semibold text-primary hover:underline"
             (click)="register()"
           >
-            Register Here
+            {{ t().register }}
           </button>
         </p>
       </div>
