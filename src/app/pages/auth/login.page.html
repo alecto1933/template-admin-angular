@@ -84,7 +84,7 @@
                 size="sm"
                 type="button"
                 class="h-auto text-xs font-medium text-primary"
-                (click)="forgotUsername()"
+                (click)="openForgotUsername()"
               >
                 {{ t().forgotUsername }}
               </button>
@@ -100,7 +100,7 @@
                 type="text"
                 formControlName="username"
                 autocomplete="username"
-                placeholder="username"
+                placeholder="Username"
                 class="pl-9"
                 [attr.aria-invalid]="invalid('username') ? 'true' : null"
               />
@@ -122,7 +122,7 @@
                 size="sm"
                 type="button"
                 class="h-auto text-xs font-medium text-primary"
-                (click)="forgotPassword()"
+                (click)="openForgotPassword()"
               >
                 {{ t().forgotPassword }}
               </button>
@@ -173,7 +173,7 @@
           {{ t().vendorPrompt }}
           <button
             type="button"
-            class="font-semibold text-primary hover:underline"
+            class="font-semibold text-primary underline-offset-4 hover:underline"
             (click)="register()"
           >
             {{ t().register }}
@@ -194,3 +194,338 @@
     />
   </aside>
 </div>
+
+<ui-dialog
+  #forgotDialog
+  [title]="t().forgotDialogTitle"
+  [showClose]="false"
+  [closeOnBackdrop]="false"
+  [closeOnEscape]="false"
+  (closed)="forgotUsernameForm.reset()"
+>
+  <form [formGroup]="forgotUsernameForm" class="space-y-4 py-2" novalidate>
+    <div class="space-y-1.5">
+      <label uiLabel for="fu-name">
+        {{ t().fieldName }}
+        <span class="text-destructive">*</span>
+      </label>
+      <ui-autocomplete
+        inputId="fu-name"
+        formControlName="name"
+        [options]="nameOptions()"
+        [loading]="nameLoading()"
+        (searchChange)="searchNames($event)"
+        [placeholder]="t().placeholderName"
+        [allowCustom]="true"
+        [clearable]="true"
+        [autoHighlight]="true"
+        [filterLocally]="false"
+        [openOnFocus]="false"
+        [emptyText]="nameQuery().trim() ? t().nameEmptyText : t().nameHintText"
+        [invalid]="fuInvalid('name')"
+        leadingIcon="user"
+      />
+      @if (fuInvalid('name')) {
+        <p class="ui-error">
+          <ui-icon name="circle-help" class="size-3" />
+          {{ t().errorNameRequired }}
+        </p>
+      }
+    </div>
+
+    <div class="space-y-1.5">
+      <label uiLabel for="fu-existing">{{ t().fieldExistingUsername }}</label>
+      <div class="relative">
+        <ui-icon
+          name="user"
+          class="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground"
+        />
+        <input
+          uiInput
+          id="fu-existing"
+          type="text"
+          formControlName="existingUsername"
+          [placeholder]="t().placeholderExistingUsername"
+          autocomplete="off"
+          class="pl-9"
+        />
+      </div>
+    </div>
+
+    <div class="space-y-1.5">
+      <label uiLabel for="fu-identity">
+        {{ t().fieldIdentity }}
+        <span class="text-destructive">*</span>
+      </label>
+      <div class="relative">
+        <ui-icon
+          name="credit-card"
+          class="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground"
+        />
+        <input
+          uiInput
+          id="fu-identity"
+          type="text"
+          formControlName="identity"
+          [placeholder]="t().placeholderIdentity"
+          autocomplete="off"
+          class="pl-9"
+          [attr.aria-required]="true"
+          [attr.aria-invalid]="fuInvalid('identity') ? 'true' : null"
+        />
+      </div>
+      @if (fuInvalid('identity')) {
+        <p class="ui-error">
+          <ui-icon name="circle-help" class="size-3" />
+          {{ t().errorIdentityRequired }}
+        </p>
+      }
+      <label class="flex cursor-pointer items-center gap-2 pt-1 text-xs text-muted-foreground">
+        <input uiCheckbox type="checkbox" formControlName="forgotIdentity" />
+        {{ t().fieldForgotIdentity }}
+      </label>
+    </div>
+
+    <div class="space-y-1.5">
+      <label uiLabel for="fu-email">
+        {{ t().fieldEmailUsername }}
+        <span class="text-destructive">*</span>
+      </label>
+      <div class="relative">
+        <ui-icon
+          name="mail"
+          class="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground"
+        />
+        <input
+          uiInput
+          id="fu-email"
+          type="email"
+          formControlName="email"
+          [placeholder]="t().placeholderEmail"
+          autocomplete="email"
+          class="pl-9"
+          [attr.aria-required]="true"
+          [attr.aria-invalid]="fuInvalid('email') ? 'true' : null"
+        />
+      </div>
+      @if (fuInvalid('email')) {
+        <p class="ui-error">
+          <ui-icon name="circle-help" class="size-3" />
+          {{ t().errorEmailRequired }}
+        </p>
+      }
+    </div>
+
+    <div uiAlert data-variant="danger" class="text-[11px] leading-relaxed">
+      <ui-icon name="triangle-alert" class="mt-0.5 size-4 shrink-0" />
+      <div class="space-y-1">
+        <p class="font-semibold">{{ t().notesTitle }}</p>
+        <p>{{ t().note1 }}</p>
+        <p>{{ t().note2 }}</p>
+        <p>{{ t().note3 }}</p>
+        <p>{{ t().note4 }}</p>
+      </div>
+    </div>
+  </form>
+
+  <div dialogFooter class="flex justify-end gap-2">
+    <button uiButton variant="outline" type="button" (click)="forgotDialog.close()">
+      {{ t().cancel }}
+    </button>
+    <button uiButton type="button" (click)="submitForgotUsername()">
+      {{ t().send }}
+    </button>
+  </div>
+</ui-dialog>
+
+<ui-dialog
+  #forgotPasswordDialog
+  [title]="t().forgotPasswordTitle"
+  [showClose]="false"
+  [closeOnBackdrop]="false"
+  [closeOnEscape]="false"
+  (closed)="forgotPasswordForm.reset()"
+>
+  <form [formGroup]="forgotPasswordForm" class="space-y-4 py-2" novalidate>
+    <div class="space-y-1.5">
+      <label uiLabel for="fp-email">
+        {{ t().fieldEmailRegistered }}
+        <span class="text-destructive">*</span>
+      </label>
+      <div class="relative">
+        <ui-icon
+          name="mail"
+          class="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground"
+        />
+        <input
+          uiInput
+          id="fp-email"
+          type="email"
+          formControlName="email"
+          autocomplete="email"
+          [placeholder]="t().placeholderEmail"
+          class="pl-9"
+          [attr.aria-required]="true"
+          [attr.aria-invalid]="fpInvalid() ? 'true' : null"
+        />
+      </div>
+      @if (fpInvalid()) {
+        <p class="ui-error">
+          <ui-icon name="circle-help" class="size-3" />
+          {{ t().errorEmailRequired }}
+        </p>
+      }
+    </div>
+
+    <p class="text-xs leading-relaxed text-muted-foreground">
+      {{ t().infoForgotEmail }}
+    </p>
+
+    <div uiAlert data-variant="danger" class="text-[11px] leading-relaxed">
+      <ui-icon name="triangle-alert" class="mt-0.5 size-4 shrink-0" />
+      <p>{{ t().alertResetPassword }}</p>
+    </div>
+  </form>
+
+  <div dialogFooter class="flex justify-end gap-2">
+    <button uiButton variant="outline" type="button" (click)="forgotPasswordDialog.close()">
+      {{ t().cancel }}
+    </button>
+    <button uiButton type="button" (click)="submitForgotPassword()">
+      {{ t().sendRequest }}
+    </button>
+  </div>
+</ui-dialog>
+
+<ui-dialog
+  #confirmDialog
+  role="alertdialog"
+  [title]="t().confirmTitle"
+  [description]="confirmMessage()"
+  [showClose]="false"
+  [closeOnBackdrop]="false"
+  [closeOnEscape]="false"
+  (closed)="pendingAction.set(null)"
+>
+  <div dialogFooter class="flex justify-end gap-2">
+    <button uiButton variant="outline" type="button" (click)="confirmDialog.close()">
+      {{ t().cancel }}
+    </button>
+    <button uiButton type="button" (click)="confirmRequest()">{{ t().send }}</button>
+  </div>
+</ui-dialog>
+
+<div
+  class="pointer-events-none fixed inset-x-0 bottom-20 z-40 flex justify-center px-4 lg:bottom-4 lg:px-44"
+>
+  @if (reportExpanded()) {
+    <div
+      class="pointer-events-auto flex max-w-full items-center gap-1.5 rounded-full border border-[var(--destructive-solid)] bg-[var(--destructive-solid)] py-1.5 pr-1.5 pl-4 text-xs text-white transition-colors hover:bg-[color-mix(in_oklab,var(--destructive-solid)_88%,black)] shadow-lg backdrop-blur"
+    >
+      <a
+        class="min-w-0 truncate hover:underline"
+        href="https://lapor.aio.co.id:12000/"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        {{ t().reportText }}
+      </a>
+      <button
+        type="button"
+        class="grid size-7 shrink-0 place-items-center rounded-full text-white transition-colors hover:bg-white/15"
+        [attr.aria-label]="t().reportCollapse"
+        (click)="reportExpanded.set(false)"
+      >
+        <ui-icon name="chevron-down" class="size-4" />
+      </button>
+    </div>
+  } @else {
+    <div
+      class="pointer-events-auto flex max-w-full items-center gap-1 rounded-full border border-[var(--destructive-solid)] bg-[var(--destructive-solid)] py-1.5 pr-1.5 pl-4 text-xs text-white transition-colors hover:bg-[color-mix(in_oklab,var(--destructive-solid)_88%,black)] shadow-lg backdrop-blur"
+    >
+      <a
+        class="font-semibold hover:underline"
+        href="https://lapor.aio.co.id:12000/"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        {{ t().reportClick }}
+      </a>
+      <button
+        type="button"
+        class="grid size-7 shrink-0 place-items-center rounded-full text-white transition-colors hover:bg-white/15"
+        [attr.aria-label]="t().reportExpand"
+        (click)="reportExpanded.set(true)"
+      >
+        <ui-icon name="chevron-up" class="size-4" />
+      </button>
+    </div>
+  }
+</div>
+
+@if (shortcutOpen()) {
+  <div class="fixed inset-0 z-40" aria-hidden="true" (click)="shortcutOpen.set(false)"></div>
+}
+
+<div class="fixed bottom-4 left-4 z-50 flex flex-col items-start gap-2">
+  @if (shortcutOpen()) {
+    <div class="ui-menu-panel w-56">
+      <a
+        class="ui-menu-item"
+        href="https://www.aio.co.id/news?page=1"
+        target="_blank"
+        rel="noopener noreferrer"
+        (click)="shortcutOpen.set(false)"
+      >
+        <ui-icon name="megaphone" class="size-4 text-muted-foreground" />
+        {{ t().shortcutNews }}
+        <ui-icon name="external-link" class="ml-auto size-3.5 text-muted-foreground" />
+      </a>
+      <a
+        class="ui-menu-item"
+        href="https://www.aio.co.id/"
+        target="_blank"
+        rel="noopener noreferrer"
+        (click)="shortcutOpen.set(false)"
+      >
+        <ui-icon name="globe" class="size-4 text-muted-foreground" />
+        {{ t().shortcutWebsite }}
+        <ui-icon name="external-link" class="ml-auto size-3.5 text-muted-foreground" />
+      </a>
+      <a
+        class="ui-menu-item"
+        href="https://www.aio.co.id/csr?page=1"
+        target="_blank"
+        rel="noopener noreferrer"
+        (click)="shortcutOpen.set(false)"
+      >
+        <ui-icon name="life-buoy" class="size-4 text-muted-foreground" />
+        {{ t().shortcutCsr }}
+        <ui-icon name="external-link" class="ml-auto size-3.5 text-muted-foreground" />
+      </a>
+    </div>
+  }
+
+  <div class="flex items-center gap-2">
+    <button
+      type="button"
+      class="grid size-11 shrink-0 place-items-center rounded-full border border-primary bg-primary text-primary-foreground shadow-lg shadow-primary/25 transition-colors hover:bg-[color-mix(in_oklab,var(--primary)_88%,black)]"
+      [attr.aria-label]="t().shortcutAria"
+      [attr.aria-expanded]="shortcutOpen()"
+      (click)="shortcutOpen.set(!shortcutOpen())"
+    >
+      <ui-icon [name]="shortcutOpen() ? 'x' : 'menu'" class="size-5" />
+    </button>
+  </div>
+</div>
+
+<a
+  class="fixed right-4 bottom-4 z-50 flex h-11 items-center gap-2 rounded-full border border-primary bg-primary px-4 text-sm font-semibold text-primary-foreground shadow-lg shadow-primary/25 transition-colors hover:bg-[color-mix(in_oklab,var(--primary)_88%,black)]"
+  href="https://www.aio.co.id/"
+  target="_blank"
+  rel="noopener noreferrer"
+  [attr.aria-label]="t().guideAria"
+>
+  <ui-icon name="book-open" class="size-4" />
+  {{ t().guideLabel }}
+</a>

@@ -53,6 +53,9 @@
         },
         "serve": {
           "builder": "@angular/build:dev-server",
+          "options": {
+            "port": 1933
+          },
           "configurations": {
             "production": {
               "buildTarget": "template-admin:build:production"

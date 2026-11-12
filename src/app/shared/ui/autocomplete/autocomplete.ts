@@ -189,6 +189,10 @@ export class UiAutocomplete implements ControlValueAccessor {
   readonly allowCustom = input(false, { transform: booleanAttribute });
   readonly filterLocally = input(true, { transform: booleanAttribute });
   readonly loading = input(false, { transform: booleanAttribute });
+  /** Minimum typed characters before the option panel opens (0 = open on focus). */
+  readonly minQueryLength = input(0);
+  /** Open the panel when the input receives focus (disable when it is auto-focused). */
+  readonly openOnFocus = input(true, { transform: booleanAttribute });
 
   readonly searchChange = output<string>();
   readonly optionSelected = output<AutocompleteOption>();
@@ -338,7 +342,7 @@ export class UiAutocomplete implements ControlValueAccessor {
   protected onInput(text: string): void {
     this.query.set(text);
     this.searchTerm.set(text);
-    this.open.set(true);
+    this.open.set(text.trim().length >= this.minQueryLength());
     this.activeIndex.set(-1);
     this.searchChange.emit(text);
 
@@ -353,18 +357,22 @@ export class UiAutocomplete implements ControlValueAccessor {
       return;
     }
     this.focused.set(true);
-    this.open.set(true);
+    this.open.set(this.openOnFocus() && this.canOpen());
     this.searchTerm.set('');
     this.activeIndex.set(-1);
   }
 
   protected onInputClick(): void {
-    if (this.isDisabled() || this.open()) {
+    if (this.isDisabled() || this.open() || !this.canOpen()) {
       return;
     }
     this.open.set(true);
     this.searchTerm.set('');
     this.activeIndex.set(-1);
+  }
+
+  private canOpen(): boolean {
+    return this.query().trim().length >= this.minQueryLength();
   }
 
   protected onBlur(): void {
@@ -393,6 +401,9 @@ export class UiAutocomplete implements ControlValueAccessor {
       case 'ArrowDown':
         event.preventDefault();
         if (!this.open()) {
+          if (!this.canOpen()) {
+            break;
+          }
           this.open.set(true);
           this.activeIndex.set(-1);
         }

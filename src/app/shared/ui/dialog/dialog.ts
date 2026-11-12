@@ -33,6 +33,7 @@ import { UiIcon } from '../icon/icon';
       [attr.aria-labelledby]="titleId"
       [attr.aria-describedby]="description() ? descriptionId : null"
       (click)="onBackdropClick($event)"
+      (cancel)="onCancel($event)"
       (close)="closed.emit()"
     >
       <div class="flex flex-col">
@@ -90,6 +91,7 @@ export class UiDialog {
   readonly role = input<'dialog' | 'alertdialog'>('dialog');
   readonly showClose = input(true, { transform: booleanAttribute });
   readonly closeOnBackdrop = input(true, { transform: booleanAttribute });
+  readonly closeOnEscape = input(true, { transform: booleanAttribute });
 
   readonly closed = output<void>();
 
@@ -106,6 +108,12 @@ export class UiDialog {
 
   close(): void {
     this.dialogRef().nativeElement.close();
+  }
+
+  protected onCancel(event: Event): void {
+    if (!this.closeOnEscape()) {
+      event.preventDefault();
+    }
   }
 
   protected onBackdropClick(event: MouseEvent): void {
