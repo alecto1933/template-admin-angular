@@ -73,7 +73,7 @@ const SWIFT_PATTERN = /^([A-Z0-9]{8}|[A-Z0-9]{11})$/i;
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [ReactiveFormsModule, UiButton, UiDialog, UiIcon, UiSelect],
   template: `
-    <ui-dialog #dialog [title]="title()" panelClass="max-w-lg">
+    <ui-dialog #dialog [title]="title()" panelClass="max-w-lg" [showClose]="false">
       <form [formGroup]="form" class="space-y-4" (submit)="$event.preventDefault()">
         <div uiAlert data-variant="danger" role="alert">
           <ui-icon name="triangle-alert" class="mt-0.5 size-4 shrink-0" />
