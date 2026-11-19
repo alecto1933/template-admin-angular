@@ -479,6 +479,7 @@ export class RegisterPage {
       phCity: t.bankRequestPhCity,
       phSwift: t.bankRequestPhSwift,
       errRequired: t.errRequired,
+      errAddressMax: t.errAddressMax,
       errSwift: t.errSwift,
       save: t.bankRequestSave,
       cancel: t.bankRequestCancel,

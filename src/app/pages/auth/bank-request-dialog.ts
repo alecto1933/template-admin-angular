@@ -46,6 +46,7 @@ export interface BankRequestTexts {
   phCity: string;
   phSwift: string;
   errRequired: string;
+  errAddressMax: string;
   errSwift: string;
   save: string;
   cancel: string;
@@ -171,18 +172,31 @@ const SWIFT_PATTERN = /^([A-Z0-9]{8}|[A-Z0-9]{11})$/i;
             {{ texts().fieldAddress }}
             <span class="text-destructive">*</span>
           </label>
-          <textarea
-            uiTextarea
-            id="br-address"
-            rows="3"
-            formControlName="address"
-            [placeholder]="texts().phAddress"
-            [attr.aria-invalid]="invalid('address') ? 'true' : null"
-          ></textarea>
+          <div class="relative">
+            <textarea
+              uiTextarea
+              id="br-address"
+              rows="3"
+              formControlName="address"
+              [placeholder]="texts().phAddress"
+              maxlength="250"
+              class="pb-7"
+              [attr.aria-invalid]="invalid('address') ? 'true' : null"
+            ></textarea>
+            <span
+              class="pointer-events-none absolute right-3 bottom-2 font-mono text-[10px] text-muted-foreground"
+            >
+              {{ form.controls.address.value.length }}/250
+            </span>
+          </div>
           @if (invalid('address')) {
             <p class="ui-error">
               <ui-icon name="circle-help" class="size-3" />
-              {{ errorFor('address') }}
+              @if (form.controls.address.hasError('maxlength')) {
+                {{ texts().errAddressMax }}
+              } @else {
+                {{ errorFor('address') }}
+              }
             </p>
           }
         </div>
@@ -260,7 +274,7 @@ export class BankRequestDialog {
     name: ['', [Validators.required]],
     countryIso: ['', [Validators.required]],
     region: ['', [Validators.required]],
-    address: ['', [Validators.required]],
+    address: ['', [Validators.required, Validators.maxLength(250)]],
     branch: ['', [Validators.required]],
     city: ['', [Validators.required]],
     swiftCode: ['', [Validators.required, Validators.pattern(SWIFT_PATTERN)]],

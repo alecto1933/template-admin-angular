@@ -22,6 +22,7 @@ const TEXTS: BankRequestTexts = {
   phCity: 'Contoh: Bandung',
   phSwift: 'Contoh: ABCDIDJA',
   errRequired: 'Wajib diisi.',
+  errAddressMax: 'Maksimal 250 karakter.',
   errSwift: 'Kode SWIFT harus 8 atau 11 karakter alfanumerik.',
   save: 'Simpan',
   cancel: 'Batal',
