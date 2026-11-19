@@ -119,6 +119,7 @@ interface OptionGroup {
           <p class="ui-autocomplete-empty">Mencari…</p>
         } @else if (flatOptions().length === 0) {
           <p class="ui-autocomplete-empty">{{ emptyText() }}</p>
+          <ng-content select="[autocompleteEmptyAction]" />
         } @else {
           @for (group of groups(); track group.label) {
             @if (group.label) {

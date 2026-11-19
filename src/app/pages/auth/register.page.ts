@@ -27,6 +27,9 @@ import { SelectOption, UiSelect } from '../../shared/ui/select/select';
 import { UiIcon } from '../../shared/ui/icon/icon';
 import { UiSwitch } from '../../shared/ui/switch/switch';
 import { ToastService } from '../../shared/ui/toast/toast.service';
+import { UiBadge } from '../../shared/ui/badge/badge';
+import { UiAlertDialog } from '../../shared/ui/alert-dialog/alert-dialog';
+import { BankRequest, BankRequestDialog, BankRequestTexts } from './bank-request-dialog';
 
 type Language = 'id' | 'en';
 type EntityType = 'national' | 'international' | 'government';
@@ -168,10 +171,37 @@ const TEXTS = {
     bankTitle: 'Rekening Bank',
     fieldBankName: 'Nama Bank',
     bankPlaceholder: 'Cari bank…',
-    bankEmptyText: 'Bank tidak ditemukan',
+    bankEmptyText: 'Bank tidak terdaftar',
     bankHintText: 'Ketik untuk mencari bank…',
     bankInfoCountry: 'Kode Negara',
     bankInfoBranch: 'Cabang',
+    bankRequestAction: 'Permintaan Bank Baru',
+    bankRequestTitleCreate: 'Permintaan Bank Baru',
+    bankRequestTitleEdit: 'Detail Permintaan Bank',
+    bankRequestWarningTitle: 'Perhatian!',
+    bankRequestWarning:
+      'Bank yang Anda pilih belum terdaftar di sistem kami, jika Anda ingin memilih bank ini, proses Validasi mungkin memerlukan waktu lebih lama dari biasanya karena kami memerlukan langkah tambahan untuk memvalidasinya.\n\nJika Anda tidak ingin hal ini terjadi, harap mempertimbangkan untuk memilih Bank yang tersedia di sistem kami.',
+    bankRequestFieldName: 'Nama bank',
+    bankRequestFieldCountry: 'Negara',
+    bankRequestFieldRegion: 'Wilayah',
+    bankRequestFieldAddress: 'Alamat',
+    bankRequestFieldBranch: 'Kantor Cabang',
+    bankRequestFieldCity: 'Kota',
+    bankRequestFieldSwift: 'Kode SWIFT',
+    bankRequestSwiftHint: '8 atau 11 karakter alfanumerik.',
+    errSwift: 'Kode SWIFT harus 8 atau 11 karakter alfanumerik.',
+    bankRequestSave: 'Simpan',
+    bankRequestCancel: 'Batal',
+    bankRequestBadge: 'Belum terdaftar',
+    bankRequestShow: 'Tampilkan',
+    bankRequestDelete: 'Hapus',
+    bankRequestSavedTitle: 'Permintaan bank disimpan',
+    bankRequestSavedMessage: 'Bank yang Anda minta sedang menunggu validasi dari tim kami.',
+    bankRequestDeleteTitle: 'Hapus permintaan bank?',
+    bankRequestDeleteMessage: 'Data permintaan bank akan dihapus dan pilihan bank dikosongkan.',
+    bankRequestDeletedTitle: 'Permintaan bank dihapus',
+    bankRequestDeletedMessage: 'Data permintaan bank telah dihapus.',
+    yesDelete: 'Ya, hapus',
     fieldAccountName: 'Atas Nama',
     phAccountName: 'Nama sesuai rekening',
     helpAccountName: 'Nama lengkap seperti yang ditampilkan di halaman pertama rekening bank',
@@ -279,10 +309,38 @@ const TEXTS = {
     bankTitle: 'Bank Account',
     fieldBankName: 'Bank Name',
     bankPlaceholder: 'Search bank…',
-    bankEmptyText: 'Bank not found',
+    bankEmptyText: 'Bank not registered',
     bankHintText: 'Type to search for a bank…',
     bankInfoCountry: 'Country Code',
     bankInfoBranch: 'Branch',
+    bankRequestAction: 'New Bank Request',
+    bankRequestTitleCreate: 'New Bank Request',
+    bankRequestTitleEdit: 'Bank Request Detail',
+    bankRequestWarningTitle: 'Attention!',
+    bankRequestWarning:
+      'The bank you selected is not registered in our system. If you choose this bank, the validation process may take longer than usual because we need additional steps to validate it.\n\nIf you do not want this, please consider choosing a bank that is already available in our system.',
+    bankRequestFieldName: 'Bank name',
+    bankRequestFieldCountry: 'Country',
+    bankRequestFieldRegion: 'Region',
+    bankRequestFieldAddress: 'Address',
+    bankRequestFieldBranch: 'Branch office',
+    bankRequestFieldCity: 'City',
+    bankRequestFieldSwift: 'SWIFT code',
+    bankRequestSwiftHint: '8 or 11 alphanumeric characters.',
+    errSwift: 'SWIFT code must be 8 or 11 alphanumeric characters.',
+    bankRequestSave: 'Save',
+    bankRequestCancel: 'Cancel',
+    bankRequestBadge: 'Not registered',
+    bankRequestShow: 'Show',
+    bankRequestDelete: 'Delete',
+    bankRequestSavedTitle: 'Bank request saved',
+    bankRequestSavedMessage: 'Your requested bank is waiting for validation by our team.',
+    bankRequestDeleteTitle: 'Delete bank request?',
+    bankRequestDeleteMessage:
+      'The bank request data will be removed and the bank selection cleared.',
+    bankRequestDeletedTitle: 'Bank request deleted',
+    bankRequestDeletedMessage: 'The bank request data has been removed.',
+    yesDelete: 'Yes, delete',
     fieldAccountName: 'Account Name',
     phAccountName: 'Name on the account',
     helpAccountName: 'Full name as shown on the first page of the bank statement',
@@ -349,6 +407,9 @@ const TEXTS = {
     UiIcon,
     UiSelect,
     UiSwitch,
+    UiBadge,
+    UiAlertDialog,
+    BankRequestDialog,
   ],
   templateUrl: './register.page.html',
 })
@@ -375,6 +436,33 @@ export class RegisterPage {
     description: `${bank.country} · ${bank.branch}`,
   }));
   protected readonly selectedBank = signal<BankInfo | null>(null);
+  protected readonly bankRequest = signal<BankRequest | null>(null);
+  protected readonly bankRequestDialog = viewChild.required(BankRequestDialog);
+  protected readonly deleteBankRequestDialog = viewChild.required(UiAlertDialog);
+  protected readonly bankCountryOptions = computed<SelectOption[]>(() =>
+    COUNTRIES.map((country) => ({ value: country.iso, label: this.countryName(country) })),
+  );
+  protected readonly bankRequestTexts = computed<BankRequestTexts>(() => {
+    const t = this.t();
+    return {
+      titleCreate: t.bankRequestTitleCreate,
+      titleEdit: t.bankRequestTitleEdit,
+      warningTitle: t.bankRequestWarningTitle,
+      warning: t.bankRequestWarning,
+      fieldName: t.bankRequestFieldName,
+      fieldCountry: t.bankRequestFieldCountry,
+      fieldRegion: t.bankRequestFieldRegion,
+      fieldAddress: t.bankRequestFieldAddress,
+      fieldBranch: t.bankRequestFieldBranch,
+      fieldCity: t.bankRequestFieldCity,
+      fieldSwift: t.bankRequestFieldSwift,
+      swiftHint: t.bankRequestSwiftHint,
+      errRequired: t.errRequired,
+      errSwift: t.errSwift,
+      save: t.bankRequestSave,
+      cancel: t.bankRequestCancel,
+    };
+  });
   protected readonly bankResults = signal<SelectOption[]>([]);
   protected readonly bankQuery = signal('');
   protected readonly bankLoading = signal(false);
@@ -516,7 +604,11 @@ export class RegisterPage {
 
   constructor() {
     this.vendorForm.controls.bankName.valueChanges.pipe(takeUntilDestroyed()).subscribe((id) => {
-      this.selectedBank.set(BANKS.find((bank) => bank.id === id) ?? null);
+      const bank = BANKS.find((entry) => entry.id === id) ?? null;
+      this.selectedBank.set(bank);
+      if (bank || !id) {
+        this.bankRequest.set(null);
+      }
     });
 
     this.vendorForm.controls.type.valueChanges.pipe(takeUntilDestroyed()).subscribe((type) => {
@@ -607,6 +699,7 @@ export class RegisterPage {
     this.removeTaxFile('sppkp');
     this.removeTaxFile('skb');
     this.selectedBank.set(null);
+    this.bankRequest.set(null);
     this.selectedCountry.set(COUNTRIES[0]);
     this.bankResults.set([]);
     this.bankQuery.set('');
@@ -860,10 +953,11 @@ export class RegisterPage {
 
   protected searchBanks(term: string): void {
     clearTimeout(this.bankSearchTimer);
-    const query = term.trim().toLowerCase();
-    this.bankQuery.set(query);
+    const raw = term.trim();
+    const query = raw.toLowerCase();
+    this.bankQuery.set(raw);
 
-    if (!query) {
+    if (!raw) {
       this.bankLoading.set(false);
       this.bankResults.set([]);
       return;
@@ -884,6 +978,49 @@ export class RegisterPage {
       this.bankResults.set(matches);
       this.bankLoading.set(false);
     }, 300);
+  }
+
+  protected openBankRequest(): void {
+    this.bankRequestDialog().open({ name: this.bankQuery() });
+  }
+
+  protected editBankRequest(): void {
+    const request = this.bankRequest();
+    if (request) {
+      this.bankRequestDialog().open(request);
+    }
+  }
+
+  protected onBankRequestSaved(request: BankRequest): void {
+    this.bankRequest.set(request);
+    this.bankResults.set([
+      {
+        value: request.id,
+        label: request.name,
+        description: `${this.bankCountryLabel(request.countryIso)} · ${request.city}`,
+      },
+    ]);
+    this.bankQuery.set('');
+    this.bankLoading.set(false);
+    this.vendorForm.controls.bankName.setValue(request.id);
+    this.toast.success(this.t().bankRequestSavedTitle, this.t().bankRequestSavedMessage);
+  }
+
+  protected confirmDeleteBankRequest(): void {
+    this.deleteBankRequestDialog().open();
+  }
+
+  protected deleteBankRequest(): void {
+    this.bankRequest.set(null);
+    this.bankResults.set([]);
+    this.bankQuery.set('');
+    this.vendorForm.controls.bankName.setValue('');
+    this.toast.info(this.t().bankRequestDeletedTitle, this.t().bankRequestDeletedMessage);
+  }
+
+  protected bankCountryLabel(iso: string): string {
+    const country = COUNTRIES.find((entry) => entry.iso === iso);
+    return country ? this.countryName(country) : iso;
   }
 
   protected onBankFileSelected(event: Event): void {

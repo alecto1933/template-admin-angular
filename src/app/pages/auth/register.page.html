@@ -534,8 +534,57 @@
               [invalid]="fieldInvalid('bankName')"
               [clearable]="true"
               leadingIcon="wallet"
-            />
-            @if (selectedBank(); as bank) {
+            >
+              @if (bankQuery() && !bankLoading()) {
+                <button
+                  autocompleteEmptyAction
+                  type="button"
+                  class="ui-autocomplete-option pointer-events-auto"
+                  (mousedown)="$event.preventDefault()"
+                  (click)="openBankRequest()"
+                >
+                  <span
+                    class="grid size-5 shrink-0 place-items-center rounded-full bg-primary-soft text-primary"
+                  >
+                    <ui-icon name="plus" class="size-3.5" />
+                  </span>
+                  <span class="min-w-0 flex-1 truncate text-left">
+                    {{ t().bankRequestAction }}: "{{ bankQuery() }}"
+                  </span>
+                </button>
+              }
+            </ui-autocomplete>
+            @if (bankRequest(); as request) {
+              <div class="rounded-lg border border-warning/40 bg-warning-soft px-3 py-2.5">
+                <div class="flex items-start justify-between gap-3">
+                  <div class="min-w-0">
+                    <p class="truncate text-[13px] font-medium">{{ request.name }}</p>
+                    <p class="mt-0.5 text-[11px] text-muted-foreground">
+                      {{ bankCountryLabel(request.countryIso) }} · {{ request.city }}
+                    </p>
+                  </div>
+                  <span uiBadge data-variant="warning" class="shrink-0">
+                    {{ t().bankRequestBadge }}
+                  </span>
+                </div>
+                <div class="mt-2 flex items-center gap-3 text-[12px]">
+                  <button
+                    type="button"
+                    class="font-medium text-primary hover:underline"
+                    (click)="editBankRequest()"
+                  >
+                    {{ t().bankRequestShow }}
+                  </button>
+                  <button
+                    type="button"
+                    class="font-medium text-destructive hover:underline"
+                    (click)="confirmDeleteBankRequest()"
+                  >
+                    {{ t().bankRequestDelete }}
+                  </button>
+                </div>
+              </div>
+            } @else if (selectedBank(); as bank) {
               <p class="ui-help text-[11px]">
                 {{ t().bankInfoCountry }}: {{ bank.country }} · {{ t().bankInfoBranch }}:
                 {{ bank.branch }}
@@ -1230,3 +1279,19 @@
     <button uiButton type="button" (click)="confirmAction()">{{ confirmLabel() }}</button>
   </div>
 </ui-dialog>
+
+<app-bank-request-dialog
+  [texts]="bankRequestTexts()"
+  [countryOptions]="bankCountryOptions()"
+  (saved)="onBankRequestSaved($event)"
+/>
+
+<ui-alert-dialog
+  #deleteBankRequestDialog
+  [title]="t().bankRequestDeleteTitle"
+  [description]="t().bankRequestDeleteMessage"
+  [confirmLabel]="t().yesDelete"
+  [cancelLabel]="t().cancel"
+  confirmVariant="destructive"
+  (confirmed)="deleteBankRequest()"
+/>
