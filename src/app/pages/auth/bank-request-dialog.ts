@@ -38,6 +38,13 @@ export interface BankRequestTexts {
   fieldCity: string;
   fieldSwift: string;
   swiftHint: string;
+  phName: string;
+  phCountry: string;
+  phRegion: string;
+  phAddress: string;
+  phBranch: string;
+  phCity: string;
+  phSwift: string;
   errRequired: string;
   errSwift: string;
   save: string;
@@ -67,7 +74,7 @@ const SWIFT_PATTERN = /^([A-Z0-9]{8}|[A-Z0-9]{11})$/i;
   template: `
     <ui-dialog #dialog [title]="title()" panelClass="max-w-lg">
       <form [formGroup]="form" class="space-y-4" (submit)="$event.preventDefault()">
-        <div uiAlert data-variant="warning" role="status">
+        <div uiAlert data-variant="danger" role="alert">
           <ui-icon name="triangle-alert" class="mt-0.5 size-4 shrink-0" />
           <div class="min-w-0">
             <p class="font-semibold">{{ texts().warningTitle }}</p>
@@ -85,6 +92,7 @@ const SWIFT_PATTERN = /^([A-Z0-9]{8}|[A-Z0-9]{11})$/i;
             id="br-name"
             type="text"
             formControlName="name"
+            [placeholder]="texts().phName"
             [attr.aria-invalid]="invalid('name') ? 'true' : null"
           />
           @if (invalid('name')) {
@@ -104,6 +112,7 @@ const SWIFT_PATTERN = /^([A-Z0-9]{8}|[A-Z0-9]{11})$/i;
             inputId="br-country"
             formControlName="countryIso"
             [options]="countryOptions()"
+            [placeholder]="texts().phCountry"
             [invalid]="invalid('countryIso')"
             leadingIcon="globe"
           />
@@ -115,46 +124,46 @@ const SWIFT_PATTERN = /^([A-Z0-9]{8}|[A-Z0-9]{11})$/i;
           }
         </div>
 
-        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
-          <div class="space-y-1.5">
-            <label uiLabel for="br-region">
-              {{ texts().fieldRegion }}
-              <span class="text-destructive">*</span>
-            </label>
-            <input
-              uiInput
-              id="br-region"
-              type="text"
-              formControlName="region"
-              [attr.aria-invalid]="invalid('region') ? 'true' : null"
-            />
-            @if (invalid('region')) {
-              <p class="ui-error">
-                <ui-icon name="circle-help" class="size-3" />
-                {{ errorFor('region') }}
-              </p>
-            }
-          </div>
+        <div class="space-y-1.5">
+          <label uiLabel for="br-region">
+            {{ texts().fieldRegion }}
+            <span class="text-destructive">*</span>
+          </label>
+          <input
+            uiInput
+            id="br-region"
+            type="text"
+            formControlName="region"
+            [placeholder]="texts().phRegion"
+            [attr.aria-invalid]="invalid('region') ? 'true' : null"
+          />
+          @if (invalid('region')) {
+            <p class="ui-error">
+              <ui-icon name="circle-help" class="size-3" />
+              {{ errorFor('region') }}
+            </p>
+          }
+        </div>
 
-          <div class="space-y-1.5">
-            <label uiLabel for="br-city">
-              {{ texts().fieldCity }}
-              <span class="text-destructive">*</span>
-            </label>
-            <input
-              uiInput
-              id="br-city"
-              type="text"
-              formControlName="city"
-              [attr.aria-invalid]="invalid('city') ? 'true' : null"
-            />
-            @if (invalid('city')) {
-              <p class="ui-error">
-                <ui-icon name="circle-help" class="size-3" />
-                {{ errorFor('city') }}
-              </p>
-            }
-          </div>
+        <div class="space-y-1.5">
+          <label uiLabel for="br-city">
+            {{ texts().fieldCity }}
+            <span class="text-destructive">*</span>
+          </label>
+          <input
+            uiInput
+            id="br-city"
+            type="text"
+            formControlName="city"
+            [placeholder]="texts().phCity"
+            [attr.aria-invalid]="invalid('city') ? 'true' : null"
+          />
+          @if (invalid('city')) {
+            <p class="ui-error">
+              <ui-icon name="circle-help" class="size-3" />
+              {{ errorFor('city') }}
+            </p>
+          }
         </div>
 
         <div class="space-y-1.5">
@@ -162,13 +171,14 @@ const SWIFT_PATTERN = /^([A-Z0-9]{8}|[A-Z0-9]{11})$/i;
             {{ texts().fieldAddress }}
             <span class="text-destructive">*</span>
           </label>
-          <input
-            uiInput
+          <textarea
+            uiTextarea
             id="br-address"
-            type="text"
+            rows="3"
             formControlName="address"
+            [placeholder]="texts().phAddress"
             [attr.aria-invalid]="invalid('address') ? 'true' : null"
-          />
+          ></textarea>
           @if (invalid('address')) {
             <p class="ui-error">
               <ui-icon name="circle-help" class="size-3" />
@@ -187,6 +197,7 @@ const SWIFT_PATTERN = /^([A-Z0-9]{8}|[A-Z0-9]{11})$/i;
             id="br-branch"
             type="text"
             formControlName="branch"
+            [placeholder]="texts().phBranch"
             [attr.aria-invalid]="invalid('branch') ? 'true' : null"
           />
           @if (invalid('branch')) {
@@ -209,6 +220,7 @@ const SWIFT_PATTERN = /^([A-Z0-9]{8}|[A-Z0-9]{11})$/i;
             formControlName="swiftCode"
             autocapitalize="characters"
             spellcheck="false"
+            [placeholder]="texts().phSwift"
             (input)="onSwiftInput($event)"
             [attr.aria-invalid]="invalid('swiftCode') ? 'true' : null"
           />
