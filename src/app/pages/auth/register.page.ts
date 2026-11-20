@@ -95,6 +95,18 @@ const BANKS: BankInfo[] = [
   { id: 'btn-id-jkt', name: 'Bank Tabungan Negara (BTN)', country: 'ID', branch: 'Jakarta Pusat' },
 ];
 
+const DRAFT_STORAGE_KEY = 'ivendor.register.draft.v1';
+
+interface RegistrationDraft {
+  version: 1;
+  entityType: EntityType;
+  values: Record<string, unknown>;
+  phoneCountryIso: string;
+  useVendorName: boolean;
+  hasSkb: boolean;
+  bankRequest: BankRequest | null;
+}
+
 const CURRENCIES = [
   'IDR - Rupiah Indonesia',
   'USD - US Dollar',
@@ -520,6 +532,7 @@ export class RegisterPage {
   protected readonly bankQuery = signal('');
   protected readonly bankLoading = signal(false);
   private bankSearchTimer?: ReturnType<typeof setTimeout>;
+  private persistTimer?: ReturnType<typeof setTimeout>;
   protected readonly currencyOptions: SelectOption[] = CURRENCIES.map((currency) => ({
     value: currency,
     label: currency,
@@ -684,6 +697,9 @@ export class RegisterPage {
     });
 
     this.applyEntityValidators();
+    this.restoreDraft();
+
+    this.vendorForm.valueChanges.pipe(takeUntilDestroyed()).subscribe(() => this.schedulePersist());
   }
 
   protected openCancelConfirm(): void {
@@ -709,6 +725,7 @@ export class RegisterPage {
     this.confirmDialog().close();
 
     if (kind === 'cancel') {
+      this.clearDraft();
       this.router.navigate(['/auth/login']);
       return;
     }
@@ -720,6 +737,7 @@ export class RegisterPage {
         this.resetVendorData();
         this.applyGovernmentType();
         this.applyEntityValidators();
+        this.persistDraft();
         this.toast.info(this.t().dataResetTitle, this.t().dataResetMessage);
       }
     }
@@ -802,6 +820,116 @@ export class RegisterPage {
     this.patchTaxError('domicile', null);
   }
 
+  private schedulePersist(): void {
+    clearTimeout(this.persistTimer);
+    this.persistTimer = setTimeout(() => this.persistDraft(), 300);
+  }
+
+  private persistDraft(): void {
+    clearTimeout(this.persistTimer);
+    if (typeof sessionStorage === 'undefined') {
+      return;
+    }
+
+    const values: Record<string, unknown> = { ...this.vendorForm.getRawValue() };
+    for (const key of [
+      'password',
+      'confirmPassword',
+      'bankStatement',
+      'ktpAttachment',
+      'sppkpAttachment',
+      'skbAttachment',
+      'domicileAttachment',
+    ]) {
+      delete values[key];
+    }
+
+    const draft: RegistrationDraft = {
+      version: 1,
+      entityType: this.entityType(),
+      values,
+      phoneCountryIso: this.selectedCountry().iso,
+      useVendorName: this.useVendorName(),
+      hasSkb: this.hasSkb(),
+      bankRequest: this.bankRequest(),
+    };
+
+    try {
+      sessionStorage.setItem(DRAFT_STORAGE_KEY, JSON.stringify(draft));
+    } catch {
+      // Storage can be full or blocked; the form keeps working in memory.
+    }
+  }
+
+  private clearDraft(): void {
+    clearTimeout(this.persistTimer);
+    if (typeof sessionStorage === 'undefined') {
+      return;
+    }
+    try {
+      sessionStorage.removeItem(DRAFT_STORAGE_KEY);
+    } catch {
+      // Ignore storage errors.
+    }
+  }
+
+  private restoreDraft(): void {
+    if (typeof sessionStorage === 'undefined') {
+      return;
+    }
+
+    let draft: RegistrationDraft | null = null;
+    try {
+      const raw = sessionStorage.getItem(DRAFT_STORAGE_KEY);
+      draft = raw ? (JSON.parse(raw) as RegistrationDraft) : null;
+    } catch {
+      return;
+    }
+
+    if (!draft || draft.version !== 1) {
+      return;
+    }
+
+    this.entityType.set(draft.entityType);
+    this.applyGovernmentType();
+    this.applyEntityValidators();
+    this.vendorForm.patchValue(draft.values, { emitEvent: false });
+    this.vendorType.set(this.vendorForm.controls.type.value);
+
+    const country = COUNTRIES.find((entry) => entry.iso === draft.phoneCountryIso);
+    if (country) {
+      this.selectedCountry.set(country);
+    }
+
+    this.useVendorName.set(draft.useVendorName);
+    if (draft.useVendorName) {
+      this.vendorForm.controls.taxName.disable({ emitEvent: false });
+    }
+
+    this.hasSkb.set(draft.hasSkb);
+    if (draft.hasSkb) {
+      const skb = this.vendorForm.controls.skbAttachment;
+      skb.setValidators([Validators.required]);
+      skb.updateValueAndValidity({ emitEvent: false });
+    }
+
+    if (draft.bankRequest) {
+      this.bankRequest.set(draft.bankRequest);
+      this.bankResults.set([this.bankOptionFor(draft.bankRequest)]);
+    } else {
+      const selected = this.vendorForm.controls.bankName.value;
+      this.selectedBank.set(BANKS.find((bank) => bank.id === selected) ?? null);
+    }
+  }
+
+  private bankOptionFor(request: BankRequest): SelectOption {
+    return {
+      value: request.id,
+      label: request.name,
+      description: `${this.bankCountryLabel(request.countryIso)} · ${request.city}`,
+    };
+  }
+
   protected toggleUseVendorName(checked: boolean): void {
     this.useVendorName.set(checked);
     const control = this.vendorForm.controls.taxName;
@@ -811,6 +939,7 @@ export class RegisterPage {
     } else {
       control.enable({ emitEvent: false });
     }
+    this.schedulePersist();
   }
 
   protected downloadDomicileTemplate(): void {
@@ -827,6 +956,7 @@ export class RegisterPage {
       this.removeTaxFile('skb');
     }
     control.updateValueAndValidity();
+    this.schedulePersist();
   }
 
   protected pickTaxFile(kind: TaxFileKind): void {
@@ -963,6 +1093,7 @@ export class RegisterPage {
   }
 
   protected cancel(): void {
+    this.clearDraft();
     this.router.navigate(['/auth/login']);
   }
 
@@ -972,6 +1103,7 @@ export class RegisterPage {
       this.scrollToFirstInvalid();
       return;
     }
+    this.clearDraft();
     this.toast.success(this.t().profileSavedTitle, this.t().profileSavedMessage);
   }
 
@@ -1050,6 +1182,7 @@ export class RegisterPage {
   protected chooseCountry(country: Country): void {
     this.selectedCountry.set(country);
     this.countryDialog().close();
+    this.schedulePersist();
   }
 
   protected searchBanks(term: string): void {
@@ -1094,16 +1227,11 @@ export class RegisterPage {
 
   protected onBankRequestSaved(request: BankRequest): void {
     this.bankRequest.set(request);
-    this.bankResults.set([
-      {
-        value: request.id,
-        label: request.name,
-        description: `${this.bankCountryLabel(request.countryIso)} · ${request.city}`,
-      },
-    ]);
+    this.bankResults.set([this.bankOptionFor(request)]);
     this.bankQuery.set('');
     this.bankLoading.set(false);
     this.vendorForm.controls.bankName.setValue(request.id);
+    this.schedulePersist();
     this.toast.success(this.t().bankRequestSavedTitle, this.t().bankRequestSavedMessage);
   }
 
@@ -1116,6 +1244,7 @@ export class RegisterPage {
     this.bankResults.set([]);
     this.bankQuery.set('');
     this.vendorForm.controls.bankName.setValue('');
+    this.schedulePersist();
     this.toast.info(this.t().bankRequestDeletedTitle, this.t().bankRequestDeletedMessage);
   }
 

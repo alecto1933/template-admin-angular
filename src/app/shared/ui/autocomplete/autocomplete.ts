@@ -11,6 +11,7 @@ import {
   model,
   output,
   signal,
+  untracked,
   viewChild,
   viewChildren,
 } from '@angular/core';
@@ -267,8 +268,14 @@ export class UiAutocomplete implements ControlValueAccessor {
     effect(() => {
       const value = this.value();
       const options = this.options();
-      if (!this.focused()) {
-        this.query.set(this.labelFor(value, options));
+      const label = this.labelFor(value, options);
+      const current = untracked(this.query);
+
+      // Options can resolve after the value was written (async search or a
+      // parent that sets both in the same tick). When the input still shows
+      // the raw value, swap it for the resolved label even while focused.
+      if (!this.focused() || (label !== value && current === value)) {
+        this.query.set(label);
       }
     });
 
