@@ -349,12 +349,13 @@
   }
 
   [uiButton][data-variant='success'] {
-    background-color: var(--success-soft);
-    color: color-mix(in oklab, var(--success) 80%, var(--foreground));
+    background-color: var(--card);
+    color: var(--success);
+    border-color: color-mix(in oklab, var(--success) 35%, transparent);
   }
 
   [uiButton][data-variant='success']:hover {
-    background-color: color-mix(in oklab, var(--success-soft) 82%, var(--success));
+    background-color: var(--success-soft);
   }
 
   [uiButton][data-variant='outline'] {
