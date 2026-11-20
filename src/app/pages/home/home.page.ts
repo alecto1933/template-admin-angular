@@ -9,9 +9,6 @@ interface QuickAccessItem {
   title: string;
   description: string;
   icon: IconName;
-  iconClasses: string;
-  chipClasses: string;
-  glowClasses: string;
 }
 
 interface ActivityItem {
@@ -228,46 +225,11 @@ export class HomePage {
   protected readonly quickAccess = computed<QuickAccessItem[]>(() => {
     const t = this.t();
     return [
-      {
-        title: t.qaVendorTitle,
-        description: t.qaVendorDesc,
-        icon: 'building-2',
-        iconClasses: 'bg-sky-500 shadow-blue-500/30',
-        chipClasses: 'bg-sky-500/10 text-sky-600 dark:text-sky-300',
-        glowClasses: 'bg-sky-500',
-      },
-      {
-        title: t.qaOrderTitle,
-        description: t.qaOrderDesc,
-        icon: 'shopping-cart',
-        iconClasses: 'bg-emerald-500 shadow-emerald-500/30',
-        chipClasses: 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-300',
-        glowClasses: 'bg-emerald-500',
-      },
-      {
-        title: t.qaBillionTitle,
-        description: t.qaBillionDesc,
-        icon: 'wallet',
-        iconClasses: 'bg-violet-500 shadow-violet-500/30',
-        chipClasses: 'bg-violet-500/10 text-violet-600 dark:text-violet-300',
-        glowClasses: 'bg-violet-500',
-      },
-      {
-        title: t.qaBiddingTitle,
-        description: t.qaBiddingDesc,
-        icon: 'trending-up',
-        iconClasses: 'bg-amber-500 shadow-amber-500/30',
-        chipClasses: 'bg-amber-500/10 text-amber-600 dark:text-amber-300',
-        glowClasses: 'bg-amber-500',
-      },
-      {
-        title: t.qaCapaTitle,
-        description: t.qaCapaDesc,
-        icon: 'circle-check',
-        iconClasses: 'bg-rose-500 shadow-rose-500/30',
-        chipClasses: 'bg-rose-500/10 text-rose-600 dark:text-rose-300',
-        glowClasses: 'bg-rose-500',
-      },
+      { title: t.qaVendorTitle, description: t.qaVendorDesc, icon: 'building-2' },
+      { title: t.qaOrderTitle, description: t.qaOrderDesc, icon: 'shopping-cart' },
+      { title: t.qaBillionTitle, description: t.qaBillionDesc, icon: 'wallet' },
+      { title: t.qaBiddingTitle, description: t.qaBiddingDesc, icon: 'trending-up' },
+      { title: t.qaCapaTitle, description: t.qaCapaDesc, icon: 'circle-check' },
     ];
   });
 
