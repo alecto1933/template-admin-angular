@@ -252,7 +252,6 @@ const TEXTS = {
     domicileDescription:
       'Harap cetak contoh Surat Keterangan Domisili dan isi semua informasi sesuai petunjuk. Setelah itu, lampirkan kembali softcopy/scan Surat Keterangan Domisili pada tombol lampiran.',
     downloadTemplate: 'Unduh Template',
-    uploadFile: 'Unggah File',
     domicileNotesTitle: '*) Catatan',
     domicileNotes:
       'Jika vendor tidak menyerahkan Surat Keterangan Domisili, sesuai Perjanjian Pajak, kami akan memotong sesuai Peraturan Pajak Indonesia',
@@ -414,7 +413,6 @@ const TEXTS = {
     domicileDescription:
       'Please print the Certificate of Domicile sample and fill in all information according to the instructions. After that, attach the softcopy/scan of the Certificate of Domicile to the attachment button.',
     downloadTemplate: 'Download Template',
-    uploadFile: 'Upload File',
     domicileNotesTitle: '*) Notes',
     domicileNotes:
       'If the vendor does not submit a Certificate of Domicile, in accordance with the Tax Agreement, we will withhold in accordance with Indonesian Tax Regulations',

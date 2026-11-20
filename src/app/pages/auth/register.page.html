@@ -909,10 +909,6 @@
                     <ui-icon name="download" class="size-3.5" />
                     {{ t().downloadTemplate }}
                   </button>
-                  <button uiButton size="sm" type="button" (click)="pickTaxFile('domicile')">
-                    <ui-icon name="arrow-up-right" class="size-3.5" />
-                    {{ t().uploadFile }}
-                  </button>
                 </div>
 
                 @if (taxFiles().domicile; as file) {
@@ -949,6 +945,15 @@
                       <ui-icon name="x" class="size-4" />
                     </button>
                   </ui-attachment>
+                } @else {
+                  <button
+                    type="button"
+                    class="mt-3 flex w-full cursor-pointer flex-col items-center gap-1.5 rounded-xl border border-dashed border-input bg-card px-4 py-5 text-center text-xs text-muted-foreground transition-colors hover:border-primary/60 hover:bg-accent"
+                    (click)="pickTaxFile('domicile')"
+                  >
+                    <ui-icon name="file-text" class="size-5" />
+                    {{ t().uploadHint }}
+                  </button>
                 }
                 @if (taxFileError().domicile) {
                   <p class="ui-error mt-2">
