@@ -14,6 +14,7 @@ import {
   FormBuilder,
   ReactiveFormsModule,
   ValidationErrors,
+  ValidatorFn,
   Validators,
 } from '@angular/forms';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
@@ -33,7 +34,7 @@ import { BankRequest, BankRequestDialog, BankRequestTexts } from './bank-request
 
 type Language = 'id' | 'en';
 type EntityType = 'national' | 'international' | 'government';
-type TaxFileKind = 'ktp' | 'sppkp' | 'skb';
+type TaxFileKind = 'ktp' | 'sppkp' | 'skb' | 'domicile';
 
 interface UploadFile {
   name: string;
@@ -138,6 +139,10 @@ const TEXTS = {
     typeGovernment: 'GOVERNMENT',
     fieldCategory: 'Kategori Data',
     categoryPlaceholder: 'Pilih kategori',
+    fieldVendorCountry: 'Negara',
+    vendorCountryPlaceholder: 'Pilih negara',
+    typeCorporateIntl: 'Corporate',
+    typePrivateIntl: 'Private',
     fieldAddress: 'Alamat, mengacu pada NPWP',
     helpAddress: 'Maksimal 250 karakter',
     fieldEmail: 'Alamat Email untuk Mendaftar',
@@ -241,6 +246,18 @@ const TEXTS = {
     taxAttachSppkp: 'Lampirkan SPPKP',
     taxSkbToggle: 'Jika Anda memiliki Nomor SKB, centang di sini',
     taxAttachSkb: 'Lampirkan SKB',
+    taxIdIntlLabel: 'Identifikasi Pajak',
+    taxAttachIntlLabel: 'Lampirkan Identifikasi Pajak',
+    domicileTitle: 'Surat Keterangan Domisili',
+    domicileDescription:
+      'Harap cetak contoh Surat Keterangan Domisili dan isi semua informasi sesuai petunjuk. Setelah itu, lampirkan kembali softcopy/scan Surat Keterangan Domisili pada tombol lampiran.',
+    downloadTemplate: 'Unduh Template',
+    uploadFile: 'Unggah File',
+    domicileNotesTitle: '*) Catatan',
+    domicileNotes:
+      'Jika vendor tidak menyerahkan Surat Keterangan Domisili, sesuai Perjanjian Pajak, kami akan memotong sesuai Peraturan Pajak Indonesia',
+    domicileTemplateTitle: 'Unduh Template',
+    domicileTemplateMessage: 'Template Surat Keterangan Domisili akan diunduh.',
     phTaxId: 'Nomor identitas',
     phAddressKtp: 'Alamat sesuai KTP',
     phAddressNpwp: 'Alamat sesuai NPWP',
@@ -283,6 +300,10 @@ const TEXTS = {
     typeGovernment: 'GOVERNMENT',
     fieldCategory: 'Data Category',
     categoryPlaceholder: 'Select category',
+    fieldVendorCountry: 'Country',
+    vendorCountryPlaceholder: 'Select country',
+    typeCorporateIntl: 'Corporate',
+    typePrivateIntl: 'Private',
     fieldAddress: 'Address, according to NPWP',
     helpAddress: 'Maximum 250 characters',
     fieldEmail: 'Registration Email Address',
@@ -387,6 +408,18 @@ const TEXTS = {
     taxAttachSppkp: 'Attach SPPKP',
     taxSkbToggle: 'If you have an SKB Number, tick here',
     taxAttachSkb: 'Attach SKB',
+    taxIdIntlLabel: 'Tax Identification',
+    taxAttachIntlLabel: 'Attach Tax Identification',
+    domicileTitle: 'Certificate of Domicile',
+    domicileDescription:
+      'Please print the Certificate of Domicile sample and fill in all information according to the instructions. After that, attach the softcopy/scan of the Certificate of Domicile to the attachment button.',
+    downloadTemplate: 'Download Template',
+    uploadFile: 'Upload File',
+    domicileNotesTitle: '*) Notes',
+    domicileNotes:
+      'If the vendor does not submit a Certificate of Domicile, in accordance with the Tax Agreement, we will withhold in accordance with Indonesian Tax Regulations',
+    domicileTemplateTitle: 'Download Template',
+    domicileTemplateMessage: 'The Certificate of Domicile template will be downloaded.',
     phTaxId: 'Identity number',
     phAddressKtp: 'Address according to KTP',
     phAddressNpwp: 'Address according to NPWP',
@@ -453,7 +486,7 @@ export class RegisterPage {
   protected readonly bankRequest = signal<BankRequest | null>(null);
   protected readonly bankRequestDialog = viewChild.required(BankRequestDialog);
   protected readonly deleteBankRequestDialog = viewChild.required(UiAlertDialog);
-  protected readonly bankCountryOptions = computed<SelectOption[]>(() =>
+  protected readonly countrySelectOptions = computed<SelectOption[]>(() =>
     COUNTRIES.map((country) => ({ value: country.iso, label: this.countryName(country) })),
   );
   protected readonly bankRequestTexts = computed<BankRequestTexts>(() => {
@@ -523,21 +556,25 @@ export class RegisterPage {
     ktp: null,
     sppkp: null,
     skb: null,
+    domicile: null,
   });
   protected readonly taxUploading = signal<Record<TaxFileKind, boolean>>({
     ktp: false,
     sppkp: false,
     skb: false,
+    domicile: false,
   });
   protected readonly taxProgress = signal<Record<TaxFileKind, number>>({
     ktp: 0,
     sppkp: 0,
     skb: 0,
+    domicile: 0,
   });
   protected readonly taxFileError = signal<Record<TaxFileKind, string | null>>({
     ktp: null,
     sppkp: null,
     skb: null,
+    domicile: null,
   });
   protected readonly taxPreview = signal<UploadFile | null>(null);
   protected readonly taxPreviewFull = signal(false);
@@ -583,6 +620,7 @@ export class RegisterPage {
       name: ['', [Validators.required]],
       type: ['', [Validators.required]],
       category: ['', [Validators.required]],
+      vendorCountry: [''],
       address: ['', [Validators.required, Validators.maxLength(250)]],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(8)]],
@@ -603,6 +641,7 @@ export class RegisterPage {
       ktpAttachment: ['', [Validators.required]],
       sppkpAttachment: [''],
       skbAttachment: [''],
+      domicileAttachment: [''],
     },
     { validators: passwordsMatch },
   );
@@ -645,6 +684,8 @@ export class RegisterPage {
         this.vendorForm.controls.taxName.setValue(name);
       }
     });
+
+    this.applyEntityValidators();
   }
 
   protected openCancelConfirm(): void {
@@ -680,6 +721,7 @@ export class RegisterPage {
         this.entityType.set(next);
         this.resetVendorData();
         this.applyGovernmentType();
+        this.applyEntityValidators();
         this.toast.info(this.t().dataResetTitle, this.t().dataResetMessage);
       }
     }
@@ -712,6 +754,35 @@ export class RegisterPage {
     }
   }
 
+  /**
+   * International vendors only need an optional tax identification, so the
+   * domestic tax fields are relaxed, while the country becomes mandatory.
+   */
+  private applyEntityValidators(): void {
+    const international = this.entityType() === 'international';
+    const domesticRequired: ValidatorFn[] = international ? [] : [Validators.required];
+
+    const setValidators = (
+      name: 'vendorCountry' | 'taxId' | 'taxName' | 'taxAddress' | 'ktpAttachment',
+      validators: ValidatorFn[],
+    ) => {
+      const control = this.vendorForm.controls[name];
+      control.setValidators(validators);
+      control.updateValueAndValidity({ emitEvent: false });
+    };
+
+    setValidators('vendorCountry', international ? [Validators.required] : []);
+    setValidators('taxId', domesticRequired);
+    setValidators('taxName', domesticRequired);
+    setValidators(
+      'taxAddress',
+      international
+        ? [Validators.maxLength(250)]
+        : [Validators.required, Validators.maxLength(250)],
+    );
+    setValidators('ktpAttachment', domesticRequired);
+  }
+
   private resetVendorData(): void {
     this.vendorForm.reset();
     this.useVendorName.set(false);
@@ -720,6 +791,7 @@ export class RegisterPage {
     this.removeTaxFile('ktp');
     this.removeTaxFile('sppkp');
     this.removeTaxFile('skb');
+    this.removeTaxFile('domicile');
     this.selectedBank.set(null);
     this.bankRequest.set(null);
     this.selectedCountry.set(COUNTRIES[0]);
@@ -729,6 +801,7 @@ export class RegisterPage {
     this.patchTaxError('ktp', null);
     this.patchTaxError('sppkp', null);
     this.patchTaxError('skb', null);
+    this.patchTaxError('domicile', null);
   }
 
   protected toggleUseVendorName(checked: boolean): void {
@@ -740,6 +813,10 @@ export class RegisterPage {
     } else {
       control.enable({ emitEvent: false });
     }
+  }
+
+  protected downloadDomicileTemplate(): void {
+    this.toast.info(this.t().domicileTemplateTitle, this.t().domicileTemplateMessage);
   }
 
   protected toggleSkb(checked: boolean): void {
@@ -877,6 +954,9 @@ export class RegisterPage {
     if (kind === 'sppkp') {
       return this.vendorForm.controls.sppkpAttachment;
     }
+    if (kind === 'domicile') {
+      return this.vendorForm.controls.domicileAttachment;
+    }
     return this.vendorForm.controls.skbAttachment;
   }
 
@@ -902,6 +982,7 @@ export class RegisterPage {
       ['name', 'v-name'],
       ['type', 'v-type'],
       ['category', 'v-category'],
+      ['vendorCountry', 'v-country'],
       ['address', 'v-address'],
       ['email', 'v-email'],
       ['password', 'v-password'],

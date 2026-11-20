@@ -198,7 +198,11 @@
                   "
                 >
                   <span class="flex items-center justify-between gap-2">
-                    <span class="text-xs font-semibold">{{ t().typeCorporate }}</span>
+                    <span class="text-xs font-semibold">
+                      {{
+                        entityType() === 'international' ? t().typeCorporateIntl : t().typeCorporate
+                      }}
+                    </span>
                     <input
                       type="radio"
                       formControlName="type"
@@ -219,7 +223,11 @@
                   "
                 >
                   <span class="flex items-center justify-between gap-2">
-                    <span class="text-xs font-semibold">{{ t().typeIndividual }}</span>
+                    <span class="text-xs font-semibold">
+                      {{
+                        entityType() === 'international' ? t().typePrivateIntl : t().typeIndividual
+                      }}
+                    </span>
                     <input
                       type="radio"
                       formControlName="type"
@@ -258,6 +266,29 @@
               </p>
             }
           </div>
+
+          @if (entityType() === 'international') {
+            <div class="space-y-1.5">
+              <label uiLabel for="v-country">
+                {{ t().fieldVendorCountry }}
+                <span class="text-destructive">*</span>
+              </label>
+              <ui-select
+                inputId="v-country"
+                formControlName="vendorCountry"
+                [options]="countrySelectOptions()"
+                [placeholder]="t().vendorCountryPlaceholder"
+                [invalid]="fieldInvalid('vendorCountry')"
+                leadingIcon="globe"
+              />
+              @if (fieldInvalid('vendorCountry')) {
+                <p class="ui-error">
+                  <ui-icon name="circle-help" class="size-3" />
+                  {{ t().errRequired }}
+                </p>
+              }
+            </div>
+          }
 
           <div class="space-y-1.5">
             <label uiLabel for="v-address">
@@ -789,277 +820,45 @@
             (change)="onTaxFileSelected($event)"
           />
 
-          <div class="space-y-1.5">
-            <label uiLabel for="t-tax-id">
-              {{ taxDocLabel() }}
-              <span class="text-destructive">*</span>
-            </label>
-            <div class="relative">
-              <ui-icon
-                name="credit-card"
-                class="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground"
-              />
-              <input
-                uiInput
-                id="t-tax-id"
-                type="text"
-                formControlName="taxId"
-                [placeholder]="t().phTaxId"
-                class="pl-9"
-                [attr.aria-invalid]="fieldInvalid('taxId') ? 'true' : null"
-              />
+          @if (entityType() === 'international') {
+            <div class="space-y-1.5">
+              <label uiLabel for="t-tax-id">{{ t().taxIdIntlLabel }}</label>
+              <div class="relative">
+                <ui-icon
+                  name="credit-card"
+                  class="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground"
+                />
+                <input
+                  uiInput
+                  id="t-tax-id"
+                  type="text"
+                  formControlName="taxId"
+                  [placeholder]="t().phTaxId"
+                  class="pl-9"
+                />
+              </div>
             </div>
-            @if (fieldInvalid('taxId')) {
-              <p class="ui-error">
-                <ui-icon name="circle-help" class="size-3" />
-                {{ t().errRequired }}
-              </p>
-            }
-          </div>
 
-          <div class="space-y-1.5">
-            <label uiLabel for="t-tax-name">
-              {{ taxNameLabel() }}
-              <span class="text-destructive">*</span>
-            </label>
-            <div class="relative">
-              <ui-icon
-                name="user"
-                class="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground"
-              />
-              <input
-                uiInput
-                id="t-tax-name"
-                type="text"
-                formControlName="taxName"
-                [placeholder]="t().phTaxName"
-                class="pl-9"
-                [attr.aria-invalid]="fieldInvalid('taxName') ? 'true' : null"
-              />
-            </div>
-            @if (fieldInvalid('taxName')) {
-              <p class="ui-error">
-                <ui-icon name="circle-help" class="size-3" />
-                {{ t().errRequired }}
-              </p>
-            }
-            @if (vendorType() !== 'INDIVIDUAL') {
-              <p class="ui-help text-[11px]">{{ t().helpVendorName }}</p>
-            }
-          </div>
-
-          <ui-switch
-            size="sm"
-            [checked]="useVendorName()"
-            (checkedChange)="toggleUseVendorName($event)"
-            [label]="t().useVendorNamePrefix + ' ' + taxNameLabel()"
-          />
-
-          <div class="space-y-1.5">
-            <label uiLabel for="t-tax-address">
-              {{ taxAddressLabel() }}
-              <span class="text-destructive">*</span>
-            </label>
-            <div class="relative">
-              <textarea
-                uiTextarea
-                id="t-tax-address"
-                formControlName="taxAddress"
-                [placeholder]="taxAddressPlaceholder()"
-                rows="3"
-                maxlength="250"
-                class="pb-7"
-                [attr.aria-invalid]="fieldInvalid('taxAddress') ? 'true' : null"
-              ></textarea>
-              <span
-                class="pointer-events-none absolute right-3 bottom-2 font-mono text-[10px] text-muted-foreground"
-              >
-                {{ vendorForm.controls.taxAddress.value.length }}/250
-              </span>
-            </div>
-            @if (fieldInvalid('taxAddress')) {
-              <p class="ui-error">
-                <ui-icon name="circle-help" class="size-3" />
-                @if (vendorForm.controls.taxAddress.hasError('maxlength')) {
-                  {{ t().errAddressMax }}
-                } @else {
-                  {{ t().errRequired }}
-                }
-              </p>
-            }
-          </div>
-
-          <div id="t-ktp-section" class="space-y-1.5">
-            <label uiLabel>
-              {{ taxAttachLabel() }}
-              <span class="text-destructive">*</span>
-            </label>
-            @if (taxFiles().ktp; as file) {
-              <ui-attachment
-                size="sm"
-                [name]="file.name"
-                [description]="file.meta"
-                [icon]="file.icon"
-                [state]="taxUploading().ktp ? 'uploading' : 'done'"
-                [progress]="taxProgress().ktp"
-                [interactive]="!taxUploading().ktp"
-                [invalid]="fieldInvalid('ktpAttachment') || !!taxFileError().ktp"
-                (activated)="openTaxPreview('ktp')"
-              >
-                <button
-                  uiButton
-                  variant="outline"
-                  size="icon-sm"
-                  type="button"
-                  (click)="openTaxPreview('ktp')"
-                  [attr.aria-label]="t().previewFile"
-                >
-                  <ui-icon name="eye" class="size-4" />
-                </button>
-                <button
-                  uiButton
-                  variant="outline"
-                  size="icon-sm"
-                  type="button"
-                  (click)="removeTaxFile('ktp')"
-                  [attr.aria-label]="t().removeFile"
-                >
-                  <ui-icon name="x" class="size-4" />
-                </button>
-              </ui-attachment>
-            } @else {
-              <button
-                type="button"
-                class="flex w-full cursor-pointer flex-col items-center gap-1.5 rounded-xl border border-dashed border-input bg-card px-4 py-5 text-center text-xs text-muted-foreground transition-colors hover:border-primary/60 hover:bg-accent"
-                [class.border-destructive]="fieldInvalid('ktpAttachment') || !!taxFileError().ktp"
-                [class.ring-1]="fieldInvalid('ktpAttachment') || !!taxFileError().ktp"
-                [class.ring-destructive]="fieldInvalid('ktpAttachment') || !!taxFileError().ktp"
-                [class.hover:border-destructive]="
-                  fieldInvalid('ktpAttachment') || !!taxFileError().ktp
-                "
-                (click)="pickTaxFile('ktp')"
-              >
-                <ui-icon name="file-text" class="size-5" />
-                {{ t().uploadHint }}
-              </button>
-            }
-            <p class="ui-help text-[11px]">{{ t().uploadFormat }}</p>
-            @if (taxFileError().ktp) {
-              <p class="ui-error">
-                <ui-icon name="circle-help" class="size-3" />
-                {{ taxFileError().ktp }}
-              </p>
-            } @else if (fieldInvalid('ktpAttachment')) {
-              <p class="ui-error">
-                <ui-icon name="circle-help" class="size-3" />
-                {{ t().errRequired }}
-              </p>
-            }
-          </div>
-
-          <div class="space-y-1.5">
-            <label uiLabel for="t-sppkp">{{ t().fieldSppkp }}</label>
-            <div class="relative">
-              <ui-icon
-                name="file-text"
-                class="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground"
-              />
-              <input
-                uiInput
-                id="t-sppkp"
-                type="text"
-                formControlName="sppkp"
-                [placeholder]="t().phSppkp"
-                class="pl-9"
-              />
-            </div>
-          </div>
-
-          <div id="t-sppkp-section" class="space-y-1.5">
-            <label uiLabel>{{ t().taxAttachSppkp }}</label>
-            @if (taxFiles().sppkp; as file) {
-              <ui-attachment
-                size="sm"
-                [name]="file.name"
-                [description]="file.meta"
-                [icon]="file.icon"
-                [state]="taxUploading().sppkp ? 'uploading' : 'done'"
-                [progress]="taxProgress().sppkp"
-                [interactive]="!taxUploading().sppkp"
-                [invalid]="!!taxFileError().sppkp"
-                (activated)="openTaxPreview('sppkp')"
-              >
-                <button
-                  uiButton
-                  variant="outline"
-                  size="icon-sm"
-                  type="button"
-                  (click)="openTaxPreview('sppkp')"
-                  [attr.aria-label]="t().previewFile"
-                >
-                  <ui-icon name="eye" class="size-4" />
-                </button>
-                <button
-                  uiButton
-                  variant="outline"
-                  size="icon-sm"
-                  type="button"
-                  (click)="removeTaxFile('sppkp')"
-                  [attr.aria-label]="t().removeFile"
-                >
-                  <ui-icon name="x" class="size-4" />
-                </button>
-              </ui-attachment>
-            } @else {
-              <button
-                type="button"
-                class="flex w-full cursor-pointer flex-col items-center gap-1.5 rounded-xl border border-dashed border-input bg-card px-4 py-5 text-center text-xs text-muted-foreground transition-colors hover:border-primary/60 hover:bg-accent"
-                (click)="pickTaxFile('sppkp')"
-              >
-                <ui-icon name="file-text" class="size-5" />
-                {{ t().uploadHint }}
-              </button>
-            }
-            <p class="ui-help text-[11px]">{{ t().uploadFormat }}</p>
-            @if (taxFileError().sppkp) {
-              <p class="ui-error">
-                <ui-icon name="circle-help" class="size-3" />
-                {{ taxFileError().sppkp }}
-              </p>
-            }
-          </div>
-
-          <ui-switch
-            size="sm"
-            [checked]="hasSkb()"
-            (checkedChange)="toggleSkb($event)"
-            [label]="t().taxSkbToggle"
-          />
-
-          @if (hasSkb()) {
-            <div id="t-skb-section" class="space-y-1.5">
-              <label uiLabel>
-                {{ t().taxAttachSkb }}
-                <span class="text-destructive">*</span>
-              </label>
-              @if (taxFiles().skb; as file) {
+            <div class="space-y-1.5">
+              <label uiLabel>{{ t().taxAttachIntlLabel }}</label>
+              @if (taxFiles().ktp; as file) {
                 <ui-attachment
                   size="sm"
                   [name]="file.name"
                   [description]="file.meta"
                   [icon]="file.icon"
-                  [state]="taxUploading().skb ? 'uploading' : 'done'"
-                  [progress]="taxProgress().skb"
-                  [interactive]="!taxUploading().skb"
-                  [invalid]="fieldInvalid('skbAttachment') || !!taxFileError().skb"
-                  (activated)="openTaxPreview('skb')"
+                  [state]="taxUploading().ktp ? 'uploading' : 'done'"
+                  [progress]="taxProgress().ktp"
+                  [interactive]="!taxUploading().ktp"
+                  [invalid]="!!taxFileError().ktp"
+                  (activated)="openTaxPreview('ktp')"
                 >
                   <button
                     uiButton
                     variant="outline"
                     size="icon-sm"
                     type="button"
-                    (click)="openTaxPreview('skb')"
+                    (click)="openTaxPreview('ktp')"
                     [attr.aria-label]="t().previewFile"
                   >
                     <ui-icon name="eye" class="size-4" />
@@ -1069,7 +868,7 @@
                     variant="outline"
                     size="icon-sm"
                     type="button"
-                    (click)="removeTaxFile('skb')"
+                    (click)="removeTaxFile('ktp')"
                     [attr.aria-label]="t().removeFile"
                   >
                     <ui-icon name="x" class="size-4" />
@@ -1079,31 +878,413 @@
                 <button
                   type="button"
                   class="flex w-full cursor-pointer flex-col items-center gap-1.5 rounded-xl border border-dashed border-input bg-card px-4 py-5 text-center text-xs text-muted-foreground transition-colors hover:border-primary/60 hover:bg-accent"
-                  [class.border-destructive]="fieldInvalid('skbAttachment') || !!taxFileError().skb"
-                  [class.ring-1]="fieldInvalid('skbAttachment') || !!taxFileError().skb"
-                  [class.ring-destructive]="fieldInvalid('skbAttachment') || !!taxFileError().skb"
-                  [class.hover:border-destructive]="
-                    fieldInvalid('skbAttachment') || !!taxFileError().skb
-                  "
-                  (click)="pickTaxFile('skb')"
+                  (click)="pickTaxFile('ktp')"
                 >
                   <ui-icon name="file-text" class="size-5" />
                   {{ t().uploadHint }}
                 </button>
               }
               <p class="ui-help text-[11px]">{{ t().uploadFormat }}</p>
-              @if (taxFileError().skb) {
+              @if (taxFileError().ktp) {
                 <p class="ui-error">
                   <ui-icon name="circle-help" class="size-3" />
-                  {{ taxFileError().skb }}
+                  {{ taxFileError().ktp }}
                 </p>
-              } @else if (fieldInvalid('skbAttachment')) {
+              }
+            </div>
+
+            <div uiAlert data-variant="info" role="status">
+              <ui-icon name="file-text" class="mt-0.5 size-4 shrink-0" />
+              <div class="min-w-0 flex-1">
+                <p class="font-semibold">{{ t().domicileTitle }}</p>
+                <p class="mt-0.5 leading-relaxed">{{ t().domicileDescription }}</p>
+                <div class="mt-3 flex flex-wrap gap-2">
+                  <button
+                    uiButton
+                    variant="outline"
+                    size="sm"
+                    type="button"
+                    (click)="downloadDomicileTemplate()"
+                  >
+                    <ui-icon name="download" class="size-3.5" />
+                    {{ t().downloadTemplate }}
+                  </button>
+                  <button uiButton size="sm" type="button" (click)="pickTaxFile('domicile')">
+                    <ui-icon name="arrow-up-right" class="size-3.5" />
+                    {{ t().uploadFile }}
+                  </button>
+                </div>
+
+                @if (taxFiles().domicile; as file) {
+                  <ui-attachment
+                    class="mt-3"
+                    size="sm"
+                    [name]="file.name"
+                    [description]="file.meta"
+                    [icon]="file.icon"
+                    [state]="taxUploading().domicile ? 'uploading' : 'done'"
+                    [progress]="taxProgress().domicile"
+                    [interactive]="!taxUploading().domicile"
+                    [invalid]="!!taxFileError().domicile"
+                    (activated)="openTaxPreview('domicile')"
+                  >
+                    <button
+                      uiButton
+                      variant="outline"
+                      size="icon-sm"
+                      type="button"
+                      (click)="openTaxPreview('domicile')"
+                      [attr.aria-label]="t().previewFile"
+                    >
+                      <ui-icon name="eye" class="size-4" />
+                    </button>
+                    <button
+                      uiButton
+                      variant="outline"
+                      size="icon-sm"
+                      type="button"
+                      (click)="removeTaxFile('domicile')"
+                      [attr.aria-label]="t().removeFile"
+                    >
+                      <ui-icon name="x" class="size-4" />
+                    </button>
+                  </ui-attachment>
+                }
+                @if (taxFileError().domicile) {
+                  <p class="ui-error mt-2">
+                    <ui-icon name="circle-help" class="size-3" />
+                    {{ taxFileError().domicile }}
+                  </p>
+                }
+              </div>
+            </div>
+
+            <div uiAlert data-variant="warning" role="status">
+              <ui-icon name="triangle-alert" class="mt-0.5 size-4 shrink-0" />
+              <div class="min-w-0">
+                <p class="font-semibold">{{ t().domicileNotesTitle }}</p>
+                <p class="mt-0.5 leading-relaxed">{{ t().domicileNotes }}</p>
+              </div>
+            </div>
+          } @else {
+            <div class="space-y-1.5">
+              <label uiLabel for="t-tax-id">
+                {{ taxDocLabel() }}
+                <span class="text-destructive">*</span>
+              </label>
+              <div class="relative">
+                <ui-icon
+                  name="credit-card"
+                  class="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground"
+                />
+                <input
+                  uiInput
+                  id="t-tax-id"
+                  type="text"
+                  formControlName="taxId"
+                  [placeholder]="t().phTaxId"
+                  class="pl-9"
+                  [attr.aria-invalid]="fieldInvalid('taxId') ? 'true' : null"
+                />
+              </div>
+              @if (fieldInvalid('taxId')) {
                 <p class="ui-error">
                   <ui-icon name="circle-help" class="size-3" />
                   {{ t().errRequired }}
                 </p>
               }
             </div>
+
+            <div class="space-y-1.5">
+              <label uiLabel for="t-tax-name">
+                {{ taxNameLabel() }}
+                <span class="text-destructive">*</span>
+              </label>
+              <div class="relative">
+                <ui-icon
+                  name="user"
+                  class="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground"
+                />
+                <input
+                  uiInput
+                  id="t-tax-name"
+                  type="text"
+                  formControlName="taxName"
+                  [placeholder]="t().phTaxName"
+                  class="pl-9"
+                  [attr.aria-invalid]="fieldInvalid('taxName') ? 'true' : null"
+                />
+              </div>
+              @if (fieldInvalid('taxName')) {
+                <p class="ui-error">
+                  <ui-icon name="circle-help" class="size-3" />
+                  {{ t().errRequired }}
+                </p>
+              }
+              @if (vendorType() !== 'INDIVIDUAL') {
+                <p class="ui-help text-[11px]">{{ t().helpVendorName }}</p>
+              }
+            </div>
+
+            <ui-switch
+              size="sm"
+              [checked]="useVendorName()"
+              (checkedChange)="toggleUseVendorName($event)"
+              [label]="t().useVendorNamePrefix + ' ' + taxNameLabel()"
+            />
+
+            <div class="space-y-1.5">
+              <label uiLabel for="t-tax-address">
+                {{ taxAddressLabel() }}
+                <span class="text-destructive">*</span>
+              </label>
+              <div class="relative">
+                <textarea
+                  uiTextarea
+                  id="t-tax-address"
+                  formControlName="taxAddress"
+                  [placeholder]="taxAddressPlaceholder()"
+                  rows="3"
+                  maxlength="250"
+                  class="pb-7"
+                  [attr.aria-invalid]="fieldInvalid('taxAddress') ? 'true' : null"
+                ></textarea>
+                <span
+                  class="pointer-events-none absolute right-3 bottom-2 font-mono text-[10px] text-muted-foreground"
+                >
+                  {{ vendorForm.controls.taxAddress.value.length }}/250
+                </span>
+              </div>
+              @if (fieldInvalid('taxAddress')) {
+                <p class="ui-error">
+                  <ui-icon name="circle-help" class="size-3" />
+                  @if (vendorForm.controls.taxAddress.hasError('maxlength')) {
+                    {{ t().errAddressMax }}
+                  } @else {
+                    {{ t().errRequired }}
+                  }
+                </p>
+              }
+            </div>
+
+            <div id="t-ktp-section" class="space-y-1.5">
+              <label uiLabel>
+                {{ taxAttachLabel() }}
+                <span class="text-destructive">*</span>
+              </label>
+              @if (taxFiles().ktp; as file) {
+                <ui-attachment
+                  size="sm"
+                  [name]="file.name"
+                  [description]="file.meta"
+                  [icon]="file.icon"
+                  [state]="taxUploading().ktp ? 'uploading' : 'done'"
+                  [progress]="taxProgress().ktp"
+                  [interactive]="!taxUploading().ktp"
+                  [invalid]="fieldInvalid('ktpAttachment') || !!taxFileError().ktp"
+                  (activated)="openTaxPreview('ktp')"
+                >
+                  <button
+                    uiButton
+                    variant="outline"
+                    size="icon-sm"
+                    type="button"
+                    (click)="openTaxPreview('ktp')"
+                    [attr.aria-label]="t().previewFile"
+                  >
+                    <ui-icon name="eye" class="size-4" />
+                  </button>
+                  <button
+                    uiButton
+                    variant="outline"
+                    size="icon-sm"
+                    type="button"
+                    (click)="removeTaxFile('ktp')"
+                    [attr.aria-label]="t().removeFile"
+                  >
+                    <ui-icon name="x" class="size-4" />
+                  </button>
+                </ui-attachment>
+              } @else {
+                <button
+                  type="button"
+                  class="flex w-full cursor-pointer flex-col items-center gap-1.5 rounded-xl border border-dashed border-input bg-card px-4 py-5 text-center text-xs text-muted-foreground transition-colors hover:border-primary/60 hover:bg-accent"
+                  [class.border-destructive]="fieldInvalid('ktpAttachment') || !!taxFileError().ktp"
+                  [class.ring-1]="fieldInvalid('ktpAttachment') || !!taxFileError().ktp"
+                  [class.ring-destructive]="fieldInvalid('ktpAttachment') || !!taxFileError().ktp"
+                  [class.hover:border-destructive]="
+                    fieldInvalid('ktpAttachment') || !!taxFileError().ktp
+                  "
+                  (click)="pickTaxFile('ktp')"
+                >
+                  <ui-icon name="file-text" class="size-5" />
+                  {{ t().uploadHint }}
+                </button>
+              }
+              <p class="ui-help text-[11px]">{{ t().uploadFormat }}</p>
+              @if (taxFileError().ktp) {
+                <p class="ui-error">
+                  <ui-icon name="circle-help" class="size-3" />
+                  {{ taxFileError().ktp }}
+                </p>
+              } @else if (fieldInvalid('ktpAttachment')) {
+                <p class="ui-error">
+                  <ui-icon name="circle-help" class="size-3" />
+                  {{ t().errRequired }}
+                </p>
+              }
+            </div>
+
+            <div class="space-y-1.5">
+              <label uiLabel for="t-sppkp">{{ t().fieldSppkp }}</label>
+              <div class="relative">
+                <ui-icon
+                  name="file-text"
+                  class="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground"
+                />
+                <input
+                  uiInput
+                  id="t-sppkp"
+                  type="text"
+                  formControlName="sppkp"
+                  [placeholder]="t().phSppkp"
+                  class="pl-9"
+                />
+              </div>
+            </div>
+
+            <div id="t-sppkp-section" class="space-y-1.5">
+              <label uiLabel>{{ t().taxAttachSppkp }}</label>
+              @if (taxFiles().sppkp; as file) {
+                <ui-attachment
+                  size="sm"
+                  [name]="file.name"
+                  [description]="file.meta"
+                  [icon]="file.icon"
+                  [state]="taxUploading().sppkp ? 'uploading' : 'done'"
+                  [progress]="taxProgress().sppkp"
+                  [interactive]="!taxUploading().sppkp"
+                  [invalid]="!!taxFileError().sppkp"
+                  (activated)="openTaxPreview('sppkp')"
+                >
+                  <button
+                    uiButton
+                    variant="outline"
+                    size="icon-sm"
+                    type="button"
+                    (click)="openTaxPreview('sppkp')"
+                    [attr.aria-label]="t().previewFile"
+                  >
+                    <ui-icon name="eye" class="size-4" />
+                  </button>
+                  <button
+                    uiButton
+                    variant="outline"
+                    size="icon-sm"
+                    type="button"
+                    (click)="removeTaxFile('sppkp')"
+                    [attr.aria-label]="t().removeFile"
+                  >
+                    <ui-icon name="x" class="size-4" />
+                  </button>
+                </ui-attachment>
+              } @else {
+                <button
+                  type="button"
+                  class="flex w-full cursor-pointer flex-col items-center gap-1.5 rounded-xl border border-dashed border-input bg-card px-4 py-5 text-center text-xs text-muted-foreground transition-colors hover:border-primary/60 hover:bg-accent"
+                  (click)="pickTaxFile('sppkp')"
+                >
+                  <ui-icon name="file-text" class="size-5" />
+                  {{ t().uploadHint }}
+                </button>
+              }
+              <p class="ui-help text-[11px]">{{ t().uploadFormat }}</p>
+              @if (taxFileError().sppkp) {
+                <p class="ui-error">
+                  <ui-icon name="circle-help" class="size-3" />
+                  {{ taxFileError().sppkp }}
+                </p>
+              }
+            </div>
+
+            <ui-switch
+              size="sm"
+              [checked]="hasSkb()"
+              (checkedChange)="toggleSkb($event)"
+              [label]="t().taxSkbToggle"
+            />
+
+            @if (hasSkb()) {
+              <div id="t-skb-section" class="space-y-1.5">
+                <label uiLabel>
+                  {{ t().taxAttachSkb }}
+                  <span class="text-destructive">*</span>
+                </label>
+                @if (taxFiles().skb; as file) {
+                  <ui-attachment
+                    size="sm"
+                    [name]="file.name"
+                    [description]="file.meta"
+                    [icon]="file.icon"
+                    [state]="taxUploading().skb ? 'uploading' : 'done'"
+                    [progress]="taxProgress().skb"
+                    [interactive]="!taxUploading().skb"
+                    [invalid]="fieldInvalid('skbAttachment') || !!taxFileError().skb"
+                    (activated)="openTaxPreview('skb')"
+                  >
+                    <button
+                      uiButton
+                      variant="outline"
+                      size="icon-sm"
+                      type="button"
+                      (click)="openTaxPreview('skb')"
+                      [attr.aria-label]="t().previewFile"
+                    >
+                      <ui-icon name="eye" class="size-4" />
+                    </button>
+                    <button
+                      uiButton
+                      variant="outline"
+                      size="icon-sm"
+                      type="button"
+                      (click)="removeTaxFile('skb')"
+                      [attr.aria-label]="t().removeFile"
+                    >
+                      <ui-icon name="x" class="size-4" />
+                    </button>
+                  </ui-attachment>
+                } @else {
+                  <button
+                    type="button"
+                    class="flex w-full cursor-pointer flex-col items-center gap-1.5 rounded-xl border border-dashed border-input bg-card px-4 py-5 text-center text-xs text-muted-foreground transition-colors hover:border-primary/60 hover:bg-accent"
+                    [class.border-destructive]="
+                      fieldInvalid('skbAttachment') || !!taxFileError().skb
+                    "
+                    [class.ring-1]="fieldInvalid('skbAttachment') || !!taxFileError().skb"
+                    [class.ring-destructive]="fieldInvalid('skbAttachment') || !!taxFileError().skb"
+                    [class.hover:border-destructive]="
+                      fieldInvalid('skbAttachment') || !!taxFileError().skb
+                    "
+                    (click)="pickTaxFile('skb')"
+                  >
+                    <ui-icon name="file-text" class="size-5" />
+                    {{ t().uploadHint }}
+                  </button>
+                }
+                <p class="ui-help text-[11px]">{{ t().uploadFormat }}</p>
+                @if (taxFileError().skb) {
+                  <p class="ui-error">
+                    <ui-icon name="circle-help" class="size-3" />
+                    {{ taxFileError().skb }}
+                  </p>
+                } @else if (fieldInvalid('skbAttachment')) {
+                  <p class="ui-error">
+                    <ui-icon name="circle-help" class="size-3" />
+                    {{ t().errRequired }}
+                  </p>
+                }
+              </div>
+            }
           }
         </div>
       </div>
@@ -1282,7 +1463,7 @@
 
 <app-bank-request-dialog
   [texts]="bankRequestTexts()"
-  [countryOptions]="bankCountryOptions()"
+  [countryOptions]="countrySelectOptions()"
   (saved)="onBankRequestSaved($event)"
 />
 
