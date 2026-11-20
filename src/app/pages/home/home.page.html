@@ -10,36 +10,7 @@
       class="absolute inset-0 bg-gradient-to-r from-slate-950/95 via-slate-950/55 to-primary/45"
     ></div>
 
-    <div class="relative flex min-h-[320px] flex-col justify-between gap-10 p-6 sm:p-10">
-      <div class="flex justify-end">
-        <div
-          class="inline-flex items-center gap-0.5 rounded-full border border-white/20 bg-white/10 p-0.5 backdrop-blur"
-        >
-          <button
-            type="button"
-            class="flex items-center gap-1.5 rounded-full px-3 py-1 text-[11px] font-semibold transition-colors"
-            [class]="lang() === 'id' ? 'bg-white text-slate-900' : 'text-white/75 hover:text-white'"
-            (click)="setLang('id')"
-            [attr.aria-pressed]="lang() === 'id'"
-            aria-label="ID"
-          >
-            <img src="/images/flags/id.svg" alt="" class="h-3 w-4 rounded-[2px] object-cover" />
-            ID
-          </button>
-          <button
-            type="button"
-            class="flex items-center gap-1.5 rounded-full px-3 py-1 text-[11px] font-semibold transition-colors"
-            [class]="lang() === 'en' ? 'bg-white text-slate-900' : 'text-white/75 hover:text-white'"
-            (click)="setLang('en')"
-            [attr.aria-pressed]="lang() === 'en'"
-            aria-label="EN"
-          >
-            <img src="/images/flags/en.svg" alt="" class="h-3 w-4 rounded-[2px] object-cover" />
-            EN
-          </button>
-        </div>
-      </div>
-
+    <div class="relative flex min-h-[300px] flex-col justify-end p-6 sm:p-10">
       <div class="max-w-2xl text-white">
         <p class="text-sm font-medium text-white/75">{{ t().welcomeTo }}</p>
         <h1 class="mt-2 font-display text-3xl leading-tight font-bold tracking-tight sm:text-5xl">

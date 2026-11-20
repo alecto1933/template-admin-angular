@@ -12,6 +12,7 @@ import { NavigationEnd, Router } from '@angular/router';
 import { filter, startWith } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NOTIFICATIONS, AppNotification } from '../core/nav';
+import { LanguageService } from '../core/language.service';
 import { ThemeService } from '../core/theme/theme.service';
 import { UiIcon } from '../shared/ui/icon/icon';
 import { ToastService } from '../shared/ui/toast/toast.service';
@@ -70,6 +71,20 @@ import { ToastService } from '../shared/ui/toast/toast.service';
 
           <button
             type="button"
+            class="grid size-10 place-items-center rounded-xl transition-colors hover:bg-accent"
+            [cdkMenuTriggerFor]="languageMenu"
+            [attr.aria-label]="language.lang() === 'id' ? 'Bahasa: Indonesia' : 'Language: English'"
+            [attr.title]="language.lang() === 'id' ? 'Bahasa' : 'Language'"
+          >
+            <img
+              [src]="'/images/flags/' + language.lang() + '.svg'"
+              alt=""
+              class="h-4 w-6 rounded-[2px] object-cover ring-1 ring-black/5"
+            />
+          </button>
+
+          <button
+            type="button"
             class="grid size-10 place-items-center rounded-xl text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
             (click)="theme.toggle()"
             [attr.aria-label]="theme.isDark() ? 'Aktifkan mode terang' : 'Aktifkan mode gelap'"
@@ -111,6 +126,33 @@ import { ToastService } from '../shared/ui/toast/toast.service';
           </button>
         </div>
       </div>
+
+      <ng-template #languageMenu>
+        <div cdkMenu class="ui-menu-panel w-44">
+          <button cdkMenuItem type="button" class="ui-menu-item" (click)="language.set('id')">
+            <img
+              src="/images/flags/id.svg"
+              alt=""
+              class="h-3.5 w-5 rounded-[2px] object-cover ring-1 ring-black/5"
+            />
+            Indonesia
+            @if (language.lang() === 'id') {
+              <ui-icon name="check" class="ml-auto size-4 text-primary" />
+            }
+          </button>
+          <button cdkMenuItem type="button" class="ui-menu-item" (click)="language.set('en')">
+            <img
+              src="/images/flags/en.svg"
+              alt=""
+              class="h-3.5 w-5 rounded-[2px] object-cover ring-1 ring-black/5"
+            />
+            English
+            @if (language.lang() === 'en') {
+              <ui-icon name="check" class="ml-auto size-4 text-primary" />
+            }
+          </button>
+        </div>
+      </ng-template>
 
       <ng-template #notificationsMenu>
         <div cdkMenu class="ui-menu-panel w-80">
@@ -197,6 +239,7 @@ export class AppTopbar {
   readonly toggleNavigation = output<void>();
 
   protected readonly theme = inject(ThemeService);
+  protected readonly language = inject(LanguageService);
   private readonly router = inject(Router);
   private readonly toast = inject(ToastService);
 

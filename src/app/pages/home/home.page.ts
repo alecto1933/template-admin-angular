@@ -1,10 +1,9 @@
-import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
+import { Language, LanguageService } from '../../core/language.service';
 import { UiBadge } from '../../shared/ui/badge/badge';
 import { UiIcon } from '../../shared/ui/icon/icon';
 import { IconName } from '../../shared/ui/icon/icons';
 import { ToastService } from '../../shared/ui/toast/toast.service';
-
-type Language = 'id' | 'en';
 
 interface QuickAccessItem {
   title: string;
@@ -211,8 +210,9 @@ const HELPS: Record<Language, HelpItem[]> = {
 })
 export class HomePage {
   private readonly toast = inject(ToastService);
+  private readonly language = inject(LanguageService);
 
-  protected readonly lang = signal<Language>('id');
+  protected readonly lang = this.language.lang;
   protected readonly t = computed(() => TEXTS[this.lang()]);
   protected readonly activities = computed(() => ACTIVITIES[this.lang()]);
   protected readonly announcements = computed(() => ANNOUNCEMENTS[this.lang()]);
@@ -228,10 +228,6 @@ export class HomePage {
       { title: t.qaCapaTitle, description: t.qaCapaDesc, icon: 'circle-check' },
     ];
   });
-
-  protected setLang(language: Language): void {
-    this.lang.set(language);
-  }
 
   protected scrollToQuickAccess(): void {
     document.getElementById('quick-access')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
