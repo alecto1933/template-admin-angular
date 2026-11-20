@@ -348,6 +348,15 @@
     background-color: color-mix(in oklab, var(--primary-soft) 86%, var(--primary));
   }
 
+  [uiButton][data-variant='warning'] {
+    background-color: var(--warning-soft);
+    color: color-mix(in oklab, var(--warning) 78%, var(--foreground));
+  }
+
+  [uiButton][data-variant='warning']:hover {
+    background-color: color-mix(in oklab, var(--warning-soft) 82%, var(--warning));
+  }
+
   [uiButton][data-variant='outline'] {
     @apply border-border bg-card text-foreground;
   }

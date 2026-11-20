@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, booleanAttribute, input } from '@an
 import { UiIcon } from '../icon/icon';
 
 export type ButtonVariant =
-  'primary' | 'secondary' | 'soft' | 'outline' | 'ghost' | 'destructive' | 'link';
+  'primary' | 'secondary' | 'soft' | 'outline' | 'ghost' | 'destructive' | 'link' | 'warning';
 
 export type ButtonSize = 'sm' | 'md' | 'lg' | 'icon' | 'icon-sm';
 
