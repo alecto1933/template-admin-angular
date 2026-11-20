@@ -33,29 +33,61 @@
     </div>
   </section>
 
-  <section id="quick-access" class="scroll-mt-6" aria-labelledby="quick-access-title">
-    <h2 id="quick-access-title" class="font-display text-lg font-semibold tracking-tight">
-      {{ t().quickAccess }}
-    </h2>
+  <section
+    id="quick-access"
+    class="scroll-mt-6 rounded-3xl border border-border bg-gradient-to-br from-primary-soft/60 via-card to-card p-4 sm:p-6"
+    aria-labelledby="quick-access-title"
+  >
+    <div class="flex flex-wrap items-end justify-between gap-2 px-1">
+      <div>
+        <h2 id="quick-access-title" class="font-display text-lg font-semibold tracking-tight">
+          {{ t().quickAccess }}
+        </h2>
+        <p class="mt-0.5 text-xs text-muted-foreground">{{ t().quickAccessSubtitle }}</p>
+      </div>
+      <span
+        class="rounded-full bg-card px-2.5 py-1 text-[10px] font-semibold text-muted-foreground ring-1 ring-border"
+      >
+        {{ t().appsLabel }}
+      </span>
+    </div>
 
     <div class="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
       @for (item of quickAccess(); track item.title) {
         <button
           type="button"
-          class="group flex h-full flex-col items-start gap-3 rounded-2xl border border-border bg-card p-5 text-left transition-all outline-none hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-lg hover:shadow-primary/5 focus-visible:border-primary"
+          class="group relative flex h-full cursor-pointer flex-col overflow-hidden rounded-2xl border border-border bg-card p-4 text-left shadow-sm transition-all duration-200 outline-none hover:-translate-y-1 hover:border-transparent hover:shadow-xl focus-visible:border-primary"
           (click)="openQuickAccess(item)"
         >
           <span
-            class="grid size-10 place-items-center rounded-xl bg-primary-soft text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground"
-          >
-            <ui-icon [name]="item.icon" class="size-5" />
+            class="pointer-events-none absolute -top-8 -right-8 size-24 rounded-full opacity-0 blur-2xl transition-opacity duration-200 group-hover:opacity-40"
+            [class]="item.glowClasses"
+          ></span>
+
+          <span class="relative flex items-start justify-between">
+            <span
+              class="grid size-14 place-items-center rounded-2xl text-white shadow-lg"
+              [class]="item.iconClasses"
+            >
+              <ui-icon [name]="item.icon" class="size-7" />
+            </span>
+            <span
+              class="grid size-7 place-items-center rounded-full border border-border text-muted-foreground transition-colors group-hover:border-transparent group-hover:bg-primary group-hover:text-primary-foreground"
+            >
+              <ui-icon name="arrow-up-right" class="size-3.5" />
+            </span>
           </span>
-          <span class="text-sm font-semibold text-foreground">{{ item.title }}</span>
-          <span class="text-[13px] leading-relaxed text-muted-foreground">
+
+          <span class="relative mt-4 text-[13px] leading-snug font-semibold text-foreground">
+            {{ item.title }}
+          </span>
+          <span class="relative mt-1.5 text-[11px] leading-relaxed text-muted-foreground">
             {{ item.description }}
           </span>
+
           <span
-            class="mt-auto inline-flex items-center gap-1 pt-1 text-[11px] font-semibold text-primary opacity-0 transition-opacity group-hover:opacity-100"
+            class="relative mt-4 inline-flex w-fit items-center gap-1 rounded-full px-2.5 py-1 text-[10px] font-bold tracking-wide uppercase"
+            [class]="item.chipClasses"
           >
             {{ t().open }}
             <ui-icon name="arrow-right" class="size-3" />
