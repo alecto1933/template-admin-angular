@@ -17,7 +17,13 @@ export const routes: Routes = [
     path: '',
     loadComponent: () => import('./layout/app-shell').then((m) => m.AppShell),
     children: [
-      { path: '', pathMatch: 'full', redirectTo: 'dashboard' },
+      { path: '', pathMatch: 'full', redirectTo: 'home' },
+      {
+        path: 'home',
+        title: 'Home · iVendor Superapps',
+        data: { page: 'Home' },
+        loadComponent: () => import('./pages/home/home.page').then((m) => m.HomePage),
+      },
       {
         path: 'dashboard',
         title: 'Dashboard · iVendor Superapps',

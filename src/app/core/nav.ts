@@ -25,6 +25,12 @@ export const NAV_SECTIONS: NavSection[] = [
     label: 'Menu',
     items: [
       {
+        label: 'Home',
+        path: '/home',
+        icon: 'home',
+        exact: true,
+      },
+      {
         label: 'Dashboard',
         path: '/dashboard',
         icon: 'layout-dashboard',

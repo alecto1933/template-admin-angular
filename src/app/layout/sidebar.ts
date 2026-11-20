@@ -19,9 +19,9 @@ import { ToastService } from '../shared/ui/toast/toast.service';
     >
       <div class="ui-sidebar-header flex h-16 shrink-0 items-center gap-2 px-4">
         <a
-          routerLink="/dashboard"
+          routerLink="/home"
           class="flex min-w-0 items-center gap-2.5 rounded-xl outline-none"
-          aria-label="iVendor Superapps — ke dashboard"
+          aria-label="iVendor Superapps — ke home"
           (click)="closeMobile.emit()"
         >
           <span

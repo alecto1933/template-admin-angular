@@ -88,7 +88,7 @@ const TEXTS = {
     registerTitle: 'Registrasi vendor',
     registerMessage: 'Hubungi admin untuk mendaftar sebagai vendor.',
     welcomeTitle: 'Selamat datang kembali',
-    welcomeMessage: 'Login berhasil — mengarahkan ke dashboard.',
+    welcomeMessage: 'Login berhasil — mengarahkan ke halaman utama.',
   },
   en: {
     title: 'VENDOR MANAGEMENT SYSTEM',
@@ -157,7 +157,7 @@ const TEXTS = {
     registerTitle: 'Vendor registration',
     registerMessage: 'Contact the admin to register as a vendor.',
     welcomeTitle: 'Welcome back',
-    welcomeMessage: 'Signed in successfully — redirecting to the dashboard.',
+    welcomeMessage: 'Signed in successfully — redirecting to the home page.',
   },
 } as const;
 
@@ -353,7 +353,7 @@ export class LoginPage {
     setTimeout(() => {
       this.loading.set(false);
       this.toast.success(this.t().welcomeTitle, this.t().welcomeMessage);
-      this.router.navigate(['/dashboard']);
+      this.router.navigate(['/home']);
     }, 900);
   }
 }
