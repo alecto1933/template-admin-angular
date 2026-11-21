@@ -24,11 +24,11 @@ import { ToastService } from '../shared/ui/toast/toast.service';
           aria-label="iVendor Superapps — ke home"
           (click)="closeMobile.emit()"
         >
-          <span
-            class="grid size-9 shrink-0 place-items-center rounded-xl bg-primary text-primary-foreground shadow-md shadow-primary/25"
-          >
-            <ui-icon name="sparkles" class="size-5" />
-          </span>
+          <img
+            src="/images/logo.webp"
+            alt=""
+            class="size-9 shrink-0 object-contain drop-shadow-sm"
+          />
           <span
             class="sidebar-label font-display text-[17px] font-bold tracking-tight text-foreground"
           >
