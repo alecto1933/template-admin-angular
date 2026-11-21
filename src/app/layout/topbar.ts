@@ -14,13 +14,14 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NOTIFICATIONS, AppNotification } from '../core/nav';
 import { LanguageService } from '../core/language.service';
 import { ThemeService } from '../core/theme/theme.service';
+import { UiAlertDialog } from '../shared/ui/alert-dialog/alert-dialog';
 import { UiIcon } from '../shared/ui/icon/icon';
 import { ToastService } from '../shared/ui/toast/toast.service';
 
 @Component({
   selector: 'app-topbar',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [UiIcon, CdkMenu, CdkMenuItem, CdkMenuTrigger],
+  imports: [UiIcon, CdkMenu, CdkMenuItem, CdkMenuTrigger, UiAlertDialog],
   host: {
     '(document:keydown)': 'onDocumentKeydown($event)',
   },
@@ -232,6 +233,16 @@ import { ToastService } from '../shared/ui/toast/toast.service';
           </button>
         </div>
       </ng-template>
+
+      <ui-alert-dialog
+        #logoutDialog
+        title="Keluar dari aplikasi?"
+        description="Sesi Anda akan diakhiri dan Anda perlu masuk kembali untuk melanjutkan."
+        confirmLabel="Ya, keluar"
+        cancelLabel="Batal"
+        confirmVariant="destructive"
+        (confirmed)="confirmLogout()"
+      />
     </header>
   `,
 })
@@ -248,6 +259,7 @@ export class AppTopbar {
   protected readonly searchTerm = signal('');
 
   private readonly searchInput = viewChild<ElementRef<HTMLInputElement>>('searchInput');
+  private readonly logoutDialog = viewChild.required(UiAlertDialog);
 
   constructor() {
     this.router.events
@@ -312,6 +324,10 @@ export class AppTopbar {
   }
 
   protected logout(): void {
+    this.logoutDialog().open();
+  }
+
+  protected confirmLogout(): void {
     this.toast.success('Berhasil keluar', 'Sesi demo telah diakhiri.');
     this.router.navigate(['/auth/login']);
   }
