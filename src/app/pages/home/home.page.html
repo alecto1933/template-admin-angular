@@ -69,24 +69,10 @@
               class="ml-auto size-6 rotate-0 drop-shadow-[0_1px_3px_rgba(0,0,0,0.55)] transition-transform duration-500 group-hover:-rotate-45"
             />
             <span class="block">
-              <span class="block font-display text-2xl leading-[1.2] font-semibold tracking-tight">
-                @for (word of item.title.split(' '); track $index) {
-                  <span class="inline-block whitespace-nowrap">
-                    @for (letter of word.split(''); track $index) {
-                      <span class="inline-block h-[1.2em] overflow-hidden align-bottom">
-                        <span
-                          class="ui-letter-roll flex min-w-[4px] flex-col"
-                          [style.transition-delay.ms]="$index * 22"
-                        >
-                          <span class="leading-[1.2]">{{ letter }}</span>
-                          <span class="leading-[1.2]">{{ letter }}</span>
-                        </span>
-                      </span>
-                    }
-                  </span>
-                  <span class="inline-block w-2"></span>
-                }
-              </span>
+              <app-rolling-title
+                [text]="item.title"
+                class="block font-display text-2xl leading-[1.2] font-semibold tracking-tight"
+              />
               <span
                 class="mt-1.5 line-clamp-2 text-xs leading-relaxed text-white/70 transition-colors duration-500 group-hover:text-white/85"
               >
@@ -167,44 +153,50 @@
         </ul>
       </section>
 
-      <section
-        class="flex-1 rounded-2xl border border-border bg-card p-5"
-        aria-labelledby="helps-title"
+      <a
+        [href]="supportMailto"
+        [attr.aria-label]="t().needHelps + ' — ' + t().contactSupport"
+        class="group relative flex min-h-56 flex-1 flex-col overflow-hidden rounded-2xl border border-border bg-muted text-left shadow-sm outline-none transition-shadow duration-300 hover:shadow-xl focus-visible:ring-2 focus-visible:ring-primary"
       >
-        <div class="flex items-center gap-2">
-          <span class="grid size-8 place-items-center rounded-lg bg-success-soft text-success">
-            <ui-icon name="life-buoy" class="size-4" />
-          </span>
-          <h2 id="helps-title" class="font-display text-sm font-semibold tracking-tight">
-            {{ t().needHelps }}
-          </h2>
-        </div>
+        <span
+          aria-hidden="true"
+          class="absolute inset-0 bg-cover bg-[70%_center] saturate-100 transition-all duration-500 group-hover:scale-110 md:saturate-0 md:group-hover:saturate-100"
+          [style.background-image]="'url(/images/need-helps.webp)'"
+        ></span>
+        <span
+          aria-hidden="true"
+          class="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/40 to-slate-950/10 transition-colors duration-500 group-hover:from-slate-950/90"
+        ></span>
 
-        <ul class="mt-3 space-y-2">
-          @for (item of helps(); track item.title) {
-            <li>
-              <button
-                type="button"
-                class="flex w-full items-center gap-3 rounded-xl border border-border bg-background/60 p-3 text-left transition-colors hover:border-primary/40 hover:bg-accent"
-                (click)="openHelp(item)"
-              >
-                <span
-                  class="grid size-8 shrink-0 place-items-center rounded-lg bg-muted text-foreground"
-                >
-                  <ui-icon [name]="item.icon" class="size-4" />
-                </span>
-                <span class="min-w-0 flex-1">
-                  <span class="block text-[13px] font-medium text-foreground">{{ item.title }}</span>
-                  <span class="mt-0.5 block truncate text-[11px] text-muted-foreground">
-                    {{ item.description }}
-                  </span>
-                </span>
-                <ui-icon name="arrow-right" class="size-4 shrink-0 text-muted-foreground" />
-              </button>
-            </li>
-          }
-        </ul>
-      </section>
+        <span
+          aria-hidden="true"
+          class="relative z-10 flex h-full flex-col justify-between p-4 text-white/85 transition-colors duration-500 group-hover:text-white"
+        >
+          <ui-icon
+            name="arrow-right"
+            class="ml-auto size-6 rotate-0 drop-shadow-[0_1px_3px_rgba(0,0,0,0.55)] transition-transform duration-500 group-hover:-rotate-45"
+          />
+          <span class="block">
+            <h2 id="helps-title" class="block">
+              <app-rolling-title
+                [text]="t().needHelps"
+                class="block font-display text-xl leading-[1.2] font-semibold tracking-tight"
+              />
+            </h2>
+            <span
+              class="mt-1.5 line-clamp-2 text-xs leading-relaxed text-white/70 transition-colors duration-500 group-hover:text-white/85"
+            >
+              {{ t().needHelpsSubtitle }}
+            </span>
+            <span
+              class="mt-3 inline-flex items-center gap-1.5 rounded-full bg-white/15 px-2.5 py-1 text-[10px] font-bold tracking-wide text-white uppercase backdrop-blur-sm"
+            >
+              <ui-icon name="mail" class="size-3" />
+              {{ t().contactSupport }}
+            </span>
+          </span>
+        </span>
+      </a>
     </div>
   </div>
 </div>

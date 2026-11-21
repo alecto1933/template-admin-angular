@@ -4,6 +4,7 @@ import { UiBadge } from '../../shared/ui/badge/badge';
 import { UiIcon } from '../../shared/ui/icon/icon';
 import { IconName } from '../../shared/ui/icon/icons';
 import { ToastService } from '../../shared/ui/toast/toast.service';
+import { RollingTitle } from './rolling-title';
 
 interface QuickAccessItem {
   title: string;
@@ -25,11 +26,6 @@ interface Announcement {
   date: string;
 }
 
-interface HelpItem {
-  title: string;
-  description: string;
-  icon: IconName;
-}
 
 const TEXTS = {
   id: {
@@ -41,10 +37,10 @@ const TEXTS = {
     recentActivity: 'Aktivitas Terbaru',
     announcements: 'Pengumuman',
     needHelps: 'Butuh Bantuan',
+    needHelpsSubtitle: 'Tim dukungan kami siap membantu kendala Anda.',
+    contactSupport: 'Hubungi Dukungan',
     comingSoonTitle: 'Segera hadir',
     comingSoonMessage: 'Halaman ini belum tersedia pada demo. Hubungkan ke modul terkait.',
-    helpToastTitle: 'Pusat bantuan',
-    helpToastMessage: 'Ini demo — hubungkan tautan ini ke kanal bantuan Anda.',
     languageAria: 'Bahasa: Indonesia',
     qaVendorTitle: 'Vendor Profile Management',
     qaVendorDesc: 'Kelola profil vendor, rekening bank, dan dokumen pendukung Anda.',
@@ -66,11 +62,11 @@ const TEXTS = {
     recentActivity: 'Recent Activity',
     announcements: 'Announcements',
     needHelps: 'Need Helps',
+    needHelpsSubtitle: 'Our support team is ready to help you.',
+    contactSupport: 'Contact Support',
     comingSoonTitle: 'Coming soon',
     comingSoonMessage:
       'This page is not available in the demo yet. Connect it to the related module.',
-    helpToastTitle: 'Help center',
-    helpToastMessage: 'This is a demo — connect this link to your support channel.',
     languageAria: 'Language: English',
     qaVendorTitle: 'Vendor Profile Management',
     qaVendorDesc: 'Manage your vendor profile, bank account, and supporting documents.',
@@ -185,27 +181,10 @@ const ANNOUNCEMENTS: Record<Language, Announcement[]> = {
   ],
 };
 
-const HELPS: Record<Language, HelpItem[]> = {
-  id: [
-    { title: 'Pusat Bantuan', description: 'Telusuri panduan dan FAQ', icon: 'life-buoy' },
-    { title: 'Hubungi Dukungan', description: 'Chat dengan tim dukungan kami', icon: 'mail' },
-    {
-      title: 'Panduan Pengguna',
-      description: 'Pelajari cara menggunakan platform',
-      icon: 'book-open',
-    },
-  ],
-  en: [
-    { title: 'Help Center', description: 'Browse guides and FAQs', icon: 'life-buoy' },
-    { title: 'Contact Support', description: 'Chat with our support team', icon: 'mail' },
-    { title: 'User Guide', description: 'Learn how to use the platform', icon: 'book-open' },
-  ],
-};
-
 @Component({
   selector: 'app-home',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [UiBadge, UiIcon],
+  imports: [UiBadge, UiIcon, RollingTitle],
   templateUrl: './home.page.html',
 })
 export class HomePage {
@@ -216,7 +195,7 @@ export class HomePage {
   protected readonly t = computed(() => TEXTS[this.lang()]);
   protected readonly activities = computed(() => ACTIVITIES[this.lang()]);
   protected readonly announcements = computed(() => ANNOUNCEMENTS[this.lang()]);
-  protected readonly helps = computed(() => HELPS[this.lang()]);
+  protected readonly supportMailto = 'mailto:aionomic-support@aio.co.id';
 
   protected readonly quickAccess = computed<QuickAccessItem[]>(() => {
     const t = this.t();
@@ -251,9 +230,5 @@ export class HomePage {
 
   protected openQuickAccess(item: QuickAccessItem): void {
     this.toast.info(this.t().comingSoonTitle, `${item.title} — ${this.t().comingSoonMessage}`);
-  }
-
-  protected openHelp(item: HelpItem): void {
-    this.toast.info(item.title, this.t().helpToastMessage);
   }
 }
