@@ -10,10 +10,10 @@
         type="button"
         class="grid size-9 place-items-center rounded-lg border border-border bg-card transition-colors outline-none hover:bg-accent focus-visible:border-primary"
         [cdkMenuTriggerFor]="languageMenu"
-        [attr.aria-label]="lang() === 'id' ? 'Bahasa: Indonesia' : 'Language: English'"
+        [attr.aria-label]="t().languageAria"
       >
         <img
-          [src]="'/images/flags/' + lang() + '.svg'"
+          [src]="languageInfo(lang()).flag"
           alt=""
           class="h-4 w-6 rounded-[2px] object-cover ring-1 ring-black/5"
         />
@@ -21,28 +21,19 @@
 
       <ng-template #languageMenu>
         <div cdkMenu class="ui-menu-panel w-44">
-          <button cdkMenuItem type="button" class="ui-menu-item" (click)="setLang('id')">
-            <img
-              src="/images/flags/id.svg"
-              alt=""
-              class="h-3.5 w-5 rounded-[2px] object-cover ring-1 ring-black/5"
-            />
-            Indonesia
-            @if (lang() === 'id') {
-              <ui-icon name="check" class="ml-auto size-4 text-primary" />
-            }
-          </button>
-          <button cdkMenuItem type="button" class="ui-menu-item" (click)="setLang('en')">
-            <img
-              src="/images/flags/en.svg"
-              alt=""
-              class="h-3.5 w-5 rounded-[2px] object-cover ring-1 ring-black/5"
-            />
-            English
-            @if (lang() === 'en') {
-              <ui-icon name="check" class="ml-auto size-4 text-primary" />
-            }
-          </button>
+          @for (option of languages; track option.code) {
+            <button cdkMenuItem type="button" class="ui-menu-item" (click)="setLang(option.code)">
+              <img
+                [src]="option.flag"
+                alt=""
+                class="h-3.5 w-5 rounded-[2px] object-cover ring-1 ring-black/5"
+              />
+              {{ option.label }}
+              @if (lang() === option.code) {
+                <ui-icon name="check" class="ml-auto size-4 text-primary" />
+              }
+            </button>
+          }
         </div>
       </ng-template>
 

@@ -1,8 +1,10 @@
 import { Injectable, signal } from '@angular/core';
+import { Language } from '../i18n/language';
 import { appKey, readString, writeString } from '../storage';
 
 export type Theme = 'light' | 'dark';
-export type Language = 'id' | 'en';
+
+export type { Language };
 
 const THEME_KEY = 'alecto-theme';
 const LANGUAGE_KEY = appKey('language');
@@ -18,7 +20,7 @@ function initialTheme(): Theme {
 
 function initialLanguage(): Language {
   const stored = readString(LANGUAGE_KEY);
-  return stored === 'en' ? 'en' : 'id';
+  return stored === 'en' || stored === 'ja' ? stored : 'id';
 }
 
 function initialSidebarCollapsed(): boolean {

@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, inject, input, output, signal } fro
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NavigationEnd, Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { filter } from 'rxjs';
+import { TranslationService } from '../core/i18n/translation.service';
 import { NAV_SECTIONS, NavItem } from '../core/nav';
 import { UiIcon } from '../shared/ui/icon/icon';
 import { UiTooltip } from '../shared/ui/tooltip/tooltip';
@@ -16,13 +17,13 @@ import { ToastService } from '../shared/ui/toast/toast.service';
       class="ui-sidebar"
       [attr.data-collapsed]="collapsed()"
       [attr.data-mobile-open]="mobileOpen()"
-      aria-label="Navigasi utama"
+      [attr.aria-label]="t().sidebarAria"
     >
       <div class="ui-sidebar-header flex h-16 shrink-0 items-center gap-2 px-4">
         <a
           routerLink="/home"
           class="flex min-w-0 items-center gap-2.5 rounded-xl outline-none"
-          aria-label="iVendor Superapps — ke home"
+          [attr.aria-label]="t().brandHomeAria"
           (click)="closeMobile.emit()"
         >
           <img
@@ -41,7 +42,7 @@ import { ToastService } from '../shared/ui/toast/toast.service';
           type="button"
           class="ml-auto grid size-8 place-items-center rounded-lg text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground md:hidden"
           (click)="closeMobile.emit()"
-          aria-label="Tutup menu"
+          [attr.aria-label]="t().closeMenu"
         >
           <ui-icon name="x" class="size-4" />
         </button>
@@ -53,7 +54,7 @@ import { ToastService } from '../shared/ui/toast/toast.service';
             <p
               class="sidebar-label px-3 pb-2 text-[10px] font-semibold tracking-[0.14em] text-muted-foreground/70 uppercase"
             >
-              {{ section.label }}
+              {{ t().navMenu }}
             </p>
             <nav class="space-y-1">
               @for (item of section.items; track item.path) {
@@ -68,7 +69,7 @@ import { ToastService } from '../shared/ui/toast/toast.service';
                         (click)="toggleGroup(item.path)"
                       >
                         <ui-icon [name]="item.icon" class="size-[18px] shrink-0" />
-                        <span class="sidebar-label">{{ item.label }}</span>
+                        <span class="sidebar-label">{{ t()[item.labelKey] }}</span>
                         @if (item.badge) {
                           <span class="ui-sidebar-badge sidebar-label">{{ item.badge }}</span>
                         }
@@ -81,7 +82,7 @@ import { ToastService } from '../shared/ui/toast/toast.service';
                         </span>
                       </button>
                       @if (collapsed()) {
-                        <ui-tooltip position="right">{{ item.label }}</ui-tooltip>
+                        <ui-tooltip position="right">{{ t()[item.labelKey] }}</ui-tooltip>
                       }
                     </span>
 
@@ -107,10 +108,10 @@ import { ToastService } from '../shared/ui/toast/toast.service';
                       (click)="openHelp()"
                     >
                       <ui-icon [name]="item.icon" class="size-[18px] shrink-0" />
-                      <span class="sidebar-label">{{ item.label }}</span>
+                      <span class="sidebar-label">{{ t()[item.labelKey] }}</span>
                     </button>
                     @if (collapsed()) {
-                      <ui-tooltip position="right">{{ item.label }}</ui-tooltip>
+                      <ui-tooltip position="right">{{ t()[item.labelKey] }}</ui-tooltip>
                     }
                   </span>
                 } @else {
@@ -123,13 +124,13 @@ import { ToastService } from '../shared/ui/toast/toast.service';
                       (click)="closeMobile.emit()"
                     >
                       <ui-icon [name]="item.icon" class="size-[18px] shrink-0" />
-                      <span class="sidebar-label">{{ item.label }}</span>
+                      <span class="sidebar-label">{{ t()[item.labelKey] }}</span>
                       @if (item.badge) {
                         <span class="ui-sidebar-badge sidebar-label">{{ item.badge }}</span>
                       }
                     </a>
                     @if (collapsed()) {
-                      <ui-tooltip position="right">{{ item.label }}</ui-tooltip>
+                      <ui-tooltip position="right">{{ t()[item.labelKey] }}</ui-tooltip>
                     }
                   </span>
                 }
@@ -151,6 +152,9 @@ export class AppSidebar {
   protected readonly sections = NAV_SECTIONS;
 
   private readonly toast = inject(ToastService);
+  private readonly i18n = inject(TranslationService);
+
+  protected readonly t = this.i18n.layout;
   private readonly router = inject(Router);
 
   protected readonly currentUrl = signal(this.router.url);
@@ -207,9 +211,6 @@ export class AppSidebar {
   }
 
   protected openHelp(): void {
-    this.toast.info(
-      'Pusat bantuan',
-      'Ini template demo — hubungkan tombol ini ke dokumentasi tim Anda.',
-    );
+    this.toast.info(this.t().helpToastTitle, this.t().helpToastMessage);
   }
 }

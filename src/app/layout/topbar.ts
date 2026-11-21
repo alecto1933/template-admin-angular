@@ -2,6 +2,7 @@ import { CdkMenu, CdkMenuItem, CdkMenuTrigger } from '@angular/cdk/menu';
 import {
   ChangeDetectionStrategy,
   Component,
+  computed,
   inject,
   output,
   signal,
@@ -10,9 +11,11 @@ import {
 import { NavigationEnd, Router } from '@angular/router';
 import { filter, startWith } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { NOTIFICATIONS, AppNotification } from '../core/nav';
+import { TranslationService } from '../core/i18n/translation.service';
+import { AppNotification, NOTIFICATION_TEXTS } from '../core/i18n/layout.texts';
 import { SessionService } from '../core/state/session.service';
 import { LanguageService } from '../core/language.service';
+import { LANGUAGES, languageInfo } from '../core/i18n/language';
 import { ThemeService } from '../core/theme/theme.service';
 import { UiAlertDialog } from '../shared/ui/alert-dialog/alert-dialog';
 import { UiIcon } from '../shared/ui/icon/icon';
@@ -31,11 +34,11 @@ import { ToastService } from '../shared/ui/toast/toast.service';
             type="button"
             class="grid size-10 shrink-0 cursor-pointer place-items-center rounded-xl text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
             (click)="toggleNavigation.emit()"
-            aria-label="Buka atau tutup navigasi"
+            [attr.aria-label]="t().toggleNavigation"
           >
             <ui-icon name="menu" class="size-5" />
           </button>
-          <ui-tooltip position="bottom-start">Buka atau tutup navigasi</ui-tooltip>
+          <ui-tooltip position="bottom-start">{{ t().toggleNavigation }}</ui-tooltip>
         </span>
 
         <div class="flex min-w-0 flex-col">
@@ -52,19 +55,15 @@ import { ToastService } from '../shared/ui/toast/toast.service';
               type="button"
               class="grid size-10 cursor-pointer place-items-center rounded-xl transition-colors hover:bg-accent"
               [cdkMenuTriggerFor]="languageMenu"
-              [attr.aria-label]="
-                language.lang() === 'id' ? 'Bahasa: Indonesia' : 'Language: English'
-              "
+              [attr.aria-label]="'Language: ' + languageInfo(language.lang()).label"
             >
               <img
-                [src]="'/images/flags/' + language.lang() + '.svg'"
+                [src]="languageInfo(language.lang()).flag"
                 alt=""
                 class="h-4 w-6 rounded-[2px] object-cover ring-1 ring-black/5"
               />
             </button>
-            <ui-tooltip position="bottom">{{
-              language.lang() === 'id' ? 'Bahasa' : 'Language'
-            }}</ui-tooltip>
+            <ui-tooltip position="bottom">{{ languageInfo(language.lang()).label }}</ui-tooltip>
           </span>
 
           <span class="group relative inline-flex">
@@ -72,14 +71,14 @@ import { ToastService } from '../shared/ui/toast/toast.service';
               type="button"
               class="relative grid size-10 cursor-pointer place-items-center rounded-xl text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
               [cdkMenuTriggerFor]="notificationsMenu"
-              aria-label="Notifikasi"
+              [attr.aria-label]="t().notifications"
             >
               <ui-icon name="bell" class="size-[18px]" />
               <span
                 class="absolute top-2.5 right-2.5 size-2 rounded-full bg-destructive ring-2 ring-sidebar"
               ></span>
             </button>
-            <ui-tooltip position="bottom">Notifikasi</ui-tooltip>
+            <ui-tooltip position="bottom">{{ t().notifications }}</ui-tooltip>
           </span>
 
           <div class="mx-1 hidden h-6 w-px bg-border sm:block"></div>
@@ -89,7 +88,7 @@ import { ToastService } from '../shared/ui/toast/toast.service';
               type="button"
               class="flex cursor-pointer items-center gap-2 rounded-xl p-1 pr-1.5 transition-colors hover:bg-accent sm:pr-2"
               [cdkMenuTriggerFor]="userMenu"
-              aria-label="Menu pengguna"
+              [attr.aria-label]="t().userMenu"
             >
               <span
                 class="grid size-8 place-items-center rounded-lg bg-primary text-xs font-bold text-primary-foreground"
@@ -98,7 +97,7 @@ import { ToastService } from '../shared/ui/toast/toast.service';
               </span>
               <span class="hidden text-left md:block">
                 <span class="block text-[13px] leading-tight font-semibold">
-                  {{ session.user()?.name ?? 'Tamu' }}
+                  {{ session.user()?.name ?? t().guest }}
                 </span>
                 <span class="block text-[11px] leading-tight text-muted-foreground">
                   {{ session.user()?.role ?? '-' }}
@@ -106,51 +105,42 @@ import { ToastService } from '../shared/ui/toast/toast.service';
               </span>
               <ui-icon name="chevron-down" class="hidden size-3.5 text-muted-foreground md:block" />
             </button>
-            <ui-tooltip position="bottom-end">Menu pengguna</ui-tooltip>
+            <ui-tooltip position="bottom-end">{{ t().userMenu }}</ui-tooltip>
           </span>
         </div>
       </div>
 
       <ng-template #languageMenu>
         <div cdkMenu class="ui-menu-panel w-44">
-          <button cdkMenuItem type="button" class="ui-menu-item" (click)="language.set('id')">
-            <img
-              src="/images/flags/id.svg"
-              alt=""
-              class="h-3.5 w-5 rounded-[2px] object-cover ring-1 ring-black/5"
-            />
-            Indonesia
-            @if (language.lang() === 'id') {
-              <ui-icon name="check" class="ml-auto size-4 text-primary" />
-            }
-          </button>
-          <button cdkMenuItem type="button" class="ui-menu-item" (click)="language.set('en')">
-            <img
-              src="/images/flags/en.svg"
-              alt=""
-              class="h-3.5 w-5 rounded-[2px] object-cover ring-1 ring-black/5"
-            />
-            English
-            @if (language.lang() === 'en') {
-              <ui-icon name="check" class="ml-auto size-4 text-primary" />
-            }
-          </button>
+          @for (option of languages; track option.code) {
+            <button cdkMenuItem type="button" class="ui-menu-item" (click)="language.set(option.code)">
+              <img
+                [src]="option.flag"
+                alt=""
+                class="h-3.5 w-5 rounded-[2px] object-cover ring-1 ring-black/5"
+              />
+              {{ option.label }}
+              @if (language.lang() === option.code) {
+                <ui-icon name="check" class="ml-auto size-4 text-primary" />
+              }
+            </button>
+          }
         </div>
       </ng-template>
 
       <ng-template #notificationsMenu>
         <div cdkMenu class="ui-menu-panel w-80">
           <div class="flex items-center justify-between px-3 py-2">
-            <p class="text-sm font-semibold text-foreground">Notifikasi</p>
+            <p class="text-sm font-semibold text-foreground">{{ t().notifications }}</p>
             <span
               class="rounded-full bg-primary-soft px-2 py-0.5 text-[10px] font-bold text-primary"
             >
-              {{ notifications.length }} baru
+              {{ notifications().length }} {{ t().newNotifications }}
             </span>
           </div>
           <div class="ui-menu-separator"></div>
 
-          @for (notification of notifications; track notification.title) {
+          @for (notification of notifications(); track notification.title) {
             <button
               cdkMenuItem
               type="button"
@@ -184,7 +174,7 @@ import { ToastService } from '../shared/ui/toast/toast.service';
             class="ui-menu-item justify-center text-[13px] font-semibold text-primary"
             (click)="allNotifications()"
           >
-            Lihat semua notifikasi
+            {{ t().viewAllNotifications }}
           </button>
         </div>
       </ng-template>
@@ -192,13 +182,13 @@ import { ToastService } from '../shared/ui/toast/toast.service';
       <ng-template #userMenu>
         <div cdkMenu class="ui-menu-panel w-60">
           <div class="px-3 py-2">
-            <p class="text-sm font-semibold text-foreground">{{ session.user()?.name ?? 'Tamu' }}</p>
+            <p class="text-sm font-semibold text-foreground">{{ session.user()?.name ?? t().guest }}</p>
             <p class="truncate text-xs text-muted-foreground">{{ session.user()?.email ?? '-' }}</p>
           </div>
           <div class="ui-menu-separator"></div>
           <button cdkMenuItem type="button" class="ui-menu-item" (click)="showHelp()">
             <ui-icon name="circle-help" class="size-4 text-muted-foreground" />
-            Bantuan
+            {{ t().help }}
             <span class="ui-shortcut">?</span>
           </button>
           <button cdkMenuItem type="button" class="ui-menu-item" (click)="theme.toggle()">
@@ -206,22 +196,22 @@ import { ToastService } from '../shared/ui/toast/toast.service';
               [name]="theme.isDark() ? 'sun' : 'moon'"
               class="size-4 text-muted-foreground"
             />
-            {{ theme.isDark() ? 'Mode terang' : 'Mode gelap' }}
+            {{ theme.isDark() ? t().lightMode : t().darkMode }}
           </button>
           <div class="ui-menu-separator"></div>
           <button cdkMenuItem type="button" class="ui-menu-item is-destructive" (click)="logout()">
             <ui-icon name="log-out" class="size-4" />
-            Keluar
+            {{ t().logout }}
           </button>
         </div>
       </ng-template>
 
       <ui-alert-dialog
         #logoutDialog
-        title="Keluar dari aplikasi?"
-        description="Sesi Anda akan diakhiri dan Anda perlu masuk kembali untuk melanjutkan."
-        confirmLabel="Ya, keluar"
-        cancelLabel="Batal"
+        [title]="t().logoutTitle"
+        [description]="t().logoutDescription"
+        [confirmLabel]="t().confirmLogout"
+        [cancelLabel]="t().cancel"
         confirmVariant="destructive"
         (confirmed)="confirmLogout()"
       />
@@ -230,14 +220,23 @@ import { ToastService } from '../shared/ui/toast/toast.service';
 })
 export class AppTopbar {  readonly toggleNavigation = output<void>();
 
+  private readonly i18n = inject(TranslationService);
+
+  protected readonly t = this.i18n.layout;
+  protected readonly lang = this.i18n.lang;
   protected readonly theme = inject(ThemeService);
   protected readonly language = inject(LanguageService);
+  protected readonly languages = LANGUAGES;
+  protected readonly languageInfo = languageInfo;
   protected readonly session = inject(SessionService);
   private readonly router = inject(Router);
   private readonly toast = inject(ToastService);
 
-  protected readonly notifications = NOTIFICATIONS;
-  protected readonly pageTitle = signal('Home');
+  protected readonly notifications = computed(() => NOTIFICATION_TEXTS[this.lang()]);
+  private readonly pageKey = signal('Home');
+  protected readonly pageTitle = computed(() =>
+    this.pageKey() === 'Home' ? this.t().pageHome : this.pageKey(),
+  );
 
   private readonly logoutDialog = viewChild.required(UiAlertDialog);
 
@@ -268,14 +267,11 @@ export class AppTopbar {  readonly toggleNavigation = output<void>();
   }
 
   protected allNotifications(): void {
-    this.toast.info(
-      'Notifikasi',
-      'Halaman daftar notifikasi bisa ditambahkan sesuai kebutuhan aplikasi Anda.',
-    );
+    this.toast.info(this.t().notifications, this.t().notificationsToast);
   }
 
   protected showHelp(): void {
-    this.toast.info('Bantuan', 'Buka kartu “Butuh Bantuan” di halaman Home untuk menghubungi tim dukungan.');
+    this.toast.info(this.t().helpToastTitle, this.t().helpToastMessage);
   }
 
   protected logout(): void {
@@ -284,7 +280,7 @@ export class AppTopbar {  readonly toggleNavigation = output<void>();
 
   protected confirmLogout(): void {
     this.session.logout();
-    this.toast.success('Berhasil keluar', 'Sesi demo telah diakhiri.');
+    this.toast.success(this.t().logoutSuccessTitle, this.t().logoutSuccessMessage);
     this.router.navigate(['/auth/login']);
   }
 
@@ -293,6 +289,6 @@ export class AppTopbar {  readonly toggleNavigation = output<void>();
     while (route.firstChild) {
       route = route.firstChild;
     }
-    this.pageTitle.set((route.data['page'] as string | undefined) ?? 'Halaman');
+    this.pageKey.set((route.data['page'] as string | undefined) ?? 'Home');
   }
 }
