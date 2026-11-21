@@ -9,23 +9,19 @@ function findRoute(path: string): Route {
 
 describe('app routes', () => {
   it('exposes the login route with a lazy loader', () => {
-    const login = findRoute('auth/login');
+    const login = findRoute('login');
 
     expect(login.title).toBe('Masuk · iVendor Superapps');
     expect(typeof login.loadComponent).toBe('function');
     expect(login.redirectTo).toBeUndefined();
   });
 
-  it('redirects the legacy login path', () => {
-    expect(findRoute('login').redirectTo).toBe('auth/login');
-  });
-
   it('exposes the register route with a lazy loader', () => {
-    const register = findRoute('auth/register');
+    const register = findRoute('public/registration');
 
     expect(register.title).toBe('Registrasi Vendor · iVendor Superapps');
     expect(typeof register.loadComponent).toBe('function');
-    expect(findRoute('register').redirectTo).toBe('auth/register');
+    expect(register.redirectTo).toBeUndefined();
   });
 
   it('wraps the authenticated pages in the app shell', () => {

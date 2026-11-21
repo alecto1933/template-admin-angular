@@ -31,7 +31,7 @@ export async function seedPreferences(page: Page, options: SeedOptions = {}): Pr
 }
 
 export async function gotoLogin(page: Page): Promise<void> {
-  await page.goto('/#/auth/login');
+  await page.goto('/#/login');
   await expect(page.locator('#login-username')).toBeVisible();
 }
 

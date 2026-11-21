@@ -153,7 +153,7 @@ describe('AppTopbar', () => {
     fixture.detectChanges();
 
     expect(logout).toHaveBeenCalledTimes(1);
-    expect(navigate).toHaveBeenCalledWith(['/auth/login']);
+    expect(navigate).toHaveBeenCalledWith(['/login']);
     expect(session.isAuthenticated()).toBe(false);
     expect(success).toHaveBeenCalledWith('Berhasil keluar', 'Sesi demo telah diakhiri.');
   });

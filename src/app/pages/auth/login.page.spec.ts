@@ -242,7 +242,7 @@ describe('LoginPage', () => {
 
     c.register();
 
-    expect(navigate).toHaveBeenCalledWith(['/auth/register']);
+    expect(navigate).toHaveBeenCalledWith(['/public/registration']);
   });
 
   it('ignores a second submit while loading and completes only once', () => {

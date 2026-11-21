@@ -410,7 +410,7 @@ export class RegisterPage {
 
     if (kind === 'cancel') {
       this.clearDraft();
-      this.router.navigate(['/auth/login']);
+      this.router.navigate(['/login']);
       return;
     }
 
@@ -778,7 +778,7 @@ export class RegisterPage {
 
   protected cancel(): void {
     this.clearDraft();
-    this.router.navigate(['/auth/login']);
+    this.router.navigate(['/login']);
   }
 
   protected next(): void {

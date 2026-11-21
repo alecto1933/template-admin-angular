@@ -281,7 +281,7 @@ export class AppTopbar {  readonly toggleNavigation = output<void>();
   protected confirmLogout(): void {
     this.session.logout();
     this.toast.success(this.t().logoutSuccessTitle, this.t().logoutSuccessMessage);
-    this.router.navigate(['/auth/login']);
+    this.router.navigate(['/login']);
   }
 
   private refreshPageTitle(): void {

@@ -198,7 +198,7 @@ describe('RegisterPage', () => {
     c.confirmAction();
 
     expect(sessionStorage.getItem(DRAFT_KEY)).toBeNull();
-    expect(navigate).toHaveBeenCalledWith(['/auth/login']);
+    expect(navigate).toHaveBeenCalledWith(['/login']);
   });
 
   it('filters and selects dial countries, then persists the selection', () => {
@@ -553,7 +553,7 @@ describe('RegisterPage', () => {
 
     c.cancel();
 
-    expect(navigate).toHaveBeenCalledWith(['/auth/login']);
+    expect(navigate).toHaveBeenCalledWith(['/login']);
     expect(sessionStorage.getItem(DRAFT_KEY)).toBeNull();
   });
 });

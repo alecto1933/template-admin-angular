@@ -208,7 +208,7 @@ Pakai sebagai `<ui-icon name="nama-ikon" class="size-4" />`.
 
 - **Hash routing**: `provideRouter(..., withHashLocation())` dipakai agar build
   bisa di-host statis tanpa konfigurasi rewrite server. URL berbentuk
-  `/#/home`, `/#/auth/login`, dst.
+  `/#/home`, `/#/login`, dst.
 - **Zoneless & signals**: semua state memakai `signal`, `computed`, `input`,
   `model`, dan `output`.
 - **Aksesibilitas**: skip link, fokus terlihat, aria pada dialog/menu/tab,

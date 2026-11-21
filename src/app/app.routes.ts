@@ -2,17 +2,15 @@ import { Routes } from '@angular/router';
 
 export const routes: Routes = [
   {
-    path: 'auth/login',
+    path: 'login',
     title: 'Masuk · iVendor Superapps',
     loadComponent: () => import('@/pages/auth/login.page').then((m) => m.LoginPage),
   },
-  { path: 'login', redirectTo: 'auth/login' },
   {
-    path: 'auth/register',
+    path: 'public/registration',
     title: 'Registrasi Vendor · iVendor Superapps',
     loadComponent: () => import('@/pages/auth/register.page').then((m) => m.RegisterPage),
   },
-  { path: 'register', redirectTo: 'auth/register' },
   {
     path: '',
     loadComponent: () => import('@/layout/app-shell').then((m) => m.AppShell),

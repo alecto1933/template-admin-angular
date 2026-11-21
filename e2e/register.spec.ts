@@ -7,7 +7,7 @@ test.beforeEach(async ({ page }) => {
 
 test.describe('Register', () => {
   test('renders the vendor registration form and switches language', async ({ page }) => {
-    await page.goto('/#/auth/register');
+    await page.goto('/#/public/registration');
 
     await expect(page.getByRole('heading', { name: 'Profil Vendor' })).toBeVisible();
     await expect(page.getByText('Perusahaan Indonesia', { exact: true })).toBeVisible();
@@ -23,7 +23,7 @@ test.describe('Register', () => {
   });
 
   test('cancel confirmation returns to the login page', async ({ page }) => {
-    await page.goto('/#/auth/register');
+    await page.goto('/#/public/registration');
     await expect(page.getByRole('heading', { name: 'Profil Vendor' })).toBeVisible();
 
     await page.getByRole('button', { name: 'Batalkan', exact: true }).click();
@@ -32,7 +32,7 @@ test.describe('Register', () => {
     await expect(dialog.getByText('Batalkan registrasi?')).toBeVisible();
     await dialog.getByRole('button', { name: 'Ya, batalkan', exact: true }).click();
 
-    await expect(page).toHaveURL(/#\/auth\/login$/);
+    await expect(page).toHaveURL(/#\/login$/);
     await expect(page.getByRole('heading', { name: 'SISTEM MANAJEMEN VENDOR' })).toBeVisible();
   });
 });

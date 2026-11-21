@@ -202,7 +202,7 @@ export class LoginPage {
   }
 
   protected register(): void {
-    this.router.navigate(['/auth/register']);
+    this.router.navigate(['/public/registration']);
   }
 
   protected submit(): void {
