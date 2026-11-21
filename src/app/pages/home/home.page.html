@@ -69,25 +69,26 @@
               class="ml-auto size-6 rotate-0 drop-shadow-[0_1px_3px_rgba(0,0,0,0.55)] transition-transform duration-500 group-hover:-rotate-45"
             />
             <span class="block">
-              <span class="block font-display text-lg leading-[1.15] font-semibold tracking-tight">
+              <span class="block font-display text-2xl leading-[1.2] font-semibold tracking-tight">
                 @for (word of item.title.split(' '); track $index) {
                   <span class="inline-block whitespace-nowrap">
                     @for (letter of word.split(''); track $index) {
-                      <span class="inline-block h-[1.15em] overflow-hidden align-bottom">
+                      <span class="inline-block h-[1.2em] overflow-hidden align-bottom">
                         <span
-                          class="ui-letter-roll flex flex-col"
+                          class="ui-letter-roll flex min-w-[4px] flex-col"
+                          [style.transition-delay.ms]="$index * 22"
                         >
-                          <span class="leading-[1.15]">{{ letter }}</span>
-                          <span class="leading-[1.15]">{{ letter }}</span>
+                          <span class="leading-[1.2]">{{ letter }}</span>
+                          <span class="leading-[1.2]">{{ letter }}</span>
                         </span>
                       </span>
                     }
                   </span>
-                  <span class="inline-block w-1.5"></span>
+                  <span class="inline-block w-2"></span>
                 }
               </span>
               <span
-                class="mt-1.5 line-clamp-2 text-[11px] leading-relaxed text-white/70 transition-colors duration-500 group-hover:text-white/85"
+                class="mt-1.5 line-clamp-2 text-xs leading-relaxed text-white/70 transition-colors duration-500 group-hover:text-white/85"
               >
                 {{ item.description }}
               </span>
