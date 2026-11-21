@@ -12,6 +12,7 @@ export interface AppNotification {
 export const LAYOUT_TEXTS = {
   id: {
     skipToContent: 'Lewati ke konten utama',
+    appLoading: 'Memuat…',
     navMenu: 'Menu',
     navHome: 'Home',
     navProfileManagement: 'Profil Vendor',
@@ -57,6 +58,7 @@ export const LAYOUT_TEXTS = {
   },
   en: {
     skipToContent: 'Skip to main content',
+    appLoading: 'Loading…',
     navMenu: 'Menu',
     navHome: 'Home',
     navProfileManagement: 'Vendor Profile',
@@ -100,6 +102,7 @@ export const LAYOUT_TEXTS = {
   },
   ja: {
     skipToContent: 'メインコンテンツへスキップ',
+    appLoading: '読み込み中…',
     navMenu: 'メニュー',
     navHome: 'ホーム',
     navProfileManagement: 'ベンダープロフィール',

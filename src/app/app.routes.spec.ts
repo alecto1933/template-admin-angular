@@ -38,9 +38,7 @@ describe('app routes', () => {
     expect(profile).toBeDefined();
     expect(profile?.data).toEqual({ page: 'profileManagement' });
     expect(profile?.providers).toHaveLength(1);
-    expect(profile?.component).toBeDefined();
-    expect(profile?.children).toHaveLength(1);
-    expect(typeof profile?.children?.[0].loadChildren).toBe('function');
+    expect(typeof profile?.loadChildren).toBe('function');
     expect(shell.children?.at(-1)?.path).toBe('**');
   });
 

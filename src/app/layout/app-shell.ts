@@ -7,17 +7,26 @@ import {
   viewChild,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
+import {
+  NavigationCancel,
+  NavigationEnd,
+  NavigationError,
+  NavigationStart,
+  Router,
+  RouterOutlet,
+} from '@angular/router';
 import { filter } from 'rxjs';
+import { TranslationService } from '@/core/i18n/translation.service';
 import { PreferencesService } from '@/core/state/preferences.service';
 import { AppFooter } from '@/layout/footer';
 import { AppSidebar } from '@/layout/sidebar';
 import { AppTopbar } from '@/layout/topbar';
+import { UiSpinner } from '@/shared/ui/spinner/spinner';
 
 @Component({
   selector: 'app-shell',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterOutlet, AppSidebar, AppTopbar, AppFooter],
+  imports: [RouterOutlet, AppSidebar, AppTopbar, AppFooter, UiSpinner],
   template: `
     <div class="flex h-dvh overflow-hidden bg-background">
       <app-sidebar
@@ -44,6 +53,14 @@ import { AppTopbar } from '@/layout/topbar';
           class="ui-content-grid scroll-fade-y scroll-fade-16 min-h-0 flex-1 overflow-y-auto px-4 pt-6 pb-12 md:px-6 lg:px-8"
           tabindex="-1"
         >
+          @if (loading()) {
+            <div
+              class="mb-4 flex items-center gap-2 rounded-xl border border-border bg-card px-4 py-3 text-sm text-muted-foreground"
+            >
+              <ui-spinner size="sm" [label]="t().appLoading" />
+              <span>{{ t().appLoading }}</span>
+            </div>
+          }
           <div class="w-full">
             <router-outlet />
           </div>
@@ -56,13 +73,28 @@ import { AppTopbar } from '@/layout/topbar';
 })
 export class AppShell {
   private readonly preferences = inject(PreferencesService);
+  private readonly i18n = inject(TranslationService);
   protected readonly collapsed = this.preferences.sidebarCollapsed;
   protected readonly mobileOpen = signal(false);
+  protected readonly loading = signal(false);
+  protected readonly t = this.i18n.layout;
 
   private readonly router = inject(Router);
   private readonly mainContent = viewChild<ElementRef<HTMLElement>>('mainContent');
 
   constructor() {
+    this.router.events.pipe(takeUntilDestroyed()).subscribe((event) => {
+      if (event instanceof NavigationStart) {
+        this.loading.set(true);
+      } else if (
+        event instanceof NavigationEnd ||
+        event instanceof NavigationCancel ||
+        event instanceof NavigationError
+      ) {
+        this.loading.set(false);
+      }
+    });
+
     this.router.events
       .pipe(
         filter((event) => event instanceof NavigationEnd),

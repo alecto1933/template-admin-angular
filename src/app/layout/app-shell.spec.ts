@@ -1,6 +1,15 @@
 import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { Router, provideRouter } from '@angular/router';
+import {
+  NavigationCancel,
+  NavigationEnd,
+  NavigationError,
+  NavigationStart,
+  Router,
+  provideRouter,
+} from '@angular/router';
+import { Subject } from 'rxjs';
+import { LAYOUT_TEXTS } from '@/core/i18n/layout.texts';
 import { PreferencesService } from '@/core/state/preferences.service';
 import { AppShell } from '@/layout/app-shell';
 
@@ -18,6 +27,10 @@ function stubViewport(desktop: boolean): void {
     removeEventListener: () => undefined,
     dispatchEvent: () => false,
   })) as unknown as typeof window.matchMedia;
+}
+
+function emit(router: Router, event: unknown): void {
+  (router.events as unknown as Subject<unknown>).next(event);
 }
 
 describe('AppShell', () => {
@@ -151,5 +164,45 @@ describe('AppShell', () => {
 
     expect(main!.scrollTop).toBe(0);
     expect(host.querySelector('div.fixed.inset-0')).toBeNull();
+  });
+
+  it('shows a translated content loading indicator from NavigationStart to NavigationEnd', () => {
+    const router = TestBed.inject(Router);
+    const fixture = TestBed.createComponent(AppShell);
+    fixture.detectChanges();
+
+    const host = fixture.nativeElement as HTMLElement;
+    expect(host.querySelector('main [role="status"]')).toBeNull();
+
+    emit(router, new NavigationStart(1, '/profile-management'));
+    fixture.detectChanges();
+
+    const indicator = host.querySelector<HTMLElement>('main [role="status"]');
+    expect(indicator).not.toBeNull();
+    expect(indicator?.getAttribute('aria-label')).toBe(LAYOUT_TEXTS.id.appLoading);
+    expect(host.querySelector('main')?.textContent).toContain(LAYOUT_TEXTS.id.appLoading);
+
+    emit(router, new NavigationEnd(1, '/profile-management', '/profile-management'));
+    fixture.detectChanges();
+
+    expect(host.querySelector('main [role="status"]')).toBeNull();
+  });
+
+  it.each([
+    ['NavigationCancel', new NavigationCancel(1, '/home', 'cancelled')],
+    ['NavigationError', new NavigationError(1, '/home', new Error('failed'))],
+  ])('hides the loading indicator on %s', (_name, endEvent) => {
+    const router = TestBed.inject(Router);
+    const fixture = TestBed.createComponent(AppShell);
+    fixture.detectChanges();
+
+    const host = fixture.nativeElement as HTMLElement;
+    emit(router, new NavigationStart(1, '/home'));
+    fixture.detectChanges();
+    expect(host.querySelector('main [role="status"]')).not.toBeNull();
+
+    emit(router, endEvent);
+    fixture.detectChanges();
+    expect(host.querySelector('main [role="status"]')).toBeNull();
   });
 });
