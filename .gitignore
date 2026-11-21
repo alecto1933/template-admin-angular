@@ -53,3 +53,7 @@ Thumbs.db
 
 # Build metadata (generated)
 /public/version.json
+/public/federation.manifest.json
+
+# Agent process artifacts
+/.superpowers/

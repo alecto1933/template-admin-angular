@@ -15,6 +15,68 @@
       "prefix": "app",
       "architect": {
         "build": {
+          "builder": "@angular-architects/native-federation:build",
+          "options": {
+            "cacheExternalArtifacts": true,
+            "tsConfig": "tsconfig.federation.json"
+          },
+          "configurations": {
+            "production": {
+              "target": "template-admin:esbuild:production"
+            },
+            "development": {
+              "target": "template-admin:esbuild:development",
+              "dev": true
+            },
+            "staging": {
+              "target": "template-admin:esbuild:staging"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "@angular-architects/native-federation:build",
+          "options": {
+            "target": "template-admin:serve-original:development",
+            "tsConfig": "tsconfig.federation.json",
+            "rebuildDelay": 500,
+            "cacheExternalArtifacts": true,
+            "dev": true,
+            "devServer": true,
+            "port": 1933
+          },
+          "configurations": {
+            "production": {
+              "target": "template-admin:serve-original:production",
+              "dev": false
+            },
+            "development": {
+              "target": "template-admin:serve-original:development",
+              "dev": true
+            },
+            "staging": {
+              "target": "template-admin:serve-original:staging",
+              "dev": false
+            }
+          },
+          "defaultConfiguration": "development"
+        },
+        "test": {
+          "builder": "@angular/build:unit-test",
+          "options": {
+            "buildTarget": "template-admin:esbuild:development",
+            "setupFiles": ["src/test-setup.ts"],
+            "coverageExclude": ["src/app/**/*.html", "src/app/app.routes.ts", "src/test-setup.ts"],
+            "coverageThresholds": {
+              "statements": 80,
+              "branches": 80,
+              "functions": 80,
+              "lines": 80
+            },
+            "isolate": true
+          }
+        },
+        "esbuild": {
           "builder": "@angular/build:application",
           "options": {
             "browser": "src/main.ts",
@@ -25,9 +87,8 @@
                 "input": "public"
               }
             ],
-            "styles": [
-              "src/styles.css"
-            ]
+            "styles": ["src/styles.css"],
+            "polyfills": ["es-module-shims"]
           },
           "configurations": {
             "production": {
@@ -95,43 +156,23 @@
           },
           "defaultConfiguration": "production"
         },
-        "serve": {
+        "serve-original": {
           "builder": "@angular/build:dev-server",
           "options": {
             "port": 1933
           },
           "configurations": {
             "production": {
-              "buildTarget": "template-admin:build:production"
+              "buildTarget": "template-admin:esbuild:production"
             },
             "development": {
-              "buildTarget": "template-admin:build:development"
+              "buildTarget": "template-admin:esbuild:development"
             },
             "staging": {
-              "buildTarget": "template-admin:build:staging"
+              "buildTarget": "template-admin:esbuild:staging"
             }
           },
           "defaultConfiguration": "development"
-        },
-        "test": {
-          "builder": "@angular/build:unit-test",
-          "options": {
-            "setupFiles": [
-              "src/test-setup.ts"
-            ],
-            "coverageExclude": [
-              "src/app/**/*.html",
-              "src/app/app.routes.ts",
-              "src/test-setup.ts"
-            ],
-            "coverageThresholds": {
-              "statements": 80,
-              "branches": 80,
-              "functions": 80,
-              "lines": 80
-            },
-            "isolate": true
-          }
         }
       }
     }

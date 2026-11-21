@@ -11,4 +11,6 @@ export interface AppEnvironment {
   supportEmail: string;
   /** Versi aplikasi yang ditampilkan/dipakai build. */
   appVersion: string;
+  /** Base URL absolut/relatif untuk aset remote profile-management. */
+  remoteAssetBase: string;
 }

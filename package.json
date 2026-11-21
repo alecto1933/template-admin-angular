@@ -3,9 +3,9 @@
   "version": "2.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "node scripts/write-version.mjs && ng serve",
-    "build": "node scripts/write-version.mjs && ng build",
-    "watch": "node scripts/write-version.mjs && ng build --watch --configuration development",
+    "start": "node scripts/write-version.mjs && node scripts/write-federation-manifest.mjs development && ng serve",
+    "build": "node scripts/write-version.mjs && node scripts/write-federation-manifest.mjs production && ng build",
+    "watch": "node scripts/write-version.mjs && node scripts/write-federation-manifest.mjs development && ng build --watch --configuration development",
     "test": "ng test",
     "icons:sync": "node scripts/sync-icons.mjs",
     "format": "prettier --write .",
@@ -14,9 +14,9 @@
     "e2e": "playwright test",
     "e2e:headed": "playwright test --headed",
     "e2e:ui": "playwright test --ui",
-    "build:dev": "node scripts/write-version.mjs && ng build --configuration development",
-    "build:staging": "node scripts/write-version.mjs && ng build --configuration staging",
-    "build:prod": "node scripts/write-version.mjs && ng build --configuration production"
+    "build:dev": "node scripts/write-version.mjs && node scripts/write-federation-manifest.mjs development && ng build --configuration development",
+    "build:staging": "node scripts/write-version.mjs && node scripts/write-federation-manifest.mjs staging && ng build --configuration staging",
+    "build:prod": "node scripts/write-version.mjs && node scripts/write-federation-manifest.mjs production && ng build --configuration production"
   },
   "private": true,
   "packageManager": "npm@11.19.1",
@@ -33,9 +33,11 @@
     "postcss": "^8.5.32",
     "rxjs": "~7.8.0",
     "tailwindcss": "^4.3.5",
-    "tslib": "^2.3.0"
+    "tslib": "^2.3.0",
+    "es-module-shims": "^2.8.0"
   },
   "devDependencies": {
+    "@angular-architects/native-federation": "^22.2.5",
     "@angular/build": "^22.2.6",
     "@angular/cli": "^22.2.6",
     "@angular/compiler-cli": "^22.2.0",
@@ -45,7 +47,8 @@
     "lucide-static": "^1.71.0",
     "prettier": "^3.8.1",
     "typescript": "~6.0.2",
-    "vitest": "^5.0.0"
+    "vitest": "^5.0.0",
+    "@softarc/native-federation-orchestrator": "^4.10.0"
   },
   "description": "iVendor Superapps \u2014 template admin Angular 22 + Tailwind CSS 4 dengan komponen shadcn-style buatan sendiri.",
   "engines": {

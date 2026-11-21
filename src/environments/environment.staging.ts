@@ -6,4 +6,5 @@ export const environment: AppEnvironment = {
   apiUrl: 'https://staging-api.aio.co.id/api',
   supportEmail: 'aionomic-support@aio.co.id',
   appVersion: '2.0.0-staging',
+  remoteAssetBase: '/ivendor-staging/remotes/profile-management/',
 };

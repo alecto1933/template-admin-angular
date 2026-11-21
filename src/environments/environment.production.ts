@@ -6,4 +6,5 @@ export const environment: AppEnvironment = {
   apiUrl: 'https://api.aio.co.id/api',
   supportEmail: 'aionomic-support@aio.co.id',
   appVersion: '2.0.0',
+  remoteAssetBase: '/remotes/profile-management/',
 };

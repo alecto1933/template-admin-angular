@@ -11,4 +11,5 @@ export const environment: AppEnvironment = {
   apiUrl: 'http://localhost:3000/api',
   supportEmail: 'aionomic-support@aio.co.id',
   appVersion: '2.0.0-dev',
+  remoteAssetBase: 'http://localhost:4201/',
 };
