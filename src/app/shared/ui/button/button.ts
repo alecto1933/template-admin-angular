@@ -28,6 +28,8 @@ export type ButtonSize = 'sm' | 'md' | 'lg' | 'icon' | 'icon-sm';
     '[attr.type]': 'type()',
     '[attr.disabled]': 'disabled() || loading() ? "" : null',
     '[attr.aria-busy]': 'loading() ? "true" : null',
+    '[attr.aria-disabled]': 'disabled() || loading() ? "true" : null',
+    '[attr.tabindex]': 'disabled() || loading() ? -1 : null',
   },
 })
 export class UiButton {

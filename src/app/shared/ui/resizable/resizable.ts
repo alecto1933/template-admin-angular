@@ -34,8 +34,8 @@ export type ResizableOrientation = 'horizontal' | 'vertical';
         tabindex="0"
         [attr.aria-orientation]="orientation() === 'horizontal' ? 'vertical' : 'horizontal'"
         [attr.aria-valuenow]="size()"
-        aria-valuemin="20"
-        aria-valuemax="80"
+        [attr.aria-valuemin]="min()"
+        [attr.aria-valuemax]="max()"
         [attr.aria-label]="ariaLabel()"
         (pointerdown)="startDrag($event)"
         (keydown)="onKeydown($event)"
@@ -90,6 +90,10 @@ export class UiResizable {
   }
 
   protected onKeydown(event: KeyboardEvent): void {
+    if (this.disabled()) {
+      return;
+    }
+
     const step = event.shiftKey ? 10 : 2;
     let delta = 0;
 

@@ -137,9 +137,7 @@
                 type="button"
                 class="absolute top-1/2 right-2 grid size-7 -translate-y-1/2 place-items-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
                 (click)="togglePassword()"
-                [attr.aria-label]="
-                  showPassword() ? 'Sembunyikan kata sandi' : 'Tampilkan kata sandi'
-                "
+                [attr.aria-label]="showPassword() ? t().hidePassword : t().showPassword"
               >
                 <ui-icon [name]="showPassword() ? 'eye-off' : 'eye'" class="size-4" />
               </button>

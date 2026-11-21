@@ -1,4 +1,10 @@
-import { ChangeDetectionStrategy, Component, booleanAttribute, input } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  booleanAttribute,
+  computed,
+  input,
+} from '@angular/core';
 
 export type ProgressSize = 'sm' | 'md' | 'lg';
 
@@ -13,12 +19,12 @@ export type ProgressSize = 'sm' | 'md' | 'lg';
       [attr.aria-valuemin]="0"
       [attr.aria-valuemax]="max()"
       [attr.aria-valuenow]="indeterminate() ? null : value()"
-      [attr.aria-valuetext]="indeterminate() ? 'Memuat' : value() + '%'"
+      [attr.aria-valuetext]="indeterminate() ? 'Memuat' : percent() + '%'"
     >
       <div
         class="ui-progress-bar"
         [class.ui-progress-indeterminate]="indeterminate()"
-        [style.width.%]="indeterminate() ? null : value()"
+        [style.width.%]="indeterminate() ? null : percent()"
       ></div>
     </div>
   `,
@@ -28,4 +34,10 @@ export class UiProgress {
   readonly max = input(100);
   readonly size = input<ProgressSize>('md');
   readonly indeterminate = input(false, { transform: booleanAttribute });
+
+  protected readonly percent = computed(() => {
+    const max = this.max();
+    if (max <= 0) return 0;
+    return Math.min(100, Math.max(0, (this.value() / max) * 100));
+  });
 }

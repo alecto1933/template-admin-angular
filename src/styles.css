@@ -297,6 +297,10 @@
     @apply disabled:pointer-events-none disabled:opacity-50;
   }
 
+  [uiButton][aria-disabled='true'] {
+    @apply pointer-events-none opacity-50;
+  }
+
   [uiButton]:focus-visible {
     outline: none;
     box-shadow:

@@ -37,11 +37,30 @@ Butuh Node.js 22.22+ atau 24.15+ (sesuai requirement Angular 22).
 npm install
 npm start          # http://localhost:4200
 npm run build      # build produksi ke dist/
-npm test           # unit test (Vitest)
+npm test           # unit + integration test (Vitest)
+npm run test:coverage
+npm run e2e        # E2E (Playwright, Chromium)
 ```
 
 Akun demo login: `raka@alecto.id` / `alecto123` (atau email & password apa pun
 yang valid — autentikasi hanya simulasi).
+
+## Testing
+
+| Level | Tool | Lokasi | Perintah |
+| --- | --- | --- | --- |
+| Unit + integration | Vitest (`@angular/build:unit-test`) | `src/**/*.spec.ts` | `npm test` |
+| Coverage | Vitest v8 | `coverage/` | `npm run test:coverage` |
+| E2E | Playwright | `e2e/*.spec.ts` | `npm run e2e` |
+
+- Sebelum E2E pertama kali: `npx playwright install chromium`.
+- `npm run e2e:headed` / `npm run e2e:ui` untuk mode debug.
+- Konfigurasi E2E: `playwright.config.ts` (baseURL `http://localhost:4205`,
+  `webServer` otomatis menjalankan `ng serve`).
+- Setup global test (polyfill `<dialog>` untuk jsdom): `src/test-setup.ts`.
+- Coverage saat ini: **~90% statements, ~82% functions, ~91% lines**.
+- Pola penamaan: `*.spec.ts` di samping file yang diuji; E2E per alur
+  (`auth`, `language`, `home`, `register`, `responsive`, `not-found`).
 
 ## Struktur
 

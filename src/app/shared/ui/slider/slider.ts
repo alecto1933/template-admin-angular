@@ -70,7 +70,11 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
             [style.bottom.%]="vertical() ? percent(tick) : null"
           ></span>
           @if (tickLabels()) {
-            <span class="ui-slider-tick-label" [style.left.%]="vertical() ? null : percent(tick)">
+            <span
+              class="ui-slider-tick-label"
+              [style.left.%]="vertical() ? null : percent(tick)"
+              [style.bottom.%]="vertical() ? percent(tick) : null"
+            >
               {{ tick }}
             </span>
           }

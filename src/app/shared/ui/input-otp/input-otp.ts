@@ -4,9 +4,11 @@ import {
   ElementRef,
   booleanAttribute,
   computed,
+  effect,
   forwardRef,
   inject,
   input,
+  linkedSignal,
   model,
   signal,
   viewChildren,
@@ -72,12 +74,25 @@ export class UiInputOtp implements ControlValueAccessor {
   readonly ariaLabel = input('Kode verifikasi');
   readonly value = model('');
 
-  protected readonly chars = signal<string[]>(Array.from({ length: this.length() }, () => ''));
+  protected readonly chars = linkedSignal<number, string[]>({
+    source: this.length,
+    computation: (length, previous) =>
+      Array.from({ length }, (_, index) => previous?.value[index] ?? ''),
+  });
   protected readonly formDisabled = signal(false);
   protected readonly isDisabled = computed(() => this.disabled() || this.formDisabled());
   protected readonly separatorIndex = computed(() => Math.ceil(this.length() / 2));
 
   private readonly inputs = viewChildren<ElementRef<HTMLInputElement>>('otpInput');
+  constructor() {
+    effect(() => {
+      const joined = this.chars().join('');
+      if (this.value() !== joined) {
+        this.value.set(joined);
+      }
+    });
+  }
+
   private onChange: (value: string) => void = () => {};
   private onTouched: () => void = () => {};
 

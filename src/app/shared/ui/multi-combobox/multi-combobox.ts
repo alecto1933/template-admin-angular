@@ -180,7 +180,7 @@ export class UiMultiCombobox implements ControlValueAccessor {
   protected readonly isDisabled = computed(() => this.disabled() || this.formDisabled());
 
   protected readonly showClear = computed(
-    () => this.clearable() && this.value().length > 0 && !this.loading(),
+    () => this.clearable() && this.value().length > 0 && !this.loading() && !this.isDisabled(),
   );
 
   protected readonly selectedOptions = computed(() =>
@@ -270,6 +270,10 @@ export class UiMultiCombobox implements ControlValueAccessor {
   }
 
   protected onKeydown(event: KeyboardEvent): void {
+    if (this.isDisabled()) {
+      return;
+    }
+
     if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
       event.preventDefault();
       this.open.set(true);

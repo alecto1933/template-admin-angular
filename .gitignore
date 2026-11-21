@@ -45,3 +45,8 @@ Thumbs.db
 
 # Vitest artifacts
 .vitest/
+
+# Playwright
+/playwright-report
+/test-results
+/blob-report
