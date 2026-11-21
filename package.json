@@ -1,6 +1,6 @@
 {
   "name": "template-admin",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -13,7 +13,10 @@
     "test:coverage": "ng test --watch=false --coverage",
     "e2e": "playwright test",
     "e2e:headed": "playwright test --headed",
-    "e2e:ui": "playwright test --ui"
+    "e2e:ui": "playwright test --ui",
+    "build:dev": "ng build --configuration development",
+    "build:staging": "ng build --configuration staging",
+    "build:prod": "ng build --configuration production"
   },
   "private": true,
   "packageManager": "npm@11.19.1",

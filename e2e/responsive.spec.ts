@@ -35,7 +35,7 @@ test.describe('Mobile layout', () => {
     await expect(footerRow).toHaveCSS('flex-direction', 'row');
 
     const copyright = page.locator('app-footer').getByText(/©/);
-    const version = page.getByText('v1.0.0', { exact: true });
+    const version = page.getByText(/v2\.0\.0/);
     const copyrightBox = await copyright.boundingBox();
     const versionBox = await version.boundingBox();
     expect(copyrightBox).not.toBeNull();

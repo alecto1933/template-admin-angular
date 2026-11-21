@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { environment } from '@env/environment';
 
 @Component({
   selector: 'app-footer',
@@ -13,7 +14,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
           <span
             class="rounded-full border border-border px-2 py-0.5 font-mono text-[10px] font-medium"
           >
-            v1.0.0
+            v{{ version }}
           </span>
         </div>
       </div>
@@ -22,4 +23,5 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 })
 export class AppFooter {
   protected readonly year = new Date().getFullYear();
+  protected readonly version = environment.appVersion;
 }

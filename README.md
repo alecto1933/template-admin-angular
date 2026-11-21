@@ -45,8 +45,25 @@ npm run e2e        # E2E (Playwright, Chromium)
 Akun demo login: `raka@alecto.id` / `alecto123` (atau email & password apa pun
 yang valid — autentikasi hanya simulasi).
 
-## Testing
+## Environment
 
+Konfigurasi ada di `src/environments/` dan dipilih saat build lewat
+`fileReplacements` di `angular.json`:
+
+| Environment | Perintah | Output |
+| --- | --- | --- |
+| development | `npm run build:dev` | `dist/template-admin-development/` |
+| staging | `npm run build:staging` | `dist/template-admin-staging/` |
+| production | `npm run build:prod` (atau `npm run build`) | `dist/template-admin/` |
+
+- `npm start` / `ng serve` memakai `development` secara default.
+- `npm start -- --configuration staging` untuk menjalankan build staging.
+- Field environment: `name`, `production`, `apiUrl`, `supportEmail`,
+  `appVersion` (dipakai footer).
+- `src/environments/environment.ts` adalah fallback untuk unit test; build
+  menggantinya dengan file environment yang dipilih.
+
+## Testing
 | Level | Tool | Lokasi | Perintah |
 | --- | --- | --- | --- |
 | Unit + integration | Vitest (`@angular/build:unit-test`) | `src/**/*.spec.ts` | `npm test` |

@@ -1,4 +1,5 @@
 import { TestBed } from '@angular/core/testing';
+import { environment } from '@env/environment';
 import { AppFooter } from '@/layout/footer';
 
 describe('AppFooter', () => {
@@ -12,7 +13,7 @@ describe('AppFooter', () => {
 
     const text = (fixture.nativeElement as HTMLElement).textContent ?? '';
     expect(text).toContain(`© ${new Date().getFullYear()} iVendor Superapps.`);
-    expect(text).toContain('v1.0.0');
+    expect(text).toContain(`v${environment.appVersion}`);
   });
 
   it('keeps the responsive padding classes on the footer and row', () => {

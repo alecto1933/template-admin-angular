@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
 import { UiBadge } from '@/shared/ui/badge/badge';
 import { UiIcon } from '@/shared/ui/icon/icon';
+import { environment } from '@env/environment';
 import { TranslationService } from '@/core/i18n/translation.service';
 import { ACTIVITIES, ANNOUNCEMENTS, HOME_TEXTS } from '@/core/i18n/home.texts';
 import { ToastService } from '@/shared/ui/toast/toast.service';
@@ -26,7 +27,7 @@ export class HomePage {
   protected readonly t = computed(() => HOME_TEXTS[this.lang()]);
   protected readonly activities = computed(() => ACTIVITIES[this.lang()]);
   protected readonly announcements = computed(() => ANNOUNCEMENTS[this.lang()]);
-  protected readonly supportMailto = 'mailto:aionomic-support@aio.co.id';
+  protected readonly supportMailto = `mailto:${environment.supportEmail}`;
 
   protected readonly quickAccess = computed<QuickAccessItem[]>(() => {
     const t = this.t();
