@@ -42,36 +42,56 @@
       </div>
     </div>
 
-    <div class="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
+    <div class="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
       @for (item of quickAccess(); track item.title) {
         <button
           type="button"
-          class="group relative flex h-full cursor-pointer flex-col overflow-hidden rounded-2xl border border-border bg-card p-4 text-left shadow-sm transition-all duration-200 outline-none hover:-translate-y-1 hover:border-transparent hover:shadow-xl focus-visible:border-primary"
+          class="group relative h-64 w-full cursor-pointer overflow-hidden rounded-2xl border border-border bg-muted text-left shadow-sm outline-none transition-shadow duration-300 hover:shadow-xl focus-visible:ring-2 focus-visible:ring-primary"
+          [attr.aria-label]="item.title + ' — ' + item.description"
           (click)="openQuickAccess(item)"
         >
           <span
-            class="pointer-events-none absolute -top-8 -right-8 size-24 rounded-full bg-primary opacity-0 blur-2xl transition-opacity duration-200 group-hover:opacity-40"
+            aria-hidden="true"
+            class="absolute inset-0 bg-cover bg-[70%_center] saturate-100 transition-all duration-500 group-hover:scale-110 md:saturate-0 md:group-hover:saturate-100"
+            [style.background-image]="'url(' + item.image + ')'"
           ></span>
-          <span class="ui-shimmer" aria-hidden="true"></span>
+          <span
+            aria-hidden="true"
+            class="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/40 to-slate-950/10 transition-colors duration-500 group-hover:from-slate-950/90"
+          ></span>
 
-          <span class="relative flex items-start justify-between">
-            <span
-              class="grid size-14 place-items-center rounded-2xl border-2 border-primary bg-primary-soft text-primary transition-colors duration-200 group-hover:bg-primary group-hover:text-primary-foreground"
-            >
-              <ui-icon [name]="item.icon" class="size-7" />
+          <span
+            aria-hidden="true"
+            class="relative z-10 flex h-full flex-col justify-between p-4 text-white/85 transition-colors duration-500 group-hover:text-white"
+          >
+            <ui-icon
+              name="arrow-right"
+              class="ml-auto size-6 rotate-0 drop-shadow-[0_1px_3px_rgba(0,0,0,0.55)] transition-transform duration-500 group-hover:-rotate-45"
+            />
+            <span class="block">
+              <span class="block font-display text-lg leading-[1.15] font-semibold tracking-tight">
+                @for (word of item.title.split(' '); track $index) {
+                  <span class="inline-block whitespace-nowrap">
+                    @for (letter of word.split(''); track $index) {
+                      <span class="inline-block h-[1.15em] overflow-hidden align-bottom">
+                        <span
+                          class="ui-letter-roll flex flex-col"
+                        >
+                          <span class="leading-[1.15]">{{ letter }}</span>
+                          <span class="leading-[1.15]">{{ letter }}</span>
+                        </span>
+                      </span>
+                    }
+                  </span>
+                  <span class="inline-block w-1.5"></span>
+                }
+              </span>
+              <span
+                class="mt-1.5 line-clamp-2 text-[11px] leading-relaxed text-white/70 transition-colors duration-500 group-hover:text-white/85"
+              >
+                {{ item.description }}
+              </span>
             </span>
-            <span
-              class="grid size-7 place-items-center rounded-full border border-border text-muted-foreground transition-colors group-hover:border-transparent group-hover:bg-primary group-hover:text-primary-foreground"
-            >
-              <ui-icon name="arrow-up-right" class="size-3.5" />
-            </span>
-          </span>
-
-          <span class="relative mt-4 text-[13px] leading-snug font-semibold text-foreground">
-            {{ item.title }}
-          </span>
-          <span class="relative mt-1.5 text-[11px] leading-relaxed text-muted-foreground">
-            {{ item.description }}
           </span>
         </button>
       }

@@ -8,7 +8,7 @@ import { ToastService } from '../../shared/ui/toast/toast.service';
 interface QuickAccessItem {
   title: string;
   description: string;
-  icon: IconName;
+  image: string;
 }
 
 interface ActivityItem {
@@ -221,11 +221,27 @@ export class HomePage {
   protected readonly quickAccess = computed<QuickAccessItem[]>(() => {
     const t = this.t();
     return [
-      { title: t.qaVendorTitle, description: t.qaVendorDesc, icon: 'building-2' },
-      { title: t.qaOrderTitle, description: t.qaOrderDesc, icon: 'shopping-cart' },
-      { title: t.qaBillionTitle, description: t.qaBillionDesc, icon: 'wallet' },
-      { title: t.qaBiddingTitle, description: t.qaBiddingDesc, icon: 'trending-up' },
-      { title: t.qaCapaTitle, description: t.qaCapaDesc, icon: 'circle-check' },
+      {
+        title: t.qaVendorTitle,
+        description: t.qaVendorDesc,
+        image: '/images/apps/vendor-profile.webp',
+      },
+      {
+        title: t.qaOrderTitle,
+        description: t.qaOrderDesc,
+        image: '/images/apps/purchase-order.webp',
+      },
+      { title: t.qaBillionTitle, description: t.qaBillionDesc, image: '/images/apps/billing.webp' },
+      {
+        title: t.qaBiddingTitle,
+        description: t.qaBiddingDesc,
+        image: '/images/apps/bidding-auction.webp',
+      },
+      {
+        title: t.qaCapaTitle,
+        description: t.qaCapaDesc,
+        image: '/images/apps/capa-tracker.webp',
+      },
     ];
   });
 

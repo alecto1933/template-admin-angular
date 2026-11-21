@@ -10,7 +10,6 @@
  * ------------------------------------------------------------------------- */
 :root {
   --radius: 0.5rem;
-  --shimmer: rgb(100 116 139 / 0.45);
 
   --background: oklch(0.98 0.003 240);
   --foreground: oklch(0.245 0.02 245);
@@ -70,7 +69,6 @@
 .dark {
   --background: oklch(0.168 0.012 245);
   --foreground: oklch(0.945 0.005 240);
-  --shimmer: rgb(255 255 255 / 0.85);
 
   --card: oklch(0.208 0.014 245);
   --card-foreground: var(--foreground);
@@ -2436,40 +2434,17 @@
   --scroll-fade-mask: none;
 }
 
-/* ---------------------------------------------------------------------------
- * Shimmer sweep (hover)
- * Usage: place <span class="ui-shimmer"></span> inside a `.group` container
- * with `overflow-hidden` and `relative`.
- * ------------------------------------------------------------------------- */
-@keyframes ui-shimmer {
-  from {
-    transform: translateX(-160%) skewX(-18deg);
-  }
-  to {
-    transform: translateX(320%) skewX(-18deg);
-  }
+/* Letter roll-up on card hover (pair with a duplicated letter stack). */
+.ui-letter-roll {
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.ui-shimmer {
-  position: absolute;
-  top: -25%;
-  bottom: -25%;
-  left: 0;
-  width: 45%;
-  pointer-events: none;
-  opacity: 0;
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    var(--shimmer) 42%,
-    var(--shimmer) 55%,
-    transparent 100%
-  );
+.group:hover .ui-letter-roll {
+  transform: translateY(-50%);
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .group:hover .ui-shimmer {
-    opacity: 1;
-    animation: ui-shimmer 1.4s linear infinite;
+@media (prefers-reduced-motion: reduce) {
+  .ui-letter-roll {
+    transition: none;
   }
 }
