@@ -4,9 +4,9 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   selector: 'app-footer',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <footer class="border-t border-sidebar-border bg-sidebar px-4 py-4 md:px-6 lg:px-8">
+    <footer class="border-t border-sidebar-border bg-sidebar px-4 py-3 md:px-6 md:py-4 lg:px-8">
       <div
-        class="flex w-full flex-col gap-3 text-xs text-muted-foreground sm:flex-row sm:items-center sm:justify-between"
+        class="flex w-full flex-row items-center justify-between gap-2 text-[11px] text-muted-foreground sm:text-xs"
       >
         <p>© {{ year }} iVendor Superapps.</p>
         <div class="flex flex-wrap items-center gap-x-5 gap-y-2">
