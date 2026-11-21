@@ -4,12 +4,13 @@ import { NavigationEnd, Router, RouterLink, RouterLinkActive } from '@angular/ro
 import { filter } from 'rxjs';
 import { NAV_SECTIONS, NavItem } from '../core/nav';
 import { UiIcon } from '../shared/ui/icon/icon';
+import { UiTooltip } from '../shared/ui/tooltip/tooltip';
 import { ToastService } from '../shared/ui/toast/toast.service';
 
 @Component({
   selector: 'app-sidebar',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterLink, RouterLinkActive, UiIcon],
+  imports: [RouterLink, RouterLinkActive, UiIcon, UiTooltip],
   template: `
     <aside
       class="ui-sidebar"
@@ -58,27 +59,31 @@ import { ToastService } from '../shared/ui/toast/toast.service';
               @for (item of section.items; track item.path) {
                 @if (item.children?.length) {
                   <div>
-                    <button
-                      type="button"
-                      class="ui-sidebar-link w-full"
-                      [attr.title]="collapsed() ? item.label : null"
-                      [attr.aria-expanded]="isGroupOpen(item.path)"
-                      [class.text-sidebar-accent-foreground]="isGroupActive(item)"
-                      (click)="toggleGroup(item.path)"
-                    >
-                      <ui-icon [name]="item.icon" class="size-[18px] shrink-0" />
-                      <span class="sidebar-label">{{ item.label }}</span>
-                      @if (item.badge) {
-                        <span class="ui-sidebar-badge sidebar-label">{{ item.badge }}</span>
+                    <span class="group relative block">
+                      <button
+                        type="button"
+                        class="ui-sidebar-link w-full"
+                        [attr.aria-expanded]="isGroupOpen(item.path)"
+                        [class.text-sidebar-accent-foreground]="isGroupActive(item)"
+                        (click)="toggleGroup(item.path)"
+                      >
+                        <ui-icon [name]="item.icon" class="size-[18px] shrink-0" />
+                        <span class="sidebar-label">{{ item.label }}</span>
+                        @if (item.badge) {
+                          <span class="ui-sidebar-badge sidebar-label">{{ item.badge }}</span>
+                        }
+                        <span class="sidebar-label">
+                          <ui-icon
+                            name="chevron-down"
+                            class="size-3.5 shrink-0 transition-transform duration-200"
+                            [class.rotate-180]="isGroupOpen(item.path)"
+                          />
+                        </span>
+                      </button>
+                      @if (collapsed()) {
+                        <ui-tooltip position="right">{{ item.label }}</ui-tooltip>
                       }
-                      <span class="sidebar-label">
-                        <ui-icon
-                          name="chevron-down"
-                          class="size-3.5 shrink-0 transition-transform duration-200"
-                          [class.rotate-180]="isGroupOpen(item.path)"
-                        />
-                      </span>
-                    </button>
+                    </span>
 
                     <div class="sidebar-submenu mt-1 space-y-1" [hidden]="!isGroupOpen(item.path)">
                       @for (child of item.children ?? []; track child.path) {
@@ -87,7 +92,6 @@ import { ToastService } from '../shared/ui/toast/toast.service';
                           [routerLink]="child.path"
                           routerLinkActive="is-active"
                           [routerLinkActiveOptions]="{ exact: !!child.exact }"
-                          [attr.title]="collapsed() ? child.label : null"
                           (click)="closeMobile.emit()"
                         >
                           <span class="sidebar-label">{{ child.label }}</span>
@@ -96,30 +100,38 @@ import { ToastService } from '../shared/ui/toast/toast.service';
                     </div>
                   </div>
                 } @else if (item.path === '/help') {
-                  <button
-                    type="button"
-                    class="ui-sidebar-link w-full"
-                    [attr.title]="collapsed() ? item.label : null"
-                    (click)="openHelp()"
-                  >
-                    <ui-icon [name]="item.icon" class="size-[18px] shrink-0" />
-                    <span class="sidebar-label">{{ item.label }}</span>
-                  </button>
-                } @else {
-                  <a
-                    class="ui-sidebar-link"
-                    [routerLink]="item.path"
-                    routerLinkActive="is-active"
-                    [routerLinkActiveOptions]="{ exact: !!item.exact }"
-                    [attr.title]="collapsed() ? item.label : null"
-                    (click)="closeMobile.emit()"
-                  >
-                    <ui-icon [name]="item.icon" class="size-[18px] shrink-0" />
-                    <span class="sidebar-label">{{ item.label }}</span>
-                    @if (item.badge) {
-                      <span class="ui-sidebar-badge sidebar-label">{{ item.badge }}</span>
+                  <span class="group relative block">
+                    <button
+                      type="button"
+                      class="ui-sidebar-link w-full"
+                      (click)="openHelp()"
+                    >
+                      <ui-icon [name]="item.icon" class="size-[18px] shrink-0" />
+                      <span class="sidebar-label">{{ item.label }}</span>
+                    </button>
+                    @if (collapsed()) {
+                      <ui-tooltip position="right">{{ item.label }}</ui-tooltip>
                     }
-                  </a>
+                  </span>
+                } @else {
+                  <span class="group relative block">
+                    <a
+                      class="ui-sidebar-link w-full"
+                      [routerLink]="item.path"
+                      routerLinkActive="is-active"
+                      [routerLinkActiveOptions]="{ exact: !!item.exact }"
+                      (click)="closeMobile.emit()"
+                    >
+                      <ui-icon [name]="item.icon" class="size-[18px] shrink-0" />
+                      <span class="sidebar-label">{{ item.label }}</span>
+                      @if (item.badge) {
+                        <span class="ui-sidebar-badge sidebar-label">{{ item.badge }}</span>
+                      }
+                    </a>
+                    @if (collapsed()) {
+                      <ui-tooltip position="right">{{ item.label }}</ui-tooltip>
+                    }
+                  </span>
                 }
               }
             </nav>

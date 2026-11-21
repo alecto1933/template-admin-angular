@@ -16,24 +16,27 @@ import { LanguageService } from '../core/language.service';
 import { ThemeService } from '../core/theme/theme.service';
 import { UiAlertDialog } from '../shared/ui/alert-dialog/alert-dialog';
 import { UiIcon } from '../shared/ui/icon/icon';
+import { UiTooltip } from '../shared/ui/tooltip/tooltip';
 import { ToastService } from '../shared/ui/toast/toast.service';
 
 @Component({
   selector: 'app-topbar',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [UiIcon, CdkMenu, CdkMenuItem, CdkMenuTrigger, UiAlertDialog],
+  imports: [UiIcon, CdkMenu, CdkMenuItem, CdkMenuTrigger, UiAlertDialog, UiTooltip],
   template: `
     <header class="relative z-30 border-b border-sidebar-border bg-sidebar">
       <div class="flex h-16 items-center gap-3 px-4 md:px-6 lg:px-8">
-        <button
-          type="button"
-          class="grid size-10 shrink-0 cursor-pointer place-items-center rounded-xl text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
-          (click)="toggleNavigation.emit()"
-          aria-label="Buka atau tutup navigasi"
-          title="Buka atau tutup navigasi"
-        >
-          <ui-icon name="menu" class="size-5" />
-        </button>
+        <span class="group relative inline-flex">
+          <button
+            type="button"
+            class="grid size-10 shrink-0 cursor-pointer place-items-center rounded-xl text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
+            (click)="toggleNavigation.emit()"
+            aria-label="Buka atau tutup navigasi"
+          >
+            <ui-icon name="menu" class="size-5" />
+          </button>
+          <ui-tooltip position="bottom-start">Buka atau tutup navigasi</ui-tooltip>
+        </span>
 
         <div class="flex min-w-0 flex-col">
           <span
@@ -44,55 +47,67 @@ import { ToastService } from '../shared/ui/toast/toast.service';
         </div>
 
         <div class="ml-auto flex items-center gap-1.5 sm:gap-2">
-          <button
-            type="button"
-            class="grid size-10 cursor-pointer place-items-center rounded-xl transition-colors hover:bg-accent"
-            [cdkMenuTriggerFor]="languageMenu"
-            [attr.aria-label]="language.lang() === 'id' ? 'Bahasa: Indonesia' : 'Language: English'"
-            [attr.title]="language.lang() === 'id' ? 'Bahasa' : 'Language'"
-          >
-            <img
-              [src]="'/images/flags/' + language.lang() + '.svg'"
-              alt=""
-              class="h-4 w-6 rounded-[2px] object-cover ring-1 ring-black/5"
-            />
-          </button>
+          <span class="group relative inline-flex">
+            <button
+              type="button"
+              class="grid size-10 cursor-pointer place-items-center rounded-xl transition-colors hover:bg-accent"
+              [cdkMenuTriggerFor]="languageMenu"
+              [attr.aria-label]="
+                language.lang() === 'id' ? 'Bahasa: Indonesia' : 'Language: English'
+              "
+            >
+              <img
+                [src]="'/images/flags/' + language.lang() + '.svg'"
+                alt=""
+                class="h-4 w-6 rounded-[2px] object-cover ring-1 ring-black/5"
+              />
+            </button>
+            <ui-tooltip position="bottom">{{
+              language.lang() === 'id' ? 'Bahasa' : 'Language'
+            }}</ui-tooltip>
+          </span>
 
-          <button
-            type="button"
-            class="relative grid size-10 cursor-pointer place-items-center rounded-xl text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
-            [cdkMenuTriggerFor]="notificationsMenu"
-            aria-label="Notifikasi"
-          >
-            <ui-icon name="bell" class="size-[18px]" />
-            <span
-              class="absolute top-2.5 right-2.5 size-2 rounded-full bg-destructive ring-2 ring-sidebar"
-            ></span>
-          </button>
+          <span class="group relative inline-flex">
+            <button
+              type="button"
+              class="relative grid size-10 cursor-pointer place-items-center rounded-xl text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
+              [cdkMenuTriggerFor]="notificationsMenu"
+              aria-label="Notifikasi"
+            >
+              <ui-icon name="bell" class="size-[18px]" />
+              <span
+                class="absolute top-2.5 right-2.5 size-2 rounded-full bg-destructive ring-2 ring-sidebar"
+              ></span>
+            </button>
+            <ui-tooltip position="bottom">Notifikasi</ui-tooltip>
+          </span>
 
           <div class="mx-1 hidden h-6 w-px bg-border sm:block"></div>
 
-          <button
-            type="button"
-            class="flex cursor-pointer items-center gap-2 rounded-xl p-1 pr-1.5 transition-colors hover:bg-accent sm:pr-2"
-            [cdkMenuTriggerFor]="userMenu"
-            aria-label="Menu pengguna"
-          >
-            <span
-              class="grid size-8 place-items-center rounded-lg bg-primary text-xs font-bold text-primary-foreground"
+          <span class="group relative inline-flex">
+            <button
+              type="button"
+              class="flex cursor-pointer items-center gap-2 rounded-xl p-1 pr-1.5 transition-colors hover:bg-accent sm:pr-2"
+              [cdkMenuTriggerFor]="userMenu"
+              aria-label="Menu pengguna"
             >
-              {{ session.initials() || '?' }}
-            </span>
-            <span class="hidden text-left md:block">
-              <span class="block text-[13px] leading-tight font-semibold">
-                {{ session.user()?.name ?? 'Tamu' }}
+              <span
+                class="grid size-8 place-items-center rounded-lg bg-primary text-xs font-bold text-primary-foreground"
+              >
+                {{ session.initials() || '?' }}
               </span>
-              <span class="block text-[11px] leading-tight text-muted-foreground">
-                {{ session.user()?.role ?? '-' }}
+              <span class="hidden text-left md:block">
+                <span class="block text-[13px] leading-tight font-semibold">
+                  {{ session.user()?.name ?? 'Tamu' }}
+                </span>
+                <span class="block text-[11px] leading-tight text-muted-foreground">
+                  {{ session.user()?.role ?? '-' }}
+                </span>
               </span>
-            </span>
-            <ui-icon name="chevron-down" class="hidden size-3.5 text-muted-foreground md:block" />
-          </button>
+              <ui-icon name="chevron-down" class="hidden size-3.5 text-muted-foreground md:block" />
+            </button>
+            <ui-tooltip position="bottom-end">Menu pengguna</ui-tooltip>
+          </span>
         </div>
       </div>
 

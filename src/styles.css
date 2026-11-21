@@ -1382,7 +1382,7 @@
   }
 
   .group:hover > .ui-tooltip,
-  .group:focus-within > .ui-tooltip {
+  .group:has(:focus-visible) > .ui-tooltip {
     @apply opacity-100;
   }
 
@@ -1400,6 +1400,16 @@
     top: calc(100% + 0.4rem);
     left: 50%;
     transform: translateX(-50%);
+  }
+
+  .ui-tooltip[data-position='bottom-start'] {
+    top: calc(100% + 0.4rem);
+    left: 0;
+  }
+
+  .ui-tooltip[data-position='bottom-end'] {
+    top: calc(100% + 0.4rem);
+    right: 0;
   }
 
   .ui-tooltip[data-position='left'] {
@@ -2253,6 +2263,10 @@
 
     .ui-sidebar[data-collapsed='true'] {
       width: 84px;
+    }
+
+    .ui-sidebar[data-collapsed='true'] .ui-sidebar-scroll {
+      overflow: visible;
     }
 
     .ui-sidebar[data-collapsed='true'] .sidebar-label {

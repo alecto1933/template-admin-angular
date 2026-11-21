@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, booleanAttribute, input } from '@angular/core';
 
-export type TooltipPosition = 'top' | 'right' | 'bottom' | 'left';
+export type TooltipPosition = 'top' | 'right' | 'bottom' | 'left' | 'bottom-start' | 'bottom-end';
 
 /**
  * Tooltip panel shown when the ancestor with class `group` is hovered or
