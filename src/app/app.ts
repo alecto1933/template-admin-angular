@@ -2,12 +2,13 @@ import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { TranslationService } from '@/core/i18n/translation.service';
 import { ThemeService } from '@/core/theme/theme.service';
+import { AppUpdateBanner } from '@/layout/update-banner';
 import { UiToaster } from '@/shared/ui/toast/toaster';
 
 @Component({
   selector: 'app-root',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterOutlet, UiToaster],
+  imports: [RouterOutlet, UiToaster, AppUpdateBanner],
   template: `
     <a
       href="#main"
@@ -16,6 +17,7 @@ import { UiToaster } from '@/shared/ui/toast/toaster';
       {{ t().skipToContent }}
     </a>
     <router-outlet />
+    <app-update-banner />
     <ui-toaster />
   `,
 })

@@ -39,6 +39,10 @@ export const LAYOUT_TEXTS = {
     logoutSuccessTitle: 'Berhasil keluar',
     logoutSuccessMessage: 'Sesi demo telah diakhiri.',
     pageHome: 'Home',
+    updateTitle: 'Versi baru tersedia',
+    updateMessage: 'Aplikasi ini sudah diperbarui. Muat ulang untuk mendapatkan versi terbaru.',
+    updateReload: 'Muat ulang',
+    updateLater: 'Nanti saja',
   },
   en: {
     skipToContent: 'Skip to main content',
@@ -67,6 +71,10 @@ export const LAYOUT_TEXTS = {
     logoutSuccessTitle: 'Signed out',
     logoutSuccessMessage: 'The demo session has ended.',
     pageHome: 'Home',
+    updateTitle: 'A new version is available',
+    updateMessage: 'This app has been updated. Reload to get the latest version.',
+    updateReload: 'Reload',
+    updateLater: 'Later',
   },
   ja: {
     skipToContent: 'メインコンテンツへスキップ',
@@ -96,6 +104,10 @@ export const LAYOUT_TEXTS = {
     logoutSuccessTitle: 'ログアウトしました',
     logoutSuccessMessage: 'デモセッションを終了しました。',
     pageHome: 'ホーム',
+    updateTitle: '新しいバージョンがあります',
+    updateMessage: 'アプリが更新されました。最新バージョンを取得するには再読み込みしてください。',
+    updateReload: '再読み込み',
+    updateLater: 'あとで',
   },
 } as const;
 

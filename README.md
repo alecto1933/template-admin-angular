@@ -35,7 +35,7 @@ Butuh Node.js 22.22+ atau 24.15+ (sesuai requirement Angular 22).
 
 ```bash
 npm install
-npm start          # http://localhost:4200
+npm start          # http://localhost:4200/ivendor/
 npm run build      # build produksi ke dist/
 npm test           # unit + integration test (Vitest)
 npm run test:coverage
@@ -62,6 +62,30 @@ Konfigurasi ada di `src/environments/` dan dipilih saat build lewat
   `appVersion` (dipakai footer).
 - `src/environments/environment.ts` adalah fallback untuk unit test; build
   menggantinya dengan file environment yang dipilih.
+
+## Update & cache
+
+Agar user tidak tertinggal di versi lama:
+
+- Saat `start`/`build`, `scripts/write-version.mjs` membuat
+  `public/version.json` berisi `version`, `buildId` unik (git hash + timestamp),
+  dan `builtAt`.
+- `AppUpdateService` mengecek file itu saat aplikasi mulai, setiap 2 menit,
+  dan saat tab kembali aktif (`focus`/`visibilitychange`).
+- Jika `buildId` berbeda, muncul banner **“Versi baru tersedia”** dengan tombol
+  **Muat ulang** / **Nanti saja**.
+- Tombol muat ulang menambahkan `?v=<buildId>` pada URL agar `index.html`
+  tidak diambil dari cache, lalu hash route tetap dipertahankan.
+
+**Wajib diatur di server/hosting:**
+
+| Path | Header |
+| --- | --- |
+| `index.html` | `Cache-Control: no-cache` |
+| `version.json` | `Cache-Control: no-store` |
+| aset ber-hash (`*.js`, `*.css`, gambar) | `Cache-Control: public, max-age=31536000, immutable` |
+
+`public/version.json` di-generate saat build dan tidak di-commit.
 
 ## Testing
 | Level | Tool | Lokasi | Perintah |

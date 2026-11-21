@@ -3,9 +3,9 @@
   "version": "2.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
-    "build": "ng build",
-    "watch": "ng build --watch --configuration development",
+    "start": "node scripts/write-version.mjs && ng serve",
+    "build": "node scripts/write-version.mjs && ng build",
+    "watch": "node scripts/write-version.mjs && ng build --watch --configuration development",
     "test": "ng test",
     "icons:sync": "node scripts/sync-icons.mjs",
     "format": "prettier --write .",
@@ -14,9 +14,9 @@
     "e2e": "playwright test",
     "e2e:headed": "playwright test --headed",
     "e2e:ui": "playwright test --ui",
-    "build:dev": "ng build --configuration development",
-    "build:staging": "ng build --configuration staging",
-    "build:prod": "ng build --configuration production"
+    "build:dev": "node scripts/write-version.mjs && ng build --configuration development",
+    "build:staging": "node scripts/write-version.mjs && ng build --configuration staging",
+    "build:prod": "node scripts/write-version.mjs && ng build --configuration production"
   },
   "private": true,
   "packageManager": "npm@11.19.1",
@@ -47,7 +47,7 @@
     "typescript": "~6.0.2",
     "vitest": "^5.0.0"
   },
-  "description": "iVendor Superapps — template admin Angular 22 + Tailwind CSS 4 dengan komponen shadcn-style buatan sendiri.",
+  "description": "iVendor Superapps \u2014 template admin Angular 22 + Tailwind CSS 4 dengan komponen shadcn-style buatan sendiri.",
   "engines": {
     "node": "^22.22.3 || ^24.15.0 || >=26.0.0"
   }

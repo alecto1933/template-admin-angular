@@ -1,0 +1,73 @@
+# Contoh konfigurasi Nginx untuk staging/production di subfolder.
+#
+# Build staging memakai base href /ivendor-staging/ dan hasilnya disalin ke:
+#   /var/www/ivendor-staging/
+# Build production (base href /) bisa memakai vhost terpisah atau root /.
+#
+# Sesuaikan server_name, root, dan SSL sebelum dipakai.
+
+server {
+    listen 80;
+    listen [::]:80;
+    server_name example.aio.co.id;
+
+    # root adalah folder INDUK yang berisi folder aplikasi.
+    root /var/www;
+    index index.html;
+
+    # Jangan cache HTML: harus selalu menunjuk bundle hasil deploy terbaru.
+    location = /ivendor-staging/index.html {
+        add_header Cache-Control "no-cache, must-revalidate" always;
+        try_files $uri =404;
+    }
+
+    # Dicek berkala oleh AppUpdateService.
+    location = /ivendor-staging/version.json {
+        add_header Cache-Control "no-store" always;
+        add_header Pragma "no-cache" always;
+        expires -1;
+        try_files $uri =404;
+    }
+
+    # Aset ber-hash dari Angular boleh di-cache selamanya.
+    location ~ ^/ivendor-staging/(main|polyfills|styles|chunk|vendor|runtime)-[A-Za-z0-9_-]+\.(js|css)$ {
+        add_header Cache-Control "public, max-age=31536000, immutable" always;
+        try_files $uri =404;
+    }
+
+    # Media/font hasil build (nama ber-hash).
+    location /ivendor-staging/media/ {
+        add_header Cache-Control "public, max-age=31536000, immutable" always;
+        try_files $uri =404;
+    }
+
+    # Gambar/aset statis lain: cache sedang agar tetap bisa diperbarui.
+    location ~* ^/ivendor-staging/.*\.(png|jpe?g|gif|svg|webp|ico|woff2?)$ {
+        add_header Cache-Control "public, max-age=86400" always;
+        try_files $uri =404;
+    }
+
+    # Hash routing: fallback ini hanya untuk path tanpa hash.
+    location /ivendor-staging/ {
+        try_files $uri $uri/ /ivendor-staging/index.html;
+    }
+
+    gzip on;
+    gzip_types text/plain text/css application/json application/javascript application/xml image/svg+xml;
+    gzip_min_length 1024;
+
+    # Uncomment setelah SSL:
+    # listen 443 ssl http2;
+    # ssl_certificate     /etc/letsencrypt/live/example.aio.co.id/fullchain.pem;
+    # ssl_certificate_key /etc/letsencrypt/live/example.aio.co.id/privkey.pem;
+}
+
+# ---------------------------------------------------------------------------
+# Untuk production di root domain, gunakan variasi berikut:
+#
+#   root /var/www/ivendor-production;
+#   location = /index.html { add_header Cache-Control "no-cache, must-revalidate" always; }
+#   location = /version.json { add_header Cache-Control "no-store" always; }
+#   location ~ ^/(main|polyfills|styles|chunk|vendor|runtime)-[A-Za-z0-9_-]+\.(js|css)$ { ... }
+#   location / { try_files $uri $uri/ /index.html; }
+# ---------------------------------------------------------------------------

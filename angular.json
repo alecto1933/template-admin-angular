@@ -50,7 +50,8 @@
                   "with": "src/environments/environment.production.ts"
                 }
               ],
-              "outputPath": "dist/template-admin"
+              "outputPath": "dist/template-admin",
+              "baseHref": "/"
             },
             "development": {
               "optimization": false,
@@ -62,7 +63,8 @@
                   "with": "src/environments/environment.development.ts"
                 }
               ],
-              "outputPath": "dist/template-admin-development"
+              "outputPath": "dist/template-admin-development",
+              "baseHref": "/ivendor/"
             },
             "staging": {
               "fileReplacements": [
@@ -87,7 +89,8 @@
                   "maximumWarning": "4kB",
                   "maximumError": "8kB"
                 }
-              ]
+              ],
+              "baseHref": "/ivendor-staging/"
             }
           },
           "defaultConfiguration": "production"
@@ -126,7 +129,8 @@
               "branches": 80,
               "functions": 80,
               "lines": 80
-            }
+            },
+            "isolate": true
           }
         }
       }

@@ -50,3 +50,6 @@ Thumbs.db
 /playwright-report
 /test-results
 /blob-report
+
+# Build metadata (generated)
+/public/version.json

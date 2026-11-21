@@ -7,7 +7,7 @@ test.beforeEach(async ({ page }) => {
 
 test.describe('Register', () => {
   test('renders the vendor registration form and switches language', async ({ page }) => {
-    await page.goto('/#/public/registration');
+    await page.goto('/ivendor/#/public/registration');
 
     await expect(page.getByRole('heading', { name: 'Profil Vendor' })).toBeVisible();
     await expect(page.getByText('Perusahaan Indonesia', { exact: true })).toBeVisible();
@@ -23,7 +23,7 @@ test.describe('Register', () => {
   });
 
   test('cancel confirmation returns to the login page', async ({ page }) => {
-    await page.goto('/#/public/registration');
+    await page.goto('/ivendor/#/public/registration');
     await expect(page.getByRole('heading', { name: 'Profil Vendor' })).toBeVisible();
 
     await page.getByRole('button', { name: 'Batalkan', exact: true }).click();
