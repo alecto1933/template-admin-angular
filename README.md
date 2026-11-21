@@ -56,12 +56,25 @@ Konfigurasi ada di `src/environments/` dan dipilih saat build lewat
 | staging | `npm run build:staging` | `dist/template-admin-staging/` |
 | production | `npm run build:prod` (atau `npm run build`) | `dist/template-admin/` |
 
-- `npm start` / `ng serve` memakai `development` secara default.
+- `npm start` / `ng serve` memakai `development` secara default dan berjalan di
+  `http://localhost:4200/ivendor/`.
 - `npm start -- --configuration staging` untuk menjalankan build staging.
 - Field environment: `name`, `production`, `apiUrl`, `supportEmail`,
   `appVersion` (dipakai footer).
 - `src/environments/environment.ts` adalah fallback untuk unit test; build
   menggantinya dengan file environment yang dipilih.
+
+**Base path** diatur per environment di `angular.json` (`baseHref`):
+
+| Environment | Base href |
+| --- | --- |
+| development | `/ivendor/` |
+| staging | `/ivendor-staging/` |
+| production | `/` |
+
+Untuk mengganti path (mis. staging ke `/vendor/`), ubah `baseHref` lalu
+sesuaikan folder deploy & konfigurasi web server. Panduan lengkap ada di
+[`deploy/README.md`](deploy/README.md).
 
 ## Update & cache
 

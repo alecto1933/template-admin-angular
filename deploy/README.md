@@ -35,6 +35,23 @@ Jika butuh path lain, timpa saat build:
 npm run build:staging -- --base-href=/path-lain/
 ```
 
+### Mengganti base path secara permanen
+
+1. Ubah `baseHref` environment terkait di `angular.json`, misalnya staging:
+   ```json
+   "staging": { "baseHref": "/vendor/" }
+   ```
+2. Sesuaikan lokasi deploy agar cocok dengan path:
+   - XAMPP/Apache: taruh build di `htdocs/vendor/`.
+   - Nginx: sesuaikan semua prefix `location` (index, version.json, aset
+     ber-hash, media, fallback) dari `/ivendor-staging/` ke `/vendor/`.
+     Alternatif lebih simpel: gunakan vhost/root sendiri dengan base href `/`.
+3. Build ulang (`npm run build:staging`) dan deploy.
+4. Pastikan base href diawali dan diakhiri `/` (`/vendor/`, bukan `vendor`).
+
+`AppUpdateService` otomatis mengikuti `<base href>`, jadi `version.json`
+diambil dari path baru tanpa perubahan kode.
+
 ## Staging & Production — Nginx
 
 1. Salin `deploy/nginx.conf.example` ke

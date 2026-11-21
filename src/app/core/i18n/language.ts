@@ -7,9 +7,9 @@ export interface LanguageOption {
 }
 
 export const LANGUAGES: LanguageOption[] = [
-  { code: 'id', label: 'Indonesia', flag: '/images/flags/id.svg' },
-  { code: 'en', label: 'English', flag: '/images/flags/en.svg' },
-  { code: 'ja', label: '日本語', flag: '/images/flags/jp.svg' },
+  { code: 'id', label: 'Indonesia', flag: 'images/flags/id.svg' },
+  { code: 'en', label: 'English', flag: 'images/flags/en.svg' },
+  { code: 'ja', label: '日本語', flag: 'images/flags/jp.svg' },
 ];
 
 export function languageInfo(code: Language): LanguageOption {

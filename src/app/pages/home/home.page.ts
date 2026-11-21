@@ -35,23 +35,23 @@ export class HomePage {
       {
         title: t.qaVendorTitle,
         description: t.qaVendorDesc,
-        image: '/images/apps/vendor-profile.webp',
+        image: 'images/apps/vendor-profile.webp',
       },
       {
         title: t.qaOrderTitle,
         description: t.qaOrderDesc,
-        image: '/images/apps/purchase-order.webp',
+        image: 'images/apps/purchase-order.webp',
       },
-      { title: t.qaBillionTitle, description: t.qaBillionDesc, image: '/images/apps/billing.webp' },
+      { title: t.qaBillionTitle, description: t.qaBillionDesc, image: 'images/apps/billing.webp' },
       {
         title: t.qaBiddingTitle,
         description: t.qaBiddingDesc,
-        image: '/images/apps/bidding-auction.webp',
+        image: 'images/apps/bidding-auction.webp',
       },
       {
         title: t.qaCapaTitle,
         description: t.qaCapaDesc,
-        image: '/images/apps/capa-tracker.webp',
+        image: 'images/apps/capa-tracker.webp',
       },
     ];
   });

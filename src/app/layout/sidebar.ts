@@ -27,7 +27,7 @@ import { ToastService } from '@/shared/ui/toast/toast.service';
           (click)="closeMobile.emit()"
         >
           <img
-            src="/images/logo.webp"
+            src="images/logo.webp"
             alt=""
             class="size-9 shrink-0 object-contain drop-shadow-sm"
           />

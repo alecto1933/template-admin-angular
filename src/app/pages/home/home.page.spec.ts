@@ -28,11 +28,11 @@ describe('HomePage', () => {
     });
 
     expect(images).toEqual([
-      expect.stringContaining('/images/apps/vendor-profile.webp'),
-      expect.stringContaining('/images/apps/purchase-order.webp'),
-      expect.stringContaining('/images/apps/billing.webp'),
-      expect.stringContaining('/images/apps/bidding-auction.webp'),
-      expect.stringContaining('/images/apps/capa-tracker.webp'),
+      expect.stringContaining('images/apps/vendor-profile.webp'),
+      expect.stringContaining('images/apps/purchase-order.webp'),
+      expect.stringContaining('images/apps/billing.webp'),
+      expect.stringContaining('images/apps/bidding-auction.webp'),
+      expect.stringContaining('images/apps/capa-tracker.webp'),
     ]);
   });
 
