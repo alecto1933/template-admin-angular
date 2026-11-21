@@ -95,8 +95,8 @@ Manifest dibuat otomatis oleh `scripts/write-federation-manifest.mjs` saat
 
 Path staging/production relatif terhadap base href host, sehingga remote
 disajikan same-origin di `<base host>/remotes/profile-management/`. Urutan
-rilis: deploy remote lebih dulu, lalu host hanya bila manifest berubah.
-Detail ada di [`deploy/README.md`](deploy/README.md).
+rilis: deploy remote lebih dulu, lalu host bila manifest atau kontrak/route
+host berubah. Detail ada di [`deploy/README.md`](deploy/README.md).
 
 ## Update & cache
 

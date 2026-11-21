@@ -88,13 +88,25 @@ Remote dan host adalah dua pipeline build terpisah. Rilis remote **dulu**, host
 
 1. Build + deploy remote (`npm run build:staging` atau `build:prod` di repo
    remote) ke `<base host>/remotes/profile-management/`.
-2. Deploy host hanya bila **manifest berubah** (mis. menambah remote baru,
-   mengubah URL remote, atau pindah base path). Perubahan kode remote yang
-   tidak mengubah manifest tidak memerlukan deploy host.
+2. Deploy host bila **manifest berubah** (mis. menambah remote baru, mengubah
+   URL remote, atau pindah base path) **atau** kontrak/route host berubah.
+   Perubahan kode remote yang tidak mengubah manifest maupun kontrak tidak
+   memerlukan deploy host.
 3. Verifikasi halaman `/profile-management` di host memuat remote versi baru.
 
 Jangan menghapus atau mengganti isi `remotes/profile-management/` sebagian:
 `remoteEntry.json` dan chunk ber-hash harus berasal dari build yang sama.
+
+### Rollback
+
+1. Sebelum upload, simpan build host sebelumnya (mis. rename folder deploy lama
+   atau simpan arsip `browser/` beserta `federation.manifest.json` lamanya).
+2. Jika verifikasi gagal, kembalikan folder build lama **utuh** — jangan
+   mencampur `index.html`/manifest baru dengan chunk lama atau sebaliknya.
+3. Untuk rollback remote, kembalikan folder `remotes/profile-management/` dari
+   build sebelumnya (termasuk `remoteEntry.json` pasangannya), lalu verifikasi
+   ulang halaman profil.
+4. Deploy ulang host hanya bila manifest ikut berubah saat rollback.
 
 ### Deteksi versi remote
 
@@ -120,9 +132,17 @@ build remote saja tetap memunculkan banner. Remote wajib menaruh
    header `no-cache` memaksa browser revalidasi.
 
 Contoh nginx memuat aturan untuk artefak host **dan** artefak remote yang
-disajikan dari root yang sama. `location =` (exact match) harus tetap ditulis
-sebelum `location /` (prefix) agar `version.json`, `remoteEntry.json`, dan
-`federation.manifest.json` tidak ikut aturan `immutable`.
+disajikan dari root yang sama. Presedensi `location` di Nginx:
+
+- `location =` (exact match) selalu menang **tanpa melihat urutan penulisan**.
+- Di antara `location ~` / `~*`, regex **pertama yang cocok** yang dipakai,
+  jadi urutannya penting (aset ber-hash ditulis sebelum regex gambar).
+- `location ^~` mematikan evaluasi regex untuk prefix tersebut. Karena itu
+  `/media/` memakai `^~` agar font ber-hash tidak ditimpa regex gambar.
+
+Dengan aturan ini, `version.json`, `remoteEntry.json`, dan
+`federation.manifest.json` tidak ikut aturan `immutable`, dan `media/*.woff2`
+tetap `immutable`.
 
 ## Development — XAMPP/Laragon (Apache)
 
@@ -146,15 +166,15 @@ sebelum `location /` (prefix) agar `version.json`, `remoteEntry.json`, dan
 `public/.htaccess` otomatis ikut ter-copy ke folder build dan mengatur header
 cache:
 
-| Path                              | Header                                |
-| --------------------------------- | ------------------------------------- |
-| `index.html`                      | `no-cache, must-revalidate`           |
-| `version.json`                    | `no-store`                            |
-| `federation.manifest.json`        | `no-store`                            |
-| `remoteEntry.json`                | `no-cache`                            |
-| `main-*` / `chunk-*` / `styles-*` | `public, max-age=31536000, immutable` |
-| `/media/*`                        | `public, max-age=31536000, immutable` |
-| gambar lain                       | `public, max-age=86400`               |
+| Path                                                   | Header                                |
+| ------------------------------------------------------ | ------------------------------------- |
+| `index.html`                                           | `no-cache, must-revalidate`           |
+| `version.json`                                         | `no-store`                            |
+| `federation.manifest.json`                             | `no-store`                            |
+| `remoteEntry.json`                                     | `no-cache`                            |
+| `main-*` / `chunk-*` / `styles-*` / `_angular_*.js`    | `public, max-age=31536000, immutable` |
+| `/media/*`                                             | `public, max-age=31536000, immutable` |
+| gambar/aset non-hash (`*.png`, `*.svg`, `favicon.ico`) | `public, max-age=86400`               |
 
 Aturan `.htaccess` berlaku turun ke subfolder. Jika artefak remote ikut
 di-upload ke bawah document root Apache yang sama, `version.json` dan
@@ -186,4 +206,7 @@ remoteEntry.json          → Cache-Control: no-cache
 remotes/.../remoteEntry.json → Cache-Control: no-cache
 remotes/.../version.json     → Cache-Control: no-store
 main-xxxx.js              → Cache-Control: public, max-age=31536000, immutable
+_angular_core.xxxx.js     → Cache-Control: public, max-age=31536000, immutable
+media/font-xxxx.woff2     → Cache-Control: public, max-age=31536000, immutable
+favicon.ico               → Cache-Control: public, max-age=86400
 ```

@@ -32,7 +32,8 @@
   </Files>
 
   # Hanya aset ber-hash dari Angular yang boleh di-cache selamanya.
-  <FilesMatch "^(main|polyfills|styles|chunk|vendor|runtime)-[A-Za-z0-9_-]+\.(js|css)$">
+  # Termasuk shared external Native Federation (_angular_*.js).
+  <FilesMatch "^(main|polyfills|styles|chunk|vendor|runtime)-[A-Za-z0-9_-]+\.(js|css)$|^_angular_[A-Za-z0-9_.-]+\.js$">
     Header set Cache-Control "public, max-age=31536000, immutable"
   </FilesMatch>
 </IfModule>
@@ -41,6 +42,11 @@
 <IfModule mod_headers.c>
   <If "%{REQUEST_URI} =~ m#/media/#">
     Header set Cache-Control "public, max-age=31536000, immutable"
+  </If>
+
+  # Gambar/aset statis non-hash (termasuk favicon) di luar /media/.
+  <If "%{REQUEST_URI} =~ m#\.(png|jpe?g|gif|svg|webp|ico|woff2?)$# && %{REQUEST_URI} !~ m#/media/#">
+    Header set Cache-Control "public, max-age=86400"
   </If>
 </IfModule>
 

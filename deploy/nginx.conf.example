@@ -89,19 +89,20 @@ server {
     # --- Aset host ----------------------------------------------------------
 
     # Aset ber-hash dari Angular boleh di-cache selamanya.
-    location ~ ^/ivendor-staging/(main|polyfills|styles|chunk|vendor|runtime)-[A-Za-z0-9_-]+\.(js|css)$ {
+    # Termasuk shared external Native Federation (_angular_*.js).
+    location ~ ^/ivendor-staging/((main|polyfills|styles|chunk|vendor|runtime)-[A-Za-z0-9_-]+\.(js|css)|_angular_[A-Za-z0-9_.-]+\.js)$ {
         add_header Cache-Control "public, max-age=31536000, immutable" always;
         try_files $uri =404;
     }
 
-    # Media/font hasil build (nama ber-hash).
-    location /ivendor-staging/media/ {
+    # Media/font hasil build (nama ber-hash). ^~ agar tidak ditimpa regex gambar.
+    location ^~ /ivendor-staging/media/ {
         add_header Cache-Control "public, max-age=31536000, immutable" always;
         try_files $uri =404;
     }
 
-    # Gambar/aset statis lain: cache sedang agar tetap bisa diperbarui.
-    location ~* ^/ivendor-staging/.*\.(png|jpe?g|gif|svg|webp|ico|woff2?)$ {
+    # Gambar/aset statis non-hash (termasuk favicon) di luar /media/.
+    location ~* ^/ivendor-staging/(?!media/).*\.(png|jpe?g|gif|svg|webp|ico|woff2?)$ {
         add_header Cache-Control "public, max-age=86400" always;
         try_files $uri =404;
     }
@@ -128,19 +129,33 @@ server {
 #
 #   # Host
 #   location = /index.html { add_header Cache-Control "no-cache, must-revalidate" always; }
-#   location = /version.json { add_header Cache-Control "no-store" always; }
-#   location = /federation.manifest.json { add_header Cache-Control "no-store" always; }
+#   location = /version.json {
+#       add_header Cache-Control "no-store" always;
+#       add_header Pragma "no-cache" always;
+#       expires -1;
+#   }
+#   location = /federation.manifest.json {
+#       add_header Cache-Control "no-store" always;
+#       add_header Pragma "no-cache" always;
+#       expires -1;
+#   }
 #   location = /remoteEntry.json { add_header Cache-Control "no-cache" always; }
 #
 #   # Remote profile-management
 #   location = /remotes/profile-management/index.html { add_header Cache-Control "no-cache, must-revalidate" always; }
-#   location = /remotes/profile-management/version.json { add_header Cache-Control "no-store" always; }
+#   location = /remotes/profile-management/version.json {
+#       add_header Cache-Control "no-store" always;
+#       add_header Pragma "no-cache" always;
+#       expires -1;
+#   }
 #   location = /remotes/profile-management/remoteEntry.json { add_header Cache-Control "no-cache" always; }
 #   location /remotes/profile-management/documents/ { add_header Cache-Control "public, max-age=86400" always; }
+#   location = /remotes/profile-management/favicon.ico { add_header Cache-Control "public, max-age=86400" always; }
 #   location /remotes/profile-management/ { add_header Cache-Control "public, max-age=31536000, immutable" always; }
 #
-#   # Aset host
-#   location ~ ^/(main|polyfills|styles|chunk|vendor|runtime)-[A-Za-z0-9_-]+\.(js|css)$ { ... }
-#   location /media/ { ... }
+#   # Aset host: ^~ pada media agar regex gambar tidak menimpanya.
+#   location ~ ^/((main|polyfills|styles|chunk|vendor|runtime)-[A-Za-z0-9_-]+\.(js|css)|_angular_[A-Za-z0-9_.-]+\.js)$ { ... immutable ... }
+#   location ^~ /media/ { ... immutable ... }
+#   location ~* ^/(?!media/).*\.(png|jpe?g|gif|svg|webp|ico|woff2?)$ { ... max-age=86400 ... }
 #   location / { try_files $uri $uri/ /index.html; }
 # ---------------------------------------------------------------------------
