@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, input, output, viewChild } from '@angular/core';
-import { UiButton } from '../button/button';
-import { UiDialog } from '../dialog/dialog';
+import { UiButton } from '@/shared/ui/button/button';
+import { UiDialog } from '@/shared/ui/dialog/dialog';
 
 /**
  * Confirmation dialog for destructive or irreversible actions.

@@ -6,7 +6,7 @@ import {
   input,
   signal,
 } from '@angular/core';
-import { UiIcon } from '../icon/icon';
+import { UiIcon } from '@/shared/ui/icon/icon';
 
 export type CodeBlockSize = 'sm' | 'md' | 'lg';
 

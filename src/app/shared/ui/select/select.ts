@@ -11,8 +11,8 @@ import {
   signal,
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { UiIcon } from '../icon/icon';
-import { IconName } from '../icon/icons';
+import { UiIcon } from '@/shared/ui/icon/icon';
+import { IconName } from '@/shared/ui/icon/icons';
 
 export interface SelectOption {
   value: string;

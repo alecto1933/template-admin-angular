@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { Language, PreferencesService } from './state/preferences.service';
+import { Language, PreferencesService } from '@/core/state/preferences.service';
 
 export type { Language };
 

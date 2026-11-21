@@ -1,6 +1,6 @@
 import { Injectable, signal } from '@angular/core';
-import { Language } from '../i18n/language';
-import { appKey, readString, writeString } from '../storage';
+import { Language } from '@/core/i18n/language';
+import { appKey, readString, writeString } from '@/core/storage';
 
 export type Theme = 'light' | 'dark';
 

@@ -1,10 +1,10 @@
 import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
-import { UiBadge } from '../../shared/ui/badge/badge';
-import { UiIcon } from '../../shared/ui/icon/icon';
-import { TranslationService } from '../../core/i18n/translation.service';
-import { ACTIVITIES, ANNOUNCEMENTS, HOME_TEXTS } from '../../core/i18n/home.texts';
-import { ToastService } from '../../shared/ui/toast/toast.service';
-import { RollingTitle } from './rolling-title';
+import { UiBadge } from '@/shared/ui/badge/badge';
+import { UiIcon } from '@/shared/ui/icon/icon';
+import { TranslationService } from '@/core/i18n/translation.service';
+import { ACTIVITIES, ANNOUNCEMENTS, HOME_TEXTS } from '@/core/i18n/home.texts';
+import { ToastService } from '@/shared/ui/toast/toast.service';
+import { RollingTitle } from '@/pages/home/rolling-title';
 
 interface QuickAccessItem {
   title: string;

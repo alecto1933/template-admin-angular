@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
-import { ICONS, IconName } from './icons';
+import { ICONS, IconName } from '@/shared/ui/icon/icons';
 
 @Component({
   selector: 'ui-icon',

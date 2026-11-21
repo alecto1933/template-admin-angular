@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { TranslationService } from '../../core/i18n/translation.service';
-import { NOT_FOUND_TEXTS } from '../../core/i18n/not-found.texts';
-import { UiButton } from '../../shared/ui/button/button';
-import { UiIcon } from '../../shared/ui/icon/icon';
+import { TranslationService } from '@/core/i18n/translation.service';
+import { NOT_FOUND_TEXTS } from '@/core/i18n/not-found.texts';
+import { UiButton } from '@/shared/ui/button/button';
+import { UiIcon } from '@/shared/ui/icon/icon';
 
 @Component({
   selector: 'app-not-found',

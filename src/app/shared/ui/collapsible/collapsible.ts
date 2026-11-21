@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, booleanAttribute, input, model } from '@angular/core';
-import { UiIcon } from '../icon/icon';
+import { UiIcon } from '@/shared/ui/icon/icon';
 
 /**
  * Single animated collapsible panel. For a list of panels use ui-accordion.

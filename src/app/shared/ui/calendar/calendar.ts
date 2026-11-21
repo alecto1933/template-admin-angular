@@ -7,7 +7,7 @@ import {
   model,
   signal,
 } from '@angular/core';
-import { UiIcon } from '../icon/icon';
+import { UiIcon } from '@/shared/ui/icon/icon';
 
 export type CalendarMode = 'single' | 'multiple' | 'range';
 

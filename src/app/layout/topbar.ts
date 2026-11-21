@@ -11,16 +11,16 @@ import {
 import { NavigationEnd, Router } from '@angular/router';
 import { filter, startWith } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { TranslationService } from '../core/i18n/translation.service';
-import { AppNotification, NOTIFICATION_TEXTS } from '../core/i18n/layout.texts';
-import { SessionService } from '../core/state/session.service';
-import { LanguageService } from '../core/language.service';
-import { LANGUAGES, languageInfo } from '../core/i18n/language';
-import { ThemeService } from '../core/theme/theme.service';
-import { UiAlertDialog } from '../shared/ui/alert-dialog/alert-dialog';
-import { UiIcon } from '../shared/ui/icon/icon';
-import { UiTooltip } from '../shared/ui/tooltip/tooltip';
-import { ToastService } from '../shared/ui/toast/toast.service';
+import { TranslationService } from '@/core/i18n/translation.service';
+import { AppNotification, NOTIFICATION_TEXTS } from '@/core/i18n/layout.texts';
+import { SessionService } from '@/core/state/session.service';
+import { LanguageService } from '@/core/language.service';
+import { LANGUAGES, languageInfo } from '@/core/i18n/language';
+import { ThemeService } from '@/core/theme/theme.service';
+import { UiAlertDialog } from '@/shared/ui/alert-dialog/alert-dialog';
+import { UiIcon } from '@/shared/ui/icon/icon';
+import { UiTooltip } from '@/shared/ui/tooltip/tooltip';
+import { ToastService } from '@/shared/ui/toast/toast.service';
 
 @Component({
   selector: 'app-topbar',

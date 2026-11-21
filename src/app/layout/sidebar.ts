@@ -2,11 +2,11 @@ import { ChangeDetectionStrategy, Component, inject, input, output, signal } fro
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NavigationEnd, Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { filter } from 'rxjs';
-import { TranslationService } from '../core/i18n/translation.service';
-import { NAV_SECTIONS, NavItem } from '../core/nav';
-import { UiIcon } from '../shared/ui/icon/icon';
-import { UiTooltip } from '../shared/ui/tooltip/tooltip';
-import { ToastService } from '../shared/ui/toast/toast.service';
+import { TranslationService } from '@/core/i18n/translation.service';
+import { NAV_SECTIONS, NavItem } from '@/core/nav';
+import { UiIcon } from '@/shared/ui/icon/icon';
+import { UiTooltip } from '@/shared/ui/tooltip/tooltip';
+import { ToastService } from '@/shared/ui/toast/toast.service';
 
 @Component({
   selector: 'app-sidebar',

@@ -1,5 +1,5 @@
 import { computed, inject, Injectable } from '@angular/core';
-import { PreferencesService, Theme } from '../state/preferences.service';
+import { PreferencesService, Theme } from '@/core/state/preferences.service';
 
 export type { Theme };
 

@@ -1,5 +1,5 @@
 import { computed, Injectable, signal } from '@angular/core';
-import { appKey, readJson, remove, writeJson } from '../storage';
+import { appKey, readJson, remove, writeJson } from '@/core/storage';
 
 export interface SessionUser {
   id: string;

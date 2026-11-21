@@ -1,4 +1,4 @@
-import { appKey, readJson, readString, remove, writeJson, writeString } from './storage';
+import { appKey, readJson, readString, remove, writeJson, writeString } from '@/core/storage';
 
 describe('storage', () => {
   beforeEach(() => localStorage.clear());

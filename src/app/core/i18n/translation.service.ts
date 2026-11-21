@@ -1,7 +1,7 @@
 import { computed, inject, Injectable } from '@angular/core';
-import { LanguageService } from '../language.service';
-import { LayoutTexts, LAYOUT_TEXTS } from './layout.texts';
-import { Language } from './language';
+import { LanguageService } from '@/core/language.service';
+import { LayoutTexts, LAYOUT_TEXTS } from '@/core/i18n/layout.texts';
+import { Language } from '@/core/i18n/language';
 
 @Injectable({ providedIn: 'root' })
 export class TranslationService {

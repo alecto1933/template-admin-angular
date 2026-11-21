@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { UiAccordion, UiAccordionItem } from './accordion';
+import { UiAccordion, UiAccordionItem } from '@/shared/ui/accordion/accordion';
 
 @Component({
   imports: [UiAccordion, UiAccordionItem],

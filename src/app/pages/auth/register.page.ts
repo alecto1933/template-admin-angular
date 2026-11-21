@@ -19,21 +19,21 @@ import {
 } from '@angular/forms';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { Router } from '@angular/router';
-import { ThemeService } from '../../core/theme/theme.service';
-import { UiButton } from '../../shared/ui/button/button';
-import { UiAutocomplete } from '../../shared/ui/autocomplete/autocomplete';
-import { UiAttachment } from '../../shared/ui/attachment/attachment';
-import { UiDialog } from '../../shared/ui/dialog/dialog';
-import { SelectOption, UiSelect } from '../../shared/ui/select/select';
-import { UiIcon } from '../../shared/ui/icon/icon';
-import { UiSwitch } from '../../shared/ui/switch/switch';
-import { TranslationService } from '../../core/i18n/translation.service';
-import { REGISTER_TEXTS } from '../../core/i18n/register.texts';
-import { LANGUAGES, languageInfo } from '../../core/i18n/language';
-import { ToastService } from '../../shared/ui/toast/toast.service';
-import { UiBadge } from '../../shared/ui/badge/badge';
-import { UiAlertDialog } from '../../shared/ui/alert-dialog/alert-dialog';
-import { BankRequest, BankRequestDialog, BankRequestTexts } from './bank-request-dialog';
+import { ThemeService } from '@/core/theme/theme.service';
+import { UiButton } from '@/shared/ui/button/button';
+import { UiAutocomplete } from '@/shared/ui/autocomplete/autocomplete';
+import { UiAttachment } from '@/shared/ui/attachment/attachment';
+import { UiDialog } from '@/shared/ui/dialog/dialog';
+import { SelectOption, UiSelect } from '@/shared/ui/select/select';
+import { UiIcon } from '@/shared/ui/icon/icon';
+import { UiSwitch } from '@/shared/ui/switch/switch';
+import { TranslationService } from '@/core/i18n/translation.service';
+import { REGISTER_TEXTS } from '@/core/i18n/register.texts';
+import { LANGUAGES, languageInfo } from '@/core/i18n/language';
+import { ToastService } from '@/shared/ui/toast/toast.service';
+import { UiBadge } from '@/shared/ui/badge/badge';
+import { UiAlertDialog } from '@/shared/ui/alert-dialog/alert-dialog';
+import { BankRequest, BankRequestDialog, BankRequestTexts } from '@/pages/auth/bank-request-dialog';
 
 
 

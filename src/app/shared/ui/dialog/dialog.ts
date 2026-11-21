@@ -7,7 +7,7 @@ import {
   output,
   viewChild,
 } from '@angular/core';
-import { UiIcon } from '../icon/icon';
+import { UiIcon } from '@/shared/ui/icon/icon';
 
 /**
  * Dialog built on the native <dialog> element: focus trapping, ESC to close

@@ -9,10 +9,10 @@ import {
   viewChild,
 } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { UiButton } from '../../shared/ui/button/button';
-import { UiDialog } from '../../shared/ui/dialog/dialog';
-import { UiIcon } from '../../shared/ui/icon/icon';
-import { SelectOption, UiSelect } from '../../shared/ui/select/select';
+import { UiButton } from '@/shared/ui/button/button';
+import { UiDialog } from '@/shared/ui/dialog/dialog';
+import { UiIcon } from '@/shared/ui/icon/icon';
+import { SelectOption, UiSelect } from '@/shared/ui/select/select';
 
 export interface BankRequest {
   id: string;

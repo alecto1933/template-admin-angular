@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, booleanAttribute, input } from '@angular/core';
-import { UiIcon } from '../icon/icon';
+import { UiIcon } from '@/shared/ui/icon/icon';
 
 export type ButtonVariant =
   'primary' | 'secondary' | 'soft' | 'outline' | 'ghost' | 'destructive' | 'link' | 'success';

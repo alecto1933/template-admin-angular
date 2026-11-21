@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { TranslationService } from './core/i18n/translation.service';
-import { ThemeService } from './core/theme/theme.service';
-import { UiToaster } from './shared/ui/toast/toaster';
+import { TranslationService } from '@/core/i18n/translation.service';
+import { ThemeService } from '@/core/theme/theme.service';
+import { UiToaster } from '@/shared/ui/toast/toaster';
 
 @Component({
   selector: 'app-root',

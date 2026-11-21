@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, input, model } from '@angular/core';
-import { UiIcon } from '../icon/icon';
+import { UiIcon } from '@/shared/ui/icon/icon';
 
 export type DrawerDirection = 'left' | 'right' | 'top' | 'bottom';
 

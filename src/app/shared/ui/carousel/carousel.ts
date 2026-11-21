@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, ElementRef, input, viewChild } from '@angular/core';
-import { UiButton } from '../button/button';
-import { UiIcon } from '../icon/icon';
+import { UiButton } from '@/shared/ui/button/button';
+import { UiIcon } from '@/shared/ui/icon/icon';
 
 export type CarouselOrientation = 'horizontal' | 'vertical';
 export type CarouselSize = 'sm' | 'md' | 'lg';

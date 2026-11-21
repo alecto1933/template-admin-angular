@@ -9,10 +9,10 @@ import {
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { filter } from 'rxjs';
-import { PreferencesService } from '../core/state/preferences.service';
-import { AppFooter } from './footer';
-import { AppSidebar } from './sidebar';
-import { AppTopbar } from './topbar';
+import { PreferencesService } from '@/core/state/preferences.service';
+import { AppFooter } from '@/layout/footer';
+import { AppSidebar } from '@/layout/sidebar';
+import { AppTopbar } from '@/layout/topbar';
 
 @Component({
   selector: 'app-shell',

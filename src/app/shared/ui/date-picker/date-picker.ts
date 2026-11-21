@@ -11,9 +11,9 @@ import {
   signal,
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { UiButton } from '../button/button';
-import { UiCalendar, CalendarMode } from '../calendar/calendar';
-import { UiIcon } from '../icon/icon';
+import { UiButton } from '@/shared/ui/button/button';
+import { UiCalendar, CalendarMode } from '@/shared/ui/calendar/calendar';
+import { UiIcon } from '@/shared/ui/icon/icon';
 
 export type DateFormat = 'short' | 'long' | 'iso';
 

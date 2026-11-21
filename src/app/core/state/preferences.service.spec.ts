@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
-import { appKey, readString } from '../storage';
-import { PreferencesService } from './preferences.service';
+import { appKey, readString } from '@/core/storage';
+import { PreferencesService } from '@/core/state/preferences.service';
 
 describe('PreferencesService', () => {
   beforeEach(() => {

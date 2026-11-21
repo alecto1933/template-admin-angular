@@ -9,7 +9,7 @@ import {
   input,
   model,
 } from '@angular/core';
-import { UiIcon } from '../icon/icon';
+import { UiIcon } from '@/shared/ui/icon/icon';
 
 /**
  * Accordion item. Content is projected and animated with a CSS grid row

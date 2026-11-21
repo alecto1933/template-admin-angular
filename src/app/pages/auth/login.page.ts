@@ -10,17 +10,17 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CdkMenu, CdkMenuItem, CdkMenuTrigger } from '@angular/cdk/menu';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { SessionService } from '../../core/state/session.service';
-import { ThemeService } from '../../core/theme/theme.service';
-import { AutocompleteOption, UiAutocomplete } from '../../shared/ui/autocomplete/autocomplete';
-import { UiButton } from '../../shared/ui/button/button';
-import { UiIcon } from '../../shared/ui/icon/icon';
-import { UiDialog } from '../../shared/ui/dialog/dialog';
-import { UiTooltip } from '../../shared/ui/tooltip/tooltip';
-import { TranslationService } from '../../core/i18n/translation.service';
-import { LOGIN_TEXTS } from '../../core/i18n/login.texts';
-import { LANGUAGES, languageInfo } from '../../core/i18n/language';
-import { ToastService } from '../../shared/ui/toast/toast.service';
+import { SessionService } from '@/core/state/session.service';
+import { ThemeService } from '@/core/theme/theme.service';
+import { AutocompleteOption, UiAutocomplete } from '@/shared/ui/autocomplete/autocomplete';
+import { UiButton } from '@/shared/ui/button/button';
+import { UiIcon } from '@/shared/ui/icon/icon';
+import { UiDialog } from '@/shared/ui/dialog/dialog';
+import { UiTooltip } from '@/shared/ui/tooltip/tooltip';
+import { TranslationService } from '@/core/i18n/translation.service';
+import { LOGIN_TEXTS } from '@/core/i18n/login.texts';
+import { LANGUAGES, languageInfo } from '@/core/i18n/language';
+import { ToastService } from '@/shared/ui/toast/toast.service';
 
 @Component({
   selector: 'app-login',

@@ -1,5 +1,5 @@
-import { IconName } from '../shared/ui/icon/icons';
-import { LayoutTextKey } from './i18n/layout.texts';
+import { IconName } from '@/shared/ui/icon/icons';
+import { LayoutTextKey } from '@/core/i18n/layout.texts';
 
 export interface NavChild {
   label: string;

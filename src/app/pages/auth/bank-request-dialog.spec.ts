@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { BankRequest, BankRequestDialog, BankRequestTexts } from './bank-request-dialog';
+import { BankRequest, BankRequestDialog, BankRequestTexts } from '@/pages/auth/bank-request-dialog';
 
 const TEXTS: BankRequestTexts = {
   titleCreate: 'Permintaan Bank Baru',

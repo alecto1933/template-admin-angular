@@ -11,8 +11,8 @@ import {
   TemplateRef,
   viewChildren,
 } from '@angular/core';
-import { UiIcon } from '../icon/icon';
-import { IconName } from '../icon/icons';
+import { UiIcon } from '@/shared/ui/icon/icon';
+import { IconName } from '@/shared/ui/icon/icons';
 
 /**
  * Declares a tab panel. The content only renders while the tab is active.

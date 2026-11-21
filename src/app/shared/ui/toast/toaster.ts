@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
-import { UiIcon } from '../icon/icon';
-import { IconName } from '../icon/icons';
-import { ToastPosition, ToastService, ToastVariant } from './toast.service';
+import { UiIcon } from '@/shared/ui/icon/icon';
+import { IconName } from '@/shared/ui/icon/icons';
+import { ToastPosition, ToastService, ToastVariant } from '@/shared/ui/toast/toast.service';
 
 @Component({
   selector: 'ui-toaster',

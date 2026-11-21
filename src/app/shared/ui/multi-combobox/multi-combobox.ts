@@ -12,8 +12,8 @@ import {
   signal,
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { AutocompleteOption } from '../autocomplete/autocomplete';
-import { UiIcon } from '../icon/icon';
+import { AutocompleteOption } from '@/shared/ui/autocomplete/autocomplete';
+import { UiIcon } from '@/shared/ui/icon/icon';
 
 interface IndexedMulti {
   option: AutocompleteOption;

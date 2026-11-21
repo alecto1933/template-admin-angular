@@ -1,5 +1,5 @@
-import { IconName } from '../../shared/ui/icon/icons';
-import { Language } from './language';
+import { IconName } from '@/shared/ui/icon/icons';
+import { Language } from '@/core/i18n/language';
 
 export interface ActivityItem {
   title: string;

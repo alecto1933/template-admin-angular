@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
-import { appKey, readJson, writeJson } from '../storage';
-import { DEMO_USER, SessionService } from './session.service';
+import { appKey, readJson, writeJson } from '@/core/storage';
+import { DEMO_USER, SessionService } from '@/core/state/session.service';
 
 describe('SessionService', () => {
   beforeEach(() => {

@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
-import { UiIcon } from '../icon/icon';
-import { IconName } from '../icon/icons';
+import { UiIcon } from '@/shared/ui/icon/icon';
+import { IconName } from '@/shared/ui/icon/icons';
 
 export type SpinnerSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 
