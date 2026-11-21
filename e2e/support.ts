@@ -31,7 +31,7 @@ export async function seedPreferences(page: Page, options: SeedOptions = {}): Pr
 }
 
 export async function gotoLogin(page: Page): Promise<void> {
-  await page.goto('/auth/login');
+  await page.goto('/#/auth/login');
   await expect(page.locator('#login-username')).toBeVisible();
 }
 
@@ -40,7 +40,7 @@ export async function loginAsDemo(page: Page, submitLabel = 'Masuk'): Promise<vo
   await page.locator('#login-username').fill('demo.vendor');
   await page.locator('#login-password').fill('secret123');
   await page.getByRole('button', { name: submitLabel, exact: true }).click();
-  await expect(page).toHaveURL(/\/home$/);
+  await expect(page).toHaveURL(/#\/home$/);
   await expect(page.getByRole('heading', { name: 'Applications & Workspaces' })).toBeVisible();
 }
 

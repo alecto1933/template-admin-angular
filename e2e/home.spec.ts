@@ -79,7 +79,7 @@ test.describe('Home', () => {
       name: 'Buka atau tutup navigasi',
       exact: true,
     });
-    const homeLink = page.locator('.ui-sidebar-link[href="/home"]');
+    const homeLink = page.locator('aside .ui-sidebar-link').first();
     const homeTooltip = page.locator('.ui-sidebar ui-tooltip').filter({ hasText: 'Home' });
 
     await expect(sidebar).toHaveAttribute('data-collapsed', 'true');

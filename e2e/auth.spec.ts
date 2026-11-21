@@ -17,7 +17,7 @@ test.describe('Authentication', () => {
 
     await expect(page.getByText('Username wajib diisi.')).toBeVisible();
     await expect(page.getByText('Kata sandi minimal 6 karakter.')).toBeVisible();
-    await expect(page).toHaveURL(/\/auth\/login$/);
+    await expect(page).toHaveURL(/#\/auth\/login$/);
   });
 
   test('shows validation for a password shorter than 6 characters', async ({ page }) => {
@@ -28,13 +28,13 @@ test.describe('Authentication', () => {
     await page.getByRole('button', { name: 'Masuk', exact: true }).click();
 
     await expect(page.getByText('Kata sandi minimal 6 karakter.')).toBeVisible();
-    await expect(page).toHaveURL(/\/auth\/login$/);
+    await expect(page).toHaveURL(/#\/auth\/login$/);
   });
 
   test('valid credentials sign in and persist the session', async ({ page }) => {
     await loginAsDemo(page);
 
-    await expect(page).toHaveURL(/\/home$/);
+    await expect(page).toHaveURL(/#\/home$/);
     const session = await page.evaluate((key) => localStorage.getItem(key), SESSION_KEY);
     expect(session).not.toBeNull();
     expect(JSON.parse(session as string)).toMatchObject({ email: 'raka@alecto.id' });
@@ -51,7 +51,7 @@ test.describe('Authentication', () => {
     await dialog.getByRole('button', { name: 'Batal', exact: true }).click();
 
     await expect(dialog).not.toBeVisible();
-    await expect(page).toHaveURL(/\/home$/);
+    await expect(page).toHaveURL(/#\/home$/);
     expect(await page.evaluate((key) => localStorage.getItem(key), SESSION_KEY)).not.toBeNull();
   });
 
@@ -65,7 +65,7 @@ test.describe('Authentication', () => {
     await expect(dialog.getByText('Keluar dari aplikasi?')).toBeVisible();
     await dialog.getByRole('button', { name: 'Ya, keluar', exact: true }).click();
 
-    await expect(page).toHaveURL(/\/auth\/login$/);
+    await expect(page).toHaveURL(/#\/auth\/login$/);
     await expect(page.locator('#login-username')).toBeVisible();
     expect(await page.evaluate((key) => localStorage.getItem(key), SESSION_KEY)).toBeNull();
   });

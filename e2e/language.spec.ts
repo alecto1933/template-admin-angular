@@ -27,7 +27,7 @@ test('language selection translates the app and persists across reloads', async 
   await page.locator('#login-username').fill('demo.vendor');
   await page.locator('#login-password').fill('secret123');
   await page.getByRole('button', { name: 'サインイン', exact: true }).click();
-  await expect(page).toHaveURL(/\/home$/);
+  await expect(page).toHaveURL(/#\/home$/);
 
   // Home content and layout chrome are translated.
   await expect(page.getByRole('heading', { name: '最近のアクティビティ' })).toBeVisible();
