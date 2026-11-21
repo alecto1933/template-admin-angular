@@ -4,6 +4,13 @@
 #   /var/www/ivendor-staging/
 # Build production (base href /) bisa memakai vhost terpisah atau root /.
 #
+# Remote Native Federation profile-management diasumsikan disajikan
+# same-origin di bawah base host:
+#   staging    : /ivendor-staging/remotes/profile-management/
+#   production : /remotes/profile-management/
+# Contoh header untuk artefak remote ada di file ini dan di
+# deploy/README.md repo remote. Remote tidak memakai .htaccess.
+#
 # Sesuaikan server_name, root, dan SSL sebelum dipakai.
 
 server {
@@ -14,6 +21,9 @@ server {
     # root adalah folder INDUK yang berisi folder aplikasi.
     root /var/www;
     index index.html;
+
+    # --- Artefak host -------------------------------------------------------
+    # Exact match selalu menang atas location prefix di bawah.
 
     # Jangan cache HTML: harus selalu menunjuk bundle hasil deploy terbaru.
     location = /ivendor-staging/index.html {
@@ -28,6 +38,55 @@ server {
         expires -1;
         try_files $uri =404;
     }
+
+    # Peta remote Native Federation: berubah tiap deploy, jangan disimpan.
+    location = /ivendor-staging/federation.manifest.json {
+        add_header Cache-Control "no-store" always;
+        add_header Pragma "no-cache" always;
+        expires -1;
+        try_files $uri =404;
+    }
+
+    # Entry remote host: harus revalidasi agar menunjuk chunk terbaru.
+    location = /ivendor-staging/remoteEntry.json {
+        add_header Cache-Control "no-cache" always;
+        try_files $uri =404;
+    }
+
+    # --- Artefak remote profile-management ---------------------------------
+    # Hanya berlaku bila remote di-upload ke root yang sama
+    # (/var/www/ivendor-staging/remotes/profile-management/).
+
+    location = /ivendor-staging/remotes/profile-management/index.html {
+        add_header Cache-Control "no-cache, must-revalidate" always;
+        try_files $uri =404;
+    }
+
+    location = /ivendor-staging/remotes/profile-management/version.json {
+        add_header Cache-Control "no-store" always;
+        add_header Pragma "no-cache" always;
+        expires -1;
+        try_files $uri =404;
+    }
+
+    location = /ivendor-staging/remotes/profile-management/remoteEntry.json {
+        add_header Cache-Control "no-cache" always;
+        try_files $uri =404;
+    }
+
+    # Aset publik remote (template PDF, favicon) namanya tidak ber-hash.
+    location /ivendor-staging/remotes/profile-management/documents/ {
+        add_header Cache-Control "public, max-age=86400" always;
+        try_files $uri =404;
+    }
+
+    # Chunk remote ber-hash boleh di-cache selamanya.
+    location /ivendor-staging/remotes/profile-management/ {
+        add_header Cache-Control "public, max-age=31536000, immutable" always;
+        try_files $uri =404;
+    }
+
+    # --- Aset host ----------------------------------------------------------
 
     # Aset ber-hash dari Angular boleh di-cache selamanya.
     location ~ ^/ivendor-staging/(main|polyfills|styles|chunk|vendor|runtime)-[A-Za-z0-9_-]+\.(js|css)$ {
@@ -66,8 +125,22 @@ server {
 # Untuk production di root domain, gunakan variasi berikut:
 #
 #   root /var/www/ivendor-production;
+#
+#   # Host
 #   location = /index.html { add_header Cache-Control "no-cache, must-revalidate" always; }
 #   location = /version.json { add_header Cache-Control "no-store" always; }
+#   location = /federation.manifest.json { add_header Cache-Control "no-store" always; }
+#   location = /remoteEntry.json { add_header Cache-Control "no-cache" always; }
+#
+#   # Remote profile-management
+#   location = /remotes/profile-management/index.html { add_header Cache-Control "no-cache, must-revalidate" always; }
+#   location = /remotes/profile-management/version.json { add_header Cache-Control "no-store" always; }
+#   location = /remotes/profile-management/remoteEntry.json { add_header Cache-Control "no-cache" always; }
+#   location /remotes/profile-management/documents/ { add_header Cache-Control "public, max-age=86400" always; }
+#   location /remotes/profile-management/ { add_header Cache-Control "public, max-age=31536000, immutable" always; }
+#
+#   # Aset host
 #   location ~ ^/(main|polyfills|styles|chunk|vendor|runtime)-[A-Za-z0-9_-]+\.(js|css)$ { ... }
+#   location /media/ { ... }
 #   location / { try_files $uri $uri/ /index.html; }
 # ---------------------------------------------------------------------------

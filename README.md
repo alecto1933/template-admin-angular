@@ -50,11 +50,11 @@ yang valid — autentikasi hanya simulasi).
 Konfigurasi ada di `src/environments/` dan dipilih saat build lewat
 `fileReplacements` di `angular.json`:
 
-| Environment | Perintah | Output |
-| --- | --- | --- |
-| development | `npm run build:dev` | `dist/template-admin-development/` |
-| staging | `npm run build:staging` | `dist/template-admin-staging/` |
-| production | `npm run build:prod` (atau `npm run build`) | `dist/template-admin/` |
+| Environment | Perintah                                    | Output                             |
+| ----------- | ------------------------------------------- | ---------------------------------- |
+| development | `npm run build:dev`                         | `dist/template-admin-development/` |
+| staging     | `npm run build:staging`                     | `dist/template-admin-staging/`     |
+| production  | `npm run build:prod` (atau `npm run build`) | `dist/template-admin/`             |
 
 - `npm start` / `ng serve` memakai `development` secara default dan berjalan di
   `http://localhost:4200/ivendor/`.
@@ -66,15 +66,37 @@ Konfigurasi ada di `src/environments/` dan dipilih saat build lewat
 
 **Base path** diatur per environment di `angular.json` (`baseHref`):
 
-| Environment | Base href |
-| --- | --- |
-| development | `/ivendor/` |
-| staging | `/ivendor-staging/` |
-| production | `/` |
+| Environment | Base href           |
+| ----------- | ------------------- |
+| development | `/ivendor/`         |
+| staging     | `/ivendor-staging/` |
+| production  | `/`                 |
 
 Untuk mengganti path (mis. staging ke `/vendor/`), ubah `baseHref` lalu
 sesuaikan folder deploy & konfigurasi web server. Panduan lengkap ada di
 [`deploy/README.md`](deploy/README.md).
+
+## Micro frontend `profile-management`
+
+Host memuat modul profil vendor dari repo terpisah
+`ivendor-superapps-profile-management` lewat Native Federation
+(`initFederation('federation.manifest.json')` di `src/main.ts`). Route host
+`/profile-management` memasang `PROFILE_MANAGEMENT_ROUTES` milik remote dan
+menampilkan halaman error bila remote gagal dimuat.
+
+Manifest dibuat otomatis oleh `scripts/write-federation-manifest.mjs` saat
+`start`/`build` dan **tidak di-commit**:
+
+| Environment | Manifest berisi                               |
+| ----------- | --------------------------------------------- |
+| development | `http://localhost:4201/remoteEntry.json`      |
+| staging     | `remotes/profile-management/remoteEntry.json` |
+| production  | `remotes/profile-management/remoteEntry.json` |
+
+Path staging/production relatif terhadap base href host, sehingga remote
+disajikan same-origin di `<base host>/remotes/profile-management/`. Urutan
+rilis: deploy remote lebih dulu, lalu host hanya bila manifest berubah.
+Detail ada di [`deploy/README.md`](deploy/README.md).
 
 ## Update & cache
 
@@ -85,6 +107,9 @@ Agar user tidak tertinggal di versi lama:
   dan `builtAt`.
 - `AppUpdateService` mengecek file itu saat aplikasi mulai, setiap 2 menit,
   dan saat tab kembali aktif (`focus`/`visibilitychange`).
+- `AppUpdateService` juga membaca `federation.manifest.json` dan menambahkan
+  `version.json` di samping setiap `remoteEntry.json`, sehingga versi remote
+  ikut terpantau.
 - Jika `buildId` berbeda, muncul banner **“Versi baru tersedia”** dengan tombol
   **Muat ulang** / **Nanti saja**.
 - Tombol muat ulang menambahkan `?v=<buildId>` pada URL agar `index.html`
@@ -92,20 +117,26 @@ Agar user tidak tertinggal di versi lama:
 
 **Wajib diatur di server/hosting:**
 
-| Path | Header |
-| --- | --- |
-| `index.html` | `Cache-Control: no-cache` |
-| `version.json` | `Cache-Control: no-store` |
+| Path                                    | Header                                               |
+| --------------------------------------- | ---------------------------------------------------- |
+| `index.html`                            | `Cache-Control: no-cache`                            |
+| `version.json`                          | `Cache-Control: no-store`                            |
+| `federation.manifest.json`              | `Cache-Control: no-store`                            |
+| `remoteEntry.json`                      | `Cache-Control: no-cache`                            |
 | aset ber-hash (`*.js`, `*.css`, gambar) | `Cache-Control: public, max-age=31536000, immutable` |
 
-`public/version.json` di-generate saat build dan tidak di-commit.
+`public/version.json` dan `public/federation.manifest.json` di-generate saat
+build dan tidak di-commit. Aturan header untuk artefak remote (di bawah
+`remotes/profile-management/`) didokumentasikan di repo remote dan
+[`deploy/README.md`](deploy/README.md).
 
 ## Testing
-| Level | Tool | Lokasi | Perintah |
-| --- | --- | --- | --- |
-| Unit + integration | Vitest (`@angular/build:unit-test`) | `src/**/*.spec.ts` | `npm test` |
-| Coverage | Vitest v8 | `coverage/` | `npm run test:coverage` |
-| E2E | Playwright | `e2e/*.spec.ts` | `npm run e2e` |
+
+| Level              | Tool                                | Lokasi             | Perintah                |
+| ------------------ | ----------------------------------- | ------------------ | ----------------------- |
+| Unit + integration | Vitest (`@angular/build:unit-test`) | `src/**/*.spec.ts` | `npm test`              |
+| Coverage           | Vitest v8                           | `coverage/`        | `npm run test:coverage` |
+| E2E                | Playwright                          | `e2e/*.spec.ts`    | `npm run e2e`           |
 
 - E2E memakai **Google Chrome terpasang** (`channel: 'chrome'`), jadi
   `--headed`/`--ui` tidak butuh Chromium bundled. Bila tidak ada Chrome,
