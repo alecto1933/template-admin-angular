@@ -6,6 +6,8 @@ import {
 export default withNativeFederation({
   name: 'template-admin',
 
+  // Allowlist deliberate: dependency baru yang perlu singleton bersama harus
+  // ditambahkan di sini pada KEDUA repo. Jangan hapus .only tanpa alasan kuat.
   shared: fromPackageJson({
     singleton: true,
     strictVersion: true,
