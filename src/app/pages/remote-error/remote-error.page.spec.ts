@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { Router, provideRouter } from '@angular/router';
+import { ROUTE_RELOAD_TARGET } from '@/core/federation/route-reload';
 import { LAYOUT_TEXTS } from '@/core/i18n/layout.texts';
 import { TranslationService } from '@/core/i18n/translation.service';
 import { RemoteErrorPage } from '@/pages/remote-error/remote-error.page';
@@ -9,12 +9,20 @@ function text(fixture: { nativeElement: unknown }): string {
 }
 
 describe('RemoteErrorPage', () => {
+  let replace = vi.fn<(url: string) => void>();
+
   beforeEach(async () => {
     localStorage.clear();
     document.documentElement.classList.remove('dark');
+    replace = vi.fn<(url: string) => void>();
     await TestBed.configureTestingModule({
       imports: [RemoteErrorPage],
-      providers: [provideRouter([])],
+      providers: [
+        {
+          provide: ROUTE_RELOAD_TARGET,
+          useValue: { href: 'http://localhost:1933/ivendor/#/profile-management', replace },
+        },
+      ],
     }).compileComponents();
   });
 
@@ -43,16 +51,23 @@ describe('RemoteErrorPage', () => {
     expect(body).toContain('再試行');
   });
 
-  it('retries with a cache-busting query param', () => {
-    const router = TestBed.inject(Router);
-    const navigate = vi.spyOn(router, 'navigate').mockResolvedValue(true);
+  it('announces the failure assertively', () => {
+    const fixture = TestBed.createComponent(RemoteErrorPage);
+    fixture.detectChanges();
 
+    const card = (fixture.nativeElement as HTMLElement).querySelector('[role="alert"]');
+    expect(card).not.toBeNull();
+    expect(card?.getAttribute('aria-live')).toBe('assertive');
+  });
+
+  it('retries with a full reload of the profile route, not router navigation', () => {
     const fixture = TestBed.createComponent(RemoteErrorPage);
     fixture.detectChanges();
     (fixture.nativeElement as HTMLElement).querySelector<HTMLButtonElement>('button')!.click();
 
-    expect(navigate).toHaveBeenCalledWith(['/profile-management'], {
-      queryParams: { retry: expect.any(Number) },
-    });
+    expect(replace).toHaveBeenCalledTimes(1);
+    const target = new URL(replace.mock.calls[0][0]);
+    expect(target.hash).toBe('#/profile-management');
+    expect(target.searchParams.get('retry')).toMatch(/^\d+$/);
   });
 });
