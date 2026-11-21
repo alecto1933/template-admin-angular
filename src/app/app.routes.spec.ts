@@ -28,7 +28,18 @@ describe('app routes', () => {
     const shell = findRoute('');
 
     expect(typeof shell.loadComponent).toBe('function');
-    expect(shell.children?.length).toBe(3);
+    expect(shell.children?.length).toBe(4);
+  });
+
+  it('declares the profile management child route before the wildcard', () => {
+    const shell = findRoute('');
+    const profile = shell.children?.find((child) => child.path === 'profile-management');
+
+    expect(profile).toBeDefined();
+    expect(profile?.data).toEqual({ page: 'profileManagement' });
+    expect(profile?.providers).toHaveLength(1);
+    expect(typeof profile?.loadChildren).toBe('function');
+    expect(shell.children?.at(-1)?.path).toBe('**');
   });
 
   it('redirects the shell root to home', () => {

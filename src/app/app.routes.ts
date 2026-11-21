@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { profileManagementRoute } from '@/core/federation/federated-route';
 
 export const routes: Routes = [
   {
@@ -22,6 +23,7 @@ export const routes: Routes = [
         data: { page: 'Home' },
         loadComponent: () => import('@/pages/home/home.page').then((m) => m.HomePage),
       },
+      profileManagementRoute(),
       {
         path: '**',
         loadComponent: () => import('@/pages/not-found/not-found.page').then((m) => m.NotFoundPage),

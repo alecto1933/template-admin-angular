@@ -43,6 +43,10 @@ export const LAYOUT_TEXTS = {
     updateMessage: 'Aplikasi ini sudah diperbarui. Muat ulang untuk mendapatkan versi terbaru.',
     updateReload: 'Muat ulang',
     updateLater: 'Nanti saja',
+    remoteErrorTitle: 'Modul profil tidak bisa dimuat',
+    remoteErrorMessage:
+      'Periksa koneksi Anda lalu coba lagi. Bagian lain aplikasi tetap bisa dipakai.',
+    remoteRetry: 'Coba lagi',
   },
   en: {
     skipToContent: 'Skip to main content',
@@ -75,6 +79,9 @@ export const LAYOUT_TEXTS = {
     updateMessage: 'This app has been updated. Reload to get the latest version.',
     updateReload: 'Reload',
     updateLater: 'Later',
+    remoteErrorTitle: 'Profile module could not be loaded',
+    remoteErrorMessage: 'Check your connection and try again. The rest of the app still works.',
+    remoteRetry: 'Try again',
   },
   ja: {
     skipToContent: 'メインコンテンツへスキップ',
@@ -108,6 +115,9 @@ export const LAYOUT_TEXTS = {
     updateMessage: 'アプリが更新されました。最新バージョンを取得するには再読み込みしてください。',
     updateReload: '再読み込み',
     updateLater: 'あとで',
+    remoteErrorTitle: 'プロフィールを読み込めません',
+    remoteErrorMessage: '接続を確認して再試行してください。他の機能は利用できます。',
+    remoteRetry: '再試行',
   },
 } as const;
 
