@@ -60,7 +60,12 @@ yang valid — autentikasi hanya simulasi).
 - Konfigurasi E2E: `playwright.config.ts` (baseURL `http://localhost:4205`,
   `webServer` otomatis menjalankan `ng serve`).
 - Setup global test (polyfill `<dialog>` untuk jsdom): `src/test-setup.ts`.
-- Coverage saat ini: **~90% statements, ~82% functions, ~91% lines**.
+- Coverage saat ini: **95.4% statements, 91.9% branches, 92.1% functions,
+  96.4% lines**.
+- Template (`src/app/**/*.html`), `app.routes.ts`, dan `test-setup.ts`
+  dikecualikan dari coverage karena hanya berisi markup/lazy-loader.
+- `npm run test:coverage` **gagal otomatis** jika salah satu metrik turun di
+  bawah **80%** (`coverageThresholds` di `angular.json`).
 - Pola penamaan: `*.spec.ts` di samping file yang diuji; E2E per alur
   (`auth`, `language`, `home`, `register`, `responsive`, `not-found`).
 
