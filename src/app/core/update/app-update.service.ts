@@ -36,6 +36,7 @@ export class AppUpdateService {
   private readonly dismissed = new Set<string>();
 
   private lastCheckAt = 0;
+  private checkSeq = 0;
   private timer: ReturnType<typeof setInterval> | null = null;
 
   private readonly _pending = signal<PendingVersion[]>([]);
@@ -76,9 +77,15 @@ export class AppUpdateService {
       return false;
     }
     this.lastCheckAt = now;
+    const seq = ++this.checkSeq;
 
     const sources = this.sources();
     const results = await Promise.allSettled(sources.map((source) => this.fetchVersion(source)));
+
+    if (seq !== this.checkSeq) {
+      // A newer check already started; never let a stale response overwrite it.
+      return false;
+    }
 
     const infos = new Map<string, AppVersionInfo>();
     results.forEach((result, index) => {
@@ -156,12 +163,20 @@ export class AppUpdateService {
         return;
       }
 
-      const remotes = Object.entries(manifest)
-        .filter(([, entry]) => typeof entry === 'string' && entry.length > 0)
-        .map(([id, entry]) => ({
-          id,
-          url: new URL(VERSION_FILE, new URL(entry, document.baseURI)).href,
-        }));
+      const remotes: VersionSource[] = [];
+      for (const [id, entry] of Object.entries(manifest)) {
+        if (typeof entry !== 'string' || entry.length === 0) {
+          continue;
+        }
+        try {
+          remotes.push({
+            id,
+            url: new URL(VERSION_FILE, new URL(entry, document.baseURI)).href,
+          });
+        } catch {
+          // Skip an entry whose remote URL cannot be resolved.
+        }
+      }
 
       this.sources.set([{ id: HOST_SOURCE_ID, url: VERSION_FILE }, ...remotes]);
     } catch {

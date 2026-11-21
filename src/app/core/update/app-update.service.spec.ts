@@ -158,6 +158,50 @@ describe('AppUpdateService (multi source)', () => {
     expect(service.pending().map((entry) => entry.id)).toEqual(['host']);
   });
 
+  it('treats a malformed host payload as unknown instead of an error', async () => {
+    const { fetchMock } = createFetchStub({ manifest: null });
+    let hostBody: unknown = {};
+    fetchMock.mockImplementation(async (input: RequestInfo | URL) => {
+      const url = String(input);
+      return jsonResponse(url.includes('federation.manifest.json') ? {} : hostBody);
+    });
+
+    const service = createService();
+    await service.ready;
+
+    for (const body of [{ buildId: '' }, { buildId: 123 }, {}]) {
+      hostBody = body;
+      expect(await service.checkNow(true)).toBe(false);
+      expect(service.updateAvailable()).toBe(false);
+      expect(service.pending()).toEqual([]);
+    }
+  });
+
+  it('treats a malformed remote payload as unknown instead of an error', async () => {
+    const { fetchMock } = createFetchStub();
+    let remoteBody: unknown = { buildId: '' };
+    fetchMock.mockImplementation(async (input: RequestInfo | URL) => {
+      const url = String(input);
+      if (url.includes('federation.manifest.json')) {
+        return jsonResponse({ 'profile-management': REMOTE_ENTRY });
+      }
+      return jsonResponse(url.includes('4201') ? remoteBody : { buildId: HOST_BUILD_ID });
+    });
+
+    const service = createService();
+    await service.ready;
+
+    for (const body of [{ buildId: '' }, { buildId: 123 }, {}]) {
+      remoteBody = body;
+      expect(await service.checkNow(true)).toBe(false);
+      expect(service.updateAvailable()).toBe(false);
+    }
+
+    remoteBody = { buildId: REMOTE_BUILD_ID };
+    expect(await service.checkNow(true)).toBe(false);
+    expect(service.updateAvailable()).toBe(false);
+  });
+
   it('falls back to the host source when the manifest is unavailable', async () => {
     const { fetchMock, state } = createFetchStub({ manifest: null });
     const service = createService();
@@ -181,6 +225,53 @@ describe('AppUpdateService (multi source)', () => {
     const requestedRemote = fetchMock.mock.calls.some(([input]) => String(input).includes('4201'));
     expect(requestedRemote).toBe(false);
     expect(service.updateAvailable()).toBe(false);
+  });
+
+  it('skips unusable manifest entries but keeps the valid remotes', async () => {
+    const { fetchMock, state } = createFetchStub({
+      manifest: { 'profile-management': REMOTE_ENTRY, broken: 'http://[invalid' },
+    });
+    const service = createService();
+    await service.ready;
+
+    expect(fetchMock).toHaveBeenCalledWith(
+      expect.stringMatching(/localhost:4201\/version\.json\?t=\d+$/),
+      { cache: 'no-store' },
+    );
+    expect(fetchMock.mock.calls.some(([input]) => String(input).includes('invalid'))).toBe(false);
+
+    state.remote = 'r2';
+    expect(await service.checkNow(true)).toBe(true);
+    expect(service.pending().map((entry) => entry.id)).toEqual(['profile-management']);
+  });
+
+  it('keeps the newest result when checks overlap', async () => {
+    const { fetchMock } = createFetchStub();
+    const service = createService();
+    await service.ready;
+
+    let resolveSlowHost: (response: Response) => void = () => undefined;
+    const slowHost = new Promise<Response>((resolve) => {
+      resolveSlowHost = resolve;
+    });
+
+    // Check A: host response hangs, remote resolves immediately.
+    fetchMock.mockImplementationOnce(() => slowHost);
+    const checkA = service.checkNow(true);
+
+    // Check B: starts while A is still in flight and reports the host change.
+    fetchMock.mockImplementation(async (input: RequestInfo | URL) => {
+      const url = String(input);
+      return jsonResponse({ buildId: url.includes('4201') ? REMOTE_BUILD_ID : 'h2' });
+    });
+    const checkB = service.checkNow(true);
+    expect(await checkB).toBe(true);
+
+    // Check A resolves last without a change; it must not clear B's banner.
+    resolveSlowHost(jsonResponse({ buildId: HOST_BUILD_ID }));
+    expect(await checkA).toBe(false);
+    expect(service.updateAvailable()).toBe(true);
+    expect(service.pending().map((entry) => entry.buildId)).toEqual(['h2']);
   });
 
   it('dismisses exact version pairs and re-shows a newer build', async () => {
