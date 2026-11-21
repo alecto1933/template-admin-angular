@@ -14,7 +14,7 @@ const EXTRA_SECTIONS: NavSection[] = [
         labelKey: 'navMenu',
         path: '/components',
         icon: 'package',
-        children: [{ label: 'Tombol', path: '/components/buttons' }],
+        children: [{ labelKey: 'navProfileOverview', path: '/components/buttons' }],
       },
       { labelKey: 'help', path: '/help', icon: 'circle-help' },
     ],
@@ -26,6 +26,16 @@ function withExtraSections(fixture: ReturnType<typeof TestBed.createComponent<Ap
     ...NAV_SECTIONS,
     ...EXTRA_SECTIONS,
   ];
+}
+
+function groupButton(host: HTMLElement, label: string): HTMLButtonElement | undefined {
+  return Array.from(host.querySelectorAll<HTMLButtonElement>('button[aria-expanded]')).find(
+    (button) => (button.textContent ?? '').includes(label),
+  );
+}
+
+function groupSubmenu(button: HTMLButtonElement | undefined): HTMLElement | null {
+  return button?.closest('div')?.querySelector<HTMLElement>('.sidebar-submenu') ?? null;
 }
 
 @Component({ selector: 'app-test-home', template: 'home' })
@@ -68,8 +78,11 @@ describe('AppSidebar', () => {
     expect(aside?.getAttribute('data-mobile-open')).toBe('false');
 
     const tooltips = Array.from(host.querySelectorAll('ui-tooltip'));
-    expect(tooltips).toHaveLength(1);
-    expect(tooltips[0].textContent?.trim()).toBe('Home');
+    expect(tooltips).toHaveLength(2);
+    expect(tooltips.map((tooltip) => tooltip.textContent?.trim())).toEqual([
+      'Home',
+      'Profil Vendor',
+    ]);
     expect(tooltips[0].getAttribute('role')).toBe('tooltip');
   });
 
@@ -123,22 +136,22 @@ describe('AppSidebar', () => {
     fixture.detectChanges();
 
     const host = fixture.nativeElement as HTMLElement;
-    const groupButton = host.querySelector<HTMLButtonElement>('button[aria-expanded]');
-    expect(groupButton).not.toBeNull();
-    // '/components' starts expanded.
-    expect(groupButton?.getAttribute('aria-expanded')).toBe('true');
-    const submenu = host.querySelector<HTMLElement>('.sidebar-submenu');
-    expect(submenu?.hidden).toBe(false);
-    expect(submenu?.textContent).toContain('Tombol');
+    const button = groupButton(host, 'Profil Vendor');
+    expect(button).toBeDefined();
+    // The extra '/components' group starts expanded.
+    expect(button?.getAttribute('aria-expanded')).toBe('false');
+    const submenu = groupSubmenu(button);
+    expect(submenu?.hidden).toBe(true);
+    expect(submenu?.textContent).toContain('Ringkasan');
 
-    groupButton?.click();
+    button?.click();
     fixture.detectChanges();
-    expect(groupButton?.getAttribute('aria-expanded')).toBe('false');
-    expect(host.querySelector<HTMLElement>('.sidebar-submenu')?.hidden).toBe(true);
+    expect(button?.getAttribute('aria-expanded')).toBe('true');
+    expect(groupSubmenu(button)?.hidden).toBe(false);
 
-    groupButton?.click();
+    button?.click();
     fixture.detectChanges();
-    expect(groupButton?.getAttribute('aria-expanded')).toBe('true');
+    expect(button?.getAttribute('aria-expanded')).toBe('false');
   });
 
   it('expands the group and emits toggleCollapse when collapsed', () => {
@@ -151,14 +164,14 @@ describe('AppSidebar', () => {
     fixture.componentInstance.toggleCollapse.subscribe(() => (toggles += 1));
 
     const host = fixture.nativeElement as HTMLElement;
-    const groupButton = host.querySelector<HTMLButtonElement>('button[aria-expanded]');
-    expect(groupButton?.getAttribute('aria-expanded')).toBe('true');
+    const button = groupButton(host, 'Profil Vendor');
+    expect(button?.getAttribute('aria-expanded')).toBe('false');
 
-    groupButton?.click();
+    button?.click();
     fixture.detectChanges();
 
     expect(toggles).toBe(1);
-    expect(groupButton?.getAttribute('aria-expanded')).toBe('true');
+    expect(button?.getAttribute('aria-expanded')).toBe('true');
   });
 
   it('closes the mobile drawer when a submenu link is clicked', () => {
@@ -208,7 +221,7 @@ describe('AppSidebar', () => {
             labelKey: 'navMenu',
             path: '/components',
             icon: 'package',
-            children: [{ label: 'Beranda', path: '/home' }],
+            children: [{ labelKey: 'navHome', path: '/home' }],
           },
           { labelKey: 'navHome', path: '/home', icon: 'home', exact: true },
         ],
@@ -224,11 +237,13 @@ describe('AppSidebar', () => {
     const host = fixture.nativeElement as HTMLElement;
     expect(host.querySelector('nav a[href="/home"]')?.classList.contains('is-active')).toBe(true);
     expect(
-      host.querySelector('button[aria-expanded]')?.classList.contains('text-sidebar-accent-foreground'),
+      host
+        .querySelector('button[aria-expanded]')
+        ?.classList.contains('text-sidebar-accent-foreground'),
     ).toBe(true);
-    expect(host.querySelector<HTMLButtonElement>('button[aria-expanded]')?.getAttribute('aria-expanded')).toBe(
-      'true',
-    );
+    expect(
+      host.querySelector<HTMLButtonElement>('button[aria-expanded]')?.getAttribute('aria-expanded'),
+    ).toBe('true');
   });
 
   it('renders English tooltips and aria labels', () => {

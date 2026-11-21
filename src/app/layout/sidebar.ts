@@ -95,18 +95,14 @@ import { ToastService } from '@/shared/ui/toast/toast.service';
                           [routerLinkActiveOptions]="{ exact: !!child.exact }"
                           (click)="closeMobile.emit()"
                         >
-                          <span class="sidebar-label">{{ child.label }}</span>
+                          <span class="sidebar-label">{{ t()[child.labelKey] }}</span>
                         </a>
                       }
                     </div>
                   </div>
                 } @else if (item.path === '/help') {
                   <span class="group relative block">
-                    <button
-                      type="button"
-                      class="ui-sidebar-link w-full"
-                      (click)="openHelp()"
-                    >
+                    <button type="button" class="ui-sidebar-link w-full" (click)="openHelp()">
                       <ui-icon [name]="item.icon" class="size-[18px] shrink-0" />
                       <span class="sidebar-label">{{ t()[item.labelKey] }}</span>
                     </button>

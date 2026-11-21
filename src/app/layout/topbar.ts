@@ -113,7 +113,12 @@ import { ToastService } from '@/shared/ui/toast/toast.service';
       <ng-template #languageMenu>
         <div cdkMenu class="ui-menu-panel w-44">
           @for (option of languages; track option.code) {
-            <button cdkMenuItem type="button" class="ui-menu-item" (click)="language.set(option.code)">
+            <button
+              cdkMenuItem
+              type="button"
+              class="ui-menu-item"
+              (click)="language.set(option.code)"
+            >
               <img
                 [src]="option.flag"
                 alt=""
@@ -182,7 +187,9 @@ import { ToastService } from '@/shared/ui/toast/toast.service';
       <ng-template #userMenu>
         <div cdkMenu class="ui-menu-panel w-60">
           <div class="px-3 py-2">
-            <p class="text-sm font-semibold text-foreground">{{ session.user()?.name ?? t().guest }}</p>
+            <p class="text-sm font-semibold text-foreground">
+              {{ session.user()?.name ?? t().guest }}
+            </p>
             <p class="truncate text-xs text-muted-foreground">{{ session.user()?.email ?? '-' }}</p>
           </div>
           <div class="ui-menu-separator"></div>
@@ -218,7 +225,8 @@ import { ToastService } from '@/shared/ui/toast/toast.service';
     </header>
   `,
 })
-export class AppTopbar {  readonly toggleNavigation = output<void>();
+export class AppTopbar {
+  readonly toggleNavigation = output<void>();
 
   private readonly i18n = inject(TranslationService);
 
@@ -234,8 +242,12 @@ export class AppTopbar {  readonly toggleNavigation = output<void>();
 
   protected readonly notifications = computed(() => NOTIFICATION_TEXTS[this.lang()]);
   private readonly pageKey = signal('Home');
-  protected readonly pageTitle = computed(() =>
-    this.pageKey() === 'Home' ? this.t().pageHome : this.pageKey(),
+  private readonly pageLabels = computed<Record<string, string>>(() => ({
+    Home: this.t().pageHome,
+    profileManagement: this.t().pageProfileManagement,
+  }));
+  protected readonly pageTitle = computed(
+    () => this.pageLabels()[this.pageKey()] ?? this.pageKey(),
   );
 
   private readonly logoutDialog = viewChild.required(UiAlertDialog);

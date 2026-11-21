@@ -209,9 +209,13 @@ describe('AppTopbar', () => {
 
     const items = menuButtons();
     expect(items.length).toBeGreaterThanOrEqual(4);
-    expect(items.some((item) => (item.textContent ?? '').includes('Pembayaran diterima'))).toBe(true);
+    expect(items.some((item) => (item.textContent ?? '').includes('Pembayaran diterima'))).toBe(
+      true,
+    );
     expect(items.some((item) => (item.textContent ?? '').includes('Stok hampir habis'))).toBe(true);
-    expect(items.some((item) => (item.textContent ?? '').includes('Anggota baru bergabung'))).toBe(true);
+    expect(items.some((item) => (item.textContent ?? '').includes('Anggota baru bergabung'))).toBe(
+      true,
+    );
 
     buttonByText('Pembayaran diterima')?.click();
     fixture.detectChanges();
@@ -282,9 +286,47 @@ describe('AppTopbar', () => {
     expect(host(fixture).querySelector('button[aria-label="Language: Indonesia"]')).not.toBeNull();
 
     await openMenu(fixture, 'Notifikasi');
-    expect(menuButtons().some((item) => (item.textContent ?? '').includes('Pembayaran diterima'))).toBe(
-      true,
-    );
+    expect(
+      menuButtons().some((item) => (item.textContent ?? '').includes('Pembayaran diterima')),
+    ).toBe(true);
+  });
+
+  it('translates the profile management page key', async () => {
+    const router = TestBed.inject(Router);
+    router.resetConfig([
+      {
+        path: 'profile-management',
+        component: StubPage,
+        data: { page: 'profileManagement' },
+      },
+    ]);
+
+    const fixture = TestBed.createComponent(AppTopbar);
+    fixture.detectChanges();
+
+    await router.navigate(['/profile-management']);
+    fixture.detectChanges();
+
+    expect(host(fixture).textContent).toContain('Profil Vendor');
+  });
+
+  it('keeps the raw page key when no translation exists', async () => {
+    const router = TestBed.inject(Router);
+    router.resetConfig([
+      {
+        path: 'reports',
+        component: StubPage,
+        data: { page: 'Laporan Penjualan' },
+      },
+    ]);
+
+    const fixture = TestBed.createComponent(AppTopbar);
+    fixture.detectChanges();
+
+    await router.navigate(['/reports']);
+    fixture.detectChanges();
+
+    expect(host(fixture).textContent).toContain('Laporan Penjualan');
   });
 
   it('updates the page title on NavigationEnd from the deepest route data', async () => {

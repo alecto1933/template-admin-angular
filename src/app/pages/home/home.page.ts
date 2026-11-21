@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
+import { Router } from '@angular/router';
 import { UiBadge } from '@/shared/ui/badge/badge';
 import { UiIcon } from '@/shared/ui/icon/icon';
 import { environment } from '@env/environment';
@@ -11,6 +12,7 @@ interface QuickAccessItem {
   title: string;
   description: string;
   image: string;
+  route?: string;
 }
 
 @Component({
@@ -22,6 +24,7 @@ interface QuickAccessItem {
 export class HomePage {
   private readonly toast = inject(ToastService);
   private readonly i18n = inject(TranslationService);
+  private readonly router = inject(Router);
 
   protected readonly lang = this.i18n.lang;
   protected readonly t = computed(() => HOME_TEXTS[this.lang()]);
@@ -36,6 +39,7 @@ export class HomePage {
         title: t.qaVendorTitle,
         description: t.qaVendorDesc,
         image: 'images/apps/vendor-profile.webp',
+        route: '/profile-management',
       },
       {
         title: t.qaOrderTitle,
@@ -61,6 +65,11 @@ export class HomePage {
   }
 
   protected openQuickAccess(item: QuickAccessItem): void {
+    if (item.route) {
+      void this.router.navigate([item.route]);
+      return;
+    }
+
     this.toast.info(this.t().comingSoonTitle, `${item.title} — ${this.t().comingSoonMessage}`);
   }
 }

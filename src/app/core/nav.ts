@@ -2,7 +2,7 @@ import { IconName } from '@/shared/ui/icon/icons';
 import { LayoutTextKey } from '@/core/i18n/layout.texts';
 
 export interface NavChild {
-  label: string;
+  labelKey: LayoutTextKey;
   path: string;
   exact?: boolean;
 }
@@ -30,6 +30,19 @@ export const NAV_SECTIONS: NavSection[] = [
         path: '/home',
         icon: 'home',
         exact: true,
+      },
+      {
+        labelKey: 'navProfileManagement',
+        path: '/profile-management',
+        icon: 'user',
+        children: [
+          { labelKey: 'navProfileOverview', path: '/profile-management', exact: true },
+          { labelKey: 'navProfileVendor', path: '/profile-management/vendor' },
+          { labelKey: 'navProfilePic', path: '/profile-management/pic' },
+          { labelKey: 'navProfileBank', path: '/profile-management/bank' },
+          { labelKey: 'navProfileTax', path: '/profile-management/tax' },
+          { labelKey: 'navProfileDomicile', path: '/profile-management/domicile' },
+        ],
       },
     ],
   },

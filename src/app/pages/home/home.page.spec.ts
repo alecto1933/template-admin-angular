@@ -1,4 +1,5 @@
 import { TestBed } from '@angular/core/testing';
+import { Router, provideRouter } from '@angular/router';
 import { LanguageService } from '@/core/language.service';
 import { ToastService } from '@/shared/ui/toast/toast.service';
 import { HomePage } from '@/pages/home/home.page';
@@ -7,7 +8,10 @@ describe('HomePage', () => {
   beforeEach(async () => {
     localStorage.clear();
     document.documentElement.classList.remove('dark');
-    await TestBed.configureTestingModule({ imports: [HomePage] }).compileComponents();
+    await TestBed.configureTestingModule({
+      imports: [HomePage],
+      providers: [provideRouter([])],
+    }).compileComponents();
   });
 
   it('renders five application cards with image backgrounds', () => {
@@ -36,20 +40,33 @@ describe('HomePage', () => {
     ]);
   });
 
-  it('shows a toast when a quick-access card is clicked', () => {
+  it('navigates to profile management from the first card', () => {
+    const router = TestBed.inject(Router);
+    const navigate = vi.spyOn(router, 'navigate').mockResolvedValue(true);
+    const fixture = TestBed.createComponent(HomePage);
+    fixture.detectChanges();
+
+    (fixture.nativeElement as HTMLElement)
+      .querySelectorAll<HTMLButtonElement>('#quick-access button')[0]
+      .click();
+
+    expect(navigate).toHaveBeenCalledWith(['/profile-management']);
+  });
+
+  it('shows a coming-soon toast when a non-navigating card is clicked', () => {
     const fixture = TestBed.createComponent(HomePage);
     fixture.detectChanges();
     const toast = TestBed.inject(ToastService);
 
-    const first = (fixture.nativeElement as HTMLElement).querySelector<HTMLButtonElement>(
+    const second = (fixture.nativeElement as HTMLElement).querySelectorAll<HTMLButtonElement>(
       '#quick-access button',
-    );
-    first?.click();
+    )[1];
+    second.click();
     fixture.detectChanges();
 
     expect(toast.toasts()).toHaveLength(1);
     expect(toast.toasts()[0].title).toBe('Segera hadir');
-    expect(toast.toasts()[0].description).toContain('Vendor Profile Management');
+    expect(toast.toasts()[0].description).toContain('Purchase Order');
   });
 
   it('links the need-help card to the support mailbox', () => {
