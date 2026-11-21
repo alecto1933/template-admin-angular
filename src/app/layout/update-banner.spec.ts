@@ -35,6 +35,11 @@ describe('AppUpdateBanner', () => {
     fixture.detectChanges();
     const host = fixture.nativeElement as HTMLElement;
 
+    const banner = host.querySelector('[role="status"]') as HTMLElement;
+    expect(banner.className).toContain('fixed');
+    expect(banner.className).toContain('inset-x-0');
+    expect(banner.className).toContain('top-0');
+
     expect(host.textContent).toContain('Versi baru tersedia');
     expect(host.textContent).toContain('Muat ulang');
 

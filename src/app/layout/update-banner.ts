@@ -1,41 +1,48 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { AppUpdateService } from '@/core/update/app-update.service';
 import { TranslationService } from '@/core/i18n/translation.service';
-import { UiButton } from '@/shared/ui/button/button';
 import { UiIcon } from '@/shared/ui/icon/icon';
 
 /**
- * Persistent notice shown when a newer deployment is detected.
+ * Full-width notice shown at the top when a newer deployment is detected.
  * Reloading is always the user's choice so unsaved work is not lost.
  */
 @Component({
   selector: 'app-update-banner',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [UiButton, UiIcon],
+  imports: [UiIcon],
   template: `
     @if (update.updateAvailable()) {
       <div
-        class="fixed inset-x-3 bottom-3 z-[80] sm:inset-x-auto sm:right-6 sm:bottom-6 sm:w-[420px]"
+        class="fixed inset-x-0 top-0 z-[90] border-b border-primary/30 bg-primary text-primary-foreground shadow-lg"
         role="status"
         aria-live="polite"
       >
-        <div class="flex items-start gap-3 rounded-2xl border border-border bg-card p-4 shadow-2xl">
-          <span class="grid size-10 shrink-0 place-items-center rounded-xl bg-primary-soft text-primary">
-            <ui-icon name="refresh-cw" class="size-5" />
-          </span>
-          <div class="min-w-0 flex-1">
-            <p class="text-sm font-semibold text-foreground">{{ t().updateTitle }}</p>
-            <p class="mt-1 text-xs leading-relaxed text-muted-foreground">
+        <div
+          class="mx-auto flex w-full flex-wrap items-center gap-x-3 gap-y-2 px-4 py-2.5 sm:px-6 lg:px-8"
+        >
+          <ui-icon name="refresh-cw" class="size-4 shrink-0" />
+          <p class="min-w-0 flex-1 text-xs leading-snug sm:text-sm">
+            <span class="font-semibold">{{ t().updateTitle }}</span>
+            <span class="block text-[11px] text-primary-foreground/80 sm:ml-1 sm:inline">
               {{ t().updateMessage }}
-            </p>
-            <div class="mt-3 flex flex-wrap items-center gap-2">
-              <button uiButton size="sm" type="button" (click)="update.reload()">
-                {{ t().updateReload }}
-              </button>
-              <button uiButton size="sm" variant="ghost" type="button" (click)="update.dismiss()">
-                {{ t().updateLater }}
-              </button>
-            </div>
+            </span>
+          </p>
+          <div class="flex shrink-0 items-center gap-1.5">
+            <button
+              type="button"
+              class="inline-flex h-8 items-center rounded-lg bg-white px-3 text-xs font-semibold text-primary transition-colors hover:bg-white/90 focus-visible:ring-2 focus-visible:ring-white/70 focus-visible:outline-none"
+              (click)="update.reload()"
+            >
+              {{ t().updateReload }}
+            </button>
+            <button
+              type="button"
+              class="inline-flex h-8 items-center rounded-lg px-2.5 text-xs font-medium text-primary-foreground/80 transition-colors hover:text-primary-foreground focus-visible:ring-2 focus-visible:ring-white/70 focus-visible:outline-none"
+              (click)="update.dismiss()"
+            >
+              {{ t().updateLater }}
+            </button>
           </div>
         </div>
       </div>
