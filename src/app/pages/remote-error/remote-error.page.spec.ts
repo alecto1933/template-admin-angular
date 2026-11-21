@@ -3,6 +3,7 @@ import { ROUTE_RELOAD_TARGET } from '@/core/federation/route-reload';
 import { LAYOUT_TEXTS } from '@/core/i18n/layout.texts';
 import { TranslationService } from '@/core/i18n/translation.service';
 import { RemoteErrorPage } from '@/pages/remote-error/remote-error.page';
+import { ToastService } from '@/shared/ui/toast/toast.service';
 
 function text(fixture: { nativeElement: unknown }): string {
   return ((fixture.nativeElement as HTMLElement).textContent ?? '').replace(/\s+/g, ' ');
@@ -58,6 +59,21 @@ describe('RemoteErrorPage', () => {
     const card = (fixture.nativeElement as HTMLElement).querySelector('[role="alert"]');
     expect(card).not.toBeNull();
     expect(card?.getAttribute('aria-live')).toBe('assertive');
+  });
+
+  it('emits exactly one error toast, even when the error page is re-entered', () => {
+    const toast = TestBed.inject(ToastService);
+
+    const first = TestBed.createComponent(RemoteErrorPage);
+    first.detectChanges();
+    expect(toast.toasts()).toHaveLength(1);
+    expect(toast.toasts()[0].variant).toBe('error');
+    expect(toast.toasts()[0].title).toBe(LAYOUT_TEXTS.id.remoteErrorTitle);
+    expect(toast.toasts()[0].description).toBe(LAYOUT_TEXTS.id.remoteErrorMessage);
+
+    const second = TestBed.createComponent(RemoteErrorPage);
+    second.detectChanges();
+    expect(toast.toasts()).toHaveLength(1);
   });
 
   it('retries with a full reload of the profile route, not router navigation', () => {

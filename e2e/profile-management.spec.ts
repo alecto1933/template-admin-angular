@@ -30,7 +30,8 @@ test.describe('profile management remote', () => {
     // `./Routes` fails and the host renders its error card.
     const manifestResponse = await request.get('/ivendor/federation.manifest.json');
     const manifest = (await manifestResponse.json()) as Record<string, string>;
-    const remoteEntry = new URL(manifest['profile-management'], 'http://localhost:4205');
+    // Resolve against the manifest URL so the base follows the active host origin.
+    const remoteEntry = new URL(manifest['profile-management'], manifestResponse.url());
 
     await page.route(`${remoteEntry.origin}/**`, (route) =>
       new URL(route.request().url()).pathname.endsWith('/remoteEntry.json')

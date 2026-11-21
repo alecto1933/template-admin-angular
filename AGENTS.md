@@ -123,6 +123,12 @@ Jika langkah ini dilewati, pekerjaan dianggap belum selesai.
 - Jangan mengedit `src/app/shared/ui/icon/icons.ts` manual — file generated.
   Tambah nama Lucide ke `ICONS` di `scripts/sync-icons.mjs`, lalu
   `npm run icons:sync`.
+- **Kepemilikan stylesheet remote (WAJIB):** host adalah pemilik stylesheet
+  untuk halaman remote `profile-management`. Remote hanya boleh memakai kelas
+  yang ada di sumber host atau di safelist `@source inline(...)` pada
+  `src/styles.css`. Menambah kelas baru di remote wajib disertai penambahan
+  kelas tersebut ke safelist host; jangan bergantung pada file dokumentasi atau
+  auto-scan yang kebetulan memuat nama kelas.
 
 ### 2.4 State, data, dan penyimpanan (WAJIB)
 

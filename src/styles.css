@@ -1,6 +1,19 @@
 @import 'tailwindcss';
 @import '@fontsource-variable/jetbrains-mono/index.css';
 
+/* Kelas yang dipakai remote profile-management.
+   Host adalah pemilik stylesheet; daftar ini mencegah ketergantungan pada file
+   dokumentasi. Tambahkan kelas baru di sini saat remote memakainya. */
+@source inline("bg-card bg-destructive/5 border border-border border-dashed border-destructive/40");
+@source inline("border-input cursor-pointer flex flex-col flex-wrap focus-visible:ring-2");
+@source inline("focus-visible:ring-primary font-display font-medium font-semibold gap-1.5 gap-2 gap-3 gap-4");
+@source inline("grid hidden hover:bg-accent hover:border-primary/60 hover:shadow-md items-center items-start");
+@source inline("justify-between justify-end leading-relaxed min-w-0 mt-0.5 mt-1 mt-2 p-4 p-5 px-4 py-4 py-5");
+@source inline("rounded-2xl rounded-xl shrink-0 size-3 size-4 size-5 sm:col-span-2 sm:grid-cols-2");
+@source inline("space-y-1.5 space-y-3 space-y-4 space-y-6 text-2xl text-[11px] text-base text-center");
+@source inline("text-destructive text-foreground text-muted-foreground text-sm text-xs tracking-tight");
+@source inline("transition-colors transition-shadow w-full whitespace-pre-line xl:grid-cols-3");
+
 /* Class-based dark mode instead of prefers-color-scheme. */
 @custom-variant dark (&:where(.dark, .dark *));
 

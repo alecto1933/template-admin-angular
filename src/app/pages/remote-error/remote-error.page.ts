@@ -1,8 +1,10 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { RemoteErrorToastGuard } from '@/core/federation/remote-error-toast.guard';
 import { ROUTE_RELOAD_TARGET, reloadProfileManagementRoute } from '@/core/federation/route-reload';
 import { TranslationService } from '@/core/i18n/translation.service';
 import { UiButton } from '@/shared/ui/button/button';
 import { UiIcon } from '@/shared/ui/icon/icon';
+import { ToastService } from '@/shared/ui/toast/toast.service';
 
 @Component({
   selector: 'app-remote-error',
@@ -26,8 +28,16 @@ import { UiIcon } from '@/shared/ui/icon/icon';
 export class RemoteErrorPage {
   private readonly i18n = inject(TranslationService);
   private readonly reloadTarget = inject(ROUTE_RELOAD_TARGET);
+  private readonly toast = inject(ToastService);
+  private readonly toastGuard = inject(RemoteErrorToastGuard);
 
   protected readonly t = this.i18n.layout;
+
+  constructor() {
+    if (this.toastGuard.claim()) {
+      this.toast.error(this.t().remoteErrorTitle, this.t().remoteErrorMessage);
+    }
+  }
 
   /**
    * Federation is initialized at bootstrap, so an in-app navigation cannot

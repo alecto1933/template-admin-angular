@@ -1,6 +1,7 @@
 import { FactoryProvider, Type } from '@angular/core';
 import { Route, Routes } from '@angular/router';
 import { loadRemoteModule } from '@angular-architects/native-federation';
+import { FederatedHostShell } from '@/core/federation/federated-host-shell';
 import { PROFILE_CONTEXT } from '@/core/federation/federation.contract';
 import { profileManagementRoute } from '@/core/federation/federated-route';
 import { TranslationService } from '@/core/i18n/translation.service';
@@ -20,14 +21,17 @@ describe('profileManagementRoute', () => {
     vi.mocked(loadRemoteModule).mockReset();
   });
 
-  it('declares the remote route with contract providers', () => {
+  it('declares the remote route with a host shell and contract providers', () => {
     const route = profileManagementRoute();
 
     expect(route.path).toBe('profile-management');
     expect(route.title).toBe('Vendor Profile · iVendor Superapps');
     expect(route.data).toEqual({ page: 'profileManagement' });
     expect(route.providers).toHaveLength(1);
-    expect(typeof route.loadChildren).toBe('function');
+    expect(route.component).toBe(FederatedHostShell);
+    expect(route.children).toHaveLength(1);
+    expect(route.children?.[0].path).toBe('');
+    expect(typeof route.children?.[0].loadChildren).toBe('function');
 
     const provider = route.providers?.[0] as FactoryProvider;
     expect(provider.provide).toBe(PROFILE_CONTEXT);
@@ -41,7 +45,7 @@ describe('profileManagementRoute', () => {
       PROFILE_MANAGEMENT_ROUTES: remoteRoutes,
     });
 
-    const routes = await loadChildren(profileManagementRoute())();
+    const routes = await loadChildren(profileManagementRoute().children![0])();
 
     expect(loadRemoteModule).toHaveBeenCalledWith({
       remoteName: 'profile-management',
@@ -53,7 +57,7 @@ describe('profileManagementRoute', () => {
   it('falls back to the error page when the remote cannot be loaded', async () => {
     vi.mocked(loadRemoteModule).mockRejectedValue(new Error('remote offline'));
 
-    const routes = await loadChildren(profileManagementRoute())();
+    const routes = await loadChildren(profileManagementRoute().children![0])();
     expect(routes).toHaveLength(1);
     expect(routes[0].path).toBe('**');
 

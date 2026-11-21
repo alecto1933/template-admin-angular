@@ -15,7 +15,6 @@ export default withNativeFederation({
     build: 'package',
   })
     .only([
-      '@angular/cdk',
       '@angular/common',
       '@angular/compiler',
       '@angular/core',
