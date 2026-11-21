@@ -5,12 +5,7 @@ import { UiDrawer, DrawerDirection } from '@/shared/ui/drawer/drawer';
 @Component({
   imports: [UiDrawer],
   template: `
-    <ui-drawer
-      title="Filter"
-      description="Saring data"
-      [direction]="direction()"
-      [(open)]="open"
-    >
+    <ui-drawer title="Filter" description="Saring data" [direction]="direction()" [(open)]="open">
       <p class="body">Isi drawer</p>
       <button drawerFooter type="button" class="footer-action">Terapkan</button>
     </ui-drawer>

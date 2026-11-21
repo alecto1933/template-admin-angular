@@ -23,7 +23,9 @@ class UnknownIconHost {
 
 describe('UiIcon', () => {
   beforeEach(async () => {
-    await TestBed.configureTestingModule({ imports: [IconHost, UnknownIconHost] }).compileComponents();
+    await TestBed.configureTestingModule({
+      imports: [IconHost, UnknownIconHost],
+    }).compileComponents();
   });
 
   it('renders the svg markup for a known icon name', () => {

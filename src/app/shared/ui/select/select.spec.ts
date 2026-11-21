@@ -113,7 +113,9 @@ describe('UiSelect', () => {
     expect(host.querySelectorAll('.ui-select-chip').length).toBe(2);
     expect(options[0].getAttribute('aria-selected')).toBe('true');
 
-    const removeButton = host.querySelector('.ui-select-chip [aria-label="Hapus Indonesia"]') as HTMLElement;
+    const removeButton = host.querySelector(
+      '.ui-select-chip [aria-label="Hapus Indonesia"]',
+    ) as HTMLElement;
     removeButton.click();
     fixture.detectChanges();
 
@@ -315,8 +317,7 @@ describe('UiSelect', () => {
     fixture.detectChanges();
     const host = fixture.nativeElement as HTMLElement;
     const trigger = host.querySelector('.ui-select-trigger') as HTMLButtonElement;
-    const cmp = fixture.debugElement.query(By.directive(UiSelect))
-      .componentInstance as UiSelect;
+    const cmp = fixture.debugElement.query(By.directive(UiSelect)).componentInstance as UiSelect;
 
     cmp.writeValue(null);
     fixture.detectChanges();

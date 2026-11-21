@@ -102,7 +102,12 @@ class LoadingHost {
   options: AutocompleteOption[] = [];
 }
 
-type AnyFixture = { nativeElement: HTMLElement; componentInstance: unknown; detectChanges(): void; whenStable(): Promise<unknown> };
+type AnyFixture = {
+  nativeElement: HTMLElement;
+  componentInstance: unknown;
+  detectChanges(): void;
+  whenStable(): Promise<unknown>;
+};
 
 function inputOf(fixture: AnyFixture): HTMLInputElement {
   return fixture.nativeElement.querySelector('input[role="combobox"]') as HTMLInputElement;
@@ -200,9 +205,9 @@ describe('UiAutocomplete', () => {
     dispatchKey(input, 'ArrowDown');
     fixture.detectChanges();
     expect(input.getAttribute('aria-activedescendant')).toContain('option-0');
-    expect(
-      fixture.nativeElement.querySelector('[data-active="true"]')?.textContent,
-    ).toContain('Apel Merah');
+    expect(fixture.nativeElement.querySelector('[data-active="true"]')?.textContent).toContain(
+      'Apel Merah',
+    );
 
     dispatchKey(input, 'ArrowDown');
     fixture.detectChanges();

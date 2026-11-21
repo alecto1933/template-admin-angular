@@ -28,41 +28,41 @@
 
 **Repo remote (`../ivendor-superapps-profile-management/`)**
 
-| File | Tanggung jawab |
-|---|---|
-| `federation.config.mjs` | expose `./Routes`, shared Angular singleton |
-| `scripts/write-version.mjs` | generate `public/version.json` |
-| `src/app/core/federation.contract.ts` | tipe + token kontrak (salinan) |
-| `src/app/core/federation/profile-context.ts` | `injectProfileContext()` |
-| `src/app/core/storage.ts` | salinan helper storage |
-| `src/app/core/asset-url.ts` | `assetUrl()` |
-| `src/app/profile-management/model/profile.model.ts` | `ProfileRecord`, `SectionId`, default |
-| `src/app/profile-management/data/banks.ts` | daftar bank & negara (salinan registrasi) |
-| `src/app/profile-management/data/profile.seed.ts` | seed demo |
-| `src/app/profile-management/data/draft-to-profile.ts` | konversi draft registrasi |
-| `src/app/profile-management/state/profile.store.ts` | signal store + persist |
-| `src/app/profile-management/i18n/profile.texts.ts` | kamus id/en/ja |
-| `src/app/profile-management/pages/**` | overview + 5 section |
-| `src/app/profile-management/routes.ts` | `PROFILE_MANAGEMENT_ROUTES` |
+| File                                                  | Tanggung jawab                              |
+| ----------------------------------------------------- | ------------------------------------------- |
+| `federation.config.mjs`                               | expose `./Routes`, shared Angular singleton |
+| `scripts/write-version.mjs`                           | generate `public/version.json`              |
+| `src/app/core/federation.contract.ts`                 | tipe + token kontrak (salinan)              |
+| `src/app/core/federation/profile-context.ts`          | `injectProfileContext()`                    |
+| `src/app/core/storage.ts`                             | salinan helper storage                      |
+| `src/app/core/asset-url.ts`                           | `assetUrl()`                                |
+| `src/app/profile-management/model/profile.model.ts`   | `ProfileRecord`, `SectionId`, default       |
+| `src/app/profile-management/data/banks.ts`            | daftar bank & negara (salinan registrasi)   |
+| `src/app/profile-management/data/profile.seed.ts`     | seed demo                                   |
+| `src/app/profile-management/data/draft-to-profile.ts` | konversi draft registrasi                   |
+| `src/app/profile-management/state/profile.store.ts`   | signal store + persist                      |
+| `src/app/profile-management/i18n/profile.texts.ts`    | kamus id/en/ja                              |
+| `src/app/profile-management/pages/**`                 | overview + 5 section                        |
+| `src/app/profile-management/routes.ts`                | `PROFILE_MANAGEMENT_ROUTES`                 |
 
 **Repo host**
 
-| File | Perubahan |
-|---|---|
+| File                                                               | Perubahan                         |
+| ------------------------------------------------------------------ | --------------------------------- |
 | `angular.json`, `main.ts`, `bootstrap.ts`, `federation.config.mjs` | hasil schematic Native Federation |
-| `scripts/write-federation-manifest.mjs` | manifest per environment |
-| `src/environments/*` | `remoteAssetBase` |
-| `src/app/core/federation/federation.contract.ts` | salinan kontrak |
-| `src/app/core/federation/profile-context.provider.ts` | provider kontrak |
-| `src/app/core/federation/remote-loader.ts` | `loadProfileManagementRoutes()` |
-| `src/app/core/federation/federated-route.ts` | route `profile-management` |
-| `src/app/pages/remote-error/remote-error.page.ts` | error card + retry |
-| `src/app/core/update/app-update.service.ts` | multi `version.json` |
-| `src/app/layout/topbar.ts` | mapping `profileManagement` |
-| `src/app/core/nav.ts`, `src/app/layout/sidebar.ts` | nav item + `labelKey` |
-| `src/app/pages/home/home.page.ts/.html` | kartu pertama navigasi |
-| `src/app/core/i18n/layout.texts.ts` | teks baru |
-| `e2e/profile-management.spec.ts` | smoke test MFE |
+| `scripts/write-federation-manifest.mjs`                            | manifest per environment          |
+| `src/environments/*`                                               | `remoteAssetBase`                 |
+| `src/app/core/federation/federation.contract.ts`                   | salinan kontrak                   |
+| `src/app/core/federation/profile-context.provider.ts`              | provider kontrak                  |
+| `src/app/core/federation/remote-loader.ts`                         | `loadProfileManagementRoutes()`   |
+| `src/app/core/federation/federated-route.ts`                       | route `profile-management`        |
+| `src/app/pages/remote-error/remote-error.page.ts`                  | error card + retry                |
+| `src/app/core/update/app-update.service.ts`                        | multi `version.json`              |
+| `src/app/layout/topbar.ts`                                         | mapping `profileManagement`       |
+| `src/app/core/nav.ts`, `src/app/layout/sidebar.ts`                 | nav item + `labelKey`             |
+| `src/app/pages/home/home.page.ts/.html`                            | kartu pertama navigasi            |
+| `src/app/core/i18n/layout.texts.ts`                                | teks baru                         |
+| `e2e/profile-management.spec.ts`                                   | smoke test MFE                    |
 
 ---
 
@@ -71,12 +71,14 @@
 ### Task 1: Scaffold repo remote + Native Federation
 
 **Files:**
+
 - Create: `../ivendor-superapps-profile-management/` (seluruh repo)
 - Modify: `federation.config.mjs`, `angular.json`, `package.json`
 - Create: `scripts/write-version.mjs`
 - Create: `src/app/profile-management/routes.ts` (placeholder, diisi Task 6)
 
 **Interfaces:**
+
 - Produces: remote federation bernama `profile-management`, exposed module `./Routes`, dev server `:4201`.
 
 - [ ] **Step 1: Buat aplikasi Angular**
@@ -180,12 +182,14 @@ Buka `http://localhost:4201/remoteEntry.json` → JSON valid.
 ### Task 2: Salin token style dan komponen `shared/ui`
 
 **Files:**
+
 - Create: `src/styles.css` (ganti hasil `ng new`)
 - Create: `src/app/shared/ui/**`
 - Create: `scripts/sync-icons.mjs`
 - Modify: `package.json`, `angular.json` (styles/asset sudah menunjuk `src/styles.css`)
 
 **Interfaces:**
+
 - Produces: komponen `button[uiButton]`, `[uiBadge]`, `ui-icon`, `ui-spinner`, `ui-dialog`, `ui-alert-dialog`, `ui-toast`, `ui-select`, `ui-autocomplete`, `ui-attachment`, `ui-tabs`, `ui-tooltip`, `ui-switch`, `ui-page-header` tersedia di remote.
 
 - [ ] **Step 1: Salin styles dan aset UI**
@@ -239,6 +243,7 @@ Expected: build lulus, test bawaan lulus.
 ### Task 3: Kontrak, storage, asset URL, dan context helper
 
 **Files:**
+
 - Create: `src/app/core/federation.contract.ts`
 - Create: `src/app/core/federation/profile-context.ts`
 - Create: `src/app/core/storage.ts`
@@ -246,6 +251,7 @@ Expected: build lulus, test bawaan lulus.
 - Test: `src/app/core/federation/profile-context.spec.ts`, `src/app/core/asset-url.spec.ts`
 
 **Interfaces:**
+
 - Produces:
   - `PROFILE_CONTEXT = 'IVENDOR_PROFILE_CONTEXT'`
   - `interface ProfileContext { lang: () => Lang; theme: () => ThemeMode; user: () => SessionUser \| null; assetBase: string }`
@@ -289,7 +295,9 @@ describe('injectProfileContext', () => {
       user: () => null,
       assetBase: '/x/',
     };
-    TestBed.configureTestingModule({ providers: [{ provide: PROFILE_CONTEXT, useValue: provided }] });
+    TestBed.configureTestingModule({
+      providers: [{ provide: PROFILE_CONTEXT, useValue: provided }],
+    });
     expect(injectProfileContext()).toBe(provided);
   });
 
@@ -354,7 +362,10 @@ export const DEFAULT_PROFILE_CONTEXT: ProfileContext = {
 };
 
 export function injectProfileContext(): ProfileContext {
-  return (inject(PROFILE_CONTEXT, { optional: true }) as ProfileContext | null) ?? DEFAULT_PROFILE_CONTEXT;
+  return (
+    (inject(PROFILE_CONTEXT, { optional: true }) as ProfileContext | null) ??
+    DEFAULT_PROFILE_CONTEXT
+  );
 }
 ```
 
@@ -384,6 +395,7 @@ Expected: PASS.
 ### Task 4: Model, seed, konversi draft, dan `ProfileStore`
 
 **Files:**
+
 - Create: `src/app/profile-management/model/profile.model.ts`
 - Create: `src/app/profile-management/data/banks.ts`
 - Create: `src/app/profile-management/data/profile.seed.ts`
@@ -393,6 +405,7 @@ Expected: PASS.
 - Test: `src/app/profile-management/data/draft-to-profile.spec.ts`
 
 **Interfaces:**
+
 - Produces:
   - `SectionId = 'vendor' | 'pic' | 'bank' | 'tax' | 'domicile'`
   - `VerifyStatus = 'draft' | 'pending' | 'verified' | 'rejected'`
@@ -424,7 +437,9 @@ describe('ProfileStore', () => {
     store.save();
 
     expect(store.profile().vendor.name).toBe('PT Baru');
-    expect(store.profile().verifications.vendor.status).toBe(before === 'draft' ? 'draft' : 'pending');
+    expect(store.profile().verifications.vendor.status).toBe(
+      before === 'draft' ? 'draft' : 'pending',
+    );
     expect(store.isDirty()).toBe(false);
   });
 
@@ -493,7 +508,15 @@ describe('draftToProfile', () => {
 
   it('falls back to the seed when values are missing', () => {
     const record = draftToProfile(
-      { version: 1, entityType: 'national', phoneCountryIso: 'id', useVendorName: false, hasSkb: false, bankRequest: null, values: {} },
+      {
+        version: 1,
+        entityType: 'national',
+        phoneCountryIso: 'id',
+        useVendorName: false,
+        hasSkb: false,
+        bankRequest: null,
+        values: {},
+      },
       now,
     );
     expect(record.vendor.name).toBe('');
@@ -534,8 +557,25 @@ export const EMPTY_PROFILE: ProfileRecord = {
   updatedAt: '',
   vendor: { name: '', type: 'CORPORATE', category: '', countryIso: 'id', address: '', email: '' },
   pic: { name: '', email: '', phone: '', phoneCountryIso: 'id' },
-  bank: { bankId: null, bankName: '', country: 'ID', branch: '', accountName: '', accountNumber: '', currency: 'IDR - Rupiah Indonesia', recipientType: 'CORPORATE', statement: null, request: null },
-  tax: { entityType: 'national', ktp: { name: '', address: '', file: null }, npwp: { name: '', address: '', file: null }, sppkp: null, skb: null },
+  bank: {
+    bankId: null,
+    bankName: '',
+    country: 'ID',
+    branch: '',
+    accountName: '',
+    accountNumber: '',
+    currency: 'IDR - Rupiah Indonesia',
+    recipientType: 'CORPORATE',
+    statement: null,
+    request: null,
+  },
+  tax: {
+    entityType: 'national',
+    ktp: { name: '', address: '', file: null },
+    npwp: { name: '', address: '', file: null },
+    sppkp: null,
+    skb: null,
+  },
   domicile: { file: null },
   verifications: {
     vendor: { status: 'draft', updatedAt: '' },
@@ -606,7 +646,9 @@ export function draftToProfile(draft: RegistrationDraft, now: string): ProfileRe
       entityType: draft.entityType,
       ktp: { name: text(values['taxName']), address: text(values['taxAddress']), file: null },
       npwp: { name: text(values['taxName']), address: text(values['taxAddress']), file: null },
-      sppkp: text(values['sppkp']) ? { name: text(values['sppkp']), address: '', file: null } : null,
+      sppkp: text(values['sppkp'])
+        ? { name: text(values['sppkp']), address: '', file: null }
+        : null,
       skb: draft.hasSkb ? { name: text(values['skbAttachment']), address: '', file: null } : null,
     },
     verifications: {
@@ -693,11 +735,21 @@ export class ProfileStore {
         verifications: { ...record.verifications },
       };
       switch (staged.section) {
-        case 'vendor': next.vendor = { ...record.vendor, ...staged.values } as ProfileRecord['vendor']; break;
-        case 'pic': next.pic = { ...record.pic, ...staged.values } as ProfileRecord['pic']; break;
-        case 'bank': next.bank = { ...record.bank, ...staged.values } as ProfileRecord['bank']; break;
-        case 'tax': next.tax = { ...record.tax, ...staged.values } as ProfileRecord['tax']; break;
-        case 'domicile': next.domicile = { ...record.domicile, ...staged.values } as ProfileRecord['domicile']; break;
+        case 'vendor':
+          next.vendor = { ...record.vendor, ...staged.values } as ProfileRecord['vendor'];
+          break;
+        case 'pic':
+          next.pic = { ...record.pic, ...staged.values } as ProfileRecord['pic'];
+          break;
+        case 'bank':
+          next.bank = { ...record.bank, ...staged.values } as ProfileRecord['bank'];
+          break;
+        case 'tax':
+          next.tax = { ...record.tax, ...staged.values } as ProfileRecord['tax'];
+          break;
+        case 'domicile':
+          next.domicile = { ...record.domicile, ...staged.values } as ProfileRecord['domicile'];
+          break;
       }
       const current = record.verifications[staged.section];
       next.verifications[staged.section] = {
@@ -714,7 +766,10 @@ export class ProfileStore {
   requestVerification(section: SectionId): void {
     this._profile.update((record) => ({
       ...record,
-      verifications: { ...record.verifications, [section]: { status: 'pending', updatedAt: new Date().toISOString() } },
+      verifications: {
+        ...record.verifications,
+        [section]: { status: 'pending', updatedAt: new Date().toISOString() },
+      },
     }));
     writeJson(PROFILE_STORAGE_KEY, this._profile());
   }
@@ -739,10 +794,12 @@ Expected: PASS.
 ### Task 5: Kamus i18n remote
 
 **Files:**
+
 - Create: `src/app/profile-management/i18n/profile.texts.ts`
 - Test: `src/app/profile-management/i18n/profile.texts.spec.ts`
 
 **Interfaces:**
+
 - Produces: `PROFILE_TEXTS: Record<Lang, ProfileTexts>`, tipe `ProfileTextKey`.
 
 - [ ] **Step 1: Tulis test paritas yang gagal**
@@ -778,73 +835,205 @@ Key minimum (semua wajib ada di ketiga bahasa):
 ```ts
 export const PROFILE_TEXTS = {
   id: {
-    pageTitle: 'Profil Vendor', pageSubtitle: 'Kelola data profil, rekening, dan dokumen vendor.',
-    overview: 'Ringkasan', navVendor: 'Profil Vendor', navPic: 'Informasi PIC', navBank: 'Rekening Bank',
-    navTax: 'Identifikasi Pajak', navDomicile: 'Surat Domisili',
-    edit: 'Ubah', save: 'Simpan', cancel: 'Batal', saving: 'Menyimpan…', requestVerify: 'Ajukan Verifikasi',
-    statusDraft: 'Draf', statusPending: 'Menunggu verifikasi', statusVerified: 'Terverifikasi', statusRejected: 'Ditolak',
-    updatedAt: 'Diperbarui', lastNote: 'Catatan', notFilled: 'Belum diisi',
-    vendorName: 'Nama vendor', vendorType: 'Tipe', category: 'Kategori', country: 'Negara',
-    address: 'Alamat', email: 'Email', picName: 'Nama PIC', picEmail: 'Email PIC', phone: 'Nomor telepon',
-    bankName: 'Nama bank', bankCountry: 'Negara bank', bankBranch: 'Cabang', accountName: 'Atas nama',
-    accountNumber: 'Nomor rekening', currency: 'Mata uang', recipientType: 'Tipe penerima',
-    statement: 'Halaman pertama rekening', uploadHint: 'Klik untuk mengunggah berkas',
-    uploadFormat: 'JPG, PNG, atau PDF. Maksimal 5 MB.', removeFile: 'Hapus berkas', previewFile: 'Pratinjau',
-    taxEntityType: 'Tipe entitas', taxKtp: 'KTP', taxNpwp: 'NPWP', taxSppkp: 'SPPKP', taxSkb: 'SKB',
-    taxName: 'Nama', taxAddress: 'Alamat', domicileFile: 'Surat keterangan domisili',
-    domicileTemplate: 'Unduh template', overviewComplete: 'Lengkap', overviewNeedAttention: 'Perlu perhatian',
-    overviewSections: 'Section', emptyValue: '—', validationRequired: 'Wajib diisi.',
-    validationEmail: 'Masukkan email yang valid.', validationMaxAddress: 'Maksimal 250 karakter.',
-    validationFileType: 'Format berkas harus JPG, PNG, atau PDF.', validationFileSize: 'Ukuran berkas maksimal 5 MB.',
-    savedTitle: 'Tersimpan', savedMessage: 'Perubahan berhasil disimpan.',
-    verifyTitle: 'Verifikasi diajukan', verifyMessage: 'Perubahan akan diverifikasi oleh tim kami.',
-    resetDemo: 'Muat ulang data demo', errorTitle: 'Data tidak bisa dimuat',
+    pageTitle: 'Profil Vendor',
+    pageSubtitle: 'Kelola data profil, rekening, dan dokumen vendor.',
+    overview: 'Ringkasan',
+    navVendor: 'Profil Vendor',
+    navPic: 'Informasi PIC',
+    navBank: 'Rekening Bank',
+    navTax: 'Identifikasi Pajak',
+    navDomicile: 'Surat Domisili',
+    edit: 'Ubah',
+    save: 'Simpan',
+    cancel: 'Batal',
+    saving: 'Menyimpan…',
+    requestVerify: 'Ajukan Verifikasi',
+    statusDraft: 'Draf',
+    statusPending: 'Menunggu verifikasi',
+    statusVerified: 'Terverifikasi',
+    statusRejected: 'Ditolak',
+    updatedAt: 'Diperbarui',
+    lastNote: 'Catatan',
+    notFilled: 'Belum diisi',
+    vendorName: 'Nama vendor',
+    vendorType: 'Tipe',
+    category: 'Kategori',
+    country: 'Negara',
+    address: 'Alamat',
+    email: 'Email',
+    picName: 'Nama PIC',
+    picEmail: 'Email PIC',
+    phone: 'Nomor telepon',
+    bankName: 'Nama bank',
+    bankCountry: 'Negara bank',
+    bankBranch: 'Cabang',
+    accountName: 'Atas nama',
+    accountNumber: 'Nomor rekening',
+    currency: 'Mata uang',
+    recipientType: 'Tipe penerima',
+    statement: 'Halaman pertama rekening',
+    uploadHint: 'Klik untuk mengunggah berkas',
+    uploadFormat: 'JPG, PNG, atau PDF. Maksimal 5 MB.',
+    removeFile: 'Hapus berkas',
+    previewFile: 'Pratinjau',
+    taxEntityType: 'Tipe entitas',
+    taxKtp: 'KTP',
+    taxNpwp: 'NPWP',
+    taxSppkp: 'SPPKP',
+    taxSkb: 'SKB',
+    taxName: 'Nama',
+    taxAddress: 'Alamat',
+    domicileFile: 'Surat keterangan domisili',
+    domicileTemplate: 'Unduh template',
+    overviewComplete: 'Lengkap',
+    overviewNeedAttention: 'Perlu perhatian',
+    overviewSections: 'Section',
+    emptyValue: '—',
+    validationRequired: 'Wajib diisi.',
+    validationEmail: 'Masukkan email yang valid.',
+    validationMaxAddress: 'Maksimal 250 karakter.',
+    validationFileType: 'Format berkas harus JPG, PNG, atau PDF.',
+    validationFileSize: 'Ukuran berkas maksimal 5 MB.',
+    savedTitle: 'Tersimpan',
+    savedMessage: 'Perubahan berhasil disimpan.',
+    verifyTitle: 'Verifikasi diajukan',
+    verifyMessage: 'Perubahan akan diverifikasi oleh tim kami.',
+    resetDemo: 'Muat ulang data demo',
+    errorTitle: 'Data tidak bisa dimuat',
   },
   en: {
-    pageTitle: 'Vendor Profile', pageSubtitle: 'Manage vendor profile, bank account, and documents.',
-    overview: 'Overview', navVendor: 'Vendor Profile', navPic: 'PIC Information', navBank: 'Bank Account',
-    navTax: 'Tax Identification', navDomicile: 'Domicile Letter',
-    edit: 'Edit', save: 'Save', cancel: 'Cancel', saving: 'Saving…', requestVerify: 'Request verification',
-    statusDraft: 'Draft', statusPending: 'Pending verification', statusVerified: 'Verified', statusRejected: 'Rejected',
-    updatedAt: 'Updated', lastNote: 'Note', notFilled: 'Not filled',
-    vendorName: 'Vendor name', vendorType: 'Type', category: 'Category', country: 'Country',
-    address: 'Address', email: 'Email', picName: 'PIC name', picEmail: 'PIC email', phone: 'Phone number',
-    bankName: 'Bank name', bankCountry: 'Bank country', bankBranch: 'Branch', accountName: 'Account name',
-    accountNumber: 'Account number', currency: 'Currency', recipientType: 'Recipient type',
-    statement: 'First page of bank statement', uploadHint: 'Click to upload a file',
-    uploadFormat: 'JPG, PNG, or PDF. Maximum 5 MB.', removeFile: 'Remove file', previewFile: 'Preview',
-    taxEntityType: 'Entity type', taxKtp: 'ID card', taxNpwp: 'Tax ID', taxSppkp: 'VAT registration', taxSkb: 'Tax exemption',
-    taxName: 'Name', taxAddress: 'Address', domicileFile: 'Domicile letter',
-    domicileTemplate: 'Download template', overviewComplete: 'Complete', overviewNeedAttention: 'Needs attention',
-    overviewSections: 'Section', emptyValue: '—', validationRequired: 'Required.',
-    validationEmail: 'Enter a valid email.', validationMaxAddress: 'Maximum 250 characters.',
-    validationFileType: 'File must be JPG, PNG, or PDF.', validationFileSize: 'Maximum file size is 5 MB.',
-    savedTitle: 'Saved', savedMessage: 'Your changes have been saved.',
-    verifyTitle: 'Verification requested', verifyMessage: 'Your changes will be reviewed by our team.',
-    resetDemo: 'Reload demo data', errorTitle: 'Data could not be loaded',
+    pageTitle: 'Vendor Profile',
+    pageSubtitle: 'Manage vendor profile, bank account, and documents.',
+    overview: 'Overview',
+    navVendor: 'Vendor Profile',
+    navPic: 'PIC Information',
+    navBank: 'Bank Account',
+    navTax: 'Tax Identification',
+    navDomicile: 'Domicile Letter',
+    edit: 'Edit',
+    save: 'Save',
+    cancel: 'Cancel',
+    saving: 'Saving…',
+    requestVerify: 'Request verification',
+    statusDraft: 'Draft',
+    statusPending: 'Pending verification',
+    statusVerified: 'Verified',
+    statusRejected: 'Rejected',
+    updatedAt: 'Updated',
+    lastNote: 'Note',
+    notFilled: 'Not filled',
+    vendorName: 'Vendor name',
+    vendorType: 'Type',
+    category: 'Category',
+    country: 'Country',
+    address: 'Address',
+    email: 'Email',
+    picName: 'PIC name',
+    picEmail: 'PIC email',
+    phone: 'Phone number',
+    bankName: 'Bank name',
+    bankCountry: 'Bank country',
+    bankBranch: 'Branch',
+    accountName: 'Account name',
+    accountNumber: 'Account number',
+    currency: 'Currency',
+    recipientType: 'Recipient type',
+    statement: 'First page of bank statement',
+    uploadHint: 'Click to upload a file',
+    uploadFormat: 'JPG, PNG, or PDF. Maximum 5 MB.',
+    removeFile: 'Remove file',
+    previewFile: 'Preview',
+    taxEntityType: 'Entity type',
+    taxKtp: 'ID card',
+    taxNpwp: 'Tax ID',
+    taxSppkp: 'VAT registration',
+    taxSkb: 'Tax exemption',
+    taxName: 'Name',
+    taxAddress: 'Address',
+    domicileFile: 'Domicile letter',
+    domicileTemplate: 'Download template',
+    overviewComplete: 'Complete',
+    overviewNeedAttention: 'Needs attention',
+    overviewSections: 'Section',
+    emptyValue: '—',
+    validationRequired: 'Required.',
+    validationEmail: 'Enter a valid email.',
+    validationMaxAddress: 'Maximum 250 characters.',
+    validationFileType: 'File must be JPG, PNG, or PDF.',
+    validationFileSize: 'Maximum file size is 5 MB.',
+    savedTitle: 'Saved',
+    savedMessage: 'Your changes have been saved.',
+    verifyTitle: 'Verification requested',
+    verifyMessage: 'Your changes will be reviewed by our team.',
+    resetDemo: 'Reload demo data',
+    errorTitle: 'Data could not be loaded',
   },
   ja: {
-    pageTitle: 'ベンダープロフィール', pageSubtitle: 'ベンダー情報、銀行口座、書類を管理します。',
-    overview: '概要', navVendor: 'ベンダープロフィール', navPic: '担当者情報', navBank: '銀行口座',
-    navTax: '税務情報', navDomicile: '所在地証明書',
-    edit: '編集', save: '保存', cancel: 'キャンセル', saving: '保存中…', requestVerify: '確認を依頼',
-    statusDraft: '下書き', statusPending: '確認待ち', statusVerified: '確認済み', statusRejected: '却下',
-    updatedAt: '更新日', lastNote: 'メモ', notFilled: '未入力',
-    vendorName: 'ベンダー名', vendorType: '種別', category: 'カテゴリ', country: '国',
-    address: '住所', email: 'メール', picName: '担当者名', picEmail: '担当者メール', phone: '電話番号',
-    bankName: '銀行名', bankCountry: '銀行の国', bankBranch: '支店', accountName: '口座名義',
-    accountNumber: '口座番号', currency: '通貨', recipientType: '受取種別',
-    statement: '通帳の最初のページ', uploadHint: 'クリックしてファイルをアップロード',
-    uploadFormat: 'JPG、PNG、PDF。最大 5 MB。', removeFile: 'ファイルを削除', previewFile: 'プレビュー',
-    taxEntityType: ' entity type', taxKtp: '身分証明書', taxNpwp: '納税者番号', taxSppkp: '課税事業者登録', taxSkb: '免税証明',
-    taxName: '名称', taxAddress: '住所', domicileFile: '所在地証明書',
-    domicileTemplate: 'テンプレートをダウンロード', overviewComplete: '完了', overviewNeedAttention: '要確認',
-    overviewSections: 'セクション', emptyValue: '—', validationRequired: '必須です。',
-    validationEmail: '有効なメールアドレスを入力してください。', validationMaxAddress: '最大 250 文字です。',
-    validationFileType: 'ファイルは JPG、PNG、PDF のいずれかです。', validationFileSize: 'ファイルサイズは最大 5 MB です。',
-    savedTitle: '保存しました', savedMessage: '変更を保存しました。',
-    verifyTitle: '確認を依頼しました', verifyMessage: '変更は担当チームが確認します。',
-    resetDemo: 'デモデータを再読み込み', errorTitle: 'データを読み込めません',
+    pageTitle: 'ベンダープロフィール',
+    pageSubtitle: 'ベンダー情報、銀行口座、書類を管理します。',
+    overview: '概要',
+    navVendor: 'ベンダープロフィール',
+    navPic: '担当者情報',
+    navBank: '銀行口座',
+    navTax: '税務情報',
+    navDomicile: '所在地証明書',
+    edit: '編集',
+    save: '保存',
+    cancel: 'キャンセル',
+    saving: '保存中…',
+    requestVerify: '確認を依頼',
+    statusDraft: '下書き',
+    statusPending: '確認待ち',
+    statusVerified: '確認済み',
+    statusRejected: '却下',
+    updatedAt: '更新日',
+    lastNote: 'メモ',
+    notFilled: '未入力',
+    vendorName: 'ベンダー名',
+    vendorType: '種別',
+    category: 'カテゴリ',
+    country: '国',
+    address: '住所',
+    email: 'メール',
+    picName: '担当者名',
+    picEmail: '担当者メール',
+    phone: '電話番号',
+    bankName: '銀行名',
+    bankCountry: '銀行の国',
+    bankBranch: '支店',
+    accountName: '口座名義',
+    accountNumber: '口座番号',
+    currency: '通貨',
+    recipientType: '受取種別',
+    statement: '通帳の最初のページ',
+    uploadHint: 'クリックしてファイルをアップロード',
+    uploadFormat: 'JPG、PNG、PDF。最大 5 MB。',
+    removeFile: 'ファイルを削除',
+    previewFile: 'プレビュー',
+    taxEntityType: ' entity type',
+    taxKtp: '身分証明書',
+    taxNpwp: '納税者番号',
+    taxSppkp: '課税事業者登録',
+    taxSkb: '免税証明',
+    taxName: '名称',
+    taxAddress: '住所',
+    domicileFile: '所在地証明書',
+    domicileTemplate: 'テンプレートをダウンロード',
+    overviewComplete: '完了',
+    overviewNeedAttention: '要確認',
+    overviewSections: 'セクション',
+    emptyValue: '—',
+    validationRequired: '必須です。',
+    validationEmail: '有効なメールアドレスを入力してください。',
+    validationMaxAddress: '最大 250 文字です。',
+    validationFileType: 'ファイルは JPG、PNG、PDF のいずれかです。',
+    validationFileSize: 'ファイルサイズは最大 5 MB です。',
+    savedTitle: '保存しました',
+    savedMessage: '変更を保存しました。',
+    verifyTitle: '確認を依頼しました',
+    verifyMessage: '変更は担当チームが確認します。',
+    resetDemo: 'デモデータを再読み込み',
+    errorTitle: 'データを読み込めません',
   },
 } as const;
 
@@ -863,11 +1052,13 @@ npx ng test --watch=false --include=app/profile-management/i18n/profile.texts.sp
 ### Task 6: Routes, halaman overview, dan badge status
 
 **Files:**
+
 - Create: `src/app/profile-management/routes.ts`
 - Create: `src/app/profile-management/pages/overview/overview.page.ts` + `.html` + `.spec.ts`
 - Create: `src/app/profile-management/pages/section-status.ts` (helper label warna)
 
 **Interfaces:**
+
 - Produces: `PROFILE_MANAGEMENT_ROUTES` dengan `''` (overview), `vendor`, `pic`, `bank`, `tax`, `domicile`, dan `**` → `''`. Setiap route memakai `data: { page: 'profileManagement' }`.
 
 - [ ] **Step 1: Tulis test overview yang gagal**
@@ -917,12 +1108,37 @@ import { Routes } from '@angular/router';
 const page = { page: 'profileManagement' };
 
 export const PROFILE_MANAGEMENT_ROUTES: Routes = [
-  { path: '', pathMatch: 'full', data: page, loadComponent: () => import('./pages/overview/overview.page').then((m) => m.OverviewPage) },
-  { path: 'vendor', data: page, loadComponent: () => import('./pages/vendor/vendor.page').then((m) => m.VendorPage) },
-  { path: 'pic', data: page, loadComponent: () => import('./pages/pic/pic.page').then((m) => m.PicPage) },
-  { path: 'bank', data: page, loadComponent: () => import('./pages/bank/bank.page').then((m) => m.BankPage) },
-  { path: 'tax', data: page, loadComponent: () => import('./pages/tax/tax.page').then((m) => m.TaxPage) },
-  { path: 'domicile', data: page, loadComponent: () => import('./pages/domicile/domicile.page').then((m) => m.DomicilePage) },
+  {
+    path: '',
+    pathMatch: 'full',
+    data: page,
+    loadComponent: () => import('./pages/overview/overview.page').then((m) => m.OverviewPage),
+  },
+  {
+    path: 'vendor',
+    data: page,
+    loadComponent: () => import('./pages/vendor/vendor.page').then((m) => m.VendorPage),
+  },
+  {
+    path: 'pic',
+    data: page,
+    loadComponent: () => import('./pages/pic/pic.page').then((m) => m.PicPage),
+  },
+  {
+    path: 'bank',
+    data: page,
+    loadComponent: () => import('./pages/bank/bank.page').then((m) => m.BankPage),
+  },
+  {
+    path: 'tax',
+    data: page,
+    loadComponent: () => import('./pages/tax/tax.page').then((m) => m.TaxPage),
+  },
+  {
+    path: 'domicile',
+    data: page,
+    loadComponent: () => import('./pages/domicile/domicile.page').then((m) => m.DomicilePage),
+  },
   { path: '**', redirectTo: '' },
 ];
 ```
@@ -987,10 +1203,16 @@ export class OverviewPage {
   ];
 
   protected readonly verifiedCount = computed(
-    () => this.sections.filter((section) => this.profile().verifications[section.id].status === 'verified').length,
+    () =>
+      this.sections.filter(
+        (section) => this.profile().verifications[section.id].status === 'verified',
+      ).length,
   );
   protected readonly needsAttentionCount = computed(
-    () => this.sections.filter((section) => this.profile().verifications[section.id].status !== 'verified').length,
+    () =>
+      this.sections.filter(
+        (section) => this.profile().verifications[section.id].status !== 'verified',
+      ).length,
   );
 
   protected statusLabel(status: VerifyStatus): string {
@@ -1017,7 +1239,9 @@ Import yang dibutuhkan: `RouterLink`, `UiBadge`, `ProfileStore`, `injectProfileC
   <dl class="grid gap-4 sm:grid-cols-2">
     <div class="rounded-2xl border border-border bg-card p-5">
       <dt class="text-xs text-muted-foreground">{{ t().overviewComplete }}</dt>
-      <dd class="mt-1 font-display text-2xl font-semibold">{{ verifiedCount() }} / {{ sections.length }}</dd>
+      <dd class="mt-1 font-display text-2xl font-semibold">
+        {{ verifiedCount() }} / {{ sections.length }}
+      </dd>
     </div>
     <div class="rounded-2xl border border-border bg-card p-5">
       <dt class="text-xs text-muted-foreground">{{ t().overviewNeedAttention }}</dt>
@@ -1027,23 +1251,25 @@ Import yang dibutuhkan: `RouterLink`, `UiBadge`, `ProfileStore`, `injectProfileC
 
   <div class="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
     @for (section of sections; track section.id) {
-      <a
-        [routerLink]="section.route"
-        class="group rounded-2xl border border-border bg-card p-5 transition-shadow hover:shadow-md focus-visible:ring-2 focus-visible:ring-primary"
-      >
-        <div class="flex items-start justify-between gap-3">
-          <span class="font-display text-base font-semibold">{{ t()[section.labelKey] }}</span>
-          <span uiBadge [variant]="statusTone(profile().verifications[section.id].status)">
-            {{ statusLabel(profile().verifications[section.id].status) }}
-          </span>
-        </div>
-        <p class="mt-2 text-xs text-muted-foreground">
-          {{ t().updatedAt }}: {{ profile().verifications[section.id].updatedAt || t().emptyValue }}
-        </p>
-        @if (profile().verifications[section.id].note) {
-          <p class="mt-2 text-xs text-destructive">{{ t().lastNote }}: {{ profile().verifications[section.id].note }}</p>
-        }
-      </a>
+    <a
+      [routerLink]="section.route"
+      class="group rounded-2xl border border-border bg-card p-5 transition-shadow hover:shadow-md focus-visible:ring-2 focus-visible:ring-primary"
+    >
+      <div class="flex items-start justify-between gap-3">
+        <span class="font-display text-base font-semibold">{{ t()[section.labelKey] }}</span>
+        <span uiBadge [variant]="statusTone(profile().verifications[section.id].status)">
+          {{ statusLabel(profile().verifications[section.id].status) }}
+        </span>
+      </div>
+      <p class="mt-2 text-xs text-muted-foreground">
+        {{ t().updatedAt }}: {{ profile().verifications[section.id].updatedAt || t().emptyValue }}
+      </p>
+      @if (profile().verifications[section.id].note) {
+      <p class="mt-2 text-xs text-destructive">
+        {{ t().lastNote }}: {{ profile().verifications[section.id].note }}
+      </p>
+      }
+    </a>
     }
   </div>
 </section>
@@ -1058,10 +1284,12 @@ npx ng test --watch=false --include=app/profile-management/pages/overview/overvi
 ### Task 7: Halaman Vendor dan PIC
 
 **Files:**
+
 - Create: `src/app/profile-management/pages/vendor/vendor.page.ts` + `.html` + `.spec.ts`
 - Create: `src/app/profile-management/pages/pic/pic.page.ts` + `.html` + `.spec.ts`
 
 **Interfaces:**
+
 - Consumes: `ProfileStore.stage/save/discard`, `injectProfileContext`, `PROFILE_TEXTS`.
 - Produces: dua halaman yang memakai pola view ↔ edit dan menandai status `pending` setelah menyimpan.
 
@@ -1087,7 +1315,9 @@ describe('VendorPage', () => {
     page.startEdit();
     fixture.detectChanges();
 
-    const input = (fixture.nativeElement as HTMLElement).querySelector<HTMLInputElement>('#vendor-name');
+    const input = (fixture.nativeElement as HTMLElement).querySelector<HTMLInputElement>(
+      '#vendor-name',
+    );
     expect(input).not.toBeNull();
     input!.value = 'PT Baru';
     input!.dispatchEvent(new Event('input'));
@@ -1180,34 +1410,68 @@ Import tambahan: `SelectOption` dari `@/shared/ui/select/select`, `statusLabel`/
   </header>
 
   @if (!editing()) {
-    <dl class="grid gap-4 rounded-2xl border border-border bg-card p-5 sm:grid-cols-2">
-      <div><dt class="text-xs text-muted-foreground">{{ t().vendorName }}</dt><dd class="text-sm font-medium">{{ store.profile().vendor.name || t().emptyValue }}</dd></div>
-      <div><dt class="text-xs text-muted-foreground">{{ t().vendorType }}</dt><dd class="text-sm font-medium">{{ store.profile().vendor.type }}</dd></div>
-      <div><dt class="text-xs text-muted-foreground">{{ t().category }}</dt><dd class="text-sm font-medium">{{ store.profile().vendor.category || t().emptyValue }}</dd></div>
-      <div><dt class="text-xs text-muted-foreground">{{ t().country }}</dt><dd class="text-sm font-medium">{{ store.profile().vendor.countryIso }}</dd></div>
-      <div class="sm:col-span-2"><dt class="text-xs text-muted-foreground">{{ t().address }}</dt><dd class="text-sm font-medium">{{ store.profile().vendor.address || t().emptyValue }}</dd></div>
-      <div class="sm:col-span-2"><dt class="text-xs text-muted-foreground">{{ t().email }}</dt><dd class="text-sm font-medium">{{ store.profile().vendor.email || t().emptyValue }}</dd></div>
-    </dl>
-    <button uiButton type="button" (click)="startEdit()">{{ t().edit }}</button>
+  <dl class="grid gap-4 rounded-2xl border border-border bg-card p-5 sm:grid-cols-2">
+    <div>
+      <dt class="text-xs text-muted-foreground">{{ t().vendorName }}</dt>
+      <dd class="text-sm font-medium">{{ store.profile().vendor.name || t().emptyValue }}</dd>
+    </div>
+    <div>
+      <dt class="text-xs text-muted-foreground">{{ t().vendorType }}</dt>
+      <dd class="text-sm font-medium">{{ store.profile().vendor.type }}</dd>
+    </div>
+    <div>
+      <dt class="text-xs text-muted-foreground">{{ t().category }}</dt>
+      <dd class="text-sm font-medium">{{ store.profile().vendor.category || t().emptyValue }}</dd>
+    </div>
+    <div>
+      <dt class="text-xs text-muted-foreground">{{ t().country }}</dt>
+      <dd class="text-sm font-medium">{{ store.profile().vendor.countryIso }}</dd>
+    </div>
+    <div class="sm:col-span-2">
+      <dt class="text-xs text-muted-foreground">{{ t().address }}</dt>
+      <dd class="text-sm font-medium">{{ store.profile().vendor.address || t().emptyValue }}</dd>
+    </div>
+    <div class="sm:col-span-2">
+      <dt class="text-xs text-muted-foreground">{{ t().email }}</dt>
+      <dd class="text-sm font-medium">{{ store.profile().vendor.email || t().emptyValue }}</dd>
+    </div>
+  </dl>
+  <button uiButton type="button" (click)="startEdit()">{{ t().edit }}</button>
   } @else {
-    <form [formGroup]="form" class="grid gap-4 rounded-2xl border border-border bg-card p-5 sm:grid-cols-2" (ngSubmit)="save()">
-      <label class="space-y-1.5"><span class="text-xs font-medium">{{ t().vendorName }}</span>
-        <input uiInput id="vendor-name" formControlName="name" class="ui-input" /></label>
-      <label class="space-y-1.5"><span class="text-xs font-medium">{{ t().vendorType }}</span>
-        <ui-select formControlName="type" [options]="typeOptions" /></label>
-      <label class="space-y-1.5"><span class="text-xs font-medium">{{ t().category }}</span>
-        <input uiInput id="vendor-category" formControlName="category" class="ui-input" /></label>
-      <label class="space-y-1.5"><span class="text-xs font-medium">{{ t().country }}</span>
-        <input uiInput id="vendor-country" formControlName="countryIso" class="ui-input" /></label>
-      <label class="space-y-1.5 sm:col-span-2"><span class="text-xs font-medium">{{ t().address }}</span>
-        <textarea uiTextarea formControlName="address" class="ui-textarea"></textarea></label>
-      <label class="space-y-1.5 sm:col-span-2"><span class="text-xs font-medium">{{ t().email }}</span>
-        <input uiInput id="vendor-email" type="email" formControlName="email" class="ui-input" /></label>
-      <div class="flex gap-2 sm:col-span-2">
-        <button uiButton type="submit" data-action="save">{{ t().save }}</button>
-        <button uiButton type="button" variant="outline" (click)="cancel()">{{ t().cancel }}</button>
-      </div>
-    </form>
+  <form
+    [formGroup]="form"
+    class="grid gap-4 rounded-2xl border border-border bg-card p-5 sm:grid-cols-2"
+    (ngSubmit)="save()"
+  >
+    <label class="space-y-1.5"
+      ><span class="text-xs font-medium">{{ t().vendorName }}</span>
+      <input uiInput id="vendor-name" formControlName="name" class="ui-input"
+    /></label>
+    <label class="space-y-1.5"
+      ><span class="text-xs font-medium">{{ t().vendorType }}</span>
+      <ui-select formControlName="type" [options]="typeOptions"
+    /></label>
+    <label class="space-y-1.5"
+      ><span class="text-xs font-medium">{{ t().category }}</span>
+      <input uiInput id="vendor-category" formControlName="category" class="ui-input"
+    /></label>
+    <label class="space-y-1.5"
+      ><span class="text-xs font-medium">{{ t().country }}</span>
+      <input uiInput id="vendor-country" formControlName="countryIso" class="ui-input"
+    /></label>
+    <label class="space-y-1.5 sm:col-span-2"
+      ><span class="text-xs font-medium">{{ t().address }}</span>
+      <textarea uiTextarea formControlName="address" class="ui-textarea"></textarea>
+    </label>
+    <label class="space-y-1.5 sm:col-span-2"
+      ><span class="text-xs font-medium">{{ t().email }}</span>
+      <input uiInput id="vendor-email" type="email" formControlName="email" class="ui-input"
+    /></label>
+    <div class="flex gap-2 sm:col-span-2">
+      <button uiButton type="submit" data-action="save">{{ t().save }}</button>
+      <button uiButton type="button" variant="outline" (click)="cancel()">{{ t().cancel }}</button>
+    </div>
+  </form>
   }
 </section>
 ```
@@ -1229,11 +1493,13 @@ npx ng test --watch=false --include=app/profile-management/pages/pic/pic.page.sp
 ### Task 8: Halaman Rekening Bank + permintaan bank baru
 
 **Files:**
+
 - Create: `src/app/profile-management/pages/bank/bank.page.ts` + `.html` + `.spec.ts`
 - Create: `src/app/profile-management/pages/bank/bank-request.dialog.ts` + `.spec.ts`
 - Create: `src/app/profile-management/core/file-ref.ts` + `.spec.ts`
 
 **Interfaces:**
+
 - Consumes: `BANKS`, `CURRENCIES`, `RECIPIENT_TYPES`, `UiAttachment`, `UiDialog`.
 - Produces: `toFileRef(file: File): FileRef`, `validateFile(file: File): string | null`, `BankRequestDialog`.
 
@@ -1247,7 +1513,9 @@ describe('file utils', () => {
   });
 
   it('rejects a PDF larger than 5 MB', () => {
-    const file = new File([new Uint8Array(5 * 1024 * 1024 + 1)], 'a.pdf', { type: 'application/pdf' });
+    const file = new File([new Uint8Array(5 * 1024 * 1024 + 1)], 'a.pdf', {
+      type: 'application/pdf',
+    });
     expect(validateFile(file)).toBe('size');
   });
 
@@ -1310,10 +1578,14 @@ describe('BankPage', () => {
     fixture.detectChanges();
     (fixture.componentInstance as unknown as { startEdit(): void }).startEdit();
     fixture.detectChanges();
-    const input = (fixture.nativeElement as HTMLElement).querySelector<HTMLInputElement>('#bank-account-number')!;
+    const input = (fixture.nativeElement as HTMLElement).querySelector<HTMLInputElement>(
+      '#bank-account-number',
+    )!;
     input.value = '';
     input.dispatchEvent(new Event('input'));
-    (fixture.nativeElement as HTMLElement).querySelector<HTMLButtonElement>('button[data-action="save"]')!.click();
+    (fixture.nativeElement as HTMLElement)
+      .querySelector<HTMLButtonElement>('button[data-action="save"]')!
+      .click();
     fixture.detectChanges();
     expect((fixture.nativeElement as HTMLElement).textContent).toContain('Wajib diisi.');
   });
@@ -1345,10 +1617,12 @@ npx ng test --watch=false --include=app/profile-management/pages/bank/bank-reque
 ### Task 9: Halaman Pajak dan Domisili
 
 **Files:**
+
 - Create: `src/app/profile-management/pages/tax/tax.page.ts` + `.html` + `.spec.ts`
 - Create: `src/app/profile-management/pages/domicile/domicile.page.ts` + `.html` + `.spec.ts`
 
 **Interfaces:**
+
 - Consumes: `validateFile`, `toFileRef`, `ProfileStore`.
 - Produces: halaman `tax` (KTP, NPWP, SPPKP, SKB) dan `domicile` (unggah + unduh template).
 
@@ -1372,10 +1646,14 @@ describe('TaxPage', () => {
     fixture.detectChanges();
     (fixture.componentInstance as unknown as { startEdit(): void }).startEdit();
     fixture.detectChanges();
-    const input = (fixture.nativeElement as HTMLElement).querySelector<HTMLInputElement>('#tax-ktp-name')!;
+    const input = (fixture.nativeElement as HTMLElement).querySelector<HTMLInputElement>(
+      '#tax-ktp-name',
+    )!;
     input.value = 'Nama KTP Baru';
     input.dispatchEvent(new Event('input'));
-    (fixture.nativeElement as HTMLElement).querySelector<HTMLButtonElement>('button[data-action="save"]')!.click();
+    (fixture.nativeElement as HTMLElement)
+      .querySelector<HTMLButtonElement>('button[data-action="save"]')!
+      .click();
     fixture.detectChanges();
     expect(TestBed.inject(ProfileStore).profile().tax.ktp.name).toBe('Nama KTP Baru');
     expect(TestBed.inject(ProfileStore).profile().verifications.tax.status).toBe('pending');
@@ -1420,6 +1698,7 @@ npx ng test --watch=false --include=app/profile-management/pages/domicile/domici
 ### Task 10: Dokumentasi + gate repo remote
 
 **Files:**
+
 - Create: `AGENTS.md`, `README.md`
 - Modify: `package.json`
 
@@ -1462,12 +1741,14 @@ Expected: semua lulus, coverage ≥ 80%.
 ### Task 11: Inisialisasi Native Federation di host + manifest per environment
 
 **Files:**
+
 - Modify: `angular.json`, `src/main.ts`, `package.json`, `.gitignore`, `src/environments/*`
 - Create: `src/bootstrap.ts`, `federation.config.mjs`, `tsconfig.federation.json`
 - Create: `scripts/write-federation-manifest.mjs`
 - Test: `src/environments/environment.spec.ts` (bila belum ada)
 
 **Interfaces:**
+
 - Produces: host `initFederation('federation.manifest.json')`, manifest berisi `{ "profile-management": "<url>" }`.
 
 - [ ] **Step 1: Install dan inisialisasi host**
@@ -1537,12 +1818,12 @@ remoteAssetBase: string;
 
 Nilai per file:
 
-| File | `remoteAssetBase` |
-|---|---|
-| `environment.ts` | `'http://localhost:4201/'` |
-| `environment.development.ts` | `'http://localhost:4201/'` |
-| `environment.staging.ts` | `'/ivendor-staging/remotes/profile-management/'` |
-| `environment.production.ts` | `'/remotes/profile-management/'` |
+| File                         | `remoteAssetBase`                                |
+| ---------------------------- | ------------------------------------------------ |
+| `environment.ts`             | `'http://localhost:4201/'`                       |
+| `environment.development.ts` | `'http://localhost:4201/'`                       |
+| `environment.staging.ts`     | `'/ivendor-staging/remotes/profile-management/'` |
+| `environment.production.ts`  | `'/remotes/profile-management/'`                 |
 
 - [ ] **Step 6: Verifikasi**
 
@@ -1565,6 +1846,7 @@ Expected: seluruh test lama lulus (jika ada test yang meng-import `main.ts`, ses
 ### Task 12: Kontrak host, loader remote, route, dan error page
 
 **Files:**
+
 - Create: `src/app/core/federation/federation.contract.ts` (salinan)
 - Create: `src/app/core/federation/profile-context.provider.ts`
 - Create: `src/app/core/federation/remote-loader.ts`
@@ -1574,6 +1856,7 @@ Expected: seluruh test lama lulus (jika ada test yang meng-import `main.ts`, ses
 - Test: `src/app/core/federation/profile-context.provider.spec.ts`, `src/app/core/federation/federated-route.spec.ts`
 
 **Interfaces:**
+
 - Produces: `profileManagementRoute(): Route`, `provideProfileContext(): Provider`, `loadProfileManagementRoutes(): Promise<Routes>`.
 
 - [ ] **Step 1: Tulis test provider yang gagal**
@@ -1582,9 +1865,7 @@ Expected: seluruh test lama lulus (jika ada test yang meng-import `main.ts`, ses
 describe('provideProfileContext', () => {
   it('exposes live language, theme and user readers', () => {
     TestBed.configureTestingModule({ providers: [provideProfileContext()] });
-    const context = TestBed.runInInjectionContext(
-      () => inject(PROFILE_CONTEXT) as ProfileContext,
-    );
+    const context = TestBed.runInInjectionContext(() => inject(PROFILE_CONTEXT) as ProfileContext);
     const i18n = TestBed.inject(TranslationService);
 
     i18n.setLanguage('ja');
@@ -1766,6 +2047,7 @@ Matikan remote, buka route yang sama → error card + tombol retry.
 ### Task 13: Nav, kartu home, i18n, dan judul topbar
 
 **Files:**
+
 - Modify: `src/app/core/nav.ts`, `src/app/layout/sidebar.ts`
 - Modify: `src/app/core/i18n/layout.texts.ts`
 - Modify: `src/app/layout/topbar.ts`
@@ -1774,6 +2056,7 @@ Matikan remote, buka route yang sama → error card + tombol retry.
 - Modify: `src/app/core/i18n/texts.spec.ts`
 
 **Interfaces:**
+
 - Produces: `NavChild.labelKey: LayoutTextKey`; kartu home pertama punya `route: '/profile-management'`.
 
 - [ ] **Step 1: Tambah teks layout**
@@ -1924,11 +2207,13 @@ npx ng test --watch=false --include=app/core/i18n/texts.spec.ts
 ### Task 14: `AppUpdateService` multi-`version.json`
 
 **Files:**
+
 - Modify: `src/app/core/update/app-update.service.ts`
 - Modify: `src/app/core/update/app-update.service.spec.ts`
 - Modify: `src/app/layout/update-banner.ts` (hanya jika perlu label sumber)
 
 **Interfaces:**
+
 - Produces: `pending: Signal<Array<AppVersionInfo & { id: string }>>`, `updateAvailable`, `dismiss()`, `reload()`, `buildReloadUrl(key)`.
 
 - [ ] **Step 1: Tulis test baru yang gagal**
@@ -1944,7 +2229,10 @@ describe('AppUpdateService (multi source)', () => {
         return { ok: true, json: async () => manifest } as Response;
       }
       const remote = url.includes('4201');
-      return { ok: true, json: async () => ({ buildId: remote ? buildIds['remote'] : buildIds['host'] }) } as Response;
+      return {
+        ok: true,
+        json: async () => ({ buildId: remote ? buildIds['remote'] : buildIds['host'] }),
+      } as Response;
     });
     vi.stubGlobal('fetch', fetchMock);
     return fetchMock;
@@ -2100,6 +2388,7 @@ npx ng test --watch=false --include=app/core/update/app-update.service.spec.ts
 ### Task 15: Deploy, cache header, dan dokumentasi
 
 **Files:**
+
 - Modify: `deploy/README.md`, `deploy/nginx.conf.example`, `public/.htaccess`, `README.md`
 - Create: `../ivendor-superapps-profile-management/deploy/README.md`, `nginx.conf.example`
 
@@ -2136,10 +2425,12 @@ Pastikan tidak ada langkah yang bertentangan dengan `AGENTS.md` bagian 2.7 (base
 ### Task 16: E2E MFE + gate akhir
 
 **Files:**
+
 - Modify: `playwright.config.ts`
 - Create: `e2e/profile-management.spec.ts`
 
 **Interfaces:**
+
 - Consumes: host `:4205` (Playwright), remote `:4201`.
 
 - [ ] **Step 1: Tambahkan remote sebagai webServer kedua**
@@ -2194,7 +2485,9 @@ test.describe('profile management remote', () => {
     await page.route('**/remoteEntry.json', (route) => route.abort());
     await page.goto('/ivendor/#/profile-management');
 
-    await expect(page.getByRole('heading', { name: 'Modul profil tidak bisa dimuat' })).toBeVisible();
+    await expect(
+      page.getByRole('heading', { name: 'Modul profil tidak bisa dimuat' }),
+    ).toBeVisible();
     await expect(page.getByRole('button', { name: 'Coba lagi' })).toBeVisible();
   });
 });

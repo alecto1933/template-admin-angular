@@ -84,9 +84,7 @@ describe('UiMultiCombobox', () => {
 
     expect(host().querySelectorAll('.ui-multi-chip')).toHaveLength(2);
 
-    host()
-      .querySelector<HTMLButtonElement>('button[aria-label="Hapus Anggur"]')!
-      .click();
+    host().querySelector<HTMLButtonElement>('button[aria-label="Hapus Anggur"]')!.click();
     fixture.detectChanges();
 
     expect(fixture.componentInstance.value()).toEqual(['b']);
@@ -97,9 +95,7 @@ describe('UiMultiCombobox', () => {
     fixture.componentInstance.value.set(['a', 'c']);
     fixture.detectChanges();
 
-    host()
-      .querySelector<HTMLButtonElement>('button[aria-label="Hapus semua pilihan"]')!
-      .click();
+    host().querySelector<HTMLButtonElement>('button[aria-label="Hapus semua pilihan"]')!.click();
     fixture.detectChanges();
 
     expect(fixture.componentInstance.value()).toEqual([]);
@@ -226,9 +222,7 @@ describe('UiMultiCombobox', () => {
     fixture.componentInstance.value.set(['a', 'c']);
     fixture.detectChanges();
 
-    host()
-      .querySelector<HTMLButtonElement>('button[aria-label="Hapus semua pilihan"]')!
-      .click();
+    host().querySelector<HTMLButtonElement>('button[aria-label="Hapus semua pilihan"]')!.click();
     fixture.detectChanges();
 
     expect(fixture.componentInstance.value()).toEqual([]);
@@ -241,9 +235,7 @@ describe('UiMultiCombobox', () => {
     input().dispatchEvent(new Event('focus', { bubbles: true }));
     fixture.detectChanges();
 
-    host()
-      .querySelector<HTMLButtonElement>('button[aria-label="Hapus Anggur"]')!
-      .click();
+    host().querySelector<HTMLButtonElement>('button[aria-label="Hapus Anggur"]')!.click();
     fixture.detectChanges();
     expect(fixture.componentInstance.value()).toEqual([]);
     expect(host().querySelector('.ui-multi-panel')).not.toBeNull();

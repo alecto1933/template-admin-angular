@@ -71,7 +71,9 @@ test.describe('Home', () => {
     expect(await page.evaluate((key) => localStorage.getItem(key), THEME_KEY)).toBe('light');
   });
 
-  test('sidebar collapses, expands, and shows a tooltip on collapsed nav items', async ({ page }) => {
+  test('sidebar collapses, expands, and shows a tooltip on collapsed nav items', async ({
+    page,
+  }) => {
     await loginAsDemo(page);
 
     const sidebar = page.locator('aside.ui-sidebar');

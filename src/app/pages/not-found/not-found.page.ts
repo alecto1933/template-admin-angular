@@ -37,7 +37,6 @@ import { UiIcon } from '@/shared/ui/icon/icon';
           {{ t().goBack }}
         </button>
       </div>
-
     </div>
   `,
 })
@@ -54,5 +53,4 @@ export class NotFoundPage {
   protected goBack(): void {
     history.back();
   }
-
 }

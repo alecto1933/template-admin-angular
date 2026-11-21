@@ -79,8 +79,7 @@ export const HOME_TEXTS = {
     needHelpsSubtitle: 'サポートチームが対応いたします。',
     contactSupport: 'サポートに連絡',
     comingSoonTitle: '近日公開',
-    comingSoonMessage:
-      'このページはデモではまだ利用できません。関連モジュールに接続してください。',
+    comingSoonMessage: 'このページはデモではまだ利用できません。関連モジュールに接続してください。',
     languageAria: '言語: 日本語',
     qaVendorTitle: 'ベンダープロフィール管理',
     qaVendorDesc: 'ベンダープロフィール、銀行口座、サポート書類を管理します。',

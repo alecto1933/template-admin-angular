@@ -17,7 +17,7 @@ vendor end-to-end (paritas dengan alur registrasi): profil vendor, PIC,
 rekening bank, identifikasi pajak + dokumen, dan surat domisili.
 
 Kartu **"Vendor Profile Management"** di home sudah ada tetapi hanya memunculkan
-toast *coming soon* (`src/app/pages/home/home.page.ts`). Setelah pekerjaan ini,
+toast _coming soon_ (`src/app/pages/home/home.page.ts`). Setelah pekerjaan ini,
 kartu tersebut membuka fitur nyata yang dimuat dari remote.
 
 **Non-goal:** tidak menambah backend/API sungguhan, tidak menambah auth guard
@@ -27,18 +27,18 @@ baru, tidak mengubah `baseHref`, tidak mengubah `SessionService`.
 
 ## 2. Keputusan yang sudah dikunci
 
-| # | Topik | Keputusan |
-|---|---|---|
-| 1 | Deployment remote | **B** — deploy terpisah, satu domain, beda path (`/remotes/profile-management/`) |
-| 2 | Struktur repo | **Multi-repo** — dua repository Git terpisah, tanpa workspace bersama |
-| 3 | Integrasi layout | **A** — remote tampil di dalam shell host (sidebar/topbar/footer/tema tetap milik host) |
-| 4 | Cakupan fitur | **A** — paritas registrasi penuh + status verifikasi per section |
-| 5 | Sumber data | **A** — seed dari draft registrasi, fallback mock; persist `localStorage` |
-| 6 | Kontrak konteks | **A** — input eksplisit dari host, reaktif (fungsi pembaca signal) |
-| 7 | Mekanisme federasi | **A** — `@angular-architects/native-federation@22.2.5` + `@angular/build:application` |
-| 8 | Banner update | **A** — satu banner agregat di host, membaca `version.json` host + remote |
-| 9 | Dev lokal | **A** — dua terminal; manifest dev menunjuk `http://localhost:4201` |
-| 10 | Shared UI | **A** — remote menyalin komponen minimum + token tema (dokumentasi sinkronisasi) |
+| #   | Topik              | Keputusan                                                                               |
+| --- | ------------------ | --------------------------------------------------------------------------------------- |
+| 1   | Deployment remote  | **B** — deploy terpisah, satu domain, beda path (`/remotes/profile-management/`)        |
+| 2   | Struktur repo      | **Multi-repo** — dua repository Git terpisah, tanpa workspace bersama                   |
+| 3   | Integrasi layout   | **A** — remote tampil di dalam shell host (sidebar/topbar/footer/tema tetap milik host) |
+| 4   | Cakupan fitur      | **A** — paritas registrasi penuh + status verifikasi per section                        |
+| 5   | Sumber data        | **A** — seed dari draft registrasi, fallback mock; persist `localStorage`               |
+| 6   | Kontrak konteks    | **A** — input eksplisit dari host, reaktif (fungsi pembaca signal)                      |
+| 7   | Mekanisme federasi | **A** — `@angular-architects/native-federation@22.2.5` + `@angular/build:application`   |
+| 8   | Banner update      | **A** — satu banner agregat di host, membaca `version.json` host + remote               |
+| 9   | Dev lokal          | **A** — dua terminal; manifest dev menunjuk `http://localhost:4201`                     |
+| 10  | Shared UI          | **A** — remote menyalin komponen minimum + token tema (dokumentasi sinkronisasi)        |
 
 ---
 
@@ -115,14 +115,14 @@ ivendor-superapps-profile-management/       # repo baru
 
 ### 4.2 Sub-route remote
 
-| Path | Halaman |
-|---|---|
-| `/profile-management` | Overview: ringkasan status verifikasi semua section |
-| `/profile-management/vendor` | Profil vendor |
-| `/profile-management/pic` | Informasi PIC |
-| `/profile-management/bank` | Rekening bank + permintaan bank baru |
-| `/profile-management/tax` | KTP/NPWP/SPPKP/SKB |
-| `/profile-management/domicile` | Surat keterangan domisili |
+| Path                           | Halaman                                             |
+| ------------------------------ | --------------------------------------------------- |
+| `/profile-management`          | Overview: ringkasan status verifikasi semua section |
+| `/profile-management/vendor`   | Profil vendor                                       |
+| `/profile-management/pic`      | Informasi PIC                                       |
+| `/profile-management/bank`     | Rekening bank + permintaan bank baru                |
+| `/profile-management/tax`      | KTP/NPWP/SPPKP/SKB                                  |
+| `/profile-management/domicile` | Surat keterangan domisili                           |
 
 - URL tetap hash: `/ivendor/#/profile-management/bank`.
 - `?` redirect ke overview untuk path tidak dikenal: remote mendefinisikan
@@ -340,11 +340,11 @@ menjadi `pending` dan memperbarui `updatedAt`.
 
 ### 9.2 Environment
 
-| Env | Host baseHref | Remote URL di manifest |
-|---|---|---|
-| development | `/ivendor/` | `http://localhost:4201/remoteEntry.json` |
-| staging | `/ivendor-staging/` | `/ivendor-staging/remotes/profile-management/remoteEntry.json` |
-| production | `/` | `/remotes/profile-management/remoteEntry.json` |
+| Env         | Host baseHref       | Remote URL di manifest                                         |
+| ----------- | ------------------- | -------------------------------------------------------------- |
+| development | `/ivendor/`         | `http://localhost:4201/remoteEntry.json`                       |
+| staging     | `/ivendor-staging/` | `/ivendor-staging/remotes/profile-management/remoteEntry.json` |
+| production  | `/`                 | `/remotes/profile-management/remoteEntry.json`                 |
 
 - Manifest **digenerate** oleh `scripts/write-federation-manifest.mjs` sebelum
   build/serve (pola sama dengan `write-version.mjs`), karena `fileReplacements`
@@ -421,14 +421,14 @@ atau coverage yang diturunkan.
 
 ## 12. Risiko & mitigasi
 
-| Risiko | Mitigasi |
-|---|---|
+| Risiko                                      | Mitigasi                                                                              |
+| ------------------------------------------- | ------------------------------------------------------------------------------------- |
 | Drift komponen/token antara host dan remote | Daftar komponen minimum, header versi token, catatan sinkronisasi di AGENTS.md remote |
-| Versi Angular tidak sinkron | Kunci versi di kedua `package.json`; cek versi saat build/review |
-| Aset remote 404 karena `document.baseURI` | Semua aset lewat `assetUrl()` yang memakai `context.assetBase`; fallback import |
-| Remote deploy rusak membuat fitur mati | Error card + retry; shell tidak ikut mati |
-| Cache `remoteEntry.json` membuat versi lama | Header no-cache + `version.json` remote dipantau banner |
-| CORS di dev | Diizinkan hanya di konfigurasi development |
+| Versi Angular tidak sinkron                 | Kunci versi di kedua `package.json`; cek versi saat build/review                      |
+| Aset remote 404 karena `document.baseURI`   | Semua aset lewat `assetUrl()` yang memakai `context.assetBase`; fallback import       |
+| Remote deploy rusak membuat fitur mati      | Error card + retry; shell tidak ikut mati                                             |
+| Cache `remoteEntry.json` membuat versi lama | Header no-cache + `version.json` remote dipantau banner                               |
+| CORS di dev                                 | Diizinkan hanya di konfigurasi development                                            |
 
 ---
 

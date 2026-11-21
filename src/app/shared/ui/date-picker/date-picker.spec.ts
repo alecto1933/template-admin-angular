@@ -5,11 +5,7 @@ import { UiDatePicker } from '@/shared/ui/date-picker/date-picker';
 @Component({
   imports: [UiDatePicker],
   template: `
-    <ui-date-picker
-      [(value)]="value"
-      [disabled]="disabled()"
-      [dateFormat]="format()"
-    />
+    <ui-date-picker [(value)]="value" [disabled]="disabled()" [dateFormat]="format()" />
   `,
 })
 class DatePickerHost {

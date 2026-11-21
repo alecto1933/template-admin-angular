@@ -22,10 +22,12 @@
 ### Task 1: Storage Helper
 
 **Files:**
+
 - Create: `src/app/core/storage.ts`
 - Test: `src/app/core/storage.spec.ts`
 
 **Interfaces:**
+
 - Produces:
   - `appKey(name: string): string` → `ivendor-<name>`
   - `readString(key: string): string | null`
@@ -38,14 +40,7 @@
 
 ```ts
 // src/app/core/storage.spec.ts
-import {
-  appKey,
-  readJson,
-  readString,
-  remove,
-  writeJson,
-  writeString,
-} from './storage';
+import { appKey, readJson, readString, remove, writeJson, writeString } from './storage';
 
 describe('storage', () => {
   beforeEach(() => localStorage.clear());
@@ -152,6 +147,7 @@ Run: `git diff --stat` dan pastikan hanya dua file task ini yang berubah.
 ### Task 2: PreferencesService + Migrasi Tema/Bahasa/Sidebar
 
 **Files:**
+
 - Create: `src/app/core/state/preferences.service.ts`
 - Create: `src/app/core/state/preferences.service.spec.ts`
 - Modify: `src/app/core/theme/theme.service.ts` (ganti isi)
@@ -159,6 +155,7 @@ Run: `git diff --stat` dan pastikan hanya dua file task ini yang berubah.
 - Modify: `src/app/layout/app-shell.ts`
 
 **Interfaces:**
+
 - Consumes: `appKey`, `readString`, `writeString` dari Task 1.
 - Produces:
   - `type Theme = 'light' | 'dark'`
@@ -405,12 +402,14 @@ Run: `git diff -- src/app/core src/app/layout/app-shell.ts`
 ### Task 3: SessionService + Integrasi Login/Topbar
 
 **Files:**
+
 - Create: `src/app/core/state/session.service.ts`
 - Create: `src/app/core/state/session.service.spec.ts`
 - Modify: `src/app/pages/auth/login.page.ts`
 - Modify: `src/app/layout/topbar.ts`
 
 **Interfaces:**
+
 - Consumes: `appKey`, `readJson`, `writeJson`, `remove` dari Task 1.
 - Produces:
   - `interface SessionUser { id: string; name: string; email: string; role: string; permissions: string[] }`
@@ -671,10 +670,12 @@ Run: `git diff -- src/app/core/state src/app/pages/auth/login.page.ts src/app/la
 ### Task 4: OrdersStore
 
 **Files:**
+
 - Create: `src/app/pages/orders/orders.store.ts`
 - Create: `src/app/pages/orders/orders.store.spec.ts`
 
 **Interfaces:**
+
 - Consumes: `Order`, `OrderStatus`, `ORDERS`, `AVATAR_CLASSES` dari `core/mock-data`; `formatDate` dari `core/format`.
 - Produces:
   - `type OrderSortKey = 'createdAt' | 'total'`
@@ -981,10 +982,12 @@ Run: `git diff -- src/app/pages/orders/orders.store.ts src/app/pages/orders/orde
 ### Task 5: Integrasi OrdersPage dengan OrdersStore
 
 **Files:**
+
 - Modify: `src/app/pages/orders/orders.page.ts`
 - Test: tidak ada test komponen baru; verifikasi lewat build + test suite + manual.
 
 **Interfaces:**
+
 - Consumes: seluruh API `OrdersStore` dari Task 4 dan `ORDERS_PAGE_SIZE`.
 - Produces: `OrdersPage` tetap mengekspos nama signal yang sama ke template (`orders()`, `filtered()`, `paged()`, `search()`, `statusFilter()`, `totalPages()`, `currentPage()`, `rangeStart()`, `rangeEnd()`, `pageNumbers()`, `selectedCount()`, `hasFilters()`), sehingga `orders.page.html` **tidak perlu diubah**.
 

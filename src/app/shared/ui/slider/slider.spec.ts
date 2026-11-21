@@ -303,8 +303,7 @@ describe('UiSlider', () => {
   it('supports CVA writeValue and setDisabledState', () => {
     const fixture = TestBed.createComponent(SliderHost);
     fixture.detectChanges();
-    const cmp = fixture.debugElement.query(By.directive(UiSlider))
-      .componentInstance as UiSlider;
+    const cmp = fixture.debugElement.query(By.directive(UiSlider)).componentInstance as UiSlider;
 
     cmp.writeValue(null);
     fixture.detectChanges();

@@ -35,8 +35,6 @@ import { UiBadge } from '@/shared/ui/badge/badge';
 import { UiAlertDialog } from '@/shared/ui/alert-dialog/alert-dialog';
 import { BankRequest, BankRequestDialog, BankRequestTexts } from '@/pages/auth/bank-request-dialog';
 
-
-
 type EntityType = 'national' | 'international' | 'government';
 type TaxFileKind = 'ktp' | 'sppkp' | 'skb' | 'domicile';
 

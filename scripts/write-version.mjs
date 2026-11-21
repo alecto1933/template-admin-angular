@@ -8,7 +8,10 @@ const pkg = JSON.parse(readFileSync(resolve(root, 'package.json'), 'utf8'));
 
 let commit = 'local';
 try {
-  commit = execSync('git rev-parse --short HEAD', { cwd: root, stdio: ['ignore', 'pipe', 'ignore'] })
+  commit = execSync('git rev-parse --short HEAD', {
+    cwd: root,
+    stdio: ['ignore', 'pipe', 'ignore'],
+  })
     .toString()
     .trim();
 } catch {
