@@ -49,7 +49,7 @@ import { ToastService } from '@/shared/ui/toast/toast.service';
       </div>
 
       <div class="ui-sidebar-scroll">
-        @for (section of sections; track section.label) {
+        @for (section of sections; track $index) {
           <div class="mb-6 last:mb-0">
             <p
               class="sidebar-label px-3 pb-2 text-[10px] font-semibold tracking-[0.14em] text-muted-foreground/70 uppercase"

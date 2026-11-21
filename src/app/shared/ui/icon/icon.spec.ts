@@ -4,6 +4,7 @@ import { UiIcon } from '@/shared/ui/icon/icon';
 import { IconName } from '@/shared/ui/icon/icons';
 
 @Component({
+  selector: 'app-icon-host',
   imports: [UiIcon],
   template: `<ui-icon [name]="name()" />`,
 })
@@ -12,6 +13,7 @@ class IconHost {
 }
 
 @Component({
+  selector: 'app-unknown-icon-host',
   imports: [UiIcon],
   template: `<ui-icon [name]="iconName" />`,
 })
