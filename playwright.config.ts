@@ -18,7 +18,9 @@ export default defineConfig({
   projects: [
     {
       name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
+      // Pakai Google Chrome yang terpasang agar `--headed`/`--ui` tidak
+      // bergantung pada Chromium bundled. Ganti ke 'msedge' bila perlu.
+      use: { ...devices['Desktop Chrome'], channel: 'chrome' },
     },
   ],
   webServer: {

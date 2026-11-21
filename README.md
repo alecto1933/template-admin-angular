@@ -53,7 +53,9 @@ yang valid — autentikasi hanya simulasi).
 | Coverage | Vitest v8 | `coverage/` | `npm run test:coverage` |
 | E2E | Playwright | `e2e/*.spec.ts` | `npm run e2e` |
 
-- Sebelum E2E pertama kali: `npx playwright install chromium`.
+- E2E memakai **Google Chrome terpasang** (`channel: 'chrome'`), jadi
+  `--headed`/`--ui` tidak butuh Chromium bundled. Bila tidak ada Chrome,
+  ganti ke `channel: 'msedge'`.
 - `npm run e2e:headed` / `npm run e2e:ui` untuk mode debug.
 - Konfigurasi E2E: `playwright.config.ts` (baseURL `http://localhost:4205`,
   `webServer` otomatis menjalankan `ng serve`).
