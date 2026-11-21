@@ -19,6 +19,14 @@ test('shows the update banner when a new build id is served', async ({ page }) =
 
   await expect(page.getByText('Versi baru tersedia')).toBeVisible();
   await expect(page.getByRole('button', { name: 'Muat ulang', exact: true })).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Muat ulang', exact: true })).toHaveCSS(
+    'cursor',
+    'pointer',
+  );
+  await expect(page.getByRole('button', { name: 'Nanti saja', exact: true })).toHaveCSS(
+    'cursor',
+    'pointer',
+  );
 
   await page.getByRole('button', { name: 'Nanti saja', exact: true }).click();
   await expect(page.getByText('Versi baru tersedia')).toHaveCount(0);

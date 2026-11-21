@@ -39,6 +39,7 @@ describe('AppUpdateBanner', () => {
     expect(banner.className).toContain('fixed');
     expect(banner.className).toContain('inset-x-0');
     expect(banner.className).toContain('top-0');
+    expect(banner.className).toContain('bg-success');
 
     expect(host.textContent).toContain('Versi baru tersedia');
     expect(host.textContent).toContain('Muat ulang');
@@ -47,6 +48,7 @@ describe('AppUpdateBanner', () => {
     buttons.find((button) => button.textContent?.includes('Muat ulang'))?.click();
     buttons.find((button) => button.textContent?.includes('Nanti saja'))?.click();
 
+    expect(host.querySelectorAll('button.cursor-pointer')).toHaveLength(2);
     expect(stub.reload).toHaveBeenCalledTimes(1);
     expect(stub.dismiss).toHaveBeenCalledTimes(1);
   });

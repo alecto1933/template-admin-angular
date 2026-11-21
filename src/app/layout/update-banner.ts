@@ -14,7 +14,7 @@ import { UiIcon } from '@/shared/ui/icon/icon';
   template: `
     @if (update.updateAvailable()) {
       <div
-        class="fixed inset-x-0 top-0 z-[90] border-b border-primary/30 bg-primary text-primary-foreground shadow-lg"
+        class="fixed inset-x-0 top-0 z-[90] border-b border-success/40 bg-success text-white shadow-lg"
         role="status"
         aria-live="polite"
       >
@@ -24,21 +24,21 @@ import { UiIcon } from '@/shared/ui/icon/icon';
           <ui-icon name="refresh-cw" class="size-4 shrink-0" />
           <p class="min-w-0 flex-1 text-xs leading-snug sm:text-sm">
             <span class="font-semibold">{{ t().updateTitle }}</span>
-            <span class="block text-[11px] text-primary-foreground/80 sm:ml-1 sm:inline">
+            <span class="block text-[11px] text-white/80 sm:ml-1 sm:inline">
               {{ t().updateMessage }}
             </span>
           </p>
           <div class="flex shrink-0 items-center gap-1.5">
             <button
               type="button"
-              class="inline-flex h-8 items-center rounded-lg bg-white px-3 text-xs font-semibold text-primary transition-colors hover:bg-white/90 focus-visible:ring-2 focus-visible:ring-white/70 focus-visible:outline-none"
+              class="inline-flex h-8 cursor-pointer items-center rounded-lg bg-white px-3 text-xs font-semibold text-success transition-colors hover:bg-white/90 focus-visible:ring-2 focus-visible:ring-white/70 focus-visible:outline-none"
               (click)="update.reload()"
             >
               {{ t().updateReload }}
             </button>
             <button
               type="button"
-              class="inline-flex h-8 items-center rounded-lg px-2.5 text-xs font-medium text-primary-foreground/80 transition-colors hover:text-primary-foreground focus-visible:ring-2 focus-visible:ring-white/70 focus-visible:outline-none"
+              class="inline-flex h-8 cursor-pointer items-center rounded-lg px-2.5 text-xs font-medium text-white/80 transition-colors hover:text-white focus-visible:ring-2 focus-visible:ring-white/70 focus-visible:outline-none"
               (click)="update.dismiss()"
             >
               {{ t().updateLater }}
