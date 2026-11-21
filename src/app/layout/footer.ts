@@ -6,7 +6,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   template: `
     <footer class="border-t border-sidebar-border bg-sidebar px-4 py-4 md:px-6 lg:px-8">
       <div
-        class="mx-auto flex w-full max-w-[1400px] flex-col gap-3 text-xs text-muted-foreground sm:flex-row sm:items-center sm:justify-between"
+        class="flex w-full flex-col gap-3 text-xs text-muted-foreground sm:flex-row sm:items-center sm:justify-between"
       >
         <p>© {{ year }} iVendor Superapps.</p>
         <div class="flex flex-wrap items-center gap-x-5 gap-y-2">

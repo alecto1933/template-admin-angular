@@ -40,10 +40,10 @@ import { AppTopbar } from './topbar';
         <main
           #mainContent
           id="main"
-          class="ui-content-grid min-h-0 flex-1 overflow-y-auto px-4 pt-6 pb-12 md:px-6 lg:px-8"
+          class="ui-content-grid scroll-fade-y scroll-fade-16 min-h-0 flex-1 overflow-y-auto px-4 pt-6 pb-12 md:px-6 lg:px-8"
           tabindex="-1"
         >
-          <div class="mx-auto w-full max-w-[1400px]">
+          <div class="w-full">
             <router-outlet />
           </div>
         </main>

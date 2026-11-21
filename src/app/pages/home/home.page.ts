@@ -42,7 +42,6 @@ const TEXTS = {
     recentActivity: 'Aktivitas Terbaru',
     announcements: 'Pengumuman',
     needHelps: 'Butuh Bantuan',
-    open: 'Buka',
     comingSoonTitle: 'Segera hadir',
     comingSoonMessage: 'Halaman ini belum tersedia pada demo. Hubungkan ke modul terkait.',
     helpToastTitle: 'Pusat bantuan',
@@ -69,7 +68,6 @@ const TEXTS = {
     recentActivity: 'Recent Activity',
     announcements: 'Announcements',
     needHelps: 'Need Helps',
-    open: 'Open',
     comingSoonTitle: 'Coming soon',
     comingSoonMessage:
       'This page is not available in the demo yet. Connect it to the related module.',

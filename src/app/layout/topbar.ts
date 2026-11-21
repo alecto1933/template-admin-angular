@@ -29,7 +29,7 @@ import { ToastService } from '../shared/ui/toast/toast.service';
       <div class="flex h-16 items-center gap-3 px-4 md:px-6 lg:px-8">
         <button
           type="button"
-          class="grid size-10 shrink-0 place-items-center rounded-xl text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
+          class="grid size-10 shrink-0 cursor-pointer place-items-center rounded-xl text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
           (click)="toggleNavigation.emit()"
           aria-label="Buka atau tutup navigasi"
           title="Buka atau tutup navigasi"
@@ -71,7 +71,7 @@ import { ToastService } from '../shared/ui/toast/toast.service';
 
           <button
             type="button"
-            class="grid size-10 place-items-center rounded-xl transition-colors hover:bg-accent"
+            class="grid size-10 cursor-pointer place-items-center rounded-xl transition-colors hover:bg-accent"
             [cdkMenuTriggerFor]="languageMenu"
             [attr.aria-label]="language.lang() === 'id' ? 'Bahasa: Indonesia' : 'Language: English'"
             [attr.title]="language.lang() === 'id' ? 'Bahasa' : 'Language'"
@@ -85,7 +85,7 @@ import { ToastService } from '../shared/ui/toast/toast.service';
 
           <button
             type="button"
-            class="grid size-10 place-items-center rounded-xl text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
+            class="grid size-10 cursor-pointer place-items-center rounded-xl text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
             (click)="theme.toggle()"
             [attr.aria-label]="theme.isDark() ? 'Aktifkan mode terang' : 'Aktifkan mode gelap'"
             [attr.title]="theme.isDark() ? 'Mode terang' : 'Mode gelap'"
@@ -95,7 +95,7 @@ import { ToastService } from '../shared/ui/toast/toast.service';
 
           <button
             type="button"
-            class="relative grid size-10 place-items-center rounded-xl text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
+            class="relative grid size-10 cursor-pointer place-items-center rounded-xl text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
             [cdkMenuTriggerFor]="notificationsMenu"
             aria-label="Notifikasi"
           >
@@ -109,7 +109,7 @@ import { ToastService } from '../shared/ui/toast/toast.service';
 
           <button
             type="button"
-            class="flex items-center gap-2 rounded-xl p-1 pr-1.5 transition-colors hover:bg-accent sm:pr-2"
+            class="flex cursor-pointer items-center gap-2 rounded-xl p-1 pr-1.5 transition-colors hover:bg-accent sm:pr-2"
             [cdkMenuTriggerFor]="userMenu"
             aria-label="Menu pengguna"
           >

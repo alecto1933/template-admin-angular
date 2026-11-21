@@ -30,7 +30,7 @@
 
   <section
     id="quick-access"
-    class="scroll-mt-6 rounded-3xl border border-border bg-muted/30 p-4 sm:p-6"
+    class="scroll-mt-6 rounded-3xl border border-border bg-card p-4 sm:p-6"
     aria-labelledby="quick-access-title"
   >
     <div class="flex flex-wrap items-end justify-between gap-2 px-1">
@@ -77,54 +77,14 @@
           <span class="relative mt-1.5 text-[11px] leading-relaxed text-muted-foreground">
             {{ item.description }}
           </span>
-
-          <span
-            class="relative mt-4 inline-flex w-fit items-center gap-1 rounded-full bg-primary/10 px-2.5 py-1 text-[10px] font-bold tracking-wide text-primary uppercase"
-          >
-            {{ t().open }}
-            <ui-icon name="arrow-right" class="size-3" />
-          </span>
         </button>
       }
     </div>
   </section>
 
-  <div class="grid grid-cols-1 gap-4 lg:grid-cols-3">
-    <section class="rounded-2xl border border-border bg-card p-5" aria-labelledby="activity-title">
-      <div class="flex items-center gap-2">
-        <span class="grid size-8 place-items-center rounded-lg bg-primary-soft text-primary">
-          <ui-icon name="bell" class="size-4" />
-        </span>
-        <h2 id="activity-title" class="font-display text-sm font-semibold tracking-tight">
-          {{ t().recentActivity }}
-        </h2>
-      </div>
-
-      <ul class="mt-3 divide-y divide-border">
-        @for (item of activities(); track item.title) {
-          <li class="flex items-start gap-3 py-3 first:pt-1 last:pb-0">
-            <span
-              class="mt-0.5 grid size-8 shrink-0 place-items-center rounded-lg"
-              [class]="item.toneClasses"
-            >
-              <ui-icon [name]="item.icon" class="size-4" />
-            </span>
-            <div class="min-w-0 flex-1">
-              <p class="text-[13px] font-medium text-foreground">{{ item.title }}</p>
-              <p class="mt-0.5 truncate text-[11px] text-muted-foreground">
-                {{ item.description }}
-              </p>
-            </div>
-            <span class="shrink-0 text-[10px] whitespace-nowrap text-muted-foreground">
-              {{ item.time }}
-            </span>
-          </li>
-        }
-      </ul>
-    </section>
-
+  <div class="grid grid-cols-1 gap-4 lg:grid-cols-12">
     <section
-      class="rounded-2xl border border-border bg-card p-5"
+      class="rounded-2xl border border-border bg-card p-5 lg:col-span-9"
       aria-labelledby="announcements-title"
     >
       <div class="flex items-center gap-2">
@@ -153,40 +113,81 @@
       </ul>
     </section>
 
-    <section class="rounded-2xl border border-border bg-card p-5" aria-labelledby="helps-title">
-      <div class="flex items-center gap-2">
-        <span class="grid size-8 place-items-center rounded-lg bg-success-soft text-success">
-          <ui-icon name="life-buoy" class="size-4" />
-        </span>
-        <h2 id="helps-title" class="font-display text-sm font-semibold tracking-tight">
-          {{ t().needHelps }}
-        </h2>
-      </div>
+    <div class="flex flex-col gap-4 lg:col-span-3">
+      <section
+        class="flex-1 rounded-2xl border border-border bg-card p-5"
+        aria-labelledby="activity-title"
+      >
+        <div class="flex items-center gap-2">
+          <span class="grid size-8 place-items-center rounded-lg bg-primary-soft text-primary">
+            <ui-icon name="bell" class="size-4" />
+          </span>
+          <h2 id="activity-title" class="font-display text-sm font-semibold tracking-tight">
+            {{ t().recentActivity }}
+          </h2>
+        </div>
 
-      <ul class="mt-3 space-y-2">
-        @for (item of helps(); track item.title) {
-          <li>
-            <button
-              type="button"
-              class="flex w-full items-center gap-3 rounded-xl border border-border bg-background/60 p-3 text-left transition-colors hover:border-primary/40 hover:bg-accent"
-              (click)="openHelp(item)"
-            >
+        <ul class="mt-3 divide-y divide-border">
+          @for (item of activities(); track item.title) {
+            <li class="flex items-start gap-3 py-3 first:pt-1 last:pb-0">
               <span
-                class="grid size-8 shrink-0 place-items-center rounded-lg bg-muted text-foreground"
+                class="mt-0.5 grid size-8 shrink-0 place-items-center rounded-lg"
+                [class]="item.toneClasses"
               >
                 <ui-icon [name]="item.icon" class="size-4" />
               </span>
-              <span class="min-w-0 flex-1">
-                <span class="block text-[13px] font-medium text-foreground">{{ item.title }}</span>
-                <span class="mt-0.5 block truncate text-[11px] text-muted-foreground">
+              <div class="min-w-0 flex-1">
+                <p class="text-[13px] font-medium text-foreground">{{ item.title }}</p>
+                <p class="mt-0.5 truncate text-[11px] text-muted-foreground">
                   {{ item.description }}
-                </span>
+                </p>
+              </div>
+              <span class="shrink-0 text-[10px] whitespace-nowrap text-muted-foreground">
+                {{ item.time }}
               </span>
-              <ui-icon name="arrow-right" class="size-4 shrink-0 text-muted-foreground" />
-            </button>
-          </li>
-        }
-      </ul>
-    </section>
+            </li>
+          }
+        </ul>
+      </section>
+
+      <section
+        class="flex-1 rounded-2xl border border-border bg-card p-5"
+        aria-labelledby="helps-title"
+      >
+        <div class="flex items-center gap-2">
+          <span class="grid size-8 place-items-center rounded-lg bg-success-soft text-success">
+            <ui-icon name="life-buoy" class="size-4" />
+          </span>
+          <h2 id="helps-title" class="font-display text-sm font-semibold tracking-tight">
+            {{ t().needHelps }}
+          </h2>
+        </div>
+
+        <ul class="mt-3 space-y-2">
+          @for (item of helps(); track item.title) {
+            <li>
+              <button
+                type="button"
+                class="flex w-full items-center gap-3 rounded-xl border border-border bg-background/60 p-3 text-left transition-colors hover:border-primary/40 hover:bg-accent"
+                (click)="openHelp(item)"
+              >
+                <span
+                  class="grid size-8 shrink-0 place-items-center rounded-lg bg-muted text-foreground"
+                >
+                  <ui-icon [name]="item.icon" class="size-4" />
+                </span>
+                <span class="min-w-0 flex-1">
+                  <span class="block text-[13px] font-medium text-foreground">{{ item.title }}</span>
+                  <span class="mt-0.5 block truncate text-[11px] text-muted-foreground">
+                    {{ item.description }}
+                  </span>
+                </span>
+                <ui-icon name="arrow-right" class="size-4 shrink-0 text-muted-foreground" />
+              </button>
+            </li>
+          }
+        </ul>
+      </section>
+    </div>
   </div>
 </div>
