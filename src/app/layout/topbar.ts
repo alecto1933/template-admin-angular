@@ -2,7 +2,6 @@ import { CdkMenu, CdkMenuItem, CdkMenuTrigger } from '@angular/cdk/menu';
 import {
   ChangeDetectionStrategy,
   Component,
-  ElementRef,
   inject,
   output,
   signal,
@@ -23,9 +22,6 @@ import { ToastService } from '../shared/ui/toast/toast.service';
   selector: 'app-topbar',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [UiIcon, CdkMenu, CdkMenuItem, CdkMenuTrigger, UiAlertDialog],
-  host: {
-    '(document:keydown)': 'onDocumentKeydown($event)',
-  },
   template: `
     <header class="relative z-30 border-b border-sidebar-border bg-sidebar">
       <div class="flex h-16 items-center gap-3 px-4 md:px-6 lg:px-8">
@@ -48,29 +44,6 @@ import { ToastService } from '../shared/ui/toast/toast.service';
         </div>
 
         <div class="ml-auto flex items-center gap-1.5 sm:gap-2">
-          <div class="relative hidden md:block">
-            <ui-icon
-              name="search"
-              class="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground"
-            />
-            <input
-              #searchInput
-              uiInput
-              type="search"
-              class="h-9 w-56 rounded-xl border-transparent bg-muted/70 pr-14 pl-9 text-[13px] focus:bg-card lg:w-72"
-              placeholder="Cari apa saja..."
-              aria-label="Pencarian global"
-              [value]="searchTerm()"
-              (input)="searchTerm.set($any($event.target).value)"
-              (keydown.enter)="submitSearch()"
-            />
-            <kbd
-              class="pointer-events-none absolute top-1/2 right-2.5 -translate-y-1/2 rounded-md border border-border bg-card px-1.5 py-0.5 font-mono text-[10px] font-medium text-muted-foreground"
-            >
-              ⌘K
-            </kbd>
-          </div>
-
           <button
             type="button"
             class="grid size-10 cursor-pointer place-items-center rounded-xl transition-colors hover:bg-accent"
@@ -83,16 +56,6 @@ import { ToastService } from '../shared/ui/toast/toast.service';
               alt=""
               class="h-4 w-6 rounded-[2px] object-cover ring-1 ring-black/5"
             />
-          </button>
-
-          <button
-            type="button"
-            class="grid size-10 cursor-pointer place-items-center rounded-xl text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
-            (click)="theme.toggle()"
-            [attr.aria-label]="theme.isDark() ? 'Aktifkan mode terang' : 'Aktifkan mode gelap'"
-            [attr.title]="theme.isDark() ? 'Mode terang' : 'Mode gelap'"
-          >
-            <ui-icon [name]="theme.isDark() ? 'sun' : 'moon'" class="size-[18px]" />
           </button>
 
           <button
@@ -218,18 +181,17 @@ import { ToastService } from '../shared/ui/toast/toast.service';
             <p class="truncate text-xs text-muted-foreground">{{ session.user()?.email ?? '-' }}</p>
           </div>
           <div class="ui-menu-separator"></div>
-          <button cdkMenuItem type="button" class="ui-menu-item" (click)="goToProfile()">
-            <ui-icon name="user" class="size-4 text-muted-foreground" />
-            Profil saya
-          </button>
-          <button cdkMenuItem type="button" class="ui-menu-item" (click)="goToSettings()">
-            <ui-icon name="settings" class="size-4 text-muted-foreground" />
-            Pengaturan
-          </button>
           <button cdkMenuItem type="button" class="ui-menu-item" (click)="showHelp()">
             <ui-icon name="circle-help" class="size-4 text-muted-foreground" />
             Bantuan
             <span class="ui-shortcut">?</span>
+          </button>
+          <button cdkMenuItem type="button" class="ui-menu-item" (click)="theme.toggle()">
+            <ui-icon
+              [name]="theme.isDark() ? 'sun' : 'moon'"
+              class="size-4 text-muted-foreground"
+            />
+            {{ theme.isDark() ? 'Mode terang' : 'Mode gelap' }}
           </button>
           <div class="ui-menu-separator"></div>
           <button cdkMenuItem type="button" class="ui-menu-item is-destructive" (click)="logout()">
@@ -251,8 +213,7 @@ import { ToastService } from '../shared/ui/toast/toast.service';
     </header>
   `,
 })
-export class AppTopbar {
-  readonly toggleNavigation = output<void>();
+export class AppTopbar {  readonly toggleNavigation = output<void>();
 
   protected readonly theme = inject(ThemeService);
   protected readonly language = inject(LanguageService);
@@ -261,10 +222,8 @@ export class AppTopbar {
   private readonly toast = inject(ToastService);
 
   protected readonly notifications = NOTIFICATIONS;
-  protected readonly pageTitle = signal('Dashboard');
-  protected readonly searchTerm = signal('');
+  protected readonly pageTitle = signal('Home');
 
-  private readonly searchInput = viewChild<ElementRef<HTMLInputElement>>('searchInput');
   private readonly logoutDialog = viewChild.required(UiAlertDialog);
 
   constructor() {
@@ -275,23 +234,6 @@ export class AppTopbar {
         takeUntilDestroyed(),
       )
       .subscribe(() => this.refreshPageTitle());
-  }
-
-  protected onDocumentKeydown(event: KeyboardEvent): void {
-    if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') {
-      event.preventDefault();
-      this.searchInput()?.nativeElement.focus();
-    }
-  }
-
-  protected submitSearch(): void {
-    const term = this.searchTerm().trim();
-    if (!term) {
-      this.searchInput()?.nativeElement.focus();
-      return;
-    }
-    this.router.navigate(['/orders'], { queryParams: { q: term } });
-    this.searchTerm.set('');
   }
 
   protected notificationTone(tone: AppNotification['tone']): string {
@@ -317,16 +259,8 @@ export class AppTopbar {
     );
   }
 
-  protected goToProfile(): void {
-    this.router.navigate(['/settings'], { queryParams: { tab: 'umum' } });
-  }
-
-  protected goToSettings(): void {
-    this.router.navigate(['/settings']);
-  }
-
   protected showHelp(): void {
-    this.toast.info('Bantuan', 'Tekan ⌘K / Ctrl+K untuk fokus ke kolom pencarian.');
+    this.toast.info('Bantuan', 'Buka kartu “Butuh Bantuan” di halaman Home untuk menghubungi tim dukungan.');
   }
 
   protected logout(): void {
