@@ -236,7 +236,9 @@ Pola markup tabel memakai atribut: `uiTable` di `<table>`, dengan pembungkus
 Semua warna, radius, dan font adalah CSS variable di `src/styles.css`.
 
 - Mode gelap memakai class `.dark` di `<html>` dan disimpan di `localStorage`
-  (`alecto-theme`) lewat `ThemeService`.
+  (`alecto-theme`) lewat `PreferencesService`/`ThemeService`.
+- Default saat pertama kali dibuka adalah **terang** (tidak mengikuti
+  `prefers-color-scheme` OS). Setelah user mengganti tema, pilihan diingat.
 - Ganti warna utama lewat `--primary` / `--primary-foreground` pada `:root`
   dan `.dark`.
 - Ganti sudut lewat `--radius` (0.5rem saat ini; kartu, tombol, dan dialog

@@ -11,11 +11,8 @@ const LANGUAGE_KEY = appKey('language');
 const SIDEBAR_KEY = appKey('sidebar-collapsed');
 
 function initialTheme(): Theme {
-  if (document.documentElement.classList.contains('dark')) {
-    return 'dark';
-  }
   const stored = readString(THEME_KEY);
-  return stored === 'dark' || stored === 'light' ? stored : 'light';
+  return stored === 'dark' ? 'dark' : 'light';
 }
 
 function initialLanguage(): Language {
