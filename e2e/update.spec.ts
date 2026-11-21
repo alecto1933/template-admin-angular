@@ -1,5 +1,13 @@
 import { expect, test } from '@playwright/test';
 
+test.beforeEach(async ({ page }) => {
+  // These tests exercise the host source only; the real manifest points at a
+  // dev remote that is not running during E2E.
+  await page.route('**/federation.manifest.json*', async (route) => {
+    await route.fulfill({ status: 200, contentType: 'application/json', body: '{}' });
+  });
+});
+
 test('shows the update banner when a new build id is served', async ({ page }) => {
   let buildId = 'build-1';
 

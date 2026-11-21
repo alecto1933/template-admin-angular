@@ -6,33 +6,48 @@ export interface AppVersionInfo {
   builtAt?: string;
 }
 
+export type PendingVersion = AppVersionInfo & { id: string };
+
+interface VersionSource {
+  id: string;
+  url: string;
+}
+
+const HOST_SOURCE_ID = 'host';
 const VERSION_FILE = 'version.json';
+const MANIFEST_FILE = 'federation.manifest.json';
 const POLL_INTERVAL_MS = 120_000;
 const MIN_CHECK_GAP_MS = 15_000;
 
 /**
- * Detects deployments by comparing the `buildId` of the running app with the
- * one served by `public/version.json`.
+ * Detects deployments by comparing the `buildId` served next to the host and
+ * every federated remote with the baselines captured on the first check.
  *
- * The first successful check establishes the baseline; later checks expose
- * `updateAvailable` when the server reports a different build.
+ * The first successful read of a source establishes its baseline; later checks
+ * expose the changed sources through `pending`. A source that fails or has no
+ * readable `version.json` is treated as unknown and never blocks the others.
  */
 @Injectable({ providedIn: 'root' })
 export class AppUpdateService {
   private readonly destroyRef = inject(DestroyRef);
 
-  private runningBuildId: string | null = null;
-  private dismissedBuildId: string | null = null;
+  private readonly sources = signal<VersionSource[]>([{ id: HOST_SOURCE_ID, url: VERSION_FILE }]);
+  private readonly baselines = new Map<string, string>();
+  private readonly dismissed = new Set<string>();
+
   private lastCheckAt = 0;
   private timer: ReturnType<typeof setInterval> | null = null;
 
-  private readonly available = signal<AppVersionInfo | null>(null);
+  private readonly _pending = signal<PendingVersion[]>([]);
 
-  readonly latestVersion = this.available.asReadonly();
-  readonly updateAvailable = computed(() => this.available() !== null);
+  /** Resolved after the manifest is read and the first check finishes. */
+  readonly ready: Promise<void>;
+
+  readonly pending = this._pending.asReadonly();
+  readonly updateAvailable = computed(() => this._pending().length > 0);
 
   constructor() {
-    void this.checkNow();
+    this.ready = this.bootstrap();
     this.timer = setInterval(() => void this.checkNow(), POLL_INTERVAL_MS);
 
     const onFocus = (): void => void this.checkNow(true);
@@ -54,7 +69,7 @@ export class AppUpdateService {
     });
   }
 
-  /** Returns true when a new deployment was detected. */
+  /** Returns true when at least one source reports a new deployment. */
   async checkNow(force = false): Promise<boolean> {
     const now = Date.now();
     if (!force && now - this.lastCheckAt < MIN_CHECK_GAP_MS) {
@@ -62,36 +77,55 @@ export class AppUpdateService {
     }
     this.lastCheckAt = now;
 
-    const info = await this.fetchVersion(now);
-    if (!info) {
-      return false;
+    const sources = this.sources();
+    const results = await Promise.allSettled(sources.map((source) => this.fetchVersion(source)));
+
+    const infos = new Map<string, AppVersionInfo>();
+    results.forEach((result, index) => {
+      if (result.status === 'fulfilled' && result.value) {
+        infos.set(sources[index].id, result.value);
+      }
+    });
+
+    const pending: PendingVersion[] = [];
+    for (const source of sources) {
+      const info = infos.get(source.id);
+      if (!info) {
+        continue;
+      }
+
+      const baseline = this.baselines.get(source.id);
+      if (!baseline) {
+        this.baselines.set(source.id, info.buildId);
+        continue;
+      }
+
+      const dismissedKey = `${source.id}:${info.buildId}`;
+      if (info.buildId !== baseline && !this.dismissed.has(dismissedKey)) {
+        pending.push({ ...info, id: source.id });
+      }
     }
 
-    if (this.runningBuildId === null) {
-      this.runningBuildId = info.buildId;
-      return false;
-    }
-
-    if (info.buildId === this.runningBuildId || info.buildId === this.dismissedBuildId) {
-      return false;
-    }
-
-    this.available.set(info);
-    return true;
+    this._pending.set(pending);
+    return pending.length > 0;
   }
 
   dismiss(): void {
-    this.dismissedBuildId = this.available()?.buildId ?? null;
-    this.available.set(null);
+    for (const entry of this._pending()) {
+      this.dismissed.add(`${entry.id}:${entry.buildId}`);
+    }
+    this._pending.set([]);
   }
 
   reload(): void {
-    const buildId = this.available()?.buildId;
-    if (!buildId) {
+    const key = this._pending()
+      .map((entry) => entry.buildId)
+      .join(',');
+    if (!key) {
       location.reload();
       return;
     }
-    location.replace(this.buildReloadUrl(buildId));
+    location.replace(this.buildReloadUrl(key));
   }
 
   /** Builds a cache-busting reload URL that keeps the current hash route. */
@@ -101,14 +135,50 @@ export class AppUpdateService {
     return url.toString();
   }
 
-  /** Resolves against <base href> so sub-folder deployments keep working. */
-  private versionUrl(now: number): string {
-    return new URL(`${VERSION_FILE}?t=${now}`, document.baseURI).toString();
+  private async bootstrap(): Promise<void> {
+    await this.discoverSources();
+    await this.checkNow(true);
   }
 
-  private async fetchVersion(now: number): Promise<AppVersionInfo | null> {
+  /**
+   * Reads the federation manifest once and appends a `version.json` source for
+   * every remote next to its `remoteEntry.json`.
+   */
+  private async discoverSources(): Promise<void> {
     try {
-      const response = await fetch(this.versionUrl(now), { cache: 'no-store' });
+      const response = await fetch(this.fileUrl(MANIFEST_FILE), { cache: 'no-store' });
+      if (!response.ok) {
+        return;
+      }
+
+      const manifest = (await response.json()) as Record<string, string> | null;
+      if (!manifest || typeof manifest !== 'object' || Array.isArray(manifest)) {
+        return;
+      }
+
+      const remotes = Object.entries(manifest)
+        .filter(([, entry]) => typeof entry === 'string' && entry.length > 0)
+        .map(([id, entry]) => ({
+          id,
+          url: new URL(VERSION_FILE, new URL(entry, document.baseURI)).href,
+        }));
+
+      this.sources.set([{ id: HOST_SOURCE_ID, url: VERSION_FILE }, ...remotes]);
+    } catch {
+      // Host-only mode when the manifest is unavailable.
+    }
+  }
+
+  /** Resolves against <base href> so sub-folder deployments keep working. */
+  private fileUrl(file: string, now = Date.now()): string {
+    const url = new URL(file, document.baseURI);
+    url.searchParams.set('t', String(now));
+    return url.toString();
+  }
+
+  private async fetchVersion(source: VersionSource): Promise<AppVersionInfo | null> {
+    try {
+      const response = await fetch(this.fileUrl(source.url), { cache: 'no-store' });
       if (!response.ok) {
         return null;
       }
