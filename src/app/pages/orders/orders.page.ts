@@ -10,8 +10,8 @@ import {
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { formatDate, formatRupiah } from '../../core/format';
-import { AVATAR_CLASSES, ORDER_STATUS, ORDERS, Order, OrderStatus } from '../../core/mock-data';
+import { formatRupiah } from '../../core/format';
+import { ORDER_STATUS, Order, OrderStatus } from '../../core/mock-data';
 import { UiBadge } from '../../shared/ui/badge/badge';
 import { UiButton } from '../../shared/ui/button/button';
 import { UiDialog } from '../../shared/ui/dialog/dialog';
@@ -19,6 +19,7 @@ import { UiIcon } from '../../shared/ui/icon/icon';
 import { IconName } from '../../shared/ui/icon/icons';
 import { UiPageHeader } from '../../shared/ui/page-header/page-header';
 import { ToastService } from '../../shared/ui/toast/toast.service';
+import { ORDERS_PAGE_SIZE, OrdersStore } from './orders.store';
 
 type SortKey = 'createdAt' | 'total';
 
@@ -39,16 +40,24 @@ type SortKey = 'createdAt' | 'total';
   templateUrl: './orders.page.html',
 })
 export class OrdersPage {
-  protected readonly orders = signal<Order[]>(ORDERS);
-  protected readonly search = signal('');
-  protected readonly statusFilter = signal<'all' | OrderStatus>('all');
-  protected readonly sortKey = signal<SortKey>('createdAt');
-  protected readonly sortDirection = signal<'asc' | 'desc'>('desc');
-  protected readonly page = signal(1);
+  private readonly store = inject(OrdersStore);
+  private readonly toast = inject(ToastService);
+  private readonly route = inject(ActivatedRoute);
+  private readonly newOrderDialog = viewChild.required<UiDialog>('newOrderDialog');
+
+  protected readonly orders = this.store.orders;
+  protected readonly search = this.store.search;
+  protected readonly statusFilter = this.store.statusFilter;
+  protected readonly sortKey = this.store.sortKey;
+  protected readonly sortDirection = this.store.sortDirection;
+  protected readonly filtered = this.store.filtered;
+  protected readonly paged = this.store.paged;
+  protected readonly totalPages = this.store.pageCount;
+  protected readonly currentPage = this.store.currentPage;
+
   protected readonly selected = signal<ReadonlySet<string>>(new Set());
   protected readonly menuOrder = signal<Order | null>(null);
 
-  protected readonly pageSize = 6;
   protected readonly statusMeta = ORDER_STATUS;
   protected readonly formatRupiah = formatRupiah;
   protected readonly statusOptions = (Object.keys(ORDER_STATUS) as OrderStatus[]).map((value) => ({
@@ -63,51 +72,12 @@ export class OrdersPage {
     status: ['pending' as OrderStatus],
   });
 
-  private readonly toast = inject(ToastService);
-  private readonly route = inject(ActivatedRoute);
-  private readonly newOrderDialog = viewChild.required<UiDialog>('newOrderDialog');
-  private nextInvoice = 2050;
-
-  protected readonly filtered = computed(() => {
-    const query = this.search().trim().toLowerCase();
-    const status = this.statusFilter();
-    const key = this.sortKey();
-    const direction = this.sortDirection() === 'asc' ? 1 : -1;
-
-    return this.orders()
-      .filter((order) => status === 'all' || order.status === status)
-      .filter(
-        (order) =>
-          !query ||
-          [order.id, order.customer, order.email].some((value) =>
-            value.toLowerCase().includes(query),
-          ),
-      )
-      .sort((a, b) => {
-        if (key === 'total') {
-          return (a.total - b.total) * direction;
-        }
-        return a.createdAt.localeCompare(b.createdAt) * direction;
-      });
-  });
-
-  protected readonly totalPages = computed(() =>
-    Math.max(1, Math.ceil(this.filtered().length / this.pageSize)),
-  );
-
-  protected readonly currentPage = computed(() => Math.min(this.page(), this.totalPages()));
-
-  protected readonly paged = computed(() => {
-    const page = this.currentPage();
-    return this.filtered().slice((page - 1) * this.pageSize, page * this.pageSize);
-  });
-
   protected readonly rangeStart = computed(() =>
-    this.filtered().length === 0 ? 0 : (this.currentPage() - 1) * this.pageSize + 1,
+    this.filtered().length === 0 ? 0 : (this.currentPage() - 1) * ORDERS_PAGE_SIZE + 1,
   );
 
   protected readonly rangeEnd = computed(() =>
-    Math.min(this.currentPage() * this.pageSize, this.filtered().length),
+    Math.min(this.currentPage() * ORDERS_PAGE_SIZE, this.filtered().length),
   );
 
   protected readonly pageNumbers = computed(() => {
@@ -129,39 +99,27 @@ export class OrdersPage {
   protected readonly hasFilters = computed(() => !!this.search() || this.statusFilter() !== 'all');
 
   constructor() {
+    void this.store.load();
+
     this.route.queryParamMap.pipe(takeUntilDestroyed()).subscribe((params) => {
-      const query = params.get('q');
-      if (query !== null) {
-        this.search.set(query);
-        this.page.set(1);
-      }
+      this.store.setSearch(params.get('q') ?? '');
     });
   }
 
   protected onSearch(event: Event): void {
-    this.search.set((event.target as HTMLInputElement).value);
-    this.page.set(1);
+    this.store.setSearch((event.target as HTMLInputElement).value);
   }
 
   protected onStatusChange(event: Event): void {
-    this.statusFilter.set((event.target as HTMLSelectElement).value as 'all' | OrderStatus);
-    this.page.set(1);
+    this.store.setStatus((event.target as HTMLSelectElement).value as 'all' | OrderStatus);
   }
 
   protected resetFilters(): void {
-    this.search.set('');
-    this.statusFilter.set('all');
-    this.page.set(1);
+    this.store.resetFilters();
   }
 
   protected sortBy(key: SortKey): void {
-    if (this.sortKey() === key) {
-      this.sortDirection.update((direction) => (direction === 'asc' ? 'desc' : 'asc'));
-    } else {
-      this.sortKey.set(key);
-      this.sortDirection.set('desc');
-    }
-    this.page.set(1);
+    this.store.setSort(key);
   }
 
   protected sortIcon(key: SortKey): IconName {
@@ -172,7 +130,7 @@ export class OrdersPage {
   }
 
   protected goToPage(page: number): void {
-    this.page.set(Math.min(Math.max(1, page), this.totalPages()));
+    this.store.setPage(page);
   }
 
   protected isSelected(id: string): boolean {
@@ -225,34 +183,19 @@ export class OrdersPage {
     }
 
     const value = this.form.getRawValue();
-    const initials = value.customer
-      .split(' ')
-      .filter(Boolean)
-      .slice(0, 2)
-      .map((part) => part[0]?.toUpperCase() ?? '')
-      .join('');
-
-    const order: Order = {
-      id: `INV-${this.nextInvoice++}`,
-      customer: value.customer.trim(),
-      email: value.email.trim(),
-      initials: initials || 'NA',
-      avatarClass: AVATAR_CLASSES[this.orders().length % AVATAR_CLASSES.length],
-      status: value.status,
+    const order = this.store.create({
+      customer: value.customer,
+      email: value.email,
       total: value.total,
-      items: 1,
-      date: formatDate(new Date()),
-      createdAt: new Date().toISOString(),
-    };
+      status: value.status,
+    });
 
-    this.orders.update((orders) => [order, ...orders]);
-    this.page.set(1);
     this.newOrderDialog().close();
     this.toast.success('Pesanan ditambahkan', `${order.id} · ${order.customer}`);
   }
 
   protected deleteOrder(order: Order): void {
-    this.orders.update((orders) => orders.filter((item) => item.id !== order.id));
+    this.store.remove(order.id);
     this.selected.update((selected) => {
       const next = new Set(selected);
       next.delete(order.id);
@@ -266,7 +209,7 @@ export class OrdersPage {
     if (!ids.size) {
       return;
     }
-    this.orders.update((orders) => orders.filter((order) => !ids.has(order.id)));
+    ids.forEach((id) => this.store.remove(id));
     this.clearSelection();
     this.toast.success(`${ids.size} pesanan dihapus`, 'Data contoh hanya berubah di sesi ini.');
   }

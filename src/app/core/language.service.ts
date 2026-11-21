@@ -1,13 +1,15 @@
-import { Injectable, signal } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
+import { Language, PreferencesService } from './state/preferences.service';
 
-export type Language = 'id' | 'en';
+export type { Language };
 
-/** Shared UI language for pages inside the app shell (currently the home page). */
 @Injectable({ providedIn: 'root' })
 export class LanguageService {
-  readonly lang = signal<Language>('id');
+  private readonly preferences = inject(PreferencesService);
+
+  readonly lang = this.preferences.language;
 
   set(language: Language): void {
-    this.lang.set(language);
+    this.preferences.setLanguage(language);
   }
 }

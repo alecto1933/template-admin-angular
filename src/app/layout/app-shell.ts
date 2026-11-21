@@ -9,6 +9,7 @@ import {
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { filter } from 'rxjs';
+import { PreferencesService } from '../core/state/preferences.service';
 import { AppFooter } from './footer';
 import { AppSidebar } from './sidebar';
 import { AppTopbar } from './topbar';
@@ -23,7 +24,7 @@ import { AppTopbar } from './topbar';
         [collapsed]="collapsed()"
         [mobileOpen]="mobileOpen()"
         (closeMobile)="mobileOpen.set(false)"
-        (toggleCollapse)="collapsed.set(!collapsed())"
+        (toggleCollapse)="toggleSidebar()"
       />
 
       @if (mobileOpen()) {
@@ -54,7 +55,8 @@ import { AppTopbar } from './topbar';
   `,
 })
 export class AppShell {
-  protected readonly collapsed = signal(false);
+  private readonly preferences = inject(PreferencesService);
+  protected readonly collapsed = this.preferences.sidebarCollapsed;
   protected readonly mobileOpen = signal(false);
 
   private readonly router = inject(Router);
@@ -79,10 +81,14 @@ export class AppShell {
     const isDesktop = window.matchMedia('(min-width: 768px)').matches;
 
     if (isDesktop) {
-      this.collapsed.update((collapsed) => !collapsed);
+      this.toggleSidebar();
       return;
     }
 
     this.mobileOpen.update((open) => !open);
+  }
+
+  protected toggleSidebar(): void {
+    this.preferences.toggleSidebar();
   }
 }

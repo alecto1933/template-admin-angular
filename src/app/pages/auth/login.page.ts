@@ -10,6 +10,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CdkMenu, CdkMenuItem, CdkMenuTrigger } from '@angular/cdk/menu';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { SessionService } from '../../core/state/session.service';
 import { ThemeService } from '../../core/theme/theme.service';
 import { AutocompleteOption, UiAutocomplete } from '../../shared/ui/autocomplete/autocomplete';
 import { UiButton } from '../../shared/ui/button/button';
@@ -180,6 +181,7 @@ const TEXTS = {
 export class LoginPage {
   private readonly router = inject(Router);
   private readonly toast = inject(ToastService);
+  private readonly session = inject(SessionService);
 
   protected readonly theme = inject(ThemeService);
   protected readonly loading = signal(false);
@@ -352,6 +354,7 @@ export class LoginPage {
     this.loading.set(true);
     setTimeout(() => {
       this.loading.set(false);
+      this.session.login();
       this.toast.success(this.t().welcomeTitle, this.t().welcomeMessage);
       this.router.navigate(['/home']);
     }, 900);

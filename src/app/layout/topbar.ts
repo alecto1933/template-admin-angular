@@ -12,6 +12,7 @@ import { NavigationEnd, Router } from '@angular/router';
 import { filter, startWith } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NOTIFICATIONS, AppNotification } from '../core/nav';
+import { SessionService } from '../core/state/session.service';
 import { LanguageService } from '../core/language.service';
 import { ThemeService } from '../core/theme/theme.service';
 import { UiAlertDialog } from '../shared/ui/alert-dialog/alert-dialog';
@@ -117,11 +118,15 @@ import { ToastService } from '../shared/ui/toast/toast.service';
             <span
               class="grid size-8 place-items-center rounded-lg bg-primary text-xs font-bold text-primary-foreground"
             >
-              RP
+              {{ session.initials() || '?' }}
             </span>
             <span class="hidden text-left md:block">
-              <span class="block text-[13px] leading-tight font-semibold"> Raka Pratama </span>
-              <span class="block text-[11px] leading-tight text-muted-foreground"> Admin </span>
+              <span class="block text-[13px] leading-tight font-semibold">
+                {{ session.user()?.name ?? 'Tamu' }}
+              </span>
+              <span class="block text-[11px] leading-tight text-muted-foreground">
+                {{ session.user()?.role ?? '-' }}
+              </span>
             </span>
             <ui-icon name="chevron-down" class="hidden size-3.5 text-muted-foreground md:block" />
           </button>
@@ -209,8 +214,8 @@ import { ToastService } from '../shared/ui/toast/toast.service';
       <ng-template #userMenu>
         <div cdkMenu class="ui-menu-panel w-60">
           <div class="px-3 py-2">
-            <p class="text-sm font-semibold text-foreground">Raka Pratama</p>
-            <p class="truncate text-xs text-muted-foreground">raka&#64;alecto.id</p>
+            <p class="text-sm font-semibold text-foreground">{{ session.user()?.name ?? 'Tamu' }}</p>
+            <p class="truncate text-xs text-muted-foreground">{{ session.user()?.email ?? '-' }}</p>
           </div>
           <div class="ui-menu-separator"></div>
           <button cdkMenuItem type="button" class="ui-menu-item" (click)="goToProfile()">
@@ -251,6 +256,7 @@ export class AppTopbar {
 
   protected readonly theme = inject(ThemeService);
   protected readonly language = inject(LanguageService);
+  protected readonly session = inject(SessionService);
   private readonly router = inject(Router);
   private readonly toast = inject(ToastService);
 
@@ -328,6 +334,7 @@ export class AppTopbar {
   }
 
   protected confirmLogout(): void {
+    this.session.logout();
     this.toast.success('Berhasil keluar', 'Sesi demo telah diakhiri.');
     this.router.navigate(['/auth/login']);
   }
