@@ -340,11 +340,11 @@ menjadi `pending` dan memperbarui `updatedAt`.
 
 ### 9.2 Environment
 
-| Env         | Host baseHref       | Remote URL di manifest                                         |
-| ----------- | ------------------- | -------------------------------------------------------------- |
-| development | `/ivendor/`         | `http://localhost:4201/remoteEntry.json`                       |
-| staging     | `/ivendor-staging/` | `/ivendor-staging/remotes/profile-management/remoteEntry.json` |
-| production  | `/`                 | `/remotes/profile-management/remoteEntry.json`                 |
+| Env         | Host baseHref       | Remote URL di manifest                        |
+| ----------- | ------------------- | --------------------------------------------- |
+| development | `/ivendor/`         | `http://localhost:4201/remoteEntry.json`      |
+| staging     | `/ivendor-staging/` | `remotes/profile-management/remoteEntry.json` |
+| production  | `/`                 | `remotes/profile-management/remoteEntry.json` |
 
 - Manifest **digenerate** oleh `scripts/write-federation-manifest.mjs` sebelum
   build/serve (pola sama dengan `write-version.mjs`), karena `fileReplacements`

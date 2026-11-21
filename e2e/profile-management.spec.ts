@@ -13,7 +13,7 @@ test.describe('profile management remote', () => {
     await expect(page).toHaveURL(/#\/profile-management$/);
     await expect(page.getByRole('heading', { name: 'Profil Vendor' })).toBeVisible();
 
-    await page.getByRole('link', { name: 'Rekening Bank' }).click();
+    await page.getByRole('main').getByRole('link', { name: 'Rekening Bank' }).click();
     await expect(page).toHaveURL(/#\/profile-management\/bank$/);
 
     await page.getByRole('button', { name: 'Ubah' }).click();
@@ -30,7 +30,7 @@ test.describe('profile management remote', () => {
     // `./Routes` fails and the host renders its error card.
     const manifestResponse = await request.get('/ivendor/federation.manifest.json');
     const manifest = (await manifestResponse.json()) as Record<string, string>;
-    const remoteEntry = new URL(manifest['profile-management']);
+    const remoteEntry = new URL(manifest['profile-management'], 'http://localhost:4205');
 
     await page.route(`${remoteEntry.origin}/**`, (route) =>
       new URL(route.request().url()).pathname.endsWith('/remoteEntry.json')

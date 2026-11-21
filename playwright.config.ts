@@ -10,12 +10,10 @@ export default defineConfig({
   fullyParallel: true,
   forbidOnly: !!process.env['CI'],
   retries: process.env['CI'] ? 2 : 0,
-  workers: process.env['CI'] ? 1 : undefined,
+  // Angular's dev server compiles lazy chunks on demand; three workers keep the
+  // module queue short without contending like the default global limit.
+  workers: process.env['CI'] ? 1 : 3,
   reporter: [['list'], ['html', { open: 'never' }]],
-  // Angular's dev server compiles lazy chunks on demand. With several parallel
-  // workers the module queue can exceed Playwright's 5s default, so give the
-  // assertions room without relaxing what they check.
-  expect: { timeout: 15_000 },
   use: {
     baseURL,
     trace: 'on-first-retry',
@@ -31,7 +29,7 @@ export default defineConfig({
   ],
   webServer: [
     {
-      command: `npm --prefix ${remoteDir} start -- --port ${REMOTE_PORT}`,
+      command: `npm --prefix "${remoteDir}" start -- --port ${REMOTE_PORT}`,
       url: `http://localhost:${REMOTE_PORT}/remoteEntry.json`,
       reuseExistingServer: !process.env['CI'],
       timeout: 180_000,
