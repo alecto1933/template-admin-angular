@@ -154,7 +154,8 @@ export class AppSidebar {
   private readonly router = inject(Router);
 
   protected readonly currentUrl = signal(this.router.url);
-  protected readonly expanded = signal<ReadonlySet<string>>(new Set(['/components']));
+  // Hanya grup yang cocok dengan route aktif yang terbuka; sisanya tertutup.
+  protected readonly expanded = signal<ReadonlySet<string>>(new Set());
 
   constructor() {
     this.router.events
@@ -170,9 +171,7 @@ export class AppSidebar {
           .flatMap((section) => section.items)
           .find((item) => item.children?.some((child) => this.matches(url, child.path)));
 
-        if (group) {
-          this.expanded.update((paths) => new Set([...paths, group.path]));
-        }
+        this.expanded.set(group ? new Set([group.path]) : new Set());
       });
   }
 

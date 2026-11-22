@@ -138,7 +138,6 @@ describe('AppSidebar', () => {
     const host = fixture.nativeElement as HTMLElement;
     const button = groupButton(host, 'Profil Vendor');
     expect(button).toBeDefined();
-    // The extra '/components' group starts expanded.
     expect(button?.getAttribute('aria-expanded')).toBe('false');
     const submenu = groupSubmenu(button);
     expect(submenu?.hidden).toBe(true);
@@ -154,8 +153,30 @@ describe('AppSidebar', () => {
     expect(button?.getAttribute('aria-expanded')).toBe('false');
   });
 
-  it('expands the group and emits toggleCollapse when collapsed', () => {
+  it('closes a group again after navigating to an unrelated route', async () => {
     const fixture = TestBed.createComponent(AppSidebar);
+    withExtraSections(fixture);
+    fixture.componentRef.setInput('collapsed', false);
+    fixture.detectChanges();
+
+    const host = fixture.nativeElement as HTMLElement;
+    const button = groupButton(host, 'Profil Vendor');
+    expect(button?.getAttribute('aria-expanded')).toBe('false');
+
+    button?.click();
+    fixture.detectChanges();
+    expect(button?.getAttribute('aria-expanded')).toBe('true');
+
+    await TestBed.inject(Router).navigate(['/home']);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    expect(button?.getAttribute('aria-expanded')).toBe('false');
+    expect(groupSubmenu(button)?.hidden).toBe(true);
+  });
+
+  it('expands the group and emits toggleCollapse when collapsed', () => {    const fixture = TestBed.createComponent(AppSidebar);
     withExtraSections(fixture);
     fixture.componentRef.setInput('collapsed', true);
     fixture.detectChanges();
